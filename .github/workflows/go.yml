@@ -38,13 +38,11 @@ jobs:
         run: make install
       - name: Test
         run: make test
-      - name: List artifact
-        run: ls -l
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.txt
+          files: ./server/coverage.txt
           flags: unittests
           fail_ci_if_error: false
           verbose: true
