@@ -29,7 +29,21 @@ class MainForm extends StatelessWidget {
           );
         } else if (state is NewSpotCreatedState) {
           return Center(
-            child: Text("New spot UUID: ${state.spotUuid}"),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Text("New spot UUID: ${state.spotUuid}"),
+                ),
+                ElevatedButton(
+                  key: const Key("btn_create_spot"),
+                  child: const Text("Create new spot"),
+                  onPressed: () =>
+                      context.read<MainPageBloc>().add(CreateNewSpotEvent()),
+                ),
+              ],
+            ),
           );
         } else if (state is CreateSpotErrorState) {
           return Center(

@@ -20,22 +20,15 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         final channel = ClientChannel(
           settings.environment.host,
           port: settings.environment.port,
-          options: ChannelOptions(
-            credentials: const ChannelCredentials.insecure(),
-            codecRegistry:
-                CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+          options: const ChannelOptions(
+            credentials: ChannelCredentials.insecure(),
           ),
         );
 
         final stub = SpotServiceClient(channel);
 
         try {
-          final response = await stub.createSpot(
-            CreateSpotRequest(),
-            options: CallOptions(
-              compression: const GzipCodec(),
-            ),
-          );
+          final response = await stub.createSpot(CreateSpotRequest());
           emit(NewSpotCreatedState(spotUuid: response.uuid));
         } catch (ex) {
           emit(CreateSpotErrorState(error: ex.toString()));
