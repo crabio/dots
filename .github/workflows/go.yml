@@ -39,7 +39,7 @@ jobs:
       - name: Test
         run: make test
       - name: List artifact
-        run: ls -l out
+        run: ls -l
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
