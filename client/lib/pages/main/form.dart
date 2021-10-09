@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Internal
-import 'package:dots_client/pages/main/bloc/events.dart';
-import 'package:dots_client/pages/main/bloc/bloc.dart';
-import 'package:dots_client/pages/main/bloc/state.dart';
+import 'bloc/events.dart';
+import 'bloc/bloc.dart';
+import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
   const MainForm({Key? key}) : super(key: key);

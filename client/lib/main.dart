@@ -1,6 +1,7 @@
 // External
 import 'package:dots_client/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
+import 'package:dots_client/pages/settings/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -29,7 +30,8 @@ class App extends StatelessWidget {
         builder: (_, theme) {
           return MaterialApp(
             theme: theme,
-            home: const MainPage(),
+            // home: const MainPage(),
+            home: const SettingsPage(),
           );
         },
       ),

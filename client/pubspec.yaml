@@ -1,5 +1,5 @@
 name: dots_client
-description: A new Flutter project.
+description: Client for Dots game.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.0.1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -27,11 +27,14 @@ dependencies:
   logging: ^1.0.2
   flutter_bloc: ^7.3.0
   uuid: ^3.0.5
+  settings_ui: ^1.0.0
+  json_serializable: ^4.1.4
+  shared_preferences: ^2.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  build_runner:
   flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
