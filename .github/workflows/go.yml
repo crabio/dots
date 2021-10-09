@@ -38,6 +38,8 @@ jobs:
         run: make install
       - name: Test
         run: make test
+      - name: List artifact
+        run: ls -l out
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
@@ -81,4 +83,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: server
-          path: out/server
+          path: ./out/server
