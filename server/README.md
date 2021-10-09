@@ -47,6 +47,11 @@ To run server in docker use:
 make run_docker
 ```
 
+Or use prebuilded version:
+```sh
+docker run -d -p 8080 -p 8090 --name dots_server ghcr.io/iakrevetkho/dots/server:<version>
+```
+
 ## Test
 
 ### Unit test
