@@ -80,3 +80,4 @@ jobs:
         with:
           name: server
           path: ./server/out/server
+          retention-days: 7
