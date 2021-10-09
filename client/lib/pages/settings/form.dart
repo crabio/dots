@@ -31,7 +31,10 @@ class SettingsForm extends StatelessWidget {
                     leading: const Icon(Icons.wb_twilight_rounded),
                     onToggle: (value) => context
                         .read<SettingsPageBloc>()
-                        .add(ChangeUseOsThemeEvent(value: value)),
+                        .add(ChangeUseOsThemeEvent(
+                          context: context,
+                          value: value,
+                        )),
                     switchValue: state.settings.useOsThemeSettings,
                   ),
                   SettingsTile.switchTile(

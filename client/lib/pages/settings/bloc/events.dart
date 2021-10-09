@@ -5,9 +5,10 @@ abstract class SettingsPageEvent {}
 class InitEvent implements SettingsPageEvent {}
 
 class ChangeUseOsThemeEvent implements SettingsPageEvent {
+  final BuildContext context;
   final bool value;
 
-  ChangeUseOsThemeEvent({required this.value});
+  ChangeUseOsThemeEvent({required this.context, required this.value});
 }
 
 class ChangeLightThemeEvent implements SettingsPageEvent {

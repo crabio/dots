@@ -1,4 +1,5 @@
 // External
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:dots_client/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/pages/settings/page.dart';
@@ -24,16 +25,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ThemeCubit(),
-      child: BlocBuilder<ThemeCubit, ThemeData>(
-        builder: (_, theme) {
-          return MaterialApp(
-            theme: theme,
-            // home: const MainPage(),
-            home: const SettingsPage(),
-          );
-        },
+    return AdaptiveTheme(
+      light: lightTheme,
+      dark: darkTheme,
+      // TODO Read from settings
+      initial: AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: 'Adaptive Theme Demo',
+        theme: theme,
+        darkTheme: darkTheme,
+        home: const SettingsPage(),
       ),
     );
   }

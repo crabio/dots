@@ -1,6 +1,7 @@
 // External
 import 'dart:convert';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:dots_client/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,6 +54,11 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
         if (!await _updateSettings(newSettings)) {
           throw Exception("Couldn't save settings");
         }
+        event.value
+            ? AdaptiveTheme.of(event.context).setSystem()
+            : curState.settings.ligthTheme
+                ? AdaptiveTheme.of(event.context).setLight()
+                : AdaptiveTheme.of(event.context).setDark();
         emit(InitedState(settings: newSettings));
       } else {
         throw Exception("Wrong state $state for $event");
@@ -67,7 +73,9 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
         if (!await _updateSettings(newSettings)) {
           throw Exception("Couldn't save settings");
         }
-        event.context.read<ThemeCubit>().switchTheme(ligthTheme: event.value);
+        event.value
+            ? AdaptiveTheme.of(event.context).setLight()
+            : AdaptiveTheme.of(event.context).setDark();
         emit(InitedState(settings: newSettings));
       } else {
         throw Exception("Wrong state $state for $event");
