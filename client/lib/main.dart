@@ -1,6 +1,6 @@
 // External
 import 'package:dots_client/bloc_middleware.dart';
-import 'package:dots_client/pages/main/main.dart';
+import 'package:dots_client/pages/main/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

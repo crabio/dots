@@ -2,8 +2,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Internal
-import 'package:dots_client/pages/main/events.dart';
-import 'package:dots_client/pages/main/state.dart';
+import 'events.dart';
+import 'state.dart';
 
 /// {@template counter_bloc}
 /// A simple [Bloc] which manages an `int` as its state.
