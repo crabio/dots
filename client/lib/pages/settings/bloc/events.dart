@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 abstract class SettingsPageEvent {}
 
-class InitEvent implements SettingsPageEvent {}
-
 class ChangeUseOsThemeEvent implements SettingsPageEvent {
   final BuildContext context;
   final bool value;

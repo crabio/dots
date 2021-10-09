@@ -25,14 +25,15 @@ class EnvironmentPage extends StatelessWidget {
   List<SettingsTile> _createEnvList() {
     final envList = <SettingsTile>[];
 
-    for (var e in Environment.values) {
+    for (final envType in EnvironmentType.values) {
+      final env = envType.toEnvironment();
       envList.add(
         SettingsTile(
-          title: e.toShortString(),
-          subtitle: e.toAddress(),
+          title: env.name,
+          subtitle: env.host,
           trailing: const Icon(Icons.arrow_forward_ios),
           onPressed: (BuildContext context) {
-            Navigator.pop(context, e.index);
+            Navigator.pop(context, envType.index);
           },
         ),
       );

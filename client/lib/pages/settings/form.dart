@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 // Internal
-import 'package:dots_client/settings/settings.dart';
 import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
@@ -17,9 +16,7 @@ class SettingsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsPageBloc, SettingsPageState>(
       builder: (context, state) {
-        if (state is InitingState) {
-          return const CircularProgressIndicator();
-        } else if (state is InitedState) {
+        if (state is InitedState) {
           return SettingsList(
             sections: [
               SettingsSection(
@@ -57,7 +54,7 @@ class SettingsForm extends StatelessWidget {
                 tiles: [
                   SettingsTile(
                     title: 'Environment',
-                    subtitle: state.settings.environment.toShortString(),
+                    subtitle: state.settings.environment.name,
                     leading: const Icon(Icons.cloud_queue),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onPressed: (context) async {
