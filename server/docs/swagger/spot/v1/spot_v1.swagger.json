@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "hello_world/v1/hello_world_v1.proto",
+    "title": "spot/v1/spot_v1.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "HelloService"
+      "name": "SpotService"
     }
   ],
   "consumes": [
@@ -16,14 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/hello": {
+    "/api/v1/spot": {
       "post": {
-        "operationId": "HelloService_SayHello",
+        "operationId": "SpotService_CreateSpot",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1SayHelloResponse"
+              "$ref": "#/definitions/v1CreateSpotResponse"
             }
           },
           "default": {
@@ -39,12 +39,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1SayHelloRequest"
+              "$ref": "#/definitions/v1CreateSpotRequest"
             }
           }
         ],
         "tags": [
-          "HelloService"
+          "SpotService"
         ]
       }
     }
@@ -77,23 +77,17 @@
         }
       }
     },
-    "v1SayHelloRequest": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "title": "The request message containing the user's name"
+    "v1CreateSpotRequest": {
+      "type": "object"
     },
-    "v1SayHelloResponse": {
+    "v1CreateSpotResponse": {
       "type": "object",
       "properties": {
-        "message": {
-          "type": "string"
+        "id": {
+          "type": "integer",
+          "format": "int64"
         }
-      },
-      "title": "The response message containing the greetings"
+      }
     }
   }
 }
