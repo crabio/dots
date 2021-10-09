@@ -30,7 +30,7 @@ jobs:
       - name: Set env release version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Show release version
-        run: echo $RELEASE_VERSION
+        run: echo ${{ env.RELEASE_VERSION }}
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -39,4 +39,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/iakrevetkho/dots/server:latest
-            ghcr.io/iakrevetkho/dots/server:$RELEASE_VERSION
+            ghcr.io/iakrevetkho/dots/server:${{ env.RELEASE_VERSION }}
