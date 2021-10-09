@@ -1,0 +1,82 @@
+name: Server
+
+on:
+  push:
+
+defaults:
+  run:
+    shell: bash
+    working-directory: server
+
+jobs:
+  generate:
+    name: Regenerate files
+    runs-on: ubuntu-latest
+    container:
+      image: golang:latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: Install tools
+        run: make install
+      - name: Regenerate files
+        run: make generate
+      - name: Check for a diff
+        run: git diff --exit-code
+
+  test:
+    name: Test
+    needs: generate
+    runs-on: ubuntu-latest
+    container:
+      image: golang:latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: Install tools
+        run: make install
+      - name: Test
+        run: make test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./server/coverage.txt
+          flags: unittests
+          fail_ci_if_error: false
+          verbose: true
+
+  lint:
+    name: Lint
+    needs: generate
+    runs-on: ubuntu-latest
+    container:
+      image: golang:latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: Install tools
+        run: make install
+      - name: Lint
+        run: make lint
+
+  build:
+    name: Build binary
+    needs:
+      - test
+      - lint
+      - generate
+    runs-on: ubuntu-latest
+    container:
+      image: golang:latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: Build artifact
+        run: make build
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: server
+          path: ./server/out/server
+          retention-days: 7

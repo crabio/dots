@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "grpc.health.v1.Health.Check"
+  },
+  "requests": [
+    {
+      "location": "Check-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}
