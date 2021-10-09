@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:dots_client/settings/settings.dart';
+import 'package:dots_client/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,6 +67,7 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
         if (!await _updateSettings(newSettings)) {
           throw Exception("Couldn't save settings");
         }
+        event.context.read<ThemeCubit>().switchTheme(ligthTheme: event.value);
         emit(InitedState(settings: newSettings));
       } else {
         throw Exception("Wrong state $state for $event");

@@ -40,7 +40,10 @@ class SettingsForm extends StatelessWidget {
                     leading: const Icon(Icons.wb_sunny_rounded),
                     onToggle: (value) => context
                         .read<SettingsPageBloc>()
-                        .add(ChangeLightThemeEvent(value: value)),
+                        .add(ChangeLightThemeEvent(
+                          context: context,
+                          value: value,
+                        )),
                     switchValue: state.settings.ligthTheme,
                     enabled: !state.settings.useOsThemeSettings,
                   ),

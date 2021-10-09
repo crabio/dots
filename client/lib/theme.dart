@@ -23,8 +23,7 @@ class ThemeCubit extends Cubit<ThemeData> {
     brightness: Brightness.dark,
   );
 
-  /// Toggles the current brightness between light and dark.
-  void toggleTheme() {
-    emit(state.brightness == Brightness.dark ? _lightTheme : _darkTheme);
+  void switchTheme({required bool ligthTheme}) {
+    emit(ligthTheme ? _lightTheme : _darkTheme);
   }
 }
