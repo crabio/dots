@@ -106,5 +106,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/user/app:latest
-            ghcr.io/user/app:0.0.0
+            ghcr.io/iakrevetkho/dots/server:latest
+            ghcr.io/iakrevetkho/dots/server:0.0.0
