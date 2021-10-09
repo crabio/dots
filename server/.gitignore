@@ -1,2 +1,5 @@
 .vscode
 coverage.txt
+
+# Build artifact
+out/*

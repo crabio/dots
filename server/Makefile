@@ -47,7 +47,7 @@ test:
 
 build:
 	@echo "Build app binary"
-	go build
+	go build -o out/server
 
 run:
 	@echo "Run app"
