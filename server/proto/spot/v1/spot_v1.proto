@@ -19,5 +19,5 @@ message CreateSpotRequest {
 }
 
 message CreateSpotResponse {
-  uint32 id = 1;
+  string uuid = 1;
 }

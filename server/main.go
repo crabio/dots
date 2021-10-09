@@ -9,11 +9,9 @@ import (
 	// Internal
 	"github.com/iakrevetkho/archaeopteryx"
 	archaeopteryx_config "github.com/iakrevetkho/archaeopteryx/config"
-	"github.com/iakrevetkho/archaeopteryx/example/docs"
-	api_hello_world_v1 "github.com/iakrevetkho/archaeopteryx/example/pkg/api/hello_world/v1"
-	api_user_v1 "github.com/iakrevetkho/archaeopteryx/example/pkg/api/user/v1"
-	api_user_v2 "github.com/iakrevetkho/archaeopteryx/example/pkg/api/user/v2"
 	archaeopteryx_service "github.com/iakrevetkho/archaeopteryx/service"
+	"github.com/iakrevetkho/dots/server/docs"
+	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
 )
 
 func main() {
@@ -34,9 +32,7 @@ func main() {
 
 	// Init services
 	services := []archaeopteryx_service.IServiceServer{
-		api_hello_world_v1.New(),
-		api_user_v1.New(),
-		api_user_v2.New(),
+		api_spot_v1.New(),
 	}
 
 	// Create archeopteryx server
