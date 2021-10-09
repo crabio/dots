@@ -1,9 +1,11 @@
 // External
+import 'package:dots_client/pages/settings/widget/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 // Internal
+import 'package:dots_client/settings/settings.dart';
 import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
@@ -46,12 +48,23 @@ class SettingsForm extends StatelessWidget {
               ),
               SettingsSection(
                 title: 'Common',
-                tiles: const [
+                tiles: [
                   SettingsTile(
                     title: 'Environment',
-                    subtitle: 'Production',
-                    leading: Icon(Icons.cloud_queue),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    subtitle: state.settings.environment.toShortString(),
+                    leading: const Icon(Icons.cloud_queue),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onPressed: (context) async {
+                      final index = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const EnvironmentPage(),
+                        ),
+                      );
+                      context
+                          .read<SettingsPageBloc>()
+                          .add(ChangeEnvironmentEvent(index: index));
+                    },
                   ),
                 ],
               ),

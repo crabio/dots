@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Internal
@@ -10,6 +11,8 @@ import 'events.dart';
 import 'state.dart';
 
 class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
+  final _logger = Logger("SettingsPageBloc");
+
   SettingsPageBloc() : super(InitingState()) {
     on<InitEvent>(
       (event, emit) async {
@@ -26,8 +29,17 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
           emit(InitedState(settings: defaultSettings));
         } else {
           // Setings exist
-          final settings = AppSettings.fromJson(jsonDecode(settingsStr));
-          emit(InitedState(settings: settings));
+          try {
+            final settings = AppSettings.fromJson(jsonDecode(settingsStr));
+            emit(InitedState(settings: settings));
+          } catch (ex) {
+            _logger.warning("Caught exception on settings load: $ex");
+            // Save default settings
+            final defaultSettings = AppSettings();
+            if (!await _saveSettings(prefs, defaultSettings)) {
+              throw Exception("Couldn't save settings");
+            }
+          }
         }
       },
     );
@@ -50,6 +62,20 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
       if (curState is InitedState) {
         final newSettings = curState.settings.copyWith(
           ligthTheme: event.value,
+        );
+        if (!await _updateSettings(newSettings)) {
+          throw Exception("Couldn't save settings");
+        }
+        emit(InitedState(settings: newSettings));
+      } else {
+        throw Exception("Wrong state $state for $event");
+      }
+    });
+    on<ChangeEnvironmentEvent>((event, emit) async {
+      final curState = state;
+      if (curState is InitedState) {
+        final newSettings = curState.settings.copyWith(
+          environment: Environment.values.elementAt(event.index),
         );
         if (!await _updateSettings(newSettings)) {
           throw Exception("Couldn't save settings");

@@ -13,3 +13,9 @@ class ChangeLightThemeEvent implements SettingsPageEvent {
 
   ChangeLightThemeEvent({required this.value});
 }
+
+class ChangeEnvironmentEvent implements SettingsPageEvent {
+  final int index;
+
+  ChangeEnvironmentEvent({required this.index});
+}
