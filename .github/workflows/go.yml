@@ -74,9 +74,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v1
       - name: Build artifact
-        run: go build -o ${{ github.workspace }}/out/server
+        run: make build
+      - name: List artifact
+        run: ls -l out
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v2
         with:
           name: server
-          path: ${{ github.workspace }}/out/server
+          path: out/server
