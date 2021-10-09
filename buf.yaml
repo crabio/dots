@@ -1,0 +1,9 @@
+version: v1beta1
+name: buf.build/iakrevetkho/archaeopteryx_example
+build:
+  roots:
+    - proto
+lint: 
+  ignore:
+    - google
+    - health
