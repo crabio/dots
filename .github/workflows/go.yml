@@ -62,7 +62,7 @@ jobs:
         run: make lint
 
   build:
-    name: Build
+    name: Build binary
     needs:
       - test
       - lint
@@ -81,3 +81,21 @@ jobs:
           name: server
           path: ./server/out/server
           retention-days: 7
+
+  build_docker:
+    name: Build and Push Docker image
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: golang:latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: Build docker image
+        run: make build_docker
+      # - name: Publish docker image
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: server
+      #     path: ./server/out/server
+      #     retention-days: 7
