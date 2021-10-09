@@ -3,6 +3,22 @@
 part of 'settings.dart';
 
 // **************************************************************************
+// CopyWithGenerator
+// **************************************************************************
+
+extension AppSettingsCopyWith on AppSettings {
+  AppSettings copyWith({
+    bool? ligthTheme,
+    bool? useOsThemeSettings,
+  }) {
+    return AppSettings(
+      ligthTheme: ligthTheme ?? this.ligthTheme,
+      useOsThemeSettings: useOsThemeSettings ?? this.useOsThemeSettings,
+    );
+  }
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

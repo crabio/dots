@@ -20,10 +20,9 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
         if (settingsStr == null) {
           // Settings are not exist
           final defaultSettings = AppSettings();
-          prefs.setString(
-            AppSettings.sharedPreferencesKey,
-            jsonEncode(defaultSettings.toJson()),
-          );
+          if (!await _saveSettings(prefs, defaultSettings)) {
+            throw Exception("Couldn't save settings");
+          }
           emit(InitedState(settings: defaultSettings));
         } else {
           // Setings exist
@@ -32,7 +31,33 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
         }
       },
     );
+    on<ChangeUseOsThemeEvent>((event, emit) async {
+      final curState = state;
+      if (curState is InitedState) {
+        final newSettings =
+            curState.settings.copyWith(useOsThemeSettings: event.value);
+        if (!await _updateSettings(newSettings)) {
+          throw Exception("Couldn't save settings");
+        }
+        emit(InitedState(settings: newSettings));
+      } else {
+        throw Exception("Wrong state $state for $event");
+      }
+    });
 
     add(InitEvent());
+  }
+
+  Future<bool> _saveSettings(
+      SharedPreferences prefs, AppSettings settings) async {
+    return await prefs.setString(
+      AppSettings.sharedPreferencesKey,
+      jsonEncode(settings.toJson()),
+    );
+  }
+
+  Future<bool> _updateSettings(AppSettings settings) async {
+    final prefs = await SharedPreferences.getInstance();
+    return _saveSettings(prefs, settings);
   }
 }

@@ -15,7 +15,9 @@ class SettingsForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsPageBloc, SettingsPageState>(
       builder: (context, state) {
-        if (state is InitedState) {
+        if (state is InitingState) {
+          return const CircularProgressIndicator();
+        } else if (state is InitedState) {
           return SettingsList(
             sections: [
               SettingsSection(
@@ -25,15 +27,18 @@ class SettingsForm extends StatelessWidget {
                     title: 'Use OS theme',
                     subtitle: 'Use OS ligth/dark theme setting.',
                     leading: const Icon(Icons.wb_twilight_rounded),
-                    onToggle: (bool value) {},
-                    switchValue: false,
+                    onToggle: (value) => context
+                        .read<SettingsPageBloc>()
+                        .add(ChangeUseOsThemeEvent(value: value)),
+                    switchValue: state.settings.useOsThemeSettings,
                   ),
                   SettingsTile.switchTile(
                     title: 'Ligth theme',
                     subtitle: 'Use ligth or dark theme.',
                     leading: const Icon(Icons.wb_sunny_rounded),
                     onToggle: (bool value) {},
-                    switchValue: false,
+                    switchValue: state.settings.ligthTheme,
+                    enabled: !state.settings.useOsThemeSettings,
                   ),
                 ],
               ),
