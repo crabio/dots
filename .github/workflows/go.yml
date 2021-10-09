@@ -77,7 +77,7 @@ jobs:
         run: make build
       - name: List artifact
         run: ls -l out
-      - name: "Upload Artifact"
+      - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
           name: server
