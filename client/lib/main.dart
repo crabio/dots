@@ -11,6 +11,8 @@ import 'package:logging/logging.dart';
 import 'theme.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
@@ -34,9 +36,9 @@ class App extends StatelessWidget {
       light: lightTheme,
       dark: darkTheme,
       // TODO Read from settings
-      initial: AdaptiveThemeMode.light,
+      initial: settings.themeMode,
       builder: (theme, darkTheme) => MaterialApp(
-        title: 'Adaptive Theme Demo',
+        title: 'Dots App',
         theme: theme,
         darkTheme: darkTheme,
         home: MainPage(

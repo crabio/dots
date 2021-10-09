@@ -1,6 +1,7 @@
 // External
 import 'dart:convert';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,7 @@ class AppSettings {
   static const sharedPreferencesKey = "dots_settings";
   final bool useOsThemeSettings;
   final bool ligthTheme;
+  final AdaptiveThemeMode themeMode;
 
   final Environment environment;
 
@@ -26,7 +28,11 @@ class AppSettings {
       port: 8080,
       secure: false,
     ),
-  });
+  }) : themeMode = useOsThemeSettings
+            ? AdaptiveThemeMode.system
+            : ligthTheme
+                ? AdaptiveThemeMode.light
+                : AdaptiveThemeMode.dark;
 
   /// Method reads settings from shared preferences or creates default config
   static Future<AppSettings> read() async {
