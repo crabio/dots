@@ -36,7 +36,9 @@ class SettingsForm extends StatelessWidget {
                     title: 'Ligth theme',
                     subtitle: 'Use ligth or dark theme.',
                     leading: const Icon(Icons.wb_sunny_rounded),
-                    onToggle: (bool value) {},
+                    onToggle: (value) => context
+                        .read<SettingsPageBloc>()
+                        .add(ChangeLightThemeEvent(value: value)),
                     switchValue: state.settings.ligthTheme,
                     enabled: !state.settings.useOsThemeSettings,
                   ),

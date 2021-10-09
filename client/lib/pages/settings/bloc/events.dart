@@ -7,3 +7,9 @@ class ChangeUseOsThemeEvent implements SettingsPageEvent {
 
   ChangeUseOsThemeEvent({required this.value});
 }
+
+class ChangeLightThemeEvent implements SettingsPageEvent {
+  final bool value;
+
+  ChangeLightThemeEvent({required this.value});
+}

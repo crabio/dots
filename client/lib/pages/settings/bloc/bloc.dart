@@ -34,8 +34,23 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
     on<ChangeUseOsThemeEvent>((event, emit) async {
       final curState = state;
       if (curState is InitedState) {
-        final newSettings =
-            curState.settings.copyWith(useOsThemeSettings: event.value);
+        final newSettings = curState.settings.copyWith(
+          useOsThemeSettings: event.value,
+        );
+        if (!await _updateSettings(newSettings)) {
+          throw Exception("Couldn't save settings");
+        }
+        emit(InitedState(settings: newSettings));
+      } else {
+        throw Exception("Wrong state $state for $event");
+      }
+    });
+    on<ChangeLightThemeEvent>((event, emit) async {
+      final curState = state;
+      if (curState is InitedState) {
+        final newSettings = curState.settings.copyWith(
+          ligthTheme: event.value,
+        );
         if (!await _updateSettings(newSettings)) {
           throw Exception("Couldn't save settings");
         }
