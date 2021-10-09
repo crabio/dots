@@ -1,6 +1,3 @@
-// External
-import 'package:uuid/uuid.dart';
-
 abstract class MainPageState {}
 
 // Initial page state
@@ -11,7 +8,14 @@ class CreatingNewSpotState implements MainPageState {}
 
 // State when new spot created
 class NewSpotCreatedState implements MainPageState {
-  final Uuid spotUuid;
+  final String spotUuid;
 
   NewSpotCreatedState({required this.spotUuid});
+}
+
+// State when couldn't create spot
+class CreateSpotErrorState implements MainPageState {
+  final String error;
+
+  CreateSpotErrorState({required this.error});
 }

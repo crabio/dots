@@ -1,4 +1,5 @@
 // External
+import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:grpc/grpc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,21 +13,35 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
 
   MainPageBloc({required this.settings}) : super(InitedState()) {
     on<CreateNewSpotEvent>(
-      (event, emit) {
+      (event, emit) async {
         emit(CreatingNewSpotState());
         // Send reques to host
 
         final channel = ClientChannel(
-          'localhost',
-          port: 50051,
+          settings.environment.host,
+          port: settings.environment.port,
           options: ChannelOptions(
-            credentials: ChannelCredentials.insecure(),
+            credentials: const ChannelCredentials.insecure(),
             codecRegistry:
                 CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
           ),
         );
 
-        // TODO Send new spot created event
+        final stub = SpotServiceClient(channel);
+
+        try {
+          final response = await stub.createSpot(
+            CreateSpotRequest(),
+            options: CallOptions(
+              compression: const GzipCodec(),
+            ),
+          );
+          emit(NewSpotCreatedState(spotUuid: response.uuid));
+        } catch (ex) {
+          emit(CreateSpotErrorState(error: ex.toString()));
+        }
+
+        await channel.shutdown();
       },
     );
     on<NewSpotCreatedEvent>(
