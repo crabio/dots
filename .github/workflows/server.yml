@@ -86,8 +86,6 @@ jobs:
     name: Build and Push Docker image
     needs: build
     runs-on: ubuntu-latest
-    container:
-      image: golang:latest
     steps:
       - name: Check out code
         uses: actions/checkout@v1
