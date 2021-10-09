@@ -14,7 +14,7 @@ class MainForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Counter')),
+      appBar: AppBar(title: const Text('Dots')),
       body: BlocBuilder<MainPageBloc, MainPageState>(
         builder: (context, state) {
           if (state is InitedState) {
