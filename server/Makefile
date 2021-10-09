@@ -49,6 +49,18 @@ build:
 	@echo "Build app binary"
 	go build -o out/server
 
+build_docker:
+	@echo "Build app docker container"
+	docker build . -t iakrevetkho/dots/server
+
+run_docker:
+	@echo "Run app docker container"
+	docker run -p 8080:8080 -p 8090:8090 iakrevetkho/dots/server -t dots_server
+
+build_and_run_docker:
+	make build_docker
+	make run_docker
+
 run:
 	@echo "Run app"
 	go run .

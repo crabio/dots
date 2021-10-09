@@ -15,7 +15,7 @@ FROM alpine:3
 COPY --from=build-env /app /
 
 # Create folder for logs
-RUN mkdir /var/log/archaeropteryx
+RUN mkdir /var/log/dots
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD /grpc_health_probe -addr 0.0.0.0:8080 || exit 1
 ENTRYPOINT ["/main"]
