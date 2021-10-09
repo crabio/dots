@@ -15,32 +15,30 @@ class MainForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Counter')),
-      body: Center(
-        child: BlocBuilder<CounterBloc, CounterState>(
-          builder: (context, state) {
-            return Text('${state.count}',
-                style: Theme.of(context).textTheme.headline1);
-          },
-        ),
+      body: BlocBuilder<MainPageBloc, MainPageState>(
+        builder: (context, state) {
+          if (state is InitedState) {
+            return Center(
+              child: ElevatedButton(
+                key: const Key("btn_create_spot"),
+                child: const Text("Create new spot"),
+                onPressed: () =>
+                    context.read<MainPageBloc>().add(CreateNewSpotEvent()),
+              ),
+            );
+          } else if (state is CreatingNewSpotState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Text("Unkown state: $state");
+        },
       ),
       floatingActionButton: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: FloatingActionButton(
-              child: const Icon(Icons.add),
-              onPressed: () => context.read<CounterBloc>().add(Increment()),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: FloatingActionButton(
-              child: const Icon(Icons.remove),
-              onPressed: () => context.read<CounterBloc>().add(Decrement()),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: FloatingActionButton(

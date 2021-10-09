@@ -11,8 +11,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CounterBloc>(
-      create: (_) => CounterBloc(),
+    return BlocProvider(
+      create: (_) => MainPageBloc(),
       child: const MainForm(),
     );
   }

@@ -1,8 +1,14 @@
-/// Event being processed by [CounterBloc].
-abstract class CounterEvent {}
+// External
+import 'package:uuid/uuid.dart';
 
-/// Notifies bloc to increment state.
-class Increment extends CounterEvent {}
+abstract class MainPageEvent {}
 
-/// Notifies bloc to decrement state.
-class Decrement extends CounterEvent {}
+/// Create new spot event
+class CreateNewSpotEvent extends MainPageEvent {}
+
+/// New spot created event
+class NewSpotCreatedEvent extends MainPageEvent {
+  final Uuid spotUuid;
+
+  NewSpotCreatedEvent({required this.spotUuid});
+}
