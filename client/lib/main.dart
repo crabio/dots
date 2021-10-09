@@ -2,7 +2,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:dots_client/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
-import 'package:dots_client/pages/settings/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -34,7 +33,7 @@ class App extends StatelessWidget {
         title: 'Adaptive Theme Demo',
         theme: theme,
         darkTheme: darkTheme,
-        home: const SettingsPage(),
+        home: const MainPage(),
       ),
     );
   }
