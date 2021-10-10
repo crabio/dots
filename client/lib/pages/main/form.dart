@@ -25,57 +25,26 @@ class MainForm extends StatelessWidget {
           );
         } else if (state is InitedState) {
           return Center(
-              child: Stack(
-            children: [
-              _buildMap(position: state.position, zoom: 17.0),
-              ElevatedButton(
-                key: const Key("btn_create_spot"),
-                child: const Text("Create new spot"),
-                onPressed: () =>
-                    context.read<MainPageBloc>().add(CreateNewSpotEvent()),
-              ),
-            ],
-          ));
+            child: Stack(
+              children: [
+                _buildMap(position: state.position, zoom: 17.0),
+                ElevatedButton(
+                  key: const Key("btn_create_spot"),
+                  child: const Text("Create new spot"),
+                  onPressed: () =>
+                      context.read<MainPageBloc>().add(CreateNewSpotEvent()),
+                ),
+              ],
+            ),
+          );
         } else if (state is CreatingNewSpotState) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (state is NewSpotCreatedState) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Text("New spot UUID: ${state.spotUuid}"),
-                ),
-                ElevatedButton(
-                  key: const Key("btn_create_spot"),
-                  child: const Text("Create new spot"),
-                  onPressed: () =>
-                      context.read<MainPageBloc>().add(CreateNewSpotEvent()),
-                ),
-              ],
-            ),
-          );
+          return _buildNewSpotCreatedState(context, state);
         } else if (state is CreateSpotErrorState) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Text("Error when create new spot: ${state.error}"),
-                ),
-                ElevatedButton(
-                  key: const Key("btn_create_spot"),
-                  child: const Text("Create new spot"),
-                  onPressed: () =>
-                      context.read<MainPageBloc>().add(CreateNewSpotEvent()),
-                ),
-              ],
-            ),
-          );
+          return _buildCreateSpotErrorState(context, state);
         }
 
         return Text("Unkown state: $state");
@@ -118,6 +87,52 @@ class MainForm extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildNewSpotCreatedState(
+    BuildContext context,
+    NewSpotCreatedState state,
+  ) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text("New spot UUID: ${state.spotUuid}"),
+          ),
+          ElevatedButton(
+            key: const Key("btn_create_spot"),
+            child: const Text("Create new spot"),
+            onPressed: () =>
+                context.read<MainPageBloc>().add(CreateNewSpotEvent()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCreateSpotErrorState(
+    BuildContext context,
+    CreateSpotErrorState state,
+  ) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text("Error when create new spot: ${state.error}"),
+          ),
+          ElevatedButton(
+            key: const Key("btn_create_spot"),
+            child: const Text("Create new spot"),
+            onPressed: () =>
+                context.read<MainPageBloc>().add(CreateNewSpotEvent()),
+          ),
+        ],
+      ),
     );
   }
 }
