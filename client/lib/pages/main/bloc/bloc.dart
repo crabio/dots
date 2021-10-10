@@ -4,6 +4,7 @@ import 'package:dots_client/settings/settings.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grpc/grpc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 
 // Internal
@@ -25,12 +26,21 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
 
       _logger.fine("Get last known position");
       final position = await Geolocator.getLastKnownPosition();
-      emit(InitedState(position: position!));
+      if (position != null) {
+        emit(InitedState(
+            position: LatLng(position.latitude, position.longitude)));
+      } else {
+        throw Exception("Position is null");
+      }
 
       _logger.fine("Subscribe on location");
       Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.high,
-      ).listen((position) => add(NewGeoPositionEvent(position: position)));
+      ).listen((position) => add(NewGeoPositionEvent(
+              position: LatLng(
+            position.latitude,
+            position.longitude,
+          ))));
     });
     on<NewGeoPositionEvent>((event, emit) async {
       if (state is InitedState) {
@@ -51,10 +61,20 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         );
 
         final stub = SpotServiceClient(channel);
-
+        final request = CreateSpotRequest(
+          longitude: event.position.longitude,
+          latiitude: event.position.latitude,
+        );
         try {
-          final response = await stub.createSpot(CreateSpotRequest());
-          emit(NewSpotCreatedState(spotUuid: response.uuid));
+          final response = await stub.createSpot(request);
+
+          add(NewSpotCreatedEvent(
+            spotUuid: response.uuid,
+            position: LatLng(
+              response.latiitude,
+              response.longitude,
+            ),
+          ));
         } catch (ex) {
           emit(CreateSpotErrorState(error: ex.toString()));
         }
@@ -66,6 +86,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
       (event, emit) => emit(
         NewSpotCreatedState(
           spotUuid: event.spotUuid,
+          position: event.position,
         ),
       ),
     );

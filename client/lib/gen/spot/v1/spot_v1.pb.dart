@@ -11,11 +11,25 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class CreateSpotRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'longitude', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'latiitude', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
   CreateSpotRequest._() : super();
-  factory CreateSpotRequest() => create();
+  factory CreateSpotRequest({
+    $core.double? longitude,
+    $core.double? latiitude,
+  }) {
+    final _result = create();
+    if (longitude != null) {
+      _result.longitude = longitude;
+    }
+    if (latiitude != null) {
+      _result.latiitude = latiitude;
+    }
+    return _result;
+  }
   factory CreateSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory CreateSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -36,21 +50,49 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static CreateSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateSpotRequest>(create);
   static CreateSpotRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get longitude => $_getN(0);
+  @$pb.TagNumber(1)
+  set longitude($core.double v) { $_setDouble(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLongitude() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLongitude() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get latiitude => $_getN(1);
+  @$pb.TagNumber(2)
+  set latiitude($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLatiitude() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLatiitude() => clearField(2);
 }
 
 class CreateSpotResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uuid')
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'longitude', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'latiitude', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
   CreateSpotResponse._() : super();
   factory CreateSpotResponse({
     $core.String? uuid,
+    $core.double? longitude,
+    $core.double? latiitude,
   }) {
     final _result = create();
     if (uuid != null) {
       _result.uuid = uuid;
+    }
+    if (longitude != null) {
+      _result.longitude = longitude;
+    }
+    if (latiitude != null) {
+      _result.latiitude = latiitude;
     }
     return _result;
   }
@@ -83,5 +125,23 @@ class CreateSpotResponse extends $pb.GeneratedMessage {
   $core.bool hasUuid() => $_has(0);
   @$pb.TagNumber(1)
   void clearUuid() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get longitude => $_getN(1);
+  @$pb.TagNumber(2)
+  set longitude($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLongitude() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLongitude() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get latiitude => $_getN(2);
+  @$pb.TagNumber(3)
+  set latiitude($core.double v) { $_setDouble(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasLatiitude() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLatiitude() => clearField(3);
 }
 

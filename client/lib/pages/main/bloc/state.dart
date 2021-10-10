@@ -1,4 +1,5 @@
-import 'package:geolocator/geolocator.dart';
+// External
+import 'package:latlong2/latlong.dart';
 
 abstract class MainPageState {}
 
@@ -7,7 +8,7 @@ class InitingState implements MainPageState {}
 
 // State when all components are inited
 class InitedState implements MainPageState {
-  final Position position;
+  final LatLng position;
 
   InitedState({required this.position});
 }
@@ -21,8 +22,12 @@ class CreatingNewSpotState implements MainPageState {}
 // State when new spot created
 class NewSpotCreatedState implements MainPageState {
   final String spotUuid;
+  final LatLng position;
 
-  NewSpotCreatedState({required this.spotUuid});
+  NewSpotCreatedState({
+    required this.spotUuid,
+    required this.position,
+  });
 }
 
 // State when couldn't create spot

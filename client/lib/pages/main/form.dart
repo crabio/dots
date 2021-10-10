@@ -41,17 +41,13 @@ class MainForm extends StatelessWidget {
   }
 
   Widget _buildMap({
-    required Position position,
+    required LatLng position,
     required double zoom,
   }) {
-    final center = LatLng(
-      position.latitude,
-      position.longitude,
-    );
-    mapController.onReady.then((_) => mapController.move(center, zoom));
+    mapController.onReady.then((_) => mapController.move(position, zoom));
     return FlutterMap(
       options: MapOptions(
-        center: center,
+        center: position,
         zoom: zoom,
       ),
       mapController: mapController,
@@ -67,7 +63,7 @@ class MainForm extends StatelessWidget {
           markers: [
             // User position pointer
             Marker(
-              point: center,
+              point: position,
               builder: (ctx) => const Icon(
                 Icons.circle,
               ),
@@ -78,7 +74,7 @@ class MainForm extends StatelessWidget {
     );
   }
 
-  Widget _buildCreateNewSpotBtn(BuildContext context) {
+  Widget _buildCreateNewSpotBtn(BuildContext context, LatLng position) {
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,8 +86,9 @@ class MainForm extends StatelessWidget {
             child: ElevatedButton(
               key: const Key("btn_create_spot"),
               child: const Text("Create new spot"),
-              onPressed: () =>
-                  context.read<MainPageBloc>().add(CreateNewSpotEvent()),
+              onPressed: () => context
+                  .read<MainPageBloc>()
+                  .add(CreateNewSpotEvent(position: position)),
             ),
           ),
         ],
@@ -106,7 +103,7 @@ class MainForm extends StatelessWidget {
     return Stack(
       children: [
         _buildMap(position: state.position, zoom: 17.0),
-        _buildCreateNewSpotBtn(context),
+        _buildCreateNewSpotBtn(context, state.position),
       ],
     );
   }
@@ -115,16 +112,25 @@ class MainForm extends StatelessWidget {
     BuildContext context,
     NewSpotCreatedState state,
   ) {
-    return Stack(
-      children: [
-        Center(
-          child: Padding(
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("New spot UUID:"),
+          Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: Text("New spot UUID: ${state.spotUuid}"),
+            child: Text(state.spotUuid),
           ),
-        ),
-        _buildCreateNewSpotBtn(context),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text("Latitude: ${state.position.latitude}"),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text("Longitude: ${state.position.longitude}"),
+          ),
+        ],
+      ),
     );
   }
 
@@ -140,7 +146,6 @@ class MainForm extends StatelessWidget {
             child: Text("Error when create new spot: ${state.error}"),
           ),
         ),
-        _buildCreateNewSpotBtn(context),
       ],
     );
   }
