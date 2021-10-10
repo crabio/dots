@@ -24,19 +24,7 @@ class MainForm extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is InitedState) {
-          return Center(
-            child: Stack(
-              children: [
-                _buildMap(position: state.position, zoom: 17.0),
-                ElevatedButton(
-                  key: const Key("btn_create_spot"),
-                  child: const Text("Create new spot"),
-                  onPressed: () =>
-                      context.read<MainPageBloc>().add(CreateNewSpotEvent()),
-                ),
-              ],
-            ),
-          );
+          return _buildInitedState(context, state);
         } else if (state is CreatingNewSpotState) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -90,26 +78,53 @@ class MainForm extends StatelessWidget {
     );
   }
 
+  Widget _buildCreateNewSpotBtn(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 40),
+            child: ElevatedButton(
+              key: const Key("btn_create_spot"),
+              child: const Text("Create new spot"),
+              onPressed: () =>
+                  context.read<MainPageBloc>().add(CreateNewSpotEvent()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInitedState(
+    BuildContext context,
+    InitedState state,
+  ) {
+    return Stack(
+      children: [
+        _buildMap(position: state.position, zoom: 17.0),
+        _buildCreateNewSpotBtn(context),
+      ],
+    );
+  }
+
   Widget _buildNewSpotCreatedState(
     BuildContext context,
     NewSpotCreatedState state,
   ) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
+    return Stack(
+      children: [
+        Center(
+          child: Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Text("New spot UUID: ${state.spotUuid}"),
           ),
-          ElevatedButton(
-            key: const Key("btn_create_spot"),
-            child: const Text("Create new spot"),
-            onPressed: () =>
-                context.read<MainPageBloc>().add(CreateNewSpotEvent()),
-          ),
-        ],
-      ),
+        ),
+        _buildCreateNewSpotBtn(context),
+      ],
     );
   }
 
@@ -117,22 +132,16 @@ class MainForm extends StatelessWidget {
     BuildContext context,
     CreateSpotErrorState state,
   ) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
+    return Stack(
+      children: [
+        Center(
+          child: Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Text("Error when create new spot: ${state.error}"),
           ),
-          ElevatedButton(
-            key: const Key("btn_create_spot"),
-            child: const Text("Create new spot"),
-            onPressed: () =>
-                context.read<MainPageBloc>().add(CreateNewSpotEvent()),
-          ),
-        ],
-      ),
+        ),
+        _buildCreateNewSpotBtn(context),
+      ],
     );
   }
 }
