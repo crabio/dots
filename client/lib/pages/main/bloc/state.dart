@@ -1,7 +1,19 @@
+import 'package:geolocator/geolocator.dart';
+
 abstract class MainPageState {}
 
 // Initial page state
-class InitedState implements MainPageState {}
+class InitingState implements MainPageState {}
+
+// State when all components are inited
+class InitedState implements MainPageState {
+  final Position position;
+
+  InitedState({required this.position});
+}
+
+// State if location permission is not allowed
+class LocationsPermissionIsNotAllowedState implements MainPageState {}
 
 // State when creating new spot on server
 class CreatingNewSpotState implements MainPageState {}

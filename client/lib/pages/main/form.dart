@@ -16,7 +16,11 @@ class MainForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MainPageBloc, MainPageState>(
       builder: (context, state) {
-        if (state is InitedState) {
+        if (state is InitingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is InitedState) {
           return Center(
               child: Stack(
             children: [
