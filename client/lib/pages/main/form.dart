@@ -26,7 +26,10 @@ class MainForm extends StatelessWidget {
             children: [
               FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: LatLng(
+                    state.position.latitude,
+                    state.position.longitude,
+                  ),
                   zoom: 13.0,
                 ),
                 layers: [
@@ -43,7 +46,10 @@ class MainForm extends StatelessWidget {
                       Marker(
                         width: 80.0,
                         height: 80.0,
-                        point: LatLng(51.5, -0.09),
+                        point: LatLng(
+                          state.position.latitude,
+                          state.position.longitude,
+                        ),
                         builder: (ctx) => Container(
                           child: FlutterLogo(),
                         ),

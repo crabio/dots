@@ -23,16 +23,19 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         emit(LocationsPermissionIsNotAllowedState());
       }
 
-      _logger.fine("Get current position");
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      emit(InitedState(position: position));
+      _logger.fine("Get last known position");
+      final position = await Geolocator.getLastKnownPosition();
+      emit(InitedState(position: position!));
 
       _logger.fine("Subscribe on location");
       Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.high,
-      ).listen((Position position) => emit(InitedState(position: position)));
+      ).listen((position) => add(NewGeoPositionEvent(position: position)));
+    });
+    on<NewGeoPositionEvent>((event, emit) async {
+      if (state is InitedState) {
+        emit(InitedState(position: event.position));
+      }
     });
     on<CreateNewSpotEvent>(
       (event, emit) async {
