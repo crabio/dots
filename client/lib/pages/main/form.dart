@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
@@ -10,7 +11,9 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  const MainForm({Key? key}) : super(key: key);
+  MainForm({Key? key}) : super(key: key);
+
+  final MapController mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,40 +27,7 @@ class MainForm extends StatelessWidget {
           return Center(
               child: Stack(
             children: [
-              FlutterMap(
-                options: MapOptions(
-                  center: LatLng(
-                    state.position.latitude,
-                    state.position.longitude,
-                  ),
-                  zoom: 13.0,
-                ),
-                layers: [
-                  TileLayerOptions(
-                    urlTemplate:
-                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    subdomains: ['a', 'b', 'c'],
-                    attributionBuilder: (_) {
-                      return Text("© OpenStreetMap contributors");
-                    },
-                  ),
-                  MarkerLayerOptions(
-                    markers: [
-                      Marker(
-                        width: 80.0,
-                        height: 80.0,
-                        point: LatLng(
-                          state.position.latitude,
-                          state.position.longitude,
-                        ),
-                        builder: (ctx) => const Icon(
-                          Icons.circle,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              _buildMap(position: state.position, zoom: 17.0),
               ElevatedButton(
                 key: const Key("btn_create_spot"),
                 child: const Text("Create new spot"),
@@ -110,6 +80,44 @@ class MainForm extends StatelessWidget {
 
         return Text("Unkown state: $state");
       },
+    );
+  }
+
+  Widget _buildMap({
+    required Position position,
+    required double zoom,
+  }) {
+    final center = LatLng(
+      position.latitude,
+      position.longitude,
+    );
+    mapController.onReady.then((_) => mapController.move(center, zoom));
+    return FlutterMap(
+      options: MapOptions(
+        center: center,
+        zoom: zoom,
+      ),
+      mapController: mapController,
+      layers: [
+        TileLayerOptions(
+          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          subdomains: ['a', 'b', 'c'],
+          // attributionBuilder: (_) {
+          //   return Text("© OpenStreetMap contributors");
+          // },
+        ),
+        MarkerLayerOptions(
+          markers: [
+            // User position pointer
+            Marker(
+              point: center,
+              builder: (ctx) => const Icon(
+                Icons.circle,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

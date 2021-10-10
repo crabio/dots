@@ -31,7 +31,7 @@ class MainPage extends StatelessWidget {
             ),
           ],
         ),
-        body: const MainForm(),
+        body: MainForm(),
       ),
     );
   }
