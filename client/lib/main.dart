@@ -2,6 +2,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:dots_client/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
+import 'package:dots_client/permissions.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,8 @@ import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await requestPermissions();
 
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen((record) {
