@@ -50,8 +50,8 @@ class MainForm extends StatelessWidget {
                           state.position.latitude,
                           state.position.longitude,
                         ),
-                        builder: (ctx) => Container(
-                          child: FlutterLogo(),
+                        builder: (ctx) => const Icon(
+                          Icons.circle,
                         ),
                       ),
                     ],
