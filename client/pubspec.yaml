@@ -33,6 +33,8 @@ dependencies:
   adaptive_theme: ^2.2.0
   grpc: ^3.0.2
   geolocator: any
+  flutter_map: any
+  latlong2: any
 
 dev_dependencies:
   flutter_test:
