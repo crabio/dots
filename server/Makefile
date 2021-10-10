@@ -63,4 +63,4 @@ build_and_run_docker:
 
 run:
 	@echo "Run app"
-	go run .
+	LOG_FILE_NAME=log go run .

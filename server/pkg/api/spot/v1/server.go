@@ -14,6 +14,11 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
+type Spot struct {
+	Longitude float64
+	Latiitude float64
+}
+
 type SpotServiceServer struct {
 	log *logrus.Entry
 	// Required to have revese compatability
@@ -23,13 +28,13 @@ type SpotServiceServer struct {
 	//
 	// key - spot UUID
 	// value - spot session data
-	spotsMap map[uuid.UUID]struct{}
+	spotsMap map[uuid.UUID]Spot
 }
 
 func New() *SpotServiceServer {
 	s := new(SpotServiceServer)
 	s.log = logger.CreateLogger("spot-v1")
-	s.spotsMap = make(map[uuid.UUID]struct{})
+	s.spotsMap = make(map[uuid.UUID]Spot)
 
 	return s
 }

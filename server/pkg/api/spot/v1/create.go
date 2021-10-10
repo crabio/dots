@@ -15,11 +15,16 @@ func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.Creat
 
 	spotUUID := uuid.New()
 
-	s.spotsMap[spotUUID] = struct{}{}
+	s.spotsMap[spotUUID] = Spot{
+		Longitude: request.Longitude,
+		Latiitude: request.Latiitude,
+	}
 	s.log.WithField("uuid", spotUUID).Debug("New spot created")
 
 	response := proto.CreateSpotResponse{
-		Uuid: spotUUID.String(),
+		Uuid:      spotUUID.String(),
+		Longitude: request.Longitude,
+		Latiitude: request.Latiitude,
 	}
 	s.log.WithField("response", response.String()).Trace("Create spot response")
 

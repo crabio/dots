@@ -22,4 +22,6 @@ message CreateSpotRequest {
 
 message CreateSpotResponse {
   string uuid = 1;
+  double longitude = 2;
+  double latiitude = 3;
 }

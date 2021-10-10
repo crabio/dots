@@ -95,6 +95,14 @@
       "properties": {
         "uuid": {
           "type": "string"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "double"
+        },
+        "latiitude": {
+          "type": "number",
+          "format": "double"
         }
       }
     }

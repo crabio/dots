@@ -15,11 +15,11 @@ make generate
 
 ## Presequinces
 
-`archaeopteryx` requires folder for log files.
+`dots_server` requires folder for log files.
 To create it run:
 ```sh
-sudo mkdir /var/log/archaeopteryx
-sudo chown $USER /var/log/archaeopteryx
+sudo mkdir /var/log/dots
+sudo chown $USER /var/log/dots
 ```
 
 ## Build
