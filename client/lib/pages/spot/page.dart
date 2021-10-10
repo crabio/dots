@@ -3,20 +3,32 @@ import 'package:dots_client/pages/settings/page.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 
 // Internal
 import 'form.dart';
 import 'bloc/bloc.dart';
 
-class MainPage extends StatelessWidget {
+class SpotPage extends StatelessWidget {
   final AppSettings settings;
 
-  const MainPage({required this.settings, Key? key}) : super(key: key);
+  final String spotUuid;
+  final LatLng spotPosition;
+
+  const SpotPage({
+    required this.settings,
+    required this.spotUuid,
+    required this.spotPosition,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MainPageBloc(settings: settings),
+      create: (_) => SpotPageBloc(
+        settings: settings,
+        spotPosition: spotPosition,
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Dots'),
@@ -31,7 +43,7 @@ class MainPage extends StatelessWidget {
             ),
           ],
         ),
-        body: MainForm(settings: settings),
+        body: SpotForm(),
       ),
     );
   }

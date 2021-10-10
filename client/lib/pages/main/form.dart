@@ -1,4 +1,6 @@
 // External
+import 'package:dots_client/pages/spot/page.dart';
+import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -11,9 +13,10 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  MainForm({Key? key}) : super(key: key);
-
+  final AppSettings settings;
   final MapController mapController = MapController();
+
+  MainForm({required this.settings, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,19 @@ class MainForm extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is NewSpotCreatedState) {
-          return _buildNewSpotCreatedState(context, state);
+          // Add zero duration to perform navigation after render
+          Future.delayed(
+            Duration.zero,
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => SpotPage(
+                      settings: settings,
+                      spotUuid: state.spotUuid,
+                      spotPosition: state.position)),
+            ),
+          );
+          return Container();
         } else if (state is CreateSpotErrorState) {
           return _buildCreateSpotErrorState(context, state);
         }
@@ -105,32 +120,6 @@ class MainForm extends StatelessWidget {
         _buildMap(position: state.position, zoom: 17.0),
         _buildCreateNewSpotBtn(context, state.position),
       ],
-    );
-  }
-
-  Widget _buildNewSpotCreatedState(
-    BuildContext context,
-    NewSpotCreatedState state,
-  ) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("New spot UUID:"),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text(state.spotUuid),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text("Latitude: ${state.position.latitude}"),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text("Longitude: ${state.position.longitude}"),
-          ),
-        ],
-      ),
     );
   }
 
