@@ -78,7 +78,17 @@
       }
     },
     "v1CreateSpotRequest": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "format": "double"
+        },
+        "latiitude": {
+          "type": "number",
+          "format": "double"
+        }
+      }
     },
     "v1CreateSpotResponse": {
       "type": "object",

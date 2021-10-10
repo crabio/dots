@@ -16,6 +16,8 @@ service SpotService {
 }
 
 message CreateSpotRequest {
+  double longitude = 1;
+  double latiitude = 2;
 }
 
 message CreateSpotResponse {
