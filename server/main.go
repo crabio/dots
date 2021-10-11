@@ -23,9 +23,6 @@ func main() {
 		log.WithError(err).Fatal("couldn't init config")
 	}
 
-	// Set log file name
-	conf.Log.Filename = "/var/log/dots/log"
-
 	// Add swagger docs
 	conf.Docs.DocsFS = &docs.Swagger
 	conf.Docs.DocsRootFolder = "swagger"

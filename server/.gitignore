@@ -3,3 +3,6 @@ coverage.txt
 
 # Build artifact
 out/*
+
+# Test logs
+log

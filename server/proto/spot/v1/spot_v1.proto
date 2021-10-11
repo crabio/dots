@@ -16,8 +16,12 @@ service SpotService {
 }
 
 message CreateSpotRequest {
+  double longitude = 1;
+  double latiitude = 2;
 }
 
 message CreateSpotResponse {
   string uuid = 1;
+  double longitude = 2;
+  double latiitude = 3;
 }

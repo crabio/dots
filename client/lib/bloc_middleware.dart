@@ -8,19 +8,19 @@ class BlocObserverLogMiddleware extends BlocObserver {
 
   @override
   void onEvent(Bloc bloc, Object? event) {
-    log.fine("New Bloc $bloc event: $event");
+    log.finer("New Bloc $bloc event: $event");
     super.onEvent(bloc, event);
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    log.fine("New Bloc $bloc transition: $transition");
+    log.finer("New Bloc $bloc transition: $transition");
     super.onTransition(bloc, transition);
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    log.fine("New Bloc $bloc error: $error");
+    log.finer("New Bloc $bloc error: $error");
     super.onError(bloc, error, stackTrace);
   }
 }
