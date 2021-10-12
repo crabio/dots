@@ -2,11 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
-import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 

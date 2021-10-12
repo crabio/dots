@@ -24,7 +24,7 @@ class MainPage extends StatelessWidget {
             IconButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => SettingsPage()),
+                MaterialPageRoute(builder: (_) => const SettingsPage()),
               ),
               icon: const Icon(Icons.settings),
             ),
