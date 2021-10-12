@@ -39,15 +39,12 @@ class App extends StatelessWidget {
       child: AdaptiveTheme(
         light: lightTheme,
         dark: darkTheme,
-        // TODO Read from settings
         initial: settings.themeMode,
         builder: (theme, darkTheme) => MaterialApp(
           title: 'Dots App',
           theme: theme,
           darkTheme: darkTheme,
-          home: MainPage(
-            settings: settings,
-          ),
+          home: const MainPage(),
         ),
       ),
     );
