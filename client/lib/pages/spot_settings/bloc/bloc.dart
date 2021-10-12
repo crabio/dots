@@ -1,5 +1,6 @@
 // External
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/plugin_api.dart';
 import 'package:logging/logging.dart';
 
 // Internal
@@ -10,8 +11,9 @@ class SpotSettingsPageBloc
     extends Bloc<SpotSettingsPageEvent, SpotSettingsPageState> {
   final _logger = Logger("SpotSettingsPageBloc");
 
-  SpotSettingsPageBloc({required position})
-      : super(InitedState(
+  SpotSettingsPageBloc({
+    required position,
+  }) : super(InitedState(
           position: position,
           radius: 50,
           scanPeriod: const Duration(seconds: 10),

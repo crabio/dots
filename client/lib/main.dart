@@ -13,7 +13,7 @@ import 'theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Logger.root.level = Level.FINE;
+  Logger.root.level = Level.FINER;
   Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');
@@ -44,7 +44,7 @@ class App extends StatelessWidget {
           title: 'Dots App',
           theme: theme,
           darkTheme: darkTheme,
-          home: const MainPage(),
+          home: MainPage(),
         ),
       ),
     );

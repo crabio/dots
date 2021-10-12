@@ -3,6 +3,7 @@ import 'package:dots_client/pages/spot/page.dart';
 import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
@@ -11,7 +12,11 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  const MainForm({Key? key}) : super(key: key);
+  final MapController mapController = MapController();
+
+  MainForm({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +30,30 @@ class MainForm extends StatelessWidget {
           return Stack(
             children: [
               MapWidget(
+                mapController: mapController,
                 position: state.position,
                 zoom: 17.0,
               ),
-              _buildCreateNewSpotBtn(context, state.position),
+              // New spot button
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 40),
+                      child: ElevatedButton(
+                        key: const Key("btn_create_spot"),
+                        child: const Text("Create new spot"),
+                        onPressed: () => context
+                            .read<MainPageBloc>()
+                            .add(CreateNewSpotEvent(position: state.position)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           );
         } else if (state is CreatingNewSpotState) {
@@ -53,6 +78,7 @@ class MainForm extends StatelessWidget {
           return Stack(
             children: [
               MapWidget(
+                mapController: mapController,
                 position: LatLng(
                   -19.135596599128128,
                   47.205291327230555,
@@ -79,28 +105,6 @@ class MainForm extends StatelessWidget {
 
         return Text("Unkown state: $state");
       },
-    );
-  }
-
-  Widget _buildCreateNewSpotBtn(BuildContext context, LatLng position) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 40),
-            child: ElevatedButton(
-              key: const Key("btn_create_spot"),
-              child: const Text("Create new spot"),
-              onPressed: () => context
-                  .read<MainPageBloc>()
-                  .add(CreateNewSpotEvent(position: position)),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

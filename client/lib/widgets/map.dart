@@ -4,11 +4,12 @@ import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapWidget extends StatelessWidget {
-  final MapController mapController = MapController();
+  final MapController mapController;
   final LatLng position;
   final double zoom;
 
   MapWidget({
+    required this.mapController,
     required this.position,
     required this.zoom,
     Key? key,
@@ -16,7 +17,9 @@ class MapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    mapController.onReady.then((_) => mapController.move(position, zoom));
+    mapController.onReady.then(
+      (_) => mapController.move(position, 17.0),
+    );
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
