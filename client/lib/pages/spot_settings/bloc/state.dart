@@ -23,3 +23,7 @@ class InitedState extends SpotSettingsPageState {
     required this.zonePeriod,
   });
 }
+
+class CreatingNewSpotState extends SpotSettingsPageState {}
+
+class NewSpotCreatedEvent extends SpotSettingsPageState {}

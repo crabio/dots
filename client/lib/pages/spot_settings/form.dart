@@ -3,6 +3,7 @@ import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 // Internal
@@ -27,11 +28,15 @@ class SpotSettingsForm extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Location"),
-                  // MapWidget(
-                  //   mapController: mapController,
-                  //   position: curState.position,
-                  //   zoom: 17.0,
-                  // ),
+                  SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: MapWidget(
+                      mapController: mapController,
+                      position: curState.position,
+                      zoom: 17.0,
+                    ),
+                  ),
                   const Text("Radius in meters"),
                   NumberPicker(
                     axis: Axis.horizontal,
@@ -55,7 +60,7 @@ class SpotSettingsForm extends StatelessWidget {
                         .add(NewScanDurationEvent(
                             value: Duration(seconds: value))),
                   ),
-                  const Text("Zone time"),
+                  const Text("Zone time in seconds"),
                   NumberPicker(
                     axis: Axis.horizontal,
                     step: 10,
@@ -67,6 +72,12 @@ class SpotSettingsForm extends StatelessWidget {
                         .add(NewZoneDurationEvent(
                             value: Duration(seconds: value))),
                   ),
+                  _CreateNewSpotBtn(
+                    position: curState.position,
+                    radius: curState.radius,
+                    scanPeriod: curState.scanPeriod,
+                    zonePeriod: curState.zonePeriod,
+                  ),
                 ],
               ),
             ),
@@ -75,6 +86,49 @@ class SpotSettingsForm extends StatelessWidget {
 
         return Text("Unkown state: $state");
       },
+    );
+  }
+}
+
+class _CreateNewSpotBtn extends StatelessWidget {
+  final LatLng position;
+  // Spot radius in meters
+  final int radius;
+  final Duration scanPeriod;
+  final Duration zonePeriod;
+
+  const _CreateNewSpotBtn({
+    required this.position,
+    required this.radius,
+    required this.scanPeriod,
+    required this.zonePeriod,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 40),
+            child: ElevatedButton(
+              key: const Key("btn_create_spot"),
+              child: const Text("Create"),
+              onPressed: () =>
+                  context.read<SpotSettingsPageBloc>().add(CreateNewSpotEvent(
+                        position: position,
+                        radius: radius,
+                        scanPeriod: scanPeriod,
+                        zonePeriod: zonePeriod,
+                      )),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
