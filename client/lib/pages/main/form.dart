@@ -1,8 +1,8 @@
 // External
 import 'package:dots_client/pages/spot/page.dart';
+import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
@@ -11,9 +11,7 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  final MapController mapController = MapController();
-
-  MainForm({Key? key}) : super(key: key);
+  const MainForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,40 +50,6 @@ class MainForm extends StatelessWidget {
     );
   }
 
-  Widget _buildMap({
-    required LatLng position,
-    required double zoom,
-  }) {
-    mapController.onReady.then((_) => mapController.move(position, zoom));
-    return FlutterMap(
-      options: MapOptions(
-        center: position,
-        zoom: zoom,
-      ),
-      mapController: mapController,
-      layers: [
-        TileLayerOptions(
-          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
-          // attributionBuilder: (_) {
-          //   return Text("© OpenStreetMap contributors");
-          // },
-        ),
-        MarkerLayerOptions(
-          markers: [
-            // User position pointer
-            Marker(
-              point: position,
-              builder: (ctx) => const Icon(
-                Icons.circle,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   Widget _buildCreateNewSpotBtn(BuildContext context, LatLng position) {
     return Center(
       child: Column(
@@ -114,7 +78,7 @@ class MainForm extends StatelessWidget {
   ) {
     return Stack(
       children: [
-        _buildMap(position: state.position, zoom: 17.0),
+        MapWidget(position: state.position, zoom: 17.0),
         _buildCreateNewSpotBtn(context, state.position),
       ],
     );

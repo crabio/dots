@@ -1,4 +1,5 @@
 // External
+import 'package:dots_client/widgets/map.dart';
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class SpotSettingsForm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Location"),
-                _MapWidget(
+                MapWidget(
                   position: curState.position,
                   zoom: 17.0,
                 ),
@@ -61,44 +62,6 @@ class SpotSettingsForm extends StatelessWidget {
 
         return Text("Unkown state: $state");
       },
-    );
-  }
-}
-
-class _MapWidget extends StatelessWidget {
-  final LatLng position;
-  final double zoom;
-
-  const _MapWidget({
-    required this.position,
-    required this.zoom,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FlutterMap(
-      options: MapOptions(
-        center: position,
-        zoom: zoom,
-      ),
-      layers: [
-        TileLayerOptions(
-          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
-        ),
-        MarkerLayerOptions(
-          markers: [
-            // Spot position pointer
-            Marker(
-              point: position,
-              builder: (ctx) => const Icon(
-                Icons.location_on,
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
