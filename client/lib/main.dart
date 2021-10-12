@@ -32,17 +32,22 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: lightTheme,
-      dark: darkTheme,
-      // TODO Read from settings
-      initial: settings.themeMode,
-      builder: (theme, darkTheme) => MaterialApp(
-        title: 'Dots App',
-        theme: theme,
-        darkTheme: darkTheme,
-        home: MainPage(
-          settings: settings,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AppSettings>(create: (context) => settings),
+      ],
+      child: AdaptiveTheme(
+        light: lightTheme,
+        dark: darkTheme,
+        // TODO Read from settings
+        initial: settings.themeMode,
+        builder: (theme, darkTheme) => MaterialApp(
+          title: 'Dots App',
+          theme: theme,
+          darkTheme: darkTheme,
+          home: MainPage(
+            settings: settings,
+          ),
         ),
       ),
     );

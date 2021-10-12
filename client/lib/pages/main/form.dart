@@ -13,10 +13,9 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  final AppSettings settings;
   final MapController mapController = MapController();
 
-  MainForm({required this.settings, Key? key}) : super(key: key);
+  MainForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +39,9 @@ class MainForm extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (_) => SpotPage(
-                      settings: settings,
-                      spotUuid: state.spotUuid,
-                      spotPosition: state.position)),
+                        spotUuid: state.spotUuid,
+                        spotPosition: state.position,
+                      )),
             ),
           );
           return Container();

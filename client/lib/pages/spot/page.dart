@@ -10,13 +10,10 @@ import 'form.dart';
 import 'bloc/bloc.dart';
 
 class SpotPage extends StatelessWidget {
-  final AppSettings settings;
-
   final String spotUuid;
   final LatLng spotPosition;
 
   const SpotPage({
-    required this.settings,
     required this.spotUuid,
     required this.spotPosition,
     Key? key,
@@ -26,7 +23,6 @@ class SpotPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SpotPageBloc(
-        settings: settings,
         spotPosition: spotPosition,
       ),
       child: Scaffold(
@@ -37,7 +33,8 @@ class SpotPage extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => SettingsPage(settings: settings)),
+                  builder: (_) => const SettingsPage(),
+                ),
               ),
               icon: const Icon(Icons.settings),
             ),

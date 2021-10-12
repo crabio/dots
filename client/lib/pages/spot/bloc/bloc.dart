@@ -13,12 +13,10 @@ import 'state.dart';
 
 class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
   final _logger = Logger("SpotPageBloc");
-  final AppSettings settings;
 
   final LatLng spotPosition;
 
   SpotPageBloc({
-    required this.settings,
     required this.spotPosition,
   }) : super(InitingState(spotPosition: spotPosition)) {
     on<InitEvent>((event, emit) async {

@@ -9,14 +9,14 @@ import 'form.dart';
 import 'bloc/bloc.dart';
 
 class MainPage extends StatelessWidget {
-  final AppSettings settings;
-
-  const MainPage({required this.settings, Key? key}) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MainPageBloc(settings: settings),
+      create: (_) => MainPageBloc(
+        settings: RepositoryProvider.of<AppSettings>(context),
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Dots'),
@@ -24,14 +24,13 @@ class MainPage extends StatelessWidget {
             IconButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (_) => SettingsPage(settings: settings)),
+                MaterialPageRoute(builder: (_) => SettingsPage()),
               ),
               icon: const Icon(Icons.settings),
             ),
           ],
         ),
-        body: MainForm(settings: settings),
+        body: MainForm(),
       ),
     );
   }
