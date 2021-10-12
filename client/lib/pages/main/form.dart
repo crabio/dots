@@ -12,9 +12,7 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  final MapController mapController = MapController();
-
-  MainForm({
+  const MainForm({
     Key? key,
   }) : super(key: key);
 
@@ -30,7 +28,6 @@ class MainForm extends StatelessWidget {
           return Stack(
             children: [
               MapWidget(
-                mapController: mapController,
                 position: state.position,
                 zoom: 17.0,
               ),
@@ -78,7 +75,6 @@ class MainForm extends StatelessWidget {
           return Stack(
             children: [
               MapWidget(
-                mapController: mapController,
                 position: LatLng(
                   -19.135596599128128,
                   47.205291327230555,

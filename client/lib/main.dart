@@ -5,7 +5,8 @@ import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
+import 'package:flutter_map/plugin_api.dart';
+import 'package:logging/logging.dart' as log;
 
 // Internal
 import 'theme.dart';
@@ -13,8 +14,8 @@ import 'theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Logger.root.level = Level.FINE;
-  Logger.root.onRecord.listen((record) {
+  log.Logger.root.level = log.Level.FINE;
+  log.Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
@@ -35,6 +36,7 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AppSettings>(create: (context) => settings),
+        RepositoryProvider<MapController>(create: (context) => MapController()),
       ],
       child: AdaptiveTheme(
         light: lightTheme,
