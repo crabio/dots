@@ -1,9 +1,12 @@
 // External
+import 'package:dots_client/pages/settings/bloc/bloc.dart';
+import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 // Internal
 import 'bloc/events.dart';
@@ -30,12 +33,29 @@ class SpotSettingsForm extends StatelessWidget {
                   position: curState.position,
                   zoom: 17.0,
                 ),
-                const Text("Radius"),
-                // TODO Radius picker
+                const Text("Radius in meters"),
+                NumberPicker(
+                  minValue: 0,
+                  maxValue: 1000,
+                  value: curState.radius,
+                  onChanged: (value) => context
+                      .read<SpotSettingsPageBloc>()
+                      .add(NewRadiusEvent(value: value)),
+                ),
                 const Text("Scan time"),
-                // TODO time pciker
+                DurationPicker(
+                  duration: curState.scanPeriod,
+                  onChange: (value) => context
+                      .read<SpotSettingsPageBloc>()
+                      .add(NewScanDurationEvent(value: value)),
+                ),
                 const Text("Zone time"),
-                // TODO time pciker
+                DurationPicker(
+                  duration: curState.scanPeriod,
+                  onChange: (value) => context
+                      .read<SpotSettingsPageBloc>()
+                      .add(NewZoneDurationEvent(value: value)),
+                ),
               ],
             ),
           );

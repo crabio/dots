@@ -24,17 +24,19 @@ dependencies:
   flutter:
     sdk: flutter
 
-  logging: ^1.0.2
+  logging: any
   flutter_bloc: ^7.3.0
-  settings_ui: ^1.0.0
-  json_serializable: ^4.1.4
-  copy_with_extension_gen: ^2.0.2
-  shared_preferences: ^2.0.7
-  adaptive_theme: ^2.2.0
+  settings_ui: any
+  json_serializable: any
+  copy_with_extension_gen: any
+  shared_preferences: any
+  adaptive_theme: any
   grpc: ^3.0.2
   geolocator: any
   flutter_map: any
   latlong2: any
+  numberpicker: any
+  duration_picker: any
 
 dev_dependencies:
   flutter_test:
