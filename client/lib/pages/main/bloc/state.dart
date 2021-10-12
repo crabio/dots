@@ -30,6 +30,9 @@ class NewSpotCreatedState extends MainPageState {
   });
 }
 
+// State when couldn't get position
+class CouldntGetPositionState extends MainPageState {}
+
 // State when couldn't create spot
 class CreateSpotErrorState extends MainPageState {
   final String error;

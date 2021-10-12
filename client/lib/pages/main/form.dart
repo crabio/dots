@@ -22,7 +22,15 @@ class MainForm extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is InitedState) {
-          return _buildInitedState(context, state);
+          return Stack(
+            children: [
+              MapWidget(
+                position: state.position,
+                zoom: 17.0,
+              ),
+              _buildCreateNewSpotBtn(context, state.position),
+            ],
+          );
         } else if (state is CreatingNewSpotState) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -41,8 +49,32 @@ class MainForm extends StatelessWidget {
             ),
           );
           return Container();
+        } else if (state is CouldntGetPositionState) {
+          return Stack(
+            children: [
+              MapWidget(
+                position: LatLng(
+                  -19.135596599128128,
+                  47.205291327230555,
+                ),
+                zoom: 17.0,
+              ),
+              const Center(
+                child: Text("Couldn't get device position"),
+              ),
+            ],
+          );
         } else if (state is CreateSpotErrorState) {
-          return _buildCreateSpotErrorState(context, state);
+          return Stack(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Text("Error when create new spot: ${state.error}"),
+                ),
+              ),
+            ],
+          );
         }
 
         return Text("Unkown state: $state");
@@ -69,34 +101,6 @@ class MainForm extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildInitedState(
-    BuildContext context,
-    InitedState state,
-  ) {
-    return Stack(
-      children: [
-        MapWidget(position: state.position, zoom: 17.0),
-        _buildCreateNewSpotBtn(context, state.position),
-      ],
-    );
-  }
-
-  Widget _buildCreateSpotErrorState(
-    BuildContext context,
-    CreateSpotErrorState state,
-  ) {
-    return Stack(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text("Error when create new spot: ${state.error}"),
-          ),
-        ),
-      ],
     );
   }
 }

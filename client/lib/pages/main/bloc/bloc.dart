@@ -30,7 +30,8 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         emit(InitedState(
             position: LatLng(position.latitude, position.longitude)));
       } else {
-        throw Exception("Position is null");
+        emit(CouldntGetPositionState());
+        return;
       }
 
       _logger.fine("Subscribe on location");
