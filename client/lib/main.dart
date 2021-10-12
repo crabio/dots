@@ -5,7 +5,6 @@ import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/plugin_api.dart';
 import 'package:logging/logging.dart' as log;
 
 // Internal
@@ -36,7 +35,6 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AppSettings>(create: (context) => settings),
-        RepositoryProvider<MapController>(create: (context) => MapController()),
       ],
       child: AdaptiveTheme(
         light: lightTheme,

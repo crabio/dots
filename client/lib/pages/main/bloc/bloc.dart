@@ -52,49 +52,49 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         emit(InitedState(position: event.position));
       }
     });
-    on<CreateNewSpotEvent>(
-      (event, emit) async {
-        emit(CreatingNewSpotState());
-        // Send reques to host
+    // on<CreateNewSpotEvent>(
+    //   (event, emit) async {
+    //     emit(CreatingNewSpotState());
+    //     // Send reques to host
 
-        final channel = ClientChannel(
-          settings.environment.host,
-          port: settings.environment.port,
-          options: const ChannelOptions(
-            credentials: ChannelCredentials.insecure(),
-          ),
-        );
+    //     final channel = ClientChannel(
+    //       settings.environment.host,
+    //       port: settings.environment.port,
+    //       options: const ChannelOptions(
+    //         credentials: ChannelCredentials.insecure(),
+    //       ),
+    //     );
 
-        final stub = SpotServiceClient(channel);
-        final request = CreateSpotRequest(
-          longitude: event.position.longitude,
-          latiitude: event.position.latitude,
-        );
-        try {
-          final response = await stub.createSpot(request);
+    //     final stub = SpotServiceClient(channel);
+    //     final request = CreateSpotRequest(
+    //       longitude: event.position.longitude,
+    //       latiitude: event.position.latitude,
+    //     );
+    //     try {
+    //       final response = await stub.createSpot(request);
 
-          add(NewSpotCreatedEvent(
-            spotUuid: response.uuid,
-            position: LatLng(
-              response.latiitude,
-              response.longitude,
-            ),
-          ));
-        } catch (ex) {
-          emit(CreateSpotErrorState(error: ex.toString()));
-        }
+    //       add(NewSpotCreatedEvent(
+    //         spotUuid: response.uuid,
+    //         position: LatLng(
+    //           response.latiitude,
+    //           response.longitude,
+    //         ),
+    //       ));
+    //     } catch (ex) {
+    //       emit(CreateSpotErrorState(error: ex.toString()));
+    //     }
 
-        await channel.shutdown();
-      },
-    );
-    on<NewSpotCreatedEvent>(
-      (event, emit) => emit(
-        NewSpotCreatedState(
-          spotUuid: event.spotUuid,
-          position: event.position,
-        ),
-      ),
-    );
+    //     await channel.shutdown();
+    //   },
+    // );
+    // on<NewSpotCreatedEvent>(
+    //   (event, emit) => emit(
+    //     NewSpotCreatedState(
+    //       spotUuid: event.spotUuid,
+    //       position: event.position,
+    //     ),
+    //   ),
+    // );
 
     add(InitEvent());
   }

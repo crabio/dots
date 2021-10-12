@@ -36,7 +36,6 @@ dependencies:
   flutter_map: any
   latlong2: any
   numberpicker: any
-  duration_picker: any
 
 dev_dependencies:
   flutter_test:

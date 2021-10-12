@@ -12,21 +12,3 @@ class NewGeoPositionEvent extends MainPageEvent {
 
   NewGeoPositionEvent({required this.position});
 }
-
-/// Create new spot event
-class CreateNewSpotEvent extends MainPageEvent {
-  final LatLng position;
-
-  CreateNewSpotEvent({required this.position});
-}
-
-/// New spot created event
-class NewSpotCreatedEvent extends MainPageEvent {
-  final String spotUuid;
-  final LatLng position;
-
-  NewSpotCreatedEvent({
-    required this.spotUuid,
-    required this.position,
-  });
-}

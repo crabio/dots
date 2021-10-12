@@ -1,5 +1,6 @@
 // External
 import 'package:dots_client/pages/spot/page.dart';
+import 'package:dots_client/pages/spot_settings/page.dart';
 import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +13,9 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  const MainForm({
-    Key? key,
-  }) : super(key: key);
+  final MapController mapController = MapController();
+
+  MainForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class MainForm extends StatelessWidget {
           return Stack(
             children: [
               MapWidget(
+                mapController: mapController,
                 position: state.position,
                 zoom: 17.0,
               ),
@@ -43,9 +45,14 @@ class MainForm extends StatelessWidget {
                       child: ElevatedButton(
                         key: const Key("btn_create_spot"),
                         child: const Text("Create new spot"),
-                        onPressed: () => context
-                            .read<MainPageBloc>()
-                            .add(CreateNewSpotEvent(position: state.position)),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SpotSettingsPage(
+                              userPosition: state.position,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -53,24 +60,6 @@ class MainForm extends StatelessWidget {
               ),
             ],
           );
-        } else if (state is CreatingNewSpotState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is NewSpotCreatedState) {
-          // Add zero duration to perform navigation after render
-          Future.delayed(
-            Duration.zero,
-            () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => SpotPage(
-                        spotUuid: state.spotUuid,
-                        spotPosition: state.position,
-                      )),
-            ),
-          );
-          return Container();
         } else if (state is CouldntGetPositionState) {
           return Stack(
             children: [
@@ -83,17 +72,6 @@ class MainForm extends StatelessWidget {
               ),
               const Center(
                 child: Text("Couldn't get device position"),
-              ),
-            ],
-          );
-        } else if (state is CreateSpotErrorState) {
-          return Stack(
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Text("Error when create new spot: ${state.error}"),
-                ),
               ),
             ],
           );
