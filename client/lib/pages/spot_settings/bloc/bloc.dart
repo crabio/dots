@@ -1,7 +1,8 @@
 // External
+import 'package:dots_client/settings/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/plugin_api.dart';
 import 'package:grpc/grpc.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 
 // Internal
@@ -11,9 +12,12 @@ import 'state.dart';
 
 class SpotSettingsPageBloc
     extends Bloc<SpotSettingsPageEvent, SpotSettingsPageState> {
+  final AppSettings appSettings;
+
   final _logger = Logger("SpotSettingsPageBloc");
 
   SpotSettingsPageBloc({
+    required this.appSettings,
     required position,
   }) : super(InitedState(
           position: position,
@@ -46,11 +50,9 @@ class SpotSettingsPageBloc
     on<CreateNewSpotEvent>(
       (event, emit) async {
         emit(CreatingNewSpotState());
-        // Send reques to host
-
         final channel = ClientChannel(
-          settings.environment.host,
-          port: settings.environment.port,
+          appSettings.environment.host,
+          port: appSettings.environment.port,
           options: const ChannelOptions(
             credentials: ChannelCredentials.insecure(),
           ),
@@ -64,27 +66,19 @@ class SpotSettingsPageBloc
         try {
           final response = await stub.createSpot(request);
 
-          add(NewSpotCreatedEvent(
+          emit(NewSpotCreatedState(
             spotUuid: response.uuid,
             position: LatLng(
               response.latiitude,
               response.longitude,
             ),
           ));
-        } catch (ex) {
-          emit(CreateSpotErrorState(error: ex.toString()));
+        } on Exception catch (ex) {
+          emit(CreateSpotErrorState(exception: ex));
         }
 
         await channel.shutdown();
       },
-    );
-    on<NewSpotCreatedEvent>(
-      (event, emit) => emit(
-        NewSpotCreatedState(
-          spotUuid: event.spotUuid,
-          position: event.position,
-        ),
-      ),
     );
   }
 }

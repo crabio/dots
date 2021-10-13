@@ -26,4 +26,18 @@ class InitedState extends SpotSettingsPageState {
 
 class CreatingNewSpotState extends SpotSettingsPageState {}
 
-class NewSpotCreatedEvent extends SpotSettingsPageState {}
+class NewSpotCreatedState extends SpotSettingsPageState {
+  final String spotUuid;
+  final LatLng position;
+
+  NewSpotCreatedState({
+    required this.spotUuid,
+    required this.position,
+  });
+}
+
+class CreateSpotErrorState extends SpotSettingsPageState {
+  final Exception exception;
+
+  CreateSpotErrorState({required this.exception});
+}
