@@ -13,9 +13,7 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class SpotSettingsForm extends StatelessWidget {
-  final MapController mapController = MapController();
-
-  SpotSettingsForm({Key? key}) : super(key: key);
+  const SpotSettingsForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +22,19 @@ class SpotSettingsForm extends StatelessWidget {
         final curState = state;
         if (curState is InitedState) {
           return _SpotSettingsForm(
-            mapController: mapController,
             position: curState.position,
             radius: curState.radius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
           );
         } else if (curState is CreatingNewSpotState) {
-          // TODO Implement
+          return _SpotSettingsForm(
+            position: curState.position,
+            radius: curState.radius,
+            scanPeriod: curState.scanPeriod,
+            zonePeriod: curState.zonePeriod,
+            creatingSpot: true,
+          );
         } else if (curState is NewSpotCreatedState) {
           navPushAfterBuild(
             context,
@@ -42,7 +45,13 @@ class SpotSettingsForm extends StatelessWidget {
           );
           return const CircularProgressIndicator();
         } else if (curState is CreateSpotErrorState) {
-          // TODO Implement
+          return _SpotSettingsForm(
+            position: curState.position,
+            radius: curState.radius,
+            scanPeriod: curState.scanPeriod,
+            zonePeriod: curState.zonePeriod,
+            exception: curState.exception,
+          );
         }
 
         return Text("Unkown state: $state");
@@ -54,36 +63,51 @@ class SpotSettingsForm extends StatelessWidget {
 class _SpotSettingsForm extends StatelessWidget {
   static const zoom = 17.0;
 
-  final MapController mapController;
   final LatLng position;
-  // Spot radius in meters
+
+  /// Spot radius in meters
   final int radius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
+  /// Exception on creating new spot on server
+  final Exception? exception;
+
+  final bool creatingSpot;
+
   const _SpotSettingsForm({
     required this.position,
-    required this.mapController,
     required this.radius,
     required this.scanPeriod,
     required this.zonePeriod,
+    this.exception,
+    this.creatingSpot = false,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    mapController.onReady.then((_) => mapController.move(position, zoom));
     return Center(
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            exception != null
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 16),
+                    child: Text(
+                      exception.toString(),
+                      style: const TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  )
+                : Container(),
             const Text("Location"),
             SizedBox(
               width: 300,
               height: 300,
               child: FlutterMap(
-                mapController: mapController,
                 options: MapOptions(
                   center: position,
                   zoom: zoom,
@@ -111,7 +135,7 @@ class _SpotSettingsForm extends StatelessWidget {
                         point: position,
                         radius: radius.toDouble(),
                         useRadiusInMeter: true,
-                        color: const Color.fromRGBO(0, 0, 0, 1),
+                        color: const Color.fromRGBO(0, 0, 0, 0),
                         borderColor: Colors.red,
                         borderStrokeWidth: 2.0,
                       ),
@@ -153,12 +177,14 @@ class _SpotSettingsForm extends StatelessWidget {
                   .read<SpotSettingsPageBloc>()
                   .add(NewZoneDurationEvent(value: Duration(seconds: value))),
             ),
-            _CreateNewSpotBtn(
-              position: position,
-              radius: radius,
-              scanPeriod: scanPeriod,
-              zonePeriod: zonePeriod,
-            ),
+            creatingSpot
+                ? const CircularProgressIndicator()
+                : _CreateNewSpotBtn(
+                    position: position,
+                    radius: radius,
+                    scanPeriod: scanPeriod,
+                    zonePeriod: zonePeriod,
+                  ),
           ],
         ),
       ),

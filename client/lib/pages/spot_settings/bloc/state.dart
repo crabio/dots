@@ -24,7 +24,20 @@ class InitedState extends SpotSettingsPageState {
   });
 }
 
-class CreatingNewSpotState extends SpotSettingsPageState {}
+class CreatingNewSpotState extends SpotSettingsPageState {
+  final LatLng position;
+  // Spot radius in meters
+  final int radius;
+  final Duration scanPeriod;
+  final Duration zonePeriod;
+
+  CreatingNewSpotState({
+    required this.position,
+    required this.radius,
+    required this.scanPeriod,
+    required this.zonePeriod,
+  });
+}
 
 class NewSpotCreatedState extends SpotSettingsPageState {
   final String spotUuid;
@@ -37,7 +50,18 @@ class NewSpotCreatedState extends SpotSettingsPageState {
 }
 
 class CreateSpotErrorState extends SpotSettingsPageState {
+  final LatLng position;
+  // Spot radius in meters
+  final int radius;
+  final Duration scanPeriod;
+  final Duration zonePeriod;
   final Exception exception;
 
-  CreateSpotErrorState({required this.exception});
+  CreateSpotErrorState({
+    required this.position,
+    required this.radius,
+    required this.scanPeriod,
+    required this.zonePeriod,
+    required this.exception,
+  });
 }

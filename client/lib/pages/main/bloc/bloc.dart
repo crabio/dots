@@ -47,7 +47,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
           ))));
     });
     on<NewGeoPositionEvent>((event, emit) async {
-        emit(InitedState(position: event.position));
+      emit(InitedState(position: event.position));
     });
 
     add(InitEvent());

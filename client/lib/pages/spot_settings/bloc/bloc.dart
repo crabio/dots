@@ -49,35 +49,48 @@ class SpotSettingsPageBloc
 
     on<CreateNewSpotEvent>(
       (event, emit) async {
-        emit(CreatingNewSpotState());
-        final channel = ClientChannel(
-          appSettings.environment.host,
-          port: appSettings.environment.port,
-          options: const ChannelOptions(
-            credentials: ChannelCredentials.insecure(),
-          ),
-        );
-
-        final stub = SpotServiceClient(channel);
-        final request = CreateSpotRequest(
-          longitude: event.position.longitude,
-          latiitude: event.position.latitude,
-        );
-        try {
-          final response = await stub.createSpot(request);
-
-          emit(NewSpotCreatedState(
-            spotUuid: response.uuid,
-            position: LatLng(
-              response.latiitude,
-              response.longitude,
-            ),
+        final curState = state;
+        if (curState is InitedState) {
+          emit(CreatingNewSpotState(
+            position: curState.position,
+            radius: curState.radius,
+            scanPeriod: curState.scanPeriod,
+            zonePeriod: curState.zonePeriod,
           ));
-        } on Exception catch (ex) {
-          emit(CreateSpotErrorState(exception: ex));
-        }
+          final channel = ClientChannel(
+            appSettings.environment.host,
+            port: appSettings.environment.port,
+            options: const ChannelOptions(
+              credentials: ChannelCredentials.insecure(),
+            ),
+          );
 
-        await channel.shutdown();
+          final stub = SpotServiceClient(channel);
+          final request = CreateSpotRequest(
+            longitude: event.position.longitude,
+            latiitude: event.position.latitude,
+          );
+          try {
+            final response = await stub.createSpot(request);
+
+            emit(NewSpotCreatedState(
+              spotUuid: response.uuid,
+              position: LatLng(
+                response.latiitude,
+                response.longitude,
+              ),
+            ));
+          } on Exception catch (ex) {
+            emit(CreateSpotErrorState(
+              position: curState.position,
+              radius: curState.radius,
+              scanPeriod: curState.scanPeriod,
+              zonePeriod: curState.zonePeriod,
+              exception: ex,
+            ));
+          }
+          await channel.shutdown();
+        } else {}
       },
     );
   }
