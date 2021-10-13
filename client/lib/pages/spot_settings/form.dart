@@ -1,7 +1,6 @@
 // External
 import 'package:dots_client/pages/spot/page.dart';
 import 'package:dots_client/utils/nav.dart';
-import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -53,6 +52,8 @@ class SpotSettingsForm extends StatelessWidget {
 }
 
 class _SpotSettingsForm extends StatelessWidget {
+  static const zoom = 17.0;
+
   final MapController mapController;
   final LatLng position;
   // Spot radius in meters
@@ -71,6 +72,7 @@ class _SpotSettingsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    mapController.onReady.then((_) => mapController.move(position, zoom));
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -80,10 +82,42 @@ class _SpotSettingsForm extends StatelessWidget {
             SizedBox(
               width: 300,
               height: 300,
-              child: MapWidget(
+              child: FlutterMap(
                 mapController: mapController,
-                position: position,
-                zoom: 17.0,
+                options: MapOptions(
+                  center: position,
+                  zoom: zoom,
+                ),
+                layers: [
+                  TileLayerOptions(
+                    urlTemplate:
+                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    subdomains: ['a', 'b', 'c'],
+                  ),
+                  MarkerLayerOptions(
+                    markers: [
+                      // Spot position pointer
+                      Marker(
+                        point: position,
+                        builder: (ctx) => const Icon(
+                          Icons.location_on,
+                        ),
+                      ),
+                    ],
+                  ),
+                  CircleLayerOptions(
+                    circles: [
+                      CircleMarker(
+                        point: position,
+                        radius: radius.toDouble(),
+                        useRadiusInMeter: true,
+                        color: const Color.fromRGBO(0, 0, 0, 1),
+                        borderColor: Colors.red,
+                        borderStrokeWidth: 2.0,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             const Text("Radius in meters"),

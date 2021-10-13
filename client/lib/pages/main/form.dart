@@ -1,7 +1,6 @@
 // External
 import 'package:dots_client/pages/spot_settings/page.dart';
 import 'package:dots_client/utils/nav.dart';
-import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -27,7 +26,7 @@ class MainForm extends StatelessWidget {
         } else if (state is InitedState) {
           return Stack(
             children: [
-              MapWidget(
+              _MapWidget(
                 mapController: mapController,
                 position: state.position,
                 zoom: 17.0,
@@ -39,7 +38,7 @@ class MainForm extends StatelessWidget {
         } else if (state is CouldntGetPositionState) {
           return Stack(
             children: [
-              MapWidget(
+              _MapWidget(
                 position: LatLng(
                   -19.135596599128128,
                   47.205291327230555,
@@ -55,6 +54,52 @@ class MainForm extends StatelessWidget {
 
         return Text("Unkown state: $state");
       },
+    );
+  }
+}
+
+class _MapWidget extends StatelessWidget {
+  final MapController? mapController;
+  final LatLng position;
+  final double zoom;
+
+  const _MapWidget({
+    this.mapController,
+    required this.position,
+    required this.zoom,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (mapController != null) {
+      mapController!.onReady.then(
+        (_) => mapController!.move(position, 17.0),
+      );
+    }
+    return FlutterMap(
+      mapController: mapController,
+      options: MapOptions(
+        center: position,
+        zoom: zoom,
+      ),
+      layers: [
+        TileLayerOptions(
+          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          subdomains: ['a', 'b', 'c'],
+        ),
+        MarkerLayerOptions(
+          markers: [
+            // Spot position pointer
+            Marker(
+              point: position,
+              builder: (ctx) => const Icon(
+                Icons.location_on,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
