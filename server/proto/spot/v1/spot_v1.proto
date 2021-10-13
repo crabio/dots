@@ -24,8 +24,8 @@ message CreateSpotRequest {
   double longitude = 1;
   double latiitude = 2;
   int32 radius = 3;
-  int32 scanPeriodInSeconds = 4;
-  int32 zonePeriodInSeconds = 5;
+  int32 scan_period_in_seconds = 4;
+  int32 zone_period_in_seconds = 5;
 }
 
 message CreateSpotResponse {
@@ -40,6 +40,6 @@ message GetSpotResponse {
   double longitude = 1;
   double latiitude = 2;
   int32 radius = 3;
-  int32 scanPeriodInSeconds = 4;
-  int32 zonePeriodInSeconds = 5;
+  int32 scan_period_in_seconds = 4;
+  int32 zone_period_in_seconds = 5;
 }
