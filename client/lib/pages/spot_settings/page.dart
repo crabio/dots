@@ -40,7 +40,7 @@ class SpotSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        body: const SpotSettingsForm(),
+        body: SpotSettingsForm(),
       ),
     );
   }

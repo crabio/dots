@@ -1,4 +1,6 @@
 // External
+import 'dart:math';
+
 import 'package:dots_client/pages/spot/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,9 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class SpotSettingsForm extends StatelessWidget {
-  const SpotSettingsForm({Key? key}) : super(key: key);
+  final mapController = MapController();
+
+  SpotSettingsForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +26,7 @@ class SpotSettingsForm extends StatelessWidget {
         final curState = state;
         if (curState is InitedState) {
           return _SpotSettingsForm(
+            mapController: mapController,
             position: curState.position,
             radius: curState.radius,
             scanPeriod: curState.scanPeriod,
@@ -29,6 +34,7 @@ class SpotSettingsForm extends StatelessWidget {
           );
         } else if (curState is CreatingNewSpotState) {
           return _SpotSettingsForm(
+            mapController: mapController,
             position: curState.position,
             radius: curState.radius,
             scanPeriod: curState.scanPeriod,
@@ -46,6 +52,7 @@ class SpotSettingsForm extends StatelessWidget {
           return const CircularProgressIndicator();
         } else if (curState is CreateSpotErrorState) {
           return _SpotSettingsForm(
+            mapController: mapController,
             position: curState.position,
             radius: curState.radius,
             scanPeriod: curState.scanPeriod,
@@ -61,8 +68,7 @@ class SpotSettingsForm extends StatelessWidget {
 }
 
 class _SpotSettingsForm extends StatelessWidget {
-  static const zoom = 17.0;
-
+  final MapController mapController;
   final LatLng position;
 
   /// Spot radius in meters
@@ -76,6 +82,7 @@ class _SpotSettingsForm extends StatelessWidget {
   final bool creatingSpot;
 
   const _SpotSettingsForm({
+    required this.mapController,
     required this.position,
     required this.radius,
     required this.scanPeriod,
@@ -87,6 +94,9 @@ class _SpotSettingsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    mapController.onReady.then(
+      (_) => mapController.move(position, 18 - sqrt((radius / 40))),
+    );
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -108,10 +118,8 @@ class _SpotSettingsForm extends StatelessWidget {
               width: 300,
               height: 300,
               child: FlutterMap(
-                options: MapOptions(
-                  center: position,
-                  zoom: zoom,
-                ),
+                mapController: mapController,
+                options: MapOptions(),
                 layers: [
                   TileLayerOptions(
                     urlTemplate:
@@ -148,7 +156,7 @@ class _SpotSettingsForm extends StatelessWidget {
             NumberPicker(
               axis: Axis.horizontal,
               step: 10,
-              minValue: 0,
+              minValue: 40,
               maxValue: 1000,
               value: radius,
               onChanged: (value) => context
