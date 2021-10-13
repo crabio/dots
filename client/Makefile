@@ -4,7 +4,7 @@ install:
 
 generate:
 	@echo "Generate flutter files"
-	flutter pub run build_runner build
+	flutter pub run build_runner build --delete-conflicting-outputs
 	@echo "Generate protobuf files"
 	protoc --dart_out=grpc:lib/gen -I ../server/proto/ $$(find ../server/proto -iname "*.proto")
 
@@ -15,3 +15,7 @@ lint:
 test:
 	@echo "Run unit tests"
 	flutter test
+
+run:
+	@echo "Run app"
+	flutter run

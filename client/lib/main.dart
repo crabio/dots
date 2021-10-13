@@ -5,7 +5,7 @@ import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
+import 'package:logging/logging.dart' as log;
 
 // Internal
 import 'theme.dart';
@@ -13,8 +13,8 @@ import 'theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Logger.root.level = Level.FINE;
-  Logger.root.onRecord.listen((record) {
+  log.Logger.root.level = log.Level.FINE;
+  log.Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
@@ -32,17 +32,19 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: lightTheme,
-      dark: darkTheme,
-      // TODO Read from settings
-      initial: settings.themeMode,
-      builder: (theme, darkTheme) => MaterialApp(
-        title: 'Dots App',
-        theme: theme,
-        darkTheme: darkTheme,
-        home: MainPage(
-          settings: settings,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AppSettings>(create: (context) => settings),
+      ],
+      child: AdaptiveTheme(
+        light: lightTheme,
+        dark: darkTheme,
+        initial: settings.themeMode,
+        builder: (theme, darkTheme) => MaterialApp(
+          title: 'Dots App',
+          theme: theme,
+          darkTheme: darkTheme,
+          home: MainPage(),
         ),
       ),
     );

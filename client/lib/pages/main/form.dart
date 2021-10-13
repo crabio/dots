@@ -1,22 +1,19 @@
 // External
-import 'package:dots_client/pages/spot/page.dart';
-import 'package:dots_client/settings/settings.dart';
+import 'package:dots_client/pages/spot_settings/page.dart';
+import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
-import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
-  final AppSettings settings;
   final MapController mapController = MapController();
 
-  MainForm({required this.settings, Key? key}) : super(key: key);
+  MainForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,60 +24,77 @@ class MainForm extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is InitedState) {
-          return _buildInitedState(context, state);
-        } else if (state is CreatingNewSpotState) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Stack(
+            children: [
+              _MapWidget(
+                mapController: mapController,
+                position: state.position,
+                zoom: 17.0,
+              ),
+              // New spot button
+              _CreateNewSpotBtn(position: state.position),
+            ],
           );
-        } else if (state is NewSpotCreatedState) {
-          // Add zero duration to perform navigation after render
-          Future.delayed(
-            Duration.zero,
-            () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => SpotPage(
-                      settings: settings,
-                      spotUuid: state.spotUuid,
-                      spotPosition: state.position)),
-            ),
+        } else if (state is CouldntGetPositionState) {
+          return Stack(
+            children: [
+              _MapWidget(
+                position: LatLng(
+                  -19.135596599128128,
+                  47.205291327230555,
+                ),
+                zoom: 17.0,
+              ),
+              const Center(
+                child: Text("Couldn't get device position"),
+              ),
+            ],
           );
-          return Container();
-        } else if (state is CreateSpotErrorState) {
-          return _buildCreateSpotErrorState(context, state);
         }
 
         return Text("Unkown state: $state");
       },
     );
   }
+}
 
-  Widget _buildMap({
-    required LatLng position,
-    required double zoom,
-  }) {
-    mapController.onReady.then((_) => mapController.move(position, zoom));
+class _MapWidget extends StatelessWidget {
+  final MapController? mapController;
+  final LatLng position;
+  final double zoom;
+
+  const _MapWidget({
+    this.mapController,
+    required this.position,
+    required this.zoom,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (mapController != null) {
+      mapController!.onReady.then(
+        (_) => mapController!.move(position, 17.0),
+      );
+    }
     return FlutterMap(
+      mapController: mapController,
       options: MapOptions(
         center: position,
         zoom: zoom,
       ),
-      mapController: mapController,
       layers: [
         TileLayerOptions(
           urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           subdomains: ['a', 'b', 'c'],
-          // attributionBuilder: (_) {
-          //   return Text("© OpenStreetMap contributors");
-          // },
         ),
         MarkerLayerOptions(
           markers: [
-            // User position pointer
+            // Spot position pointer
             Marker(
               point: position,
               builder: (ctx) => const Icon(
-                Icons.circle,
+                Icons.location_on,
               ),
             ),
           ],
@@ -88,8 +102,18 @@ class MainForm extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildCreateNewSpotBtn(BuildContext context, LatLng position) {
+class _CreateNewSpotBtn extends StatelessWidget {
+  final LatLng position;
+
+  const _CreateNewSpotBtn({
+    required this.position,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,41 +125,16 @@ class MainForm extends StatelessWidget {
             child: ElevatedButton(
               key: const Key("btn_create_spot"),
               child: const Text("Create new spot"),
-              onPressed: () => context
-                  .read<MainPageBloc>()
-                  .add(CreateNewSpotEvent(position: position)),
+              onPressed: () => navPopAndPush(
+                context,
+                SpotSettingsPage(
+                  userPosition: position,
+                ),
+              ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildInitedState(
-    BuildContext context,
-    InitedState state,
-  ) {
-    return Stack(
-      children: [
-        _buildMap(position: state.position, zoom: 17.0),
-        _buildCreateNewSpotBtn(context, state.position),
-      ],
-    );
-  }
-
-  Widget _buildCreateSpotErrorState(
-    BuildContext context,
-    CreateSpotErrorState state,
-  ) {
-    return Stack(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text("Error when create new spot: ${state.error}"),
-          ),
-        ),
-      ],
     );
   }
 }

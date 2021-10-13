@@ -14,11 +14,6 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
-type Spot struct {
-	Longitude float64
-	Latiitude float64
-}
-
 type SpotServiceServer struct {
 	log *logrus.Entry
 	// Required to have revese compatability

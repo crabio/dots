@@ -2,18 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
-import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class SpotForm extends StatelessWidget {
-  SpotForm({Key? key}) : super(key: key);
-
-  final MapController mapController = MapController();
+  const SpotForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +33,11 @@ class SpotForm extends StatelessWidget {
     required LatLng spotPosition,
     required double zoom,
   }) {
-    mapController.onReady.then((_) => mapController.move(position, zoom));
     return FlutterMap(
       options: MapOptions(
         center: position,
         zoom: zoom,
       ),
-      mapController: mapController,
       layers: [
         TileLayerOptions(
           urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -93,7 +87,7 @@ class SpotForm extends StatelessWidget {
     return Stack(
       children: [
         _buildMap(
-          position: state.position,
+          position: state.spotPosition,
           spotPosition: state.spotPosition,
           zoom: 17.0,
         ),

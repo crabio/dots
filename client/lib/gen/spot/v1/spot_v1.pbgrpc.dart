@@ -20,6 +20,12 @@ class SpotServiceClient extends $grpc.Client {
           ($0.CreateSpotRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.CreateSpotResponse.fromBuffer(value));
+  static final _$getSpot =
+      $grpc.ClientMethod<$0.GetSpotRequest, $0.GetSpotResponse>(
+          '/spot.v1.SpotService/GetSpot',
+          ($0.GetSpotRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.GetSpotResponse.fromBuffer(value));
 
   SpotServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -30,6 +36,11 @@ class SpotServiceClient extends $grpc.Client {
       $0.CreateSpotRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createSpot, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetSpotResponse> getSpot($0.GetSpotRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getSpot, request, options: options);
   }
 }
 
@@ -44,6 +55,13 @@ abstract class SpotServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.CreateSpotRequest.fromBuffer(value),
         ($0.CreateSpotResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetSpotRequest, $0.GetSpotResponse>(
+        'GetSpot',
+        getSpot_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetSpotRequest.fromBuffer(value),
+        ($0.GetSpotResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.CreateSpotResponse> createSpot_Pre($grpc.ServiceCall call,
@@ -51,6 +69,13 @@ abstract class SpotServiceBase extends $grpc.Service {
     return createSpot(call, await request);
   }
 
+  $async.Future<$0.GetSpotResponse> getSpot_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.GetSpotRequest> request) async {
+    return getSpot(call, await request);
+  }
+
   $async.Future<$0.CreateSpotResponse> createSpot(
       $grpc.ServiceCall call, $0.CreateSpotRequest request);
+  $async.Future<$0.GetSpotResponse> getSpot(
+      $grpc.ServiceCall call, $0.GetSpotRequest request);
 }
