@@ -17,6 +17,34 @@
   ],
   "paths": {
     "/api/v1/spot": {
+      "get": {
+        "operationId": "SpotService_GetSpot",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSpotResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SpotService"
+        ]
+      },
       "post": {
         "operationId": "SpotService_CreateSpot",
         "responses": {
@@ -107,6 +135,31 @@
       "properties": {
         "uuid": {
           "type": "string"
+        }
+      }
+    },
+    "v1GetSpotResponse": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "format": "double"
+        },
+        "latiitude": {
+          "type": "number",
+          "format": "double"
+        },
+        "radius": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "scanPeriodInSeconds": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "zonePeriodInSeconds": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     }

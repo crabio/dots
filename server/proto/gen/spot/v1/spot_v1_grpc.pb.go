@@ -19,6 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SpotServiceClient interface {
 	CreateSpot(ctx context.Context, in *CreateSpotRequest, opts ...grpc.CallOption) (*CreateSpotResponse, error)
+	GetSpot(ctx context.Context, in *GetSpotRequest, opts ...grpc.CallOption) (*GetSpotResponse, error)
 }
 
 type spotServiceClient struct {
@@ -38,11 +39,21 @@ func (c *spotServiceClient) CreateSpot(ctx context.Context, in *CreateSpotReques
 	return out, nil
 }
 
+func (c *spotServiceClient) GetSpot(ctx context.Context, in *GetSpotRequest, opts ...grpc.CallOption) (*GetSpotResponse, error) {
+	out := new(GetSpotResponse)
+	err := c.cc.Invoke(ctx, "/spot.v1.SpotService/GetSpot", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SpotServiceServer is the server API for SpotService service.
 // All implementations must embed UnimplementedSpotServiceServer
 // for forward compatibility
 type SpotServiceServer interface {
 	CreateSpot(context.Context, *CreateSpotRequest) (*CreateSpotResponse, error)
+	GetSpot(context.Context, *GetSpotRequest) (*GetSpotResponse, error)
 	mustEmbedUnimplementedSpotServiceServer()
 }
 
@@ -52,6 +63,9 @@ type UnimplementedSpotServiceServer struct {
 
 func (UnimplementedSpotServiceServer) CreateSpot(context.Context, *CreateSpotRequest) (*CreateSpotResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSpot not implemented")
+}
+func (UnimplementedSpotServiceServer) GetSpot(context.Context, *GetSpotRequest) (*GetSpotResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSpot not implemented")
 }
 func (UnimplementedSpotServiceServer) mustEmbedUnimplementedSpotServiceServer() {}
 
@@ -84,6 +98,24 @@ func _SpotService_CreateSpot_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SpotService_GetSpot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSpotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SpotServiceServer).GetSpot(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/spot.v1.SpotService/GetSpot",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SpotServiceServer).GetSpot(ctx, req.(*GetSpotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SpotService_ServiceDesc is the grpc.ServiceDesc for SpotService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +126,10 @@ var SpotService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSpot",
 			Handler:    _SpotService_CreateSpot_Handler,
+		},
+		{
+			MethodName: "GetSpot",
+			Handler:    _SpotService_GetSpot_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

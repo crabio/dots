@@ -13,6 +13,11 @@ service SpotService {
       body: "*"
     };
   }
+  rpc GetSpot (GetSpotRequest) returns (GetSpotResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/spot"
+    };
+  }
 }
 
 message CreateSpotRequest {
@@ -25,4 +30,16 @@ message CreateSpotRequest {
 
 message CreateSpotResponse {
   string uuid = 1;
+}
+
+message GetSpotRequest {
+  string uuid = 1;
+}
+
+message GetSpotResponse {
+  double longitude = 1;
+  double latiitude = 2;
+  int32 radius = 3;
+  int32 scanPeriodInSeconds = 4;
+  int32 zonePeriodInSeconds = 5;
 }
