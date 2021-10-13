@@ -35,7 +35,6 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
             position: LatLng(position.latitude, position.longitude)));
       } else {
         emit(CouldntGetPositionState());
-        return;
       }
 
       _logger.fine("Subscribe on location");
@@ -48,9 +47,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
           ))));
     });
     on<NewGeoPositionEvent>((event, emit) async {
-      if (state is InitedState) {
         emit(InitedState(position: event.position));
-      }
     });
 
     add(InitEvent());
