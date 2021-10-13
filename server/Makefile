@@ -54,8 +54,10 @@ build_docker:
 	docker build . -t iakrevetkho/dots/server
 
 run_docker:
+	@echo "Remove old docker container"
+	docker rm dots_server || echo "couldn't delete old container" 
 	@echo "Run app docker container"
-	docker run -p 8080:8080 -p 8090:8090 iakrevetkho/dots/server -t dots_server
+	docker run -d -p 8080:8080 -p 8090:8090 --name dots_server iakrevetkho/dots/server
 
 build_and_run_docker:
 	make build_docker
