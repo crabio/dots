@@ -87,6 +87,18 @@
         "latiitude": {
           "type": "number",
           "format": "double"
+        },
+        "radius": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "scanPeriodInSeconds": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "zonePeriodInSeconds": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -95,14 +107,6 @@
       "properties": {
         "uuid": {
           "type": "string"
-        },
-        "longitude": {
-          "type": "number",
-          "format": "double"
-        },
-        "latiitude": {
-          "type": "number",
-          "format": "double"
         }
       }
     }
