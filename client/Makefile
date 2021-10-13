@@ -15,3 +15,7 @@ lint:
 test:
 	@echo "Run unit tests"
 	flutter test
+
+run:
+	@echo "Run app"
+	flutter run
