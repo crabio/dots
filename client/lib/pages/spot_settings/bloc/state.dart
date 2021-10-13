@@ -12,13 +12,13 @@ abstract class SpotSettingsPageState {}
 class InitedState extends SpotSettingsPageState {
   final LatLng position;
   // Spot radius in meters
-  final int radius;
+  final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
   InitedState({
     required this.position,
-    required this.radius,
+    required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
   });
@@ -27,13 +27,13 @@ class InitedState extends SpotSettingsPageState {
 class CreatingNewSpotState extends SpotSettingsPageState {
   final LatLng position;
   // Spot radius in meters
-  final int radius;
+  final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
   CreatingNewSpotState({
     required this.position,
-    required this.radius,
+    required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
   });
@@ -52,14 +52,14 @@ class NewSpotCreatedState extends SpotSettingsPageState {
 class CreateSpotErrorState extends SpotSettingsPageState {
   final LatLng position;
   // Spot radius in meters
-  final int radius;
+  final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
   final Exception exception;
 
   CreateSpotErrorState({
     required this.position,
-    required this.radius,
+    required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
     required this.exception,

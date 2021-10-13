@@ -21,13 +21,13 @@ class SpotSettingsPageBloc
     required position,
   }) : super(InitedState(
           position: position,
-          radius: 50,
+          zoneRadius: 50,
           scanPeriod: const Duration(seconds: 10),
           zonePeriod: const Duration(seconds: 30),
         )) {
     on<NewRadiusEvent>((event, emit) {
       if (state is InitedState) {
-        emit((state as InitedState).copyWith(radius: event.value));
+        emit((state as InitedState).copyWith(zoneRadius: event.value));
       } else {
         _logger.shout("Not allowed $state for $event");
       }
@@ -53,7 +53,7 @@ class SpotSettingsPageBloc
         if (curState is InitedState) {
           emit(CreatingNewSpotState(
             position: curState.position,
-            radius: curState.radius,
+            zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
           ));
@@ -67,8 +67,8 @@ class SpotSettingsPageBloc
 
           final stub = SpotServiceClient(channel);
           final request = CreateSpotRequest(
-            longitude: event.position.longitude,
             latiitude: event.position.latitude,
+            longitude: event.position.longitude,
           );
           try {
             final response = await stub.createSpot(request);
@@ -76,14 +76,14 @@ class SpotSettingsPageBloc
             emit(NewSpotCreatedState(
               spotUuid: response.uuid,
               position: LatLng(
-                response.latiitude,
-                response.longitude,
+                event.position.latitude,
+                event.position.longitude,
               ),
             ));
           } on Exception catch (ex) {
             emit(CreateSpotErrorState(
               position: curState.position,
-              radius: curState.radius,
+              zoneRadius: curState.zoneRadius,
               scanPeriod: curState.scanPeriod,
               zonePeriod: curState.zonePeriod,
               exception: ex,

@@ -87,7 +87,7 @@ class SpotForm extends StatelessWidget {
     return Stack(
       children: [
         _buildMap(
-          position: state.position,
+          position: state.spotPosition,
           spotPosition: state.spotPosition,
           zoom: 17.0,
         ),

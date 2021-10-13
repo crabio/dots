@@ -9,15 +9,15 @@ part of 'state.dart';
 extension InitedStateCopyWith on InitedState {
   InitedState copyWith({
     LatLng? position,
-    int? radius,
     Duration? scanPeriod,
     Duration? zonePeriod,
+    int? zoneRadius,
   }) {
     return InitedState(
       position: position ?? this.position,
-      radius: radius ?? this.radius,
       scanPeriod: scanPeriod ?? this.scanPeriod,
       zonePeriod: zonePeriod ?? this.zonePeriod,
+      zoneRadius: zoneRadius ?? this.zoneRadius,
     );
   }
 }

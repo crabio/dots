@@ -23,13 +23,13 @@ class NewZoneDurationEvent extends SpotSettingsPageEvent {
 class CreateNewSpotEvent extends SpotSettingsPageEvent {
   final LatLng position;
   // Spot radius in meters
-  final int radius;
+  final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
   CreateNewSpotEvent({
     required this.position,
-    required this.radius,
+    required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
   });

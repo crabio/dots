@@ -28,7 +28,7 @@ class SpotSettingsForm extends StatelessWidget {
           return _SpotSettingsForm(
             mapController: mapController,
             position: curState.position,
-            radius: curState.radius,
+            zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
           );
@@ -36,7 +36,7 @@ class SpotSettingsForm extends StatelessWidget {
           return _SpotSettingsForm(
             mapController: mapController,
             position: curState.position,
-            radius: curState.radius,
+            zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
             creatingSpot: true,
@@ -44,17 +44,14 @@ class SpotSettingsForm extends StatelessWidget {
         } else if (curState is NewSpotCreatedState) {
           navPushAfterBuild(
             context,
-            SpotPage(
-              spotUuid: curState.spotUuid,
-              spotPosition: curState.position,
-            ),
+            SpotPage(spotUuid: curState.spotUuid),
           );
           return const CircularProgressIndicator();
         } else if (curState is CreateSpotErrorState) {
           return _SpotSettingsForm(
             mapController: mapController,
             position: curState.position,
-            radius: curState.radius,
+            zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
             exception: curState.exception,
@@ -72,7 +69,7 @@ class _SpotSettingsForm extends StatelessWidget {
   final LatLng position;
 
   /// Spot radius in meters
-  final int radius;
+  final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
@@ -84,7 +81,7 @@ class _SpotSettingsForm extends StatelessWidget {
   const _SpotSettingsForm({
     required this.mapController,
     required this.position,
-    required this.radius,
+    required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
     this.exception,
@@ -95,7 +92,7 @@ class _SpotSettingsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     mapController.onReady.then(
-      (_) => mapController.move(position, 18 - sqrt((radius / 40))),
+      (_) => mapController.move(position, 18 - sqrt((zoneRadius / 40))),
     );
     return Center(
       child: SingleChildScrollView(
@@ -141,7 +138,7 @@ class _SpotSettingsForm extends StatelessWidget {
                     circles: [
                       CircleMarker(
                         point: position,
-                        radius: radius.toDouble(),
+                        radius: zoneRadius.toDouble(),
                         useRadiusInMeter: true,
                         color: const Color.fromRGBO(0, 0, 0, 0),
                         borderColor: Colors.red,
@@ -158,7 +155,7 @@ class _SpotSettingsForm extends StatelessWidget {
               step: 10,
               minValue: 40,
               maxValue: 1000,
-              value: radius,
+              value: zoneRadius,
               onChanged: (value) => context
                   .read<SpotSettingsPageBloc>()
                   .add(NewRadiusEvent(value: value)),
@@ -189,7 +186,7 @@ class _SpotSettingsForm extends StatelessWidget {
                 ? const CircularProgressIndicator()
                 : _CreateNewSpotBtn(
                     position: position,
-                    radius: radius,
+                    zoneRadius: zoneRadius,
                     scanPeriod: scanPeriod,
                     zonePeriod: zonePeriod,
                   ),
@@ -203,13 +200,13 @@ class _SpotSettingsForm extends StatelessWidget {
 class _CreateNewSpotBtn extends StatelessWidget {
   final LatLng position;
   // Spot radius in meters
-  final int radius;
+  final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
   const _CreateNewSpotBtn({
     required this.position,
-    required this.radius,
+    required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
     Key? key,
@@ -231,7 +228,7 @@ class _CreateNewSpotBtn extends StatelessWidget {
               onPressed: () =>
                   context.read<SpotSettingsPageBloc>().add(CreateNewSpotEvent(
                         position: position,
-                        radius: radius,
+                        zoneRadius: zoneRadius,
                         scanPeriod: scanPeriod,
                         zonePeriod: zonePeriod,
                       )),
