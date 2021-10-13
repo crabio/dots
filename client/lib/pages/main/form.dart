@@ -125,7 +125,7 @@ class _CreateNewSpotBtn extends StatelessWidget {
             child: ElevatedButton(
               key: const Key("btn_create_spot"),
               child: const Text("Create new spot"),
-              onPressed: () => navPush(
+              onPressed: () => navPopAndPush(
                 context,
                 SpotSettingsPage(
                   userPosition: position,
