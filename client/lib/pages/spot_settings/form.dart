@@ -1,4 +1,6 @@
 // External
+import 'package:dots_client/pages/spot/page.dart';
+import 'package:dots_client/utils/nav.dart';
 import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,6 +84,19 @@ class SpotSettingsForm extends StatelessWidget {
               ),
             ),
           );
+        } else if (curState is CreatingNewSpotState) {
+          // TODO Implement
+        } else if (curState is NewSpotCreatedState) {
+          navPushAfterBuild(
+            context,
+            SpotPage(
+              spotUuid: curState.spotUuid,
+              spotPosition: curState.position,
+            ),
+          );
+          return const CircularProgressIndicator();
+        } else if (curState is CreateSpotErrorState) {
+          // TODO Implement
         }
 
         return Text("Unkown state: $state");

@@ -1,5 +1,6 @@
 // External
 import 'package:dots_client/pages/settings/page.dart';
+import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -29,17 +30,15 @@ class SpotPage extends StatelessWidget {
           title: const Text('Dots'),
           actions: [
             IconButton(
-              onPressed: () => Navigator.push(
+              onPressed: () => navPush(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const SettingsPage(),
-                ),
+                const SettingsPage(),
               ),
               icon: const Icon(Icons.settings),
             ),
           ],
         ),
-        body: SpotForm(),
+        body: const SpotForm(),
       ),
     );
   }

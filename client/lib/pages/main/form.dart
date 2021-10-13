@@ -1,5 +1,6 @@
 // External
 import 'package:dots_client/pages/spot_settings/page.dart';
+import 'package:dots_client/utils/nav.dart';
 import 'package:dots_client/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,12 +80,10 @@ class _CreateNewSpotBtn extends StatelessWidget {
             child: ElevatedButton(
               key: const Key("btn_create_spot"),
               child: const Text("Create new spot"),
-              onPressed: () => Navigator.push(
+              onPressed: () => navPush(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => SpotSettingsPage(
-                    userPosition: position,
-                  ),
+                SpotSettingsPage(
+                  userPosition: position,
                 ),
               ),
             ),
