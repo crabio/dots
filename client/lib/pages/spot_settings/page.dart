@@ -1,6 +1,8 @@
 // External
+import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/pages/settings/page.dart';
 import 'package:dots_client/settings/settings.dart';
+import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -28,6 +30,10 @@ class SpotSettingsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Dots'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => navPopAndPush(context, const MainPage()),
+          ),
           actions: [
             IconButton(
               onPressed: () => Navigator.push(
