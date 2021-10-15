@@ -12,9 +12,9 @@ lint:
 	@echo "Run linter"
 	flutter analyze
 
-test:
+unit-test:
 	@echo "Run unit tests"
-	flutter test
+	flutter test --coverage
 
 run:
 	@echo "Run app"
