@@ -1,7 +1,7 @@
 name: Server Release
 
 on:
-  create:
+  push:
     tags:
       - v\d+.\d+.\d+
 
