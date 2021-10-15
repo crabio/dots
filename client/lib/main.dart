@@ -1,13 +1,14 @@
 // External
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:dots_client/bloc_middleware.dart';
-import 'package:dots_client/pages/main/page.dart';
-import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:logging/logging.dart' as log;
 
 // Internal
+import 'package:dots_client/utils/bloc_middleware.dart';
+import 'package:dots_client/pages/main/page.dart';
+import 'package:dots_client/settings/settings.dart';
 import 'theme.dart';
 
 void main() async {
@@ -44,7 +45,7 @@ class App extends StatelessWidget {
           title: 'Dots App',
           theme: theme,
           darkTheme: darkTheme,
-          home: const MainPage(),
+          home: MainPage(geolocator: GeolocatorPlatform.instance),
         ),
       ),
     );

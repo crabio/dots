@@ -26,16 +26,19 @@ dependencies:
 
   logging: any
   flutter_bloc: ^7.3.0
+  equatable: any
+  bloc_test: any
   settings_ui: any
   json_serializable: any
   copy_with_extension_gen: any
   shared_preferences: any
   adaptive_theme: any
-  grpc: ^3.0.2
+  grpc: any
   geolocator: any
   flutter_map: any
   latlong2: any
   numberpicker: any
+  mockito: any
 
 dev_dependencies:
   flutter_test:

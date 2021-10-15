@@ -5,6 +5,7 @@ import 'package:dots_client/settings/settings.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
@@ -31,7 +32,12 @@ class SpotSettingsPage extends StatelessWidget {
           title: const Text('Dots'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => navPopAndPush(context, const MainPage()),
+            onPressed: () => navPopAndPush(
+              context,
+              MainPage(
+                geolocator: GeolocatorPlatform.instance,
+              ),
+            ),
           ),
           actions: [
             IconButton(
