@@ -1,9 +1,9 @@
 // External
-import 'package:dots_client/utils/bloc_middleware.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Internal
+import 'package:dots_client/utils/bloc_middleware.dart';
 
 void main() {
   test('Test Bloc middleware', () {

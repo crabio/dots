@@ -11,42 +11,60 @@ import 'state.dart';
 
 class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   final AppSettings settings;
+  final GeolocatorPlatform geolocator;
 
   final _logger = Logger("MainPageBloc");
 
   MainPageBloc({
+    required this.geolocator,
     required this.settings,
   }) : super(InitingState()) {
-    on<InitEvent>((event, emit) async {
-      _logger.fine("Check geolocation permission");
-      LocationPermission permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.always &&
-          permission != LocationPermission.whileInUse) {
-        emit(LocationsPermissionIsNotAllowedState());
-      }
-
-      _logger.fine("Get last known position");
-      final position = await Geolocator.getLastKnownPosition();
-      if (position != null) {
-        emit(InitedState(
-            position: LatLng(position.latitude, position.longitude)));
-      } else {
-        emit(CouldntGetPositionState());
-      }
-
-      _logger.fine("Subscribe on location");
-      Geolocator.getPositionStream(
-        desiredAccuracy: LocationAccuracy.high,
-      ).listen((position) => add(NewGeoPositionEvent(
-              position: LatLng(
-            position.latitude,
-            position.longitude,
-          ))));
-    });
-    on<NewGeoPositionEvent>((event, emit) async {
-      emit(InitedState(position: event.position));
-    });
+    on<InitEvent>(_onInitEvent);
+    on<NewGeoPositionEvent>(_onNewGeoPositionEvent);
 
     add(InitEvent());
+  }
+
+  void _onInitEvent(
+    InitEvent event,
+    Emitter<MainPageState> emit,
+  ) async {
+    _logger.fine("Check geolocation permission");
+    LocationPermission permission = await geolocator.requestPermission();
+    if (permission != LocationPermission.always &&
+        permission != LocationPermission.whileInUse) {
+      emit(LocationsPermissionIsNotAllowedState());
+    }
+
+    _logger.fine("Get last known position");
+    final position = await geolocator.getLastKnownPosition();
+    if (position != null) {
+      emit(InitedState(
+        position: LatLng(
+          position.latitude,
+          position.longitude,
+        ),
+      ));
+    } else {
+      emit(CouldntGetPositionState());
+    }
+
+    _logger.fine("Subscribe on location");
+    geolocator
+        .getPositionStream(
+          desiredAccuracy: LocationAccuracy.high,
+        )
+        .listen((position) => add(NewGeoPositionEvent(
+                position: LatLng(
+              position.latitude,
+              position.longitude,
+            ))));
+  }
+
+  void _onNewGeoPositionEvent(
+    NewGeoPositionEvent event,
+    Emitter<MainPageState> emit,
+  ) async {
+    emit(InitedState(position: event.position));
   }
 }
