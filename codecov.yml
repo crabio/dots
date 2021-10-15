@@ -1,0 +1,4 @@
+ignore:
+  # Flutter
+  - "**/*.pb.dart"
+  - "**/*.pbgrpc.dart"
