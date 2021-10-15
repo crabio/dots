@@ -26,6 +26,7 @@ dependencies:
 
   logging: any
   flutter_bloc: ^7.3.0
+  bloc_test: any
   settings_ui: any
   json_serializable: any
   copy_with_extension_gen: any

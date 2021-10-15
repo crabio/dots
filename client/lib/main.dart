@@ -1,6 +1,6 @@
 // External
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:dots_client/bloc_middleware.dart';
+import 'package:dots_client/utils/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
