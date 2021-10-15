@@ -44,9 +44,14 @@ jobs:
           flutter-version: "2.2.3"
       - name: Test
         run: make unit-test
-      - name: Upload coverage to codecov
-        run: curl -s https://codecov.io/bash -t ${{ secrets.CODECOV_TOKEN }}
-        shell: bash
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: client/coverage/lcov.info
+          flags: client
+          fail_ci_if_error: false
+          verbose: true
 
   # lint:
   #   name: Lint
