@@ -1,5 +1,4 @@
 // External
-import 'package:dots_client/pages/main/form.dart';
 import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/pages/settings/page.dart';
 import 'package:dots_client/settings/settings.dart';

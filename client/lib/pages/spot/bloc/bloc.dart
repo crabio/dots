@@ -1,6 +1,5 @@
 // External
 import 'package:dots_client/settings/settings.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
