@@ -3,6 +3,10 @@ install:
 	dart pub global activate protoc_plugin
 
 generate:
+	@echo "Update Dart packages"
+	dart pub get
+	@echo "Update Flutter packages"
+	flutter pub get
 	@echo "Generate flutter files"
 	flutter pub run build_runner build --delete-conflicting-outputs
 	@echo "Generate protobuf files"
@@ -12,9 +16,9 @@ lint:
 	@echo "Run linter"
 	flutter analyze
 
-test:
+unit-test:
 	@echo "Run unit tests"
-	flutter test
+	flutter test --coverage
 
 run:
 	@echo "Run app"

@@ -1,4 +1,6 @@
 // External
+import 'package:dots_client/pages/main/page.dart';
+import 'package:dots_client/pages/settings/page.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,20 +9,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dots_client/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Go to settings', (WidgetTester tester) async {
+    // Build app
     await tester.pumpWidget(App(settings: AppSettings()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Check that app on main page
+    expect(find.byType(MainPage), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Tap settings btn
+    await tester.tap(find.byKey(const Key("settings_btn")));
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Check that app on settings page
+    expect(find.byType(SettingsPage), findsOneWidget);
   });
 }

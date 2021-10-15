@@ -44,7 +44,7 @@ class App extends StatelessWidget {
           title: 'Dots App',
           theme: theme,
           darkTheme: darkTheme,
-          home: MainPage(),
+          home: const MainPage(),
         ),
       ),
     );

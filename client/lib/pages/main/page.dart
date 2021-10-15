@@ -23,6 +23,7 @@ class MainPage extends StatelessWidget {
           title: const Text('Dots'),
           actions: [
             IconButton(
+              key: const Key("settings_btn"),
               onPressed: () => navPush(
                 context,
                 const SettingsPage(),

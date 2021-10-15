@@ -16,7 +16,7 @@ jobs:
       image: golang:latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Install tools
         run: make install
       - name: Regenerate files
@@ -32,7 +32,7 @@ jobs:
       image: golang:latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Install tools
         run: make install
       - name: Test
@@ -41,8 +41,8 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./server/coverage.txt
-          flags: unittests
+          files: server/coverage.txt
+          flags: server
           fail_ci_if_error: false
           verbose: true
 
@@ -54,7 +54,7 @@ jobs:
       image: golang:latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Install tools
         run: make install
       - name: Lint
@@ -71,7 +71,7 @@ jobs:
       image: golang:latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Build artifact
         run: make build
       - name: Archive artifacts
