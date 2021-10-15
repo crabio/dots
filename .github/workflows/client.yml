@@ -9,30 +9,30 @@ defaults:
     working-directory: client
 
 jobs:
-  generate:
-    name: Regenerate files
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "2.2.3"
-      - uses: arduino/setup-protoc@v1
-        with:
-          version: "3.x"
-      - name: Install tools
-        run: make install
-      - name: Regenerate files
-        run: make generate
-      - name: Check for a diff
-        run: git diff --exit-code
+  # generate:
+  #   name: Regenerate files
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-java@v1
+  #       with:
+  #         java-version: "12.x"
+  #     - uses: subosito/flutter-action@v1
+  #       with:
+  #         flutter-version: "2.2.3"
+  #     - uses: arduino/setup-protoc@v1
+  #       with:
+  #         version: "3.x"
+  #     - name: Install tools
+  #       run: make install
+  #     - name: Regenerate files
+  #       run: make generate
+  #     - name: Check for a diff
+  #       run: git diff --exit-code
 
   test:
     name: Test
-    needs: generate
+    # needs: generate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -48,17 +48,17 @@ jobs:
         run: curl -s https://codecov.io/bash -t ${{ secrets.CODECOV_TOKEN }}
         shell: bash
 
-  lint:
-    name: Lint
-    needs: generate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "2.2.3"
-      - name: Lint
-        run: make lint
+  # lint:
+  #   name: Lint
+  #   needs: generate
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-java@v1
+  #       with:
+  #         java-version: "12.x"
+  #     - uses: subosito/flutter-action@v1
+  #       with:
+  #         flutter-version: "2.2.3"
+  #     - name: Lint
+  #       run: make lint
