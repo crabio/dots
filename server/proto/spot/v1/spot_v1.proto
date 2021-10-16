@@ -3,8 +3,6 @@ syntax = "proto3";
 package spot.v1;
 option go_package = "github.com/iakrevetkho/archaeopteryx_example;user";
 
-import "google/api/annotations.proto";
-
 // Spot service is controlling game spots
 service SpotService {
   rpc CreateSpot (CreateSpotRequest) returns (CreateSpotResponse) {}

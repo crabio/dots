@@ -29,16 +29,14 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
       );
 
       final stub = SpotServiceClient(channel);
-      final request = GetSpotRequest(
-        uuid: event.spotUuid,
-      );
+      final request = GetSpotRequest(spotUuid: event.spotUuid);
       try {
         final response = await stub.getSpot(request);
 
         emit(InitedState(
           spotPosition: LatLng(
-            response.latiitude,
-            response.longitude,
+            response.position.latitude,
+            response.position.longitude,
           ),
           zoneRadius: response.radius,
           scanPeriod: Duration(seconds: response.scanPeriodInSeconds),

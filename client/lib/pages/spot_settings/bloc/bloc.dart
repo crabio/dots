@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 
 // Internal
-import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart';
+import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 import 'events.dart';
 import 'state.dart';
 
@@ -65,16 +65,18 @@ class SpotSettingsPageBloc
             ),
           );
 
-          final stub = SpotServiceClient(channel);
-          final request = CreateSpotRequest(
-            latiitude: event.position.latitude,
-            longitude: event.position.longitude,
+          final stub = proto.SpotServiceClient(channel);
+          final request = proto.CreateSpotRequest(
+            position: proto.Position(
+              latitude: event.position.latitude,
+              longitude: event.position.longitude,
+            ),
           );
           try {
             final response = await stub.createSpot(request);
 
             emit(NewSpotCreatedState(
-              spotUuid: response.uuid,
+              spotUuid: response.spotUuid,
               position: LatLng(
                 event.position.latitude,
                 event.position.longitude,
