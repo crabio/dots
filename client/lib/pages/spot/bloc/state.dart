@@ -1,7 +1,13 @@
 // External
+import 'package:equatable/equatable.dart';
 import 'package:latlong2/latlong.dart';
 
-abstract class SpotPageState {}
+abstract class SpotPageState extends Equatable {
+  const SpotPageState();
+
+  @override
+  List<Object> get props => [];
+}
 
 // Initial page state
 class InitingState extends SpotPageState {}
@@ -14,17 +20,28 @@ class InitedState extends SpotPageState {
   final Duration scanPeriod;
   final Duration zonePeriod;
 
-  InitedState({
+  const InitedState({
     required this.spotPosition,
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
   });
+
+  @override
+  List<Object> get props => [
+        spotPosition,
+        zoneRadius,
+        scanPeriod,
+        zonePeriod,
+      ];
 }
 
 // State inited with error
 class InitErrorState extends SpotPageState {
   final Exception exception;
 
-  InitErrorState({required this.exception});
+  const InitErrorState({required this.exception});
+
+  @override
+  List<Object> get props => [exception];
 }
