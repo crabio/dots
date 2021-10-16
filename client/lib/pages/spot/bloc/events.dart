@@ -10,14 +10,7 @@ class SpotPageEvent extends Equatable {
 }
 
 /// Event for initing all required components
-class InitEvent extends SpotPageEvent {
-  final String spotUuid;
-
-  const InitEvent({required this.spotUuid});
-
-  @override
-  List<Object> get props => [spotUuid];
-}
+class InitEvent extends SpotPageEvent {}
 
 /// New geo location event
 class NewGeoPositionEvent extends SpotPageEvent {

@@ -11,12 +11,12 @@ import 'state.dart';
 
 class SpotSettingsPageBloc
     extends Bloc<SpotSettingsPageEvent, SpotSettingsPageState> {
-  final ClientChannel channel;
+  final proto.SpotServiceClient client;
 
   final _logger = Logger("SpotSettingsPageBloc");
 
   SpotSettingsPageBloc({
-    required this.channel,
+    required this.client,
     required position,
   }) : super(InitedState(
           position: position,
@@ -56,7 +56,6 @@ class SpotSettingsPageBloc
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
           ));
-          final stub = proto.SpotServiceClient(channel);
           final request = proto.CreateSpotRequest(
             position: proto.Position(
               latitude: event.position.latitude,
@@ -64,7 +63,7 @@ class SpotSettingsPageBloc
             ),
           );
           try {
-            final response = await stub.createSpot(request);
+            final response = await client.createSpot(request);
 
             emit(NewSpotCreatedState(
               spotUuid: response.spotUuid,
@@ -82,7 +81,6 @@ class SpotSettingsPageBloc
               exception: ex,
             ));
           }
-          await channel.shutdown();
         } else {}
       },
     );

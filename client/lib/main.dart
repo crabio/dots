@@ -7,6 +7,7 @@ import 'package:grpc/grpc.dart';
 import 'package:logging/logging.dart' as log;
 
 // Internal
+import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 import 'package:dots_client/utils/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/settings/settings.dart';
@@ -39,12 +40,14 @@ class App extends StatelessWidget {
         RepositoryProvider<AppSettings>(create: (context) => settings),
         RepositoryProvider<GeolocatorPlatform>(
             create: (context) => GeolocatorPlatform.instance),
-        RepositoryProvider<ClientChannel>(
-            create: (context) => ClientChannel(
-                  settings.environment.host,
-                  port: settings.environment.port,
-                  options: const ChannelOptions(
-                    credentials: ChannelCredentials.insecure(),
+        RepositoryProvider<proto.SpotServiceClient>(
+            create: (context) => proto.SpotServiceClient(
+                  ClientChannel(
+                    settings.environment.host,
+                    port: settings.environment.port,
+                    options: const ChannelOptions(
+                      credentials: ChannelCredentials.insecure(),
+                    ),
                   ),
                 )),
       ],

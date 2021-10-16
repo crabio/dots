@@ -10,6 +10,7 @@ import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
+import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 import 'form.dart';
 import 'bloc/bloc.dart';
 
@@ -25,7 +26,7 @@ class SpotSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SpotSettingsPageBloc(
-        channel: RepositoryProvider.of<ClientChannel>(context),
+        client: RepositoryProvider.of<proto.SpotServiceClient>(context),
         position: userPosition,
       ),
       child: Scaffold(

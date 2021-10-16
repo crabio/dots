@@ -20,23 +20,38 @@ class SpotForm extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is InitedState) {
-          return _buildInitedState(context, state);
+          return _InitedStateView(
+            playerPosition: state.playerPosition,
+            spotPosition: state.spotPosition,
+            zoneRadius: state.zoneRadius,
+          );
         }
 
         return Text("Unkown state: $state");
       },
     );
   }
+}
 
-  Widget _buildMap({
-    required LatLng position,
-    required LatLng spotPosition,
-    required double zoom,
-  }) {
+class _InitedStateView extends StatelessWidget {
+  final LatLng playerPosition;
+  final LatLng spotPosition;
+  // Spot radius in meters
+  final int zoneRadius;
+
+  const _InitedStateView({
+    required this.playerPosition,
+    required this.spotPosition,
+    required this.zoneRadius,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
-        center: position,
-        zoom: zoom,
+        center: playerPosition,
+        zoom: 17.0,
       ),
       layers: [
         TileLayerOptions(
@@ -48,9 +63,9 @@ class SpotForm extends StatelessWidget {
         ),
         MarkerLayerOptions(
           markers: [
-            // User position pointer
+            // Player position pointer
             Marker(
-              point: position,
+              point: playerPosition,
               builder: (ctx) => const Icon(
                 Icons.circle,
               ),
@@ -76,21 +91,6 @@ class SpotForm extends StatelessWidget {
             radius: 200,
           ),
         ])
-      ],
-    );
-  }
-
-  Widget _buildInitedState(
-    BuildContext context,
-    InitedState state,
-  ) {
-    return Stack(
-      children: [
-        _buildMap(
-          position: state.spotPosition,
-          spotPosition: state.spotPosition,
-          zoom: 17.0,
-        ),
       ],
     );
   }
