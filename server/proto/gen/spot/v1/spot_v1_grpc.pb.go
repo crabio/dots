@@ -21,6 +21,7 @@ type SpotServiceClient interface {
 	CreateSpot(ctx context.Context, in *CreateSpotRequest, opts ...grpc.CallOption) (*CreateSpotResponse, error)
 	GetSpot(ctx context.Context, in *GetSpotRequest, opts ...grpc.CallOption) (*GetSpotResponse, error)
 	SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error)
+	GetPlayersPositions(ctx context.Context, in *GetPlayersPositionsRequest, opts ...grpc.CallOption) (SpotService_GetPlayersPositionsClient, error)
 }
 
 type spotServiceClient struct {
@@ -83,6 +84,38 @@ func (x *spotServiceSendPlayerPositionClient) CloseAndRecv() (*SendPlayerPositio
 	return m, nil
 }
 
+func (c *spotServiceClient) GetPlayersPositions(ctx context.Context, in *GetPlayersPositionsRequest, opts ...grpc.CallOption) (SpotService_GetPlayersPositionsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[1], "/spot.v1.SpotService/GetPlayersPositions", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &spotServiceGetPlayersPositionsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SpotService_GetPlayersPositionsClient interface {
+	Recv() (*GetPlayersPositionsResponse, error)
+	grpc.ClientStream
+}
+
+type spotServiceGetPlayersPositionsClient struct {
+	grpc.ClientStream
+}
+
+func (x *spotServiceGetPlayersPositionsClient) Recv() (*GetPlayersPositionsResponse, error) {
+	m := new(GetPlayersPositionsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // SpotServiceServer is the server API for SpotService service.
 // All implementations must embed UnimplementedSpotServiceServer
 // for forward compatibility
@@ -90,6 +123,7 @@ type SpotServiceServer interface {
 	CreateSpot(context.Context, *CreateSpotRequest) (*CreateSpotResponse, error)
 	GetSpot(context.Context, *GetSpotRequest) (*GetSpotResponse, error)
 	SendPlayerPosition(SpotService_SendPlayerPositionServer) error
+	GetPlayersPositions(*GetPlayersPositionsRequest, SpotService_GetPlayersPositionsServer) error
 	mustEmbedUnimplementedSpotServiceServer()
 }
 
@@ -105,6 +139,9 @@ func (UnimplementedSpotServiceServer) GetSpot(context.Context, *GetSpotRequest) 
 }
 func (UnimplementedSpotServiceServer) SendPlayerPosition(SpotService_SendPlayerPositionServer) error {
 	return status.Errorf(codes.Unimplemented, "method SendPlayerPosition not implemented")
+}
+func (UnimplementedSpotServiceServer) GetPlayersPositions(*GetPlayersPositionsRequest, SpotService_GetPlayersPositionsServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetPlayersPositions not implemented")
 }
 func (UnimplementedSpotServiceServer) mustEmbedUnimplementedSpotServiceServer() {}
 
@@ -181,6 +218,27 @@ func (x *spotServiceSendPlayerPositionServer) Recv() (*SendPlayerPositionRequest
 	return m, nil
 }
 
+func _SpotService_GetPlayersPositions_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetPlayersPositionsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SpotServiceServer).GetPlayersPositions(m, &spotServiceGetPlayersPositionsServer{stream})
+}
+
+type SpotService_GetPlayersPositionsServer interface {
+	Send(*GetPlayersPositionsResponse) error
+	grpc.ServerStream
+}
+
+type spotServiceGetPlayersPositionsServer struct {
+	grpc.ServerStream
+}
+
+func (x *spotServiceGetPlayersPositionsServer) Send(m *GetPlayersPositionsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // SpotService_ServiceDesc is the grpc.ServiceDesc for SpotService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -202,6 +260,11 @@ var SpotService_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "SendPlayerPosition",
 			Handler:       _SpotService_SendPlayerPosition_Handler,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "GetPlayersPositions",
+			Handler:       _SpotService_GetPlayersPositions_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "spot/v1/spot_v1.proto",

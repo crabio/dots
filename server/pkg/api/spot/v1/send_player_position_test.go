@@ -17,7 +17,7 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
-type MockhSendPlayerPositionServer struct {
+type MockSendPlayerPositionServer struct {
 	SpotUuid   uuid.UUID
 	PlayerUuid uuid.UUID
 	MsgCount   uint32
@@ -26,7 +26,7 @@ type MockhSendPlayerPositionServer struct {
 	grpc.ServerStream
 }
 
-func (s *MockhSendPlayerPositionServer) Recv() (*proto.SendPlayerPositionRequest, error) {
+func (s *MockSendPlayerPositionServer) Recv() (*proto.SendPlayerPositionRequest, error) {
 	if s.MsgCount > 0 {
 		s.Lock()
 		s.MsgCount -= 1
@@ -44,7 +44,7 @@ func (s *MockhSendPlayerPositionServer) Recv() (*proto.SendPlayerPositionRequest
 	}
 }
 
-func (s *MockhSendPlayerPositionServer) SendAndClose(*proto.SendPlayerPositionResponse) error {
+func (s *MockSendPlayerPositionServer) SendAndClose(*proto.SendPlayerPositionResponse) error {
 	s.Lock()
 	s.Closed = true
 	s.Unlock()
@@ -70,20 +70,19 @@ func TestSendPlayerPosition(t *testing.T) {
 	playerUuid := uuid.New()
 
 	// Create stream for sending position
-	mockServer := MockhSendPlayerPositionServer{
+	mockServer := MockSendPlayerPositionServer{
 		SpotUuid:   spotUuid,
 		PlayerUuid: playerUuid,
 		MsgCount:   5,
 	}
 
-	// Expect closed stream error
 	assert.NoError(t, s.SendPlayerPosition(&mockServer))
 
 	assert.Equal(t, uint32(0), mockServer.MsgCount)
 	assert.True(t, mockServer.Closed)
 
 	spot := s.SpotsMap[spotUuid]
-	playerPosition := spot.PlayerPositions[playerUuid]
+	playerPosition := spot.PlayersPositionsMap[playerUuid]
 	assert.Equal(t, float64(10), playerPosition.Latitude)
 	assert.Equal(t, float64(20), playerPosition.Longitude)
 }

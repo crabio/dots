@@ -40,7 +40,7 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 		}
 
-		spot.PlayerPositions[playerUuid] = Position{
+		spot.PlayersPositionsMap[playerUuid] = Position{
 			Latitude:  request.Position.Latitude,
 			Longitude: request.Position.Longitude,
 		}

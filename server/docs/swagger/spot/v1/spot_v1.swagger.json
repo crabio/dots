@@ -52,6 +52,20 @@
         }
       }
     },
+    "v1GetPlayersPositionsResponse": {
+      "type": "object",
+      "properties": {
+        "playerPosition": {
+          "$ref": "#/definitions/v1Position"
+        },
+        "otherPlayersPositions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1PlayerPosition"
+          }
+        }
+      }
+    },
     "v1GetSpotResponse": {
       "type": "object",
       "properties": {
@@ -69,6 +83,17 @@
         "zonePeriodInSeconds": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "v1PlayerPosition": {
+      "type": "object",
+      "properties": {
+        "playerUuid": {
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/definitions/v1Position"
         }
       }
     },
