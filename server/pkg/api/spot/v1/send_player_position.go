@@ -49,6 +49,6 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			"spotUuid":   spotUuid,
 			"playeruuid": playerUuid,
 			"position":   request.Position,
-		}).Debug("Player position updated")
+		}).Trace("Player position updated")
 	}
 }
