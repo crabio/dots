@@ -27,9 +27,8 @@ func (s *SpotServiceServer) GetPlayersPositions(request *proto.GetPlayersPositio
 	}
 
 	// Create ticker for sending data updates
-	// TODO Period should be in the config
 	// TODO Use channels instead timers. Create channel to send position update to specific user
-	ticker := time.NewTicker(1 * time.Second)
+	ticker := time.NewTicker(s.playersPosUpdatePeriod)
 
 	// For each ticker tick
 	for _ = range ticker.C {
@@ -58,8 +57,8 @@ func (s *SpotServiceServer) GetPlayersPositions(request *proto.GetPlayersPositio
 			otherPlayersPositions = append(otherPlayersPositions, &proto.PlayerPosition{
 				PlayerUuid: uuid.NewString(),
 				Position: &proto.Position{
-					Latitude:  thisPlayerPosition.Latitude + rand.Float64()*(0.002-0.002),
-					Longitude: thisPlayerPosition.Longitude + rand.Float64()*(0.002-0.002),
+					Latitude:  thisPlayerPosition.Latitude + (rand.Float64()*0.004 - 0.002),
+					Longitude: thisPlayerPosition.Longitude + (rand.Float64()*0.004 - 0.002),
 				},
 			})
 		}

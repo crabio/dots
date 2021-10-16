@@ -8,32 +8,32 @@ import (
 
 	// Internal
 	"github.com/iakrevetkho/archaeopteryx"
-	archaeopteryx_config "github.com/iakrevetkho/archaeopteryx/config"
 	archaeopteryx_service "github.com/iakrevetkho/archaeopteryx/service"
 	"github.com/iakrevetkho/dots/server/docs"
 	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
+	"github.com/iakrevetkho/dots/server/pkg/config"
 )
 
 func main() {
 	log := logrus.WithField("component", "main")
 
 	// Init archeopteryx config
-	conf := new(archaeopteryx_config.Config)
+	conf := new(config.Config)
 	if err := configor.Load(conf, "config.yml"); err != nil {
 		log.WithError(err).Fatal("couldn't init config")
 	}
 
 	// Add swagger docs
-	conf.Docs.DocsFS = &docs.Swagger
-	conf.Docs.DocsRootFolder = "swagger"
+	conf.ServerConfig.Docs.DocsFS = &docs.Swagger
+	conf.ServerConfig.Docs.DocsRootFolder = "swagger"
 
 	// Init services
 	services := []archaeopteryx_service.IServiceServer{
-		api_spot_v1.New(),
+		api_spot_v1.New(conf.PlayersPositionsUpdatePeriod),
 	}
 
 	// Create archeopteryx server
-	server, err := archaeopteryx.New(conf, services)
+	server, err := archaeopteryx.New(&conf.ServerConfig, services)
 	if err != nil {
 		log.WithError(err).Fatal("couldn't init server")
 	}

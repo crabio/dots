@@ -16,7 +16,7 @@ import 'theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  log.Logger.root.level = log.Level.FINER;
+  log.Logger.root.level = log.Level.FINE;
   log.Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');

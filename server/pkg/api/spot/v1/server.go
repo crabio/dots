@@ -3,6 +3,7 @@ package api_spot_v1
 import (
 	// External
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -19,6 +20,8 @@ type SpotServiceServer struct {
 	// Required to have revese compatability
 	proto.UnimplementedSpotServiceServer
 
+	playersPosUpdatePeriod time.Duration
+
 	// Map with all spots on server
 	//
 	// key - spot UUID
@@ -26,9 +29,10 @@ type SpotServiceServer struct {
 	SpotsMap map[uuid.UUID]Spot
 }
 
-func New() *SpotServiceServer {
+func New(playersPosUpdatePeriod time.Duration) *SpotServiceServer {
 	s := new(SpotServiceServer)
 	s.log = logger.CreateLogger("spot-v1")
+	s.playersPosUpdatePeriod = playersPosUpdatePeriod
 	s.SpotsMap = make(map[uuid.UUID]Spot)
 
 	return s
