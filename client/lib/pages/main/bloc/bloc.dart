@@ -1,5 +1,4 @@
 // External
-import 'package:dots_client/settings/settings.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -10,14 +9,12 @@ import 'events.dart';
 import 'state.dart';
 
 class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
-  final AppSettings settings;
   final GeolocatorPlatform geolocator;
 
   final _logger = Logger("MainPageBloc");
 
   MainPageBloc({
     required this.geolocator,
-    required this.settings,
   }) : super(InitingState()) {
     on<InitEvent>(_onInitEvent);
     on<NewGeoPositionEvent>(_onNewGeoPositionEvent);

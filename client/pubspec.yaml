@@ -39,6 +39,7 @@ dependencies:
   latlong2: any
   numberpicker: any
   mockito: any
+  dartz: any
 
 dev_dependencies:
   flutter_test:

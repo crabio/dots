@@ -1,5 +1,4 @@
 // External
-import 'package:dots_client/settings/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
@@ -12,12 +11,12 @@ import 'state.dart';
 
 class SpotSettingsPageBloc
     extends Bloc<SpotSettingsPageEvent, SpotSettingsPageState> {
-  final AppSettings appSettings;
+  final ClientChannel channel;
 
   final _logger = Logger("SpotSettingsPageBloc");
 
   SpotSettingsPageBloc({
-    required this.appSettings,
+    required this.channel,
     required position,
   }) : super(InitedState(
           position: position,
@@ -57,14 +56,6 @@ class SpotSettingsPageBloc
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
           ));
-          final channel = ClientChannel(
-            appSettings.environment.host,
-            port: appSettings.environment.port,
-            options: const ChannelOptions(
-              credentials: ChannelCredentials.insecure(),
-            ),
-          );
-
           final stub = proto.SpotServiceClient(channel);
           final request = proto.CreateSpotRequest(
             position: proto.Position(

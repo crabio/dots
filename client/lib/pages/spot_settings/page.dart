@@ -6,6 +6,7 @@ import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
@@ -24,7 +25,7 @@ class SpotSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SpotSettingsPageBloc(
-        appSettings: RepositoryProvider.of<AppSettings>(context),
+        channel: RepositoryProvider.of<ClientChannel>(context),
         position: userPosition,
       ),
       child: Scaffold(
@@ -34,9 +35,7 @@ class SpotSettingsPage extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
             onPressed: () => navPopAndPush(
               context,
-              MainPage(
-                geolocator: GeolocatorPlatform.instance,
-              ),
+              const MainPage(),
             ),
           ),
           actions: [
