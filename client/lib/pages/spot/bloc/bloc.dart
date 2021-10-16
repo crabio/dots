@@ -45,6 +45,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
                 playerPosition!.latitude,
                 playerPosition.longitude,
               ),
+              otherPlayersPositions: const [],
               spotPosition: LatLng(
                 r.position.latitude,
                 r.position.longitude,
@@ -135,8 +136,6 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     NewPlayersGeoPositionEvent event,
     Emitter<SpotPageState> emit,
   ) async {
-    _logger.fine("NewPlayersGeoPositionEvent: ${event.playerPosition}");
-    _logger.fine("NewPlayersGeoPositionEvent: ${event.otherPlayersPositions}");
     final curState = state;
     if (curState is InitedState) {
       emit(curState.copyWith(
