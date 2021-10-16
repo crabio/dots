@@ -23,13 +23,13 @@ type SpotServiceServer struct {
 	//
 	// key - spot UUID
 	// value - spot session data
-	spotsMap map[uuid.UUID]Spot
+	SpotsMap map[uuid.UUID]Spot
 }
 
 func New() *SpotServiceServer {
 	s := new(SpotServiceServer)
 	s.log = logger.CreateLogger("spot-v1")
-	s.spotsMap = make(map[uuid.UUID]Spot)
+	s.SpotsMap = make(map[uuid.UUID]Spot)
 
 	return s
 }

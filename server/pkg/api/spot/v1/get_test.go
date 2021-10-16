@@ -17,8 +17,10 @@ func TestGetSpot(t *testing.T) {
 
 	// Create spot
 	createRequest := &proto.CreateSpotRequest{
-		Latiitude:           11.2344,
-		Longitude:           -234.12244,
+		Position: &proto.Position{
+			Latitude:  11.2344,
+			Longitude: -234.12244,
+		},
 		Radius:              200,
 		ScanPeriodInSeconds: 30,
 		ZonePeriodInSeconds: 60,
@@ -28,14 +30,14 @@ func TestGetSpot(t *testing.T) {
 
 	// Get spot
 	getRequest := &proto.GetSpotRequest{
-		Uuid: createResponse.Uuid,
+		SpotUuid: createResponse.SpotUuid,
 	}
 
 	getResponse, err := s.GetSpot(context.Background(), getRequest)
 	assert.NoError(t, err)
-	assert.Equal(t, getResponse.Latiitude, 11.2344)
-	assert.Equal(t, getResponse.Longitude, -234.12244)
-	assert.Equal(t, getResponse.Radius, int32(200))
-	assert.Equal(t, getResponse.ScanPeriodInSeconds, int32(30))
-	assert.Equal(t, getResponse.ZonePeriodInSeconds, int32(60))
+	assert.Equal(t, 11.2344, getResponse.Position.Latitude)
+	assert.Equal(t, -234.12244, getResponse.Position.Longitude)
+	assert.Equal(t, int32(200), getResponse.Radius)
+	assert.Equal(t, int32(30), getResponse.ScanPeriodInSeconds)
+	assert.Equal(t, int32(60), getResponse.ZonePeriodInSeconds)
 }

@@ -16,17 +16,20 @@ func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.Creat
 
 	spotUUID := uuid.New()
 
-	s.spotsMap[spotUUID] = Spot{
-		Longitude:  request.Longitude,
-		Latiitude:  request.Latiitude,
-		Radius:     request.Radius,
-		ScanPeriod: time.Second * time.Duration(request.ScanPeriodInSeconds),
-		ZonePeriod: time.Second * time.Duration(request.ZonePeriodInSeconds),
+	s.SpotsMap[spotUUID] = Spot{
+		Position: Position{
+			Latitude:  request.Position.Latitude,
+			Longitude: request.Position.Longitude,
+		},
+		Radius:          request.Radius,
+		ScanPeriod:      time.Second * time.Duration(request.ScanPeriodInSeconds),
+		ZonePeriod:      time.Second * time.Duration(request.ZonePeriodInSeconds),
+		PlayerPositions: make(map[uuid.UUID]Position),
 	}
 	s.log.WithField("uuid", spotUUID).Debug("New spot created")
 
 	response := proto.CreateSpotResponse{
-		Uuid: spotUUID.String(),
+		SpotUuid: spotUUID.String(),
 	}
 	s.log.WithField("response", response.String()).Trace("Create spot response")
 

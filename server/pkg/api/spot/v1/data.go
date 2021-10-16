@@ -1,14 +1,26 @@
 package api_spot_v1
 
 import (
+	// External
 	"time"
+
+	"github.com/google/uuid"
 	// Internal
 )
 
 type Spot struct {
-	Longitude  float64
-	Latiitude  float64
+	Position   Position
 	Radius     int32
 	ScanPeriod time.Duration
 	ZonePeriod time.Duration
+	// Map with players posiiton
+	//
+	// key - player uuid
+	// value - player position
+	PlayerPositions map[uuid.UUID]Position
+}
+
+type Position struct {
+	Longitude float64
+	Latitude  float64
 }

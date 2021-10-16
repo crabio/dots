@@ -7,39 +7,44 @@ import "google/api/annotations.proto";
 
 // Spot service is controlling game spots
 service SpotService {
-  rpc CreateSpot (CreateSpotRequest) returns (CreateSpotResponse) {
-    option (google.api.http) = {
-      post: "/api/v1/spot"
-      body: "*"
-    };
-  }
-  rpc GetSpot (GetSpotRequest) returns (GetSpotResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/spot"
-    };
-  }
+  rpc CreateSpot (CreateSpotRequest) returns (CreateSpotResponse) {}
+
+  rpc GetSpot (GetSpotRequest) returns (GetSpotResponse) {}
+  
+  rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
+}
+
+message Position {
+  double longitude = 1;
+  double latitude = 2;
 }
 
 message CreateSpotRequest {
-  double longitude = 1;
-  double latiitude = 2;
-  int32 radius = 3;
-  int32 scan_period_in_seconds = 4;
-  int32 zone_period_in_seconds = 5;
+  Position position = 1;
+  int32 radius = 2;
+  int32 scan_period_in_seconds = 3;
+  int32 zone_period_in_seconds = 4;
 }
 
 message CreateSpotResponse {
-  string uuid = 1;
+  string spot_uuid = 1;
 }
 
 message GetSpotRequest {
-  string uuid = 1;
+  string spot_uuid = 1;
 }
 
 message GetSpotResponse {
-  double longitude = 1;
-  double latiitude = 2;
+  Position position = 1;
   int32 radius = 3;
   int32 scan_period_in_seconds = 4;
   int32 zone_period_in_seconds = 5;
 }
+
+message SendPlayerPositionRequest {
+  string spot_uuid = 1;
+  string player_uuid = 2;
+  Position position = 3;
+}
+
+message SendPlayerPositionResponse {}

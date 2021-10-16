@@ -15,68 +15,7 @@
   "produces": [
     "application/json"
   ],
-  "paths": {
-    "/api/v1/spot": {
-      "get": {
-        "operationId": "SpotService_GetSpot",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetSpotResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "SpotService"
-        ]
-      },
-      "post": {
-        "operationId": "SpotService_CreateSpot",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CreateSpotResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1CreateSpotRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SpotService"
-        ]
-      }
-    }
-  },
+  "paths": {},
   "definitions": {
     "protobufAny": {
       "type": "object",
@@ -105,35 +44,10 @@
         }
       }
     },
-    "v1CreateSpotRequest": {
-      "type": "object",
-      "properties": {
-        "longitude": {
-          "type": "number",
-          "format": "double"
-        },
-        "latiitude": {
-          "type": "number",
-          "format": "double"
-        },
-        "radius": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "scanPeriodInSeconds": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "zonePeriodInSeconds": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
     "v1CreateSpotResponse": {
       "type": "object",
       "properties": {
-        "uuid": {
+        "spotUuid": {
           "type": "string"
         }
       }
@@ -141,13 +55,8 @@
     "v1GetSpotResponse": {
       "type": "object",
       "properties": {
-        "longitude": {
-          "type": "number",
-          "format": "double"
-        },
-        "latiitude": {
-          "type": "number",
-          "format": "double"
+        "position": {
+          "$ref": "#/definitions/v1Position"
         },
         "radius": {
           "type": "integer",
@@ -162,6 +71,22 @@
           "format": "int32"
         }
       }
+    },
+    "v1Position": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "format": "double"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "v1SendPlayerPositionResponse": {
+      "type": "object"
     }
   }
 }
