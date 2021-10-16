@@ -7,13 +7,14 @@ import ( // External
 
 	"github.com/google/uuid"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
+	"github.com/sirupsen/logrus"
 )
 
 func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlayerPositionServer) error {
 	s.log.Trace("Open send user position stream")
 
 	for {
-		position, err := stream.Recv()
+		request, err := stream.Recv()
 		if err == io.EOF {
 			// End of stream
 			s.log.Trace("Close user position stream")
@@ -22,9 +23,9 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 		if err != nil {
 			return err
 		}
-		s.log.WithField("position", position.String()).Trace("Open send user position stream")
+		s.log.WithField("request", request.String()).Trace("Open send user position stream")
 
-		spotUuid, err := uuid.Parse(position.SpotUuid)
+		spotUuid, err := uuid.Parse(request.SpotUuid)
 		if err != nil {
 			return fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 		}
@@ -34,14 +35,20 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 		}
 
-		playerUuid, err := uuid.Parse(position.PlayerUuid)
+		playerUuid, err := uuid.Parse(request.PlayerUuid)
 		if err != nil {
 			return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 		}
 
 		spot.PlayerPositions[playerUuid] = Position{
-			Latitude:  position.Position.Latitude,
-			Longitude: position.Position.Longitude,
+			Latitude:  request.Position.Latitude,
+			Longitude: request.Position.Longitude,
 		}
+
+		s.log.WithFields(logrus.Fields{
+			"spotUuid":   spotUuid,
+			"playeruuid": playerUuid,
+			"position":   request.Position,
+		}).Debug("Player position updated")
 	}
 }
