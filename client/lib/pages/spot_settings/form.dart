@@ -49,7 +49,7 @@ class SpotSettingsForm extends StatelessWidget {
           return const CircularProgressIndicator();
         } else if (curState is CreateSpotErrorState) {
           return _SpotSettingsForm(
-            mapController: mapController,
+            mapController: MapController(),
             position: curState.position,
             zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
