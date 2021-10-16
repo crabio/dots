@@ -4,6 +4,7 @@ import (
 	// External
 
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/google/uuid"
@@ -51,6 +52,16 @@ func (s *SpotServiceServer) GetPlayersPositions(request *proto.GetPlayersPositio
 					},
 				})
 			}
+		}
+		// TODO Remove adding fake positions
+		for i := 0; i < 10; i++ {
+			otherPlayersPositions = append(otherPlayersPositions, &proto.PlayerPosition{
+				PlayerUuid: uuid.NewString(),
+				Position: &proto.Position{
+					Latitude:  thisPlayerPosition.Latitude + rand.Float64()*(0.002-0.002),
+					Longitude: thisPlayerPosition.Longitude + rand.Float64()*(0.002-0.002),
+				},
+			})
 		}
 
 		response := &proto.GetPlayersPositionsResponse{
