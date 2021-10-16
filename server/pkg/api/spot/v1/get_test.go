@@ -4,6 +4,7 @@ import (
 	// External
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetSpot(t *testing.T) {
-	s := api_spot_v1.New()
+	s := api_spot_v1.New(100 * time.Millisecond)
 
 	// Create spot
 	createRequest := &proto.CreateSpotRequest{

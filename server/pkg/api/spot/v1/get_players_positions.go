@@ -4,7 +4,6 @@ import (
 	// External
 
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,7 +12,7 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
-func (s *SpotServiceServer) GetPlayersPositions(request *proto.GetPlayersPositionsRequest, stream proto.SpotService_GetPlayersPositionsServer) error {
+func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequest, stream proto.SpotService_GetPlayersStatesServer) error {
 	s.log.WithField("request", request.String()).Trace("Get players positions")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
@@ -38,37 +37,42 @@ func (s *SpotServiceServer) GetPlayersPositions(request *proto.GetPlayersPositio
 			return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 		}
 
-		thisPlayerPosition := spot.PlayersPositionsMap[playerUuid]
+		thisPlayerState := spot.PlayersStateMap[playerUuid]
 
-		otherPlayersPositions := []*proto.PlayerPosition{}
-		for k, v := range spot.PlayersPositionsMap {
+		otherPlayersStates := []*proto.PlayerState{}
+		for k, v := range spot.PlayersStateMap {
 			if k != playerUuid {
-				otherPlayersPositions = append(otherPlayersPositions, &proto.PlayerPosition{
+				otherPlayersStates = append(otherPlayersStates, &proto.PlayerState{
 					PlayerUuid: k.String(),
 					Position: &proto.Position{
-						Latitude:  v.Latitude,
-						Longitude: v.Longitude,
+						Latitude:  v.Position.Latitude,
+						Longitude: v.Position.Longitude,
 					},
+					Health: int32(v.Health),
 				})
 			}
 		}
 		// TODO Remove adding fake positions
-		for i := 0; i < 10; i++ {
-			otherPlayersPositions = append(otherPlayersPositions, &proto.PlayerPosition{
-				PlayerUuid: uuid.NewString(),
-				Position: &proto.Position{
-					Latitude:  thisPlayerPosition.Latitude + (rand.Float64()*0.004 - 0.002),
-					Longitude: thisPlayerPosition.Longitude + (rand.Float64()*0.004 - 0.002),
-				},
-			})
-		}
+		// for i := 0; i < 10; i++ {
+		// 	otherPlayersStates = append(otherPlayersStates, &proto.PlayerState{
+		// 		PlayerUuid: uuid.NewString(),
+		// 		Position: &proto.Position{
+		// 			Latitude:  thisPlayerState.Position.Latitude + (rand.Float64()*0.004 - 0.002),
+		// 			Longitude: thisPlayerState.Position.Longitude + (rand.Float64()*0.004 - 0.002),
+		// 		},
+		// 		Health: int32(rand.Float64() * 100),
+		// 	})
+		// }
 
-		response := &proto.GetPlayersPositionsResponse{
-			PlayerPosition: &proto.Position{
-				Latitude:  thisPlayerPosition.Latitude,
-				Longitude: thisPlayerPosition.Longitude,
+		response := &proto.GetPlayersStatesResponse{
+			PlayerState: &proto.PlayerState{
+				Position: &proto.Position{
+					Latitude:  thisPlayerState.Position.Latitude,
+					Longitude: thisPlayerState.Position.Longitude,
+				},
+				Health: int32(thisPlayerState.Health),
 			},
-			OtherPlayersPositions: otherPlayersPositions,
+			OtherPlayersStates: otherPlayersStates,
 		}
 
 		s.log.WithField("response", response.String()).Trace("Get spot response")

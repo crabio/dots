@@ -11,7 +11,7 @@ service SpotService {
   
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
-  rpc GetPlayersPositions (GetPlayersPositionsRequest) returns (stream GetPlayersPositionsResponse) {}
+  rpc GetPlayersStates (GetPlayersStatesRequest) returns (stream GetPlayersStatesResponse) {}
 }
 
 // RPC structures
@@ -46,24 +46,25 @@ message SendPlayerPositionRequest {
 
 message SendPlayerPositionResponse {}
 
-message GetPlayersPositionsRequest {
+message GetPlayersStatesRequest {
   string spot_uuid = 1;
   string player_uuid = 2;
 }
 
-message GetPlayersPositionsResponse {
-  Position player_position = 1;
-  repeated PlayerPosition other_players_positions = 2;
+message GetPlayersStatesResponse {
+  PlayerState player_state = 1;
+  repeated PlayerState other_players_states = 2;
 }
 
 // Non RPC structures
 
+message PlayerState {
+  string player_uuid = 1;
+  Position position = 2;
+  int32 health = 3;
+}
+
 message Position {
   double longitude = 1;
   double latitude = 2;
-}
-
-message PlayerPosition {
-  string player_uuid = 1;
-  Position position = 2;
 }

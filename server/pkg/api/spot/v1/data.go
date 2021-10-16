@@ -16,8 +16,13 @@ type Spot struct {
 	// Map with players posiiton
 	//
 	// key - player uuid
-	// value - player position
-	PlayersPositionsMap map[uuid.UUID]Position
+	// value - player state
+	PlayersStateMap map[uuid.UUID]PlayerState
+}
+
+type PlayerState struct {
+	Position Position
+	Health   int16
 }
 
 type Position struct {

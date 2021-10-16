@@ -7,6 +7,7 @@ import (
 	"io"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -52,7 +53,7 @@ func (s *MockSendPlayerPositionServer) SendAndClose(*proto.SendPlayerPositionRes
 }
 
 func TestSendPlayerPosition(t *testing.T) {
-	s := api_spot_v1.New()
+	s := api_spot_v1.New(100 * time.Millisecond)
 
 	// Create spot first
 	createSpotRet, err := s.CreateSpot(context.Background(), &proto.CreateSpotRequest{
@@ -82,7 +83,8 @@ func TestSendPlayerPosition(t *testing.T) {
 	assert.True(t, mockServer.Closed)
 
 	spot := s.SpotsMap[spotUuid]
-	playerPosition := spot.PlayersPositionsMap[playerUuid]
-	assert.Equal(t, float64(10), playerPosition.Latitude)
-	assert.Equal(t, float64(20), playerPosition.Longitude)
+	playerState := spot.PlayersStateMap[playerUuid]
+	assert.Equal(t, float64(10), playerState.Position.Latitude)
+	assert.Equal(t, float64(20), playerState.Position.Longitude)
+	assert.Equal(t, int16(100), playerState.Health)
 }

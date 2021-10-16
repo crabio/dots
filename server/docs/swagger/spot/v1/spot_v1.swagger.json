@@ -52,16 +52,16 @@
         }
       }
     },
-    "v1GetPlayersPositionsResponse": {
+    "v1GetPlayersStatesResponse": {
       "type": "object",
       "properties": {
-        "playerPosition": {
-          "$ref": "#/definitions/v1Position"
+        "playerState": {
+          "$ref": "#/definitions/v1PlayerState"
         },
-        "otherPlayersPositions": {
+        "otherPlayersStates": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1PlayerPosition"
+            "$ref": "#/definitions/v1PlayerState"
           }
         }
       }
@@ -86,7 +86,7 @@
         }
       }
     },
-    "v1PlayerPosition": {
+    "v1PlayerState": {
       "type": "object",
       "properties": {
         "playerUuid": {
@@ -94,6 +94,10 @@
         },
         "position": {
           "$ref": "#/definitions/v1Position"
+        },
+        "health": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

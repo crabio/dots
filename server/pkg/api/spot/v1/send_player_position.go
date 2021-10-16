@@ -40,9 +40,24 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 		}
 
-		spot.PlayersPositionsMap[playerUuid] = Position{
-			Latitude:  request.Position.Latitude,
-			Longitude: request.Position.Longitude,
+		// Update player state
+		playerState, ok := spot.PlayersStateMap[playerUuid]
+		if !ok {
+			// New player
+			// TODO Players should be inited on game start
+			spot.PlayersStateMap[playerUuid] = PlayerState{
+				Position: Position{
+					Latitude:  request.Position.Latitude,
+					Longitude: request.Position.Longitude,
+				},
+				Health: 100,
+			}
+		} else {
+			playerState.Position = Position{
+				Latitude:  request.Position.Latitude,
+				Longitude: request.Position.Longitude,
+			}
+			spot.PlayersStateMap[playerUuid] = playerState
 		}
 
 		s.log.WithFields(logrus.Fields{
