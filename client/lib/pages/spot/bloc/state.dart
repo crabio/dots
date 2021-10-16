@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 
 // Internal
+import 'package:dots_client/pages/spot/resources/player_position.dart';
 part 'state.g.dart';
 
 abstract class SpotPageState extends Equatable {
@@ -19,7 +20,9 @@ class InitingState extends SpotPageState {}
 // State when all components are inited
 @CopyWith()
 class InitedState extends SpotPageState {
-  final LatLng playerPosition;
+  final LatLng? playerPosition;
+  final List<PlayerPosition>? otherPlayersPositions;
+
   final LatLng spotPosition;
   // Spot radius in meters
   final int zoneRadius;
@@ -27,7 +30,8 @@ class InitedState extends SpotPageState {
   final Duration zonePeriod;
 
   const InitedState({
-    required this.playerPosition,
+    this.playerPosition,
+    this.otherPlayersPositions,
     required this.spotPosition,
     required this.zoneRadius,
     required this.scanPeriod,

@@ -1,7 +1,9 @@
 // External
 import 'package:dartz/dartz.dart';
+import 'package:dots_client/pages/spot/resources/player_position.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 
@@ -25,7 +27,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     required this.spotUuid,
   }) : super(InitingState()) {
     on<InitEvent>(_onInitEvent);
-    on<NewGeoPositionEvent>(_onNewGeoPositionEvent);
+    on<NewPlayersGeoPositionEvent>(_onNewPlayersGeoPositionEvent);
 
     add(InitEvent());
   }
@@ -52,10 +54,29 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
               zonePeriod: Duration(seconds: r.zonePeriodInSeconds),
             )));
 
-    _logger.fine("Subscribe on location");
+    _logger.fine("Subscribe on geo position");
     _subscribeOnGeoPosition().fold(
       (l) => emit(InitErrorState(exception: l)),
       (r) => null,
+    );
+
+    _logger.fine("Subscribe on players geo positions");
+    _subscribeOnPlayersPositions().fold(
+      (l) => emit(InitErrorState(exception: l)),
+      (r) => r.listen((value) => add(NewPlayersGeoPositionEvent(
+            playerPosition: LatLng(
+              value.playerPosition.latitude,
+              value.playerPosition.longitude,
+            ),
+            otherPlayersPositions: value.otherPlayersPositions
+                .map((e) => PlayerPosition(
+                    playerUuid: e.playerUuid,
+                    position: LatLng(
+                      e.position.latitude,
+                      e.position.longitude,
+                    )))
+                .toList(),
+          ))),
     );
   }
 
@@ -93,20 +114,35 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
       return Left(ex);
     }
 
-    positionStream.listen((position) => add(NewGeoPositionEvent(
-            position: LatLng(
-          position.latitude,
-          position.longitude,
-        ))));
-
     return const Right(true);
   }
 
-  void _onNewGeoPositionEvent(
-      NewGeoPositionEvent event, Emitter<SpotPageState> emit) async {
+  Either<Exception, ResponseStream<proto.GetPlayersPositionsResponse>>
+      _subscribeOnPlayersPositions() {
+    try {
+      final request = proto.GetPlayersPositionsRequest(
+        spotUuid: spotUuid,
+        playerUuid: playerUuid,
+      );
+
+      return Right(client.getPlayersPositions(request));
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
+  }
+
+  void _onNewPlayersGeoPositionEvent(
+    NewPlayersGeoPositionEvent event,
+    Emitter<SpotPageState> emit,
+  ) async {
+    _logger.fine("NewPlayersGeoPositionEvent: ${event.playerPosition}");
+    _logger.fine("NewPlayersGeoPositionEvent: ${event.otherPlayersPositions}");
     final curState = state;
     if (curState is InitedState) {
-      emit(curState.copyWith(playerPosition: event.position));
+      emit(curState.copyWith(
+        playerPosition: event.playerPosition,
+        otherPlayersPositions: event.otherPlayersPositions,
+      ));
     }
   }
 }
