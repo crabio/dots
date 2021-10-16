@@ -42,7 +42,7 @@ class SpotSettingsForm extends StatelessWidget {
             creatingSpot: true,
           );
         } else if (curState is NewSpotCreatedState) {
-          navPushAfterBuild(
+          navPopAndPushAfterBuild(
             context,
             SpotPage(spotUuid: curState.spotUuid),
           );
