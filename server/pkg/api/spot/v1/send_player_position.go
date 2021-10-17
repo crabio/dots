@@ -113,7 +113,7 @@ func startPlayerZoneDamage(spot *Spot, playerUuid uuid.UUID) {
 				spot.PlayersStateMap[playerUuid] = playerState
 				spot.Unlock()
 				return
-			case _ = <-damageTicker.C:
+			case <-damageTicker.C:
 				playerState := spot.PlayersStateMap[playerUuid]
 				logrus.Printf("Damage for %v", playerState)
 				if playerState.Health <= zoneDamage {

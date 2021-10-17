@@ -30,7 +30,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 	ticker := time.NewTicker(s.playersPosUpdatePeriod)
 
 	// For each ticker tick
-	for _ = range ticker.C {
+	for range ticker.C {
 		spot, ok := s.SpotsMap[spotUuid]
 		if !ok {
 			ticker.Stop()

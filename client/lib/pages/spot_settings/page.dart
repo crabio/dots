@@ -1,15 +1,12 @@
 // External
-import 'package:dots_client/pages/main/page.dart';
-import 'package:dots_client/pages/settings/page.dart';
-import 'package:dots_client/settings/settings.dart';
-import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
 
 // Internal
+import 'package:dots_client/pages/main/page.dart';
+import 'package:dots_client/pages/settings/page.dart';
+import 'package:dots_client/utils/nav.dart';
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 import 'form.dart';
 import 'bloc/bloc.dart';

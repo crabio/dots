@@ -36,7 +36,7 @@ func (s *MockGetPlayerPositionServer) Send(response *proto.GetPlayersStatesRespo
 		return nil
 	} else {
 		s.LastPlayersPositions = response
-		return grpc.ErrClientConnClosing
+		return grpc.ErrServerStopped
 	}
 }
 
@@ -61,12 +61,11 @@ func TestGetPlayerPosition(t *testing.T) {
 	player3Uuid := uuid.New()
 
 	// Add positions
-	spot := s.SpotsMap[spotUuid]
 	s.SpotsMap[spotUuid] = api_spot_v1.Spot{
-		Position:   spot.Position,
-		ZoneRadius: spot.ZoneRadius,
-		ScanPeriod: spot.ScanPeriod,
-		ZonePeriod: spot.ZonePeriod,
+		Position:   s.SpotsMap[spotUuid].Position,
+		ZoneRadius: s.SpotsMap[spotUuid].ZoneRadius,
+		ScanPeriod: s.SpotsMap[spotUuid].ScanPeriod,
+		ZonePeriod: s.SpotsMap[spotUuid].ZonePeriod,
 		PlayersStateMap: map[uuid.UUID]api_spot_v1.PlayerState{
 			playerUuid: api_spot_v1.PlayerState{
 				Position: s2.LatLngFromDegrees(10, 20),

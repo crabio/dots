@@ -1,7 +1,6 @@
 // External
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grpc/grpc.dart';
 
 // Internal
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;

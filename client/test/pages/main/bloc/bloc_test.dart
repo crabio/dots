@@ -1,12 +1,11 @@
 // External
 import 'package:bloc_test/bloc_test.dart';
-import 'package:dots_client/pages/main/bloc/events.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Internal
+import 'package:dots_client/pages/main/bloc/events.dart';
 import 'package:dots_client/pages/main/bloc/bloc.dart';
 import 'package:dots_client/pages/main/bloc/state.dart';
-import 'package:dots_client/settings/settings.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mockito/annotations.dart';
