@@ -391,15 +391,15 @@ class SendPlayerPositionResponse extends $pb.GeneratedMessage {
   static SendPlayerPositionResponse? _defaultInstance;
 }
 
-class GetPlayersPositionsRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersPositionsRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+class GetPlayersStatesRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersStatesRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
     ..hasRequiredFields = false
   ;
 
-  GetPlayersPositionsRequest._() : super();
-  factory GetPlayersPositionsRequest({
+  GetPlayersStatesRequest._() : super();
+  factory GetPlayersStatesRequest({
     $core.String? spotUuid,
     $core.String? playerUuid,
   }) {
@@ -412,26 +412,26 @@ class GetPlayersPositionsRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetPlayersPositionsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetPlayersPositionsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory GetPlayersStatesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetPlayersStatesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  GetPlayersPositionsRequest clone() => GetPlayersPositionsRequest()..mergeFromMessage(this);
+  GetPlayersStatesRequest clone() => GetPlayersStatesRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  GetPlayersPositionsRequest copyWith(void Function(GetPlayersPositionsRequest) updates) => super.copyWith((message) => updates(message as GetPlayersPositionsRequest)) as GetPlayersPositionsRequest; // ignore: deprecated_member_use
+  GetPlayersStatesRequest copyWith(void Function(GetPlayersStatesRequest) updates) => super.copyWith((message) => updates(message as GetPlayersStatesRequest)) as GetPlayersStatesRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetPlayersPositionsRequest create() => GetPlayersPositionsRequest._();
-  GetPlayersPositionsRequest createEmptyInstance() => create();
-  static $pb.PbList<GetPlayersPositionsRequest> createRepeated() => $pb.PbList<GetPlayersPositionsRequest>();
+  static GetPlayersStatesRequest create() => GetPlayersStatesRequest._();
+  GetPlayersStatesRequest createEmptyInstance() => create();
+  static $pb.PbList<GetPlayersStatesRequest> createRepeated() => $pb.PbList<GetPlayersStatesRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetPlayersPositionsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPlayersPositionsRequest>(create);
-  static GetPlayersPositionsRequest? _defaultInstance;
+  static GetPlayersStatesRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPlayersStatesRequest>(create);
+  static GetPlayersStatesRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
@@ -452,61 +452,138 @@ class GetPlayersPositionsRequest extends $pb.GeneratedMessage {
   void clearPlayerUuid() => clearField(2);
 }
 
-class GetPlayersPositionsResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersPositionsResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
-    ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerPosition', subBuilder: Position.create)
-    ..pc<PlayerPosition>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherPlayersPositions', $pb.PbFieldType.PM, subBuilder: PlayerPosition.create)
+class GetPlayersStatesResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersStatesResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<PlayerState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerState', subBuilder: PlayerState.create)
+    ..pc<PlayerState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherPlayersStates', $pb.PbFieldType.PM, subBuilder: PlayerState.create)
     ..hasRequiredFields = false
   ;
 
-  GetPlayersPositionsResponse._() : super();
-  factory GetPlayersPositionsResponse({
-    Position? playerPosition,
-    $core.Iterable<PlayerPosition>? otherPlayersPositions,
+  GetPlayersStatesResponse._() : super();
+  factory GetPlayersStatesResponse({
+    PlayerState? playerState,
+    $core.Iterable<PlayerState>? otherPlayersStates,
   }) {
     final _result = create();
-    if (playerPosition != null) {
-      _result.playerPosition = playerPosition;
+    if (playerState != null) {
+      _result.playerState = playerState;
     }
-    if (otherPlayersPositions != null) {
-      _result.otherPlayersPositions.addAll(otherPlayersPositions);
+    if (otherPlayersStates != null) {
+      _result.otherPlayersStates.addAll(otherPlayersStates);
     }
     return _result;
   }
-  factory GetPlayersPositionsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetPlayersPositionsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory GetPlayersStatesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetPlayersStatesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  GetPlayersPositionsResponse clone() => GetPlayersPositionsResponse()..mergeFromMessage(this);
+  GetPlayersStatesResponse clone() => GetPlayersStatesResponse()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  GetPlayersPositionsResponse copyWith(void Function(GetPlayersPositionsResponse) updates) => super.copyWith((message) => updates(message as GetPlayersPositionsResponse)) as GetPlayersPositionsResponse; // ignore: deprecated_member_use
+  GetPlayersStatesResponse copyWith(void Function(GetPlayersStatesResponse) updates) => super.copyWith((message) => updates(message as GetPlayersStatesResponse)) as GetPlayersStatesResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetPlayersPositionsResponse create() => GetPlayersPositionsResponse._();
-  GetPlayersPositionsResponse createEmptyInstance() => create();
-  static $pb.PbList<GetPlayersPositionsResponse> createRepeated() => $pb.PbList<GetPlayersPositionsResponse>();
+  static GetPlayersStatesResponse create() => GetPlayersStatesResponse._();
+  GetPlayersStatesResponse createEmptyInstance() => create();
+  static $pb.PbList<GetPlayersStatesResponse> createRepeated() => $pb.PbList<GetPlayersStatesResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetPlayersPositionsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPlayersPositionsResponse>(create);
-  static GetPlayersPositionsResponse? _defaultInstance;
+  static GetPlayersStatesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPlayersStatesResponse>(create);
+  static GetPlayersStatesResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  Position get playerPosition => $_getN(0);
+  PlayerState get playerState => $_getN(0);
   @$pb.TagNumber(1)
-  set playerPosition(Position v) { setField(1, v); }
+  set playerState(PlayerState v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasPlayerPosition() => $_has(0);
+  $core.bool hasPlayerState() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPlayerPosition() => clearField(1);
+  void clearPlayerState() => clearField(1);
   @$pb.TagNumber(1)
-  Position ensurePlayerPosition() => $_ensure(0);
+  PlayerState ensurePlayerState() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.List<PlayerPosition> get otherPlayersPositions => $_getList(1);
+  $core.List<PlayerState> get otherPlayersStates => $_getList(1);
+}
+
+class PlayerState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PlayerState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..aOM<Position>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'health', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false
+  ;
+
+  PlayerState._() : super();
+  factory PlayerState({
+    $core.String? playerUuid,
+    Position? position,
+    $core.int? health,
+  }) {
+    final _result = create();
+    if (playerUuid != null) {
+      _result.playerUuid = playerUuid;
+    }
+    if (position != null) {
+      _result.position = position;
+    }
+    if (health != null) {
+      _result.health = health;
+    }
+    return _result;
+  }
+  factory PlayerState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlayerState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PlayerState clone() => PlayerState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PlayerState copyWith(void Function(PlayerState) updates) => super.copyWith((message) => updates(message as PlayerState)) as PlayerState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PlayerState create() => PlayerState._();
+  PlayerState createEmptyInstance() => create();
+  static $pb.PbList<PlayerState> createRepeated() => $pb.PbList<PlayerState>();
+  @$core.pragma('dart2js:noInline')
+  static PlayerState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayerState>(create);
+  static PlayerState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get playerUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set playerUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPlayerUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPlayerUuid() => clearField(1);
+
+  @$pb.TagNumber(2)
+  Position get position => $_getN(1);
+  @$pb.TagNumber(2)
+  set position(Position v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPosition() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPosition() => clearField(2);
+  @$pb.TagNumber(2)
+  Position ensurePosition() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.int get health => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set health($core.int v) { $_setSignedInt32(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasHealth() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearHealth() => clearField(3);
 }
 
 class Position extends $pb.GeneratedMessage {
@@ -568,68 +645,5 @@ class Position extends $pb.GeneratedMessage {
   $core.bool hasLatitude() => $_has(1);
   @$pb.TagNumber(2)
   void clearLatitude() => clearField(2);
-}
-
-class PlayerPosition extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PlayerPosition', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
-    ..aOM<Position>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..hasRequiredFields = false
-  ;
-
-  PlayerPosition._() : super();
-  factory PlayerPosition({
-    $core.String? playerUuid,
-    Position? position,
-  }) {
-    final _result = create();
-    if (playerUuid != null) {
-      _result.playerUuid = playerUuid;
-    }
-    if (position != null) {
-      _result.position = position;
-    }
-    return _result;
-  }
-  factory PlayerPosition.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory PlayerPosition.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  PlayerPosition clone() => PlayerPosition()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  PlayerPosition copyWith(void Function(PlayerPosition) updates) => super.copyWith((message) => updates(message as PlayerPosition)) as PlayerPosition; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static PlayerPosition create() => PlayerPosition._();
-  PlayerPosition createEmptyInstance() => create();
-  static $pb.PbList<PlayerPosition> createRepeated() => $pb.PbList<PlayerPosition>();
-  @$core.pragma('dart2js:noInline')
-  static PlayerPosition getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayerPosition>(create);
-  static PlayerPosition? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get playerUuid => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set playerUuid($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasPlayerUuid() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPlayerUuid() => clearField(1);
-
-  @$pb.TagNumber(2)
-  Position get position => $_getN(1);
-  @$pb.TagNumber(2)
-  set position(Position v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasPosition() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearPosition() => clearField(2);
-  @$pb.TagNumber(2)
-  Position ensurePosition() => $_ensure(1);
 }
 

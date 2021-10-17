@@ -4,13 +4,13 @@ import (
 	// External
 	"time"
 
+	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
-	geo "gopkg.in/billups/golang-geo.v2"
 	// Internal
 )
 
 type Spot struct {
-	Position   geo.Point
+	Position   s2.LatLng
 	Radius     int32
 	ScanPeriod time.Duration
 	ZonePeriod time.Duration
@@ -22,6 +22,6 @@ type Spot struct {
 }
 
 type PlayerState struct {
-	Position geo.Point
+	Position s2.LatLng
 	Health   int16
 }

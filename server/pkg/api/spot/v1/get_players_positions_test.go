@@ -3,10 +3,12 @@ package api_spot_v1_test
 import (
 	// External
 	"context"
+	"math"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
@@ -67,25 +69,16 @@ func TestGetPlayerPosition(t *testing.T) {
 		ZonePeriod: spot.ZonePeriod,
 		PlayersStateMap: map[uuid.UUID]api_spot_v1.PlayerState{
 			playerUuid: api_spot_v1.PlayerState{
-				Position: api_spot_v1.Position{
-					Latitude:  10,
-					Longitude: 20,
-				},
-				Health: 88,
+				Position: s2.LatLngFromDegrees(10, 20),
+				Health:   88,
 			},
 			player2Uuid: api_spot_v1.PlayerState{
-				Position: api_spot_v1.Position{
-					Latitude:  60,
-					Longitude: 70,
-				},
-				Health: 33,
+				Position: s2.LatLngFromDegrees(60, 70),
+				Health:   33,
 			},
 			player3Uuid: api_spot_v1.PlayerState{
-				Position: api_spot_v1.Position{
-					Latitude:  80,
-					Longitude: 90,
-				},
-				Health: 15,
+				Position: s2.LatLngFromDegrees(80, 90),
+				Health:   15,
 			},
 		},
 	}
@@ -111,7 +104,8 @@ func TestGetPlayerPosition(t *testing.T) {
 
 	assert.Equal(t, 2, len(mockServer.LastPlayersPositions.OtherPlayersStates))
 	assert.Equal(t, player2Uuid.String(), mockServer.LastPlayersPositions.OtherPlayersStates[0].PlayerUuid)
-	assert.Equal(t, float64(60), mockServer.LastPlayersPositions.OtherPlayersStates[0].Position.Latitude)
+	// Compare floats as difference between
+	assert.True(t, math.Abs(mockServer.LastPlayersPositions.OtherPlayersStates[0].Position.Latitude-60) <= 1e-9)
 	assert.Equal(t, float64(70), mockServer.LastPlayersPositions.OtherPlayersStates[0].Position.Longitude)
 	assert.Equal(t, int32(33), mockServer.LastPlayersPositions.OtherPlayersStates[0].Health)
 	assert.Equal(t, player3Uuid.String(), mockServer.LastPlayersPositions.OtherPlayersStates[1].PlayerUuid)

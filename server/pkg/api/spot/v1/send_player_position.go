@@ -1,14 +1,16 @@
 package api_spot_v1
 
-import ( // External
-	// Internal
+import (
+	// External
 	"fmt"
 	"io"
 
+	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
-	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 	"github.com/sirupsen/logrus"
-	geo "gopkg.in/billups/golang-geo.v2"
+
+	// Internal
+	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
 func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlayerPositionServer) error {
@@ -47,11 +49,11 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			// New player
 			// TODO Players should be inited on game start
 			spot.PlayersStateMap[playerUuid] = PlayerState{
-				Position: *geo.NewPoint(request.Position.Latitude, request.Position.Longitude),
+				Position: s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude),
 				Health:   100,
 			}
 		} else {
-			playerState.Position = *geo.NewPoint(request.Position.Latitude, request.Position.Longitude)
+			playerState.Position = s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude)
 			spot.PlayersStateMap[playerUuid] = playerState
 		}
 

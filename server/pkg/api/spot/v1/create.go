@@ -5,8 +5,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
-	geo "gopkg.in/billups/golang-geo.v2"
 
 	// Internal
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
@@ -18,7 +18,7 @@ func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.Creat
 	spotUUID := uuid.New()
 
 	s.SpotsMap[spotUUID] = Spot{
-		Position:        *geo.NewPoint(request.Position.Latitude, request.Position.Longitude),
+		Position:        s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude),
 		Radius:          request.Radius,
 		ScanPeriod:      time.Second * time.Duration(request.ScanPeriodInSeconds),
 		ZonePeriod:      time.Second * time.Duration(request.ZonePeriodInSeconds),

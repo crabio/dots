@@ -45,8 +45,8 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 				otherPlayersStates = append(otherPlayersStates, &proto.PlayerState{
 					PlayerUuid: k.String(),
 					Position: &proto.Position{
-						Latitude:  v.Position.Lat(),
-						Longitude: v.Position.Lng(),
+						Latitude:  v.Position.Lat.Degrees(),
+						Longitude: v.Position.Lng.Degrees(),
 					},
 					Health: int32(v.Health),
 				})
@@ -56,8 +56,8 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		response := &proto.GetPlayersStatesResponse{
 			PlayerState: &proto.PlayerState{
 				Position: &proto.Position{
-					Latitude:  thisPlayerState.Position.Lat(),
-					Longitude: thisPlayerState.Position.Lng(),
+					Latitude:  thisPlayerState.Position.Lat.Degrees(),
+					Longitude: thisPlayerState.Position.Lng.Degrees(),
 				},
 				Health: int32(thisPlayerState.Health),
 			},

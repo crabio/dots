@@ -34,8 +34,8 @@ func TestCreateSpot(t *testing.T) {
 	assert.NoError(t, err)
 
 	spot := s.SpotsMap[spotUuid]
-	assert.Equal(t, 11.2344, spot.Position.Latitude)
-	assert.Equal(t, -234.12244, spot.Position.Longitude)
+	assert.Equal(t, 11.2344, spot.Position.Lat.Degrees())
+	assert.Equal(t, -234.12244, spot.Position.Lng.Degrees())
 	assert.Equal(t, int32(200), spot.Radius)
 	assert.Equal(t, float64(30), spot.ScanPeriod.Seconds())
 	assert.Equal(t, float64(60), spot.ZonePeriod.Seconds())
