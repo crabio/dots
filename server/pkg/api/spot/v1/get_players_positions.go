@@ -45,30 +45,19 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 				otherPlayersStates = append(otherPlayersStates, &proto.PlayerState{
 					PlayerUuid: k.String(),
 					Position: &proto.Position{
-						Latitude:  v.Position.Latitude,
-						Longitude: v.Position.Longitude,
+						Latitude:  v.Position.Lat(),
+						Longitude: v.Position.Lng(),
 					},
 					Health: int32(v.Health),
 				})
 			}
 		}
-		// TODO Remove adding fake positions
-		// for i := 0; i < 10; i++ {
-		// 	otherPlayersStates = append(otherPlayersStates, &proto.PlayerState{
-		// 		PlayerUuid: uuid.NewString(),
-		// 		Position: &proto.Position{
-		// 			Latitude:  thisPlayerState.Position.Latitude + (rand.Float64()*0.004 - 0.002),
-		// 			Longitude: thisPlayerState.Position.Longitude + (rand.Float64()*0.004 - 0.002),
-		// 		},
-		// 		Health: int32(rand.Float64() * 100),
-		// 	})
-		// }
 
 		response := &proto.GetPlayersStatesResponse{
 			PlayerState: &proto.PlayerState{
 				Position: &proto.Position{
-					Latitude:  thisPlayerState.Position.Latitude,
-					Longitude: thisPlayerState.Position.Longitude,
+					Latitude:  thisPlayerState.Position.Lat(),
+					Longitude: thisPlayerState.Position.Lng(),
 				},
 				Health: int32(thisPlayerState.Health),
 			},

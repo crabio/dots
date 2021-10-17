@@ -8,6 +8,7 @@ import ( // External
 	"github.com/google/uuid"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 	"github.com/sirupsen/logrus"
+	geo "gopkg.in/billups/golang-geo.v2"
 )
 
 func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlayerPositionServer) error {
@@ -46,17 +47,11 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			// New player
 			// TODO Players should be inited on game start
 			spot.PlayersStateMap[playerUuid] = PlayerState{
-				Position: Position{
-					Latitude:  request.Position.Latitude,
-					Longitude: request.Position.Longitude,
-				},
-				Health: 100,
+				Position: *geo.NewPoint(request.Position.Latitude, request.Position.Longitude),
+				Health:   100,
 			}
 		} else {
-			playerState.Position = Position{
-				Latitude:  request.Position.Latitude,
-				Longitude: request.Position.Longitude,
-			}
+			playerState.Position = *geo.NewPoint(request.Position.Latitude, request.Position.Longitude)
 			spot.PlayersStateMap[playerUuid] = playerState
 		}
 

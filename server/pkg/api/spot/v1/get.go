@@ -26,8 +26,8 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 
 	response := proto.GetSpotResponse{
 		Position: &proto.Position{
-			Latitude:  spot.Position.Latitude,
-			Longitude: spot.Position.Longitude,
+			Latitude:  spot.Position.Lat(),
+			Longitude: spot.Position.Lng(),
 		},
 		Radius:              spot.Radius,
 		ScanPeriodInSeconds: int32(spot.ScanPeriod.Seconds()),
