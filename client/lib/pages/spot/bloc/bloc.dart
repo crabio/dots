@@ -27,7 +27,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     required this.spotUuid,
   }) : super(InitingState()) {
     on<InitEvent>(_onInitEvent);
-    on<NewPlayersGeoPositionEvent>(_onNewPlayersGeoPositionEvent);
+    on<NewPlayersStatesEvent>(_onNewPlayersGeoPositionEvent);
 
     add(InitEvent());
   }
@@ -62,14 +62,15 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     );
 
     _logger.fine("Subscribe on players geo positions");
-    _subscribeOnPlayersPositions().fold(
+    _subscribeOnPlayersStates().fold(
       (l) => emit(InitErrorState(exception: l)),
-      (r) => r.listen((value) => add(NewPlayersGeoPositionEvent(
+      (r) => r.listen((value) => add(NewPlayersStatesEvent(
+            playerHealth: value.playerState.health,
             playerPosition: LatLng(
-              value.playerPosition.latitude,
-              value.playerPosition.longitude,
+              value.playerState.position.latitude,
+              value.playerState.position.longitude,
             ),
-            otherPlayersPositions: value.otherPlayersPositions
+            otherPlayersPositions: value.otherPlayersStates
                 .map((e) => PlayerPosition(
                     playerUuid: e.playerUuid,
                     position: LatLng(
@@ -118,22 +119,22 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     return const Right(true);
   }
 
-  Either<Exception, ResponseStream<proto.GetPlayersPositionsResponse>>
-      _subscribeOnPlayersPositions() {
+  Either<Exception, ResponseStream<proto.GetPlayersStatesResponse>>
+      _subscribeOnPlayersStates() {
     try {
-      final request = proto.GetPlayersPositionsRequest(
+      final request = proto.GetPlayersStatesRequest(
         spotUuid: spotUuid,
         playerUuid: playerUuid,
       );
 
-      return Right(client.getPlayersPositions(request));
+      return Right(client.getPlayersStates(request));
     } on Exception catch (ex) {
       return Left(ex);
     }
   }
 
   void _onNewPlayersGeoPositionEvent(
-    NewPlayersGeoPositionEvent event,
+    NewPlayersStatesEvent event,
     Emitter<SpotPageState> emit,
   ) async {
     final curState = state;

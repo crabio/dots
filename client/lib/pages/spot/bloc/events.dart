@@ -15,12 +15,14 @@ class SpotPageEvent extends Equatable {
 /// Event for initing all required components
 class InitEvent extends SpotPageEvent {}
 
-/// New players geo location event
-class NewPlayersGeoPositionEvent extends SpotPageEvent {
+/// New players states event
+class NewPlayersStatesEvent extends SpotPageEvent {
   final LatLng playerPosition;
+  final int playerHealth;
   final List<PlayerPosition> otherPlayersPositions;
 
-  const NewPlayersGeoPositionEvent({
+  const NewPlayersStatesEvent({
+    required this.playerHealth,
     required this.playerPosition,
     required this.otherPlayersPositions,
   });
