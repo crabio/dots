@@ -22,6 +22,7 @@ class SpotForm extends StatelessWidget {
           );
         } else if (state is InitedState) {
           return _InitedStateView(
+            playerHealth: state.playerHealth,
             playerPosition: state.playerPosition,
             otherPlayersPositions: state.otherPlayersPositions,
             spotPosition: state.spotPosition,
@@ -36,15 +37,17 @@ class SpotForm extends StatelessWidget {
 }
 
 class _InitedStateView extends StatelessWidget {
-  final LatLng? playerPosition;
-  final List<PlayerPosition>? otherPlayersPositions;
+  final LatLng playerPosition;
+  final int playerHealth;
+  final List<PlayerPosition> otherPlayersPositions;
   final LatLng spotPosition;
   // Spot radius in meters
   final int zoneRadius;
 
   const _InitedStateView({
-    this.playerPosition,
-    this.otherPlayersPositions,
+    required this.playerPosition,
+    required this.playerHealth,
+    required this.otherPlayersPositions,
     required this.spotPosition,
     required this.zoneRadius,
     Key? key,
@@ -63,48 +66,56 @@ class _InitedStateView extends StatelessWidget {
       ),
     ));
     // Player position pointer
-    if (playerPosition != null) {
+    markers.add(Marker(
+      point: playerPosition,
+      builder: (ctx) => const Icon(
+        Icons.circle,
+      ),
+    ));
+
+    // Other players pointers
+    for (var otherPlayerPosition in otherPlayersPositions) {
       markers.add(Marker(
-        point: playerPosition!,
+        point: otherPlayerPosition.position,
         builder: (ctx) => const Icon(
           Icons.circle,
+          color: Colors.amber,
         ),
       ));
     }
-    // Other players pointers
-    if (otherPlayersPositions != null) {
-      for (var otherPlayerPosition in otherPlayersPositions!) {
-        markers.add(Marker(
-          point: otherPlayerPosition.position,
-          builder: (ctx) => const Icon(
-            Icons.circle,
-            color: Colors.amber,
-          ),
-        ));
-      }
-    }
 
-    return FlutterMap(
-      options: MapOptions(
-        center: playerPosition,
-        zoom: 17.0,
-      ),
-      layers: [
-        TileLayerOptions(
-          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
+    print("Health: ${playerHealth.toDouble()}");
+
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          top: 0,
+          child: Text("Health: ${playerHealth.toDouble()}"),
         ),
-        MarkerLayerOptions(markers: markers),
-        CircleLayerOptions(circles: [
-          CircleMarker(
-            point: spotPosition,
-            useRadiusInMeter: true,
-            color: const Color.fromRGBO(0, 0, 0, 0),
-            borderColor: Colors.red,
-            borderStrokeWidth: 2,
-            radius: 200,
+        FlutterMap(
+          options: MapOptions(
+            center: playerPosition,
+            zoom: 17.0,
           ),
-        ])
+          layers: [
+            TileLayerOptions(
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayerOptions(markers: markers),
+            CircleLayerOptions(circles: [
+              CircleMarker(
+                point: spotPosition,
+                useRadiusInMeter: true,
+                color: const Color.fromRGBO(0, 0, 0, 0),
+                borderColor: Colors.red,
+                borderStrokeWidth: 2,
+                radius: 200,
+              ),
+            ])
+          ],
+        ),
       ],
     );
   }

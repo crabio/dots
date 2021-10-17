@@ -21,6 +21,7 @@ class InitingState extends SpotPageState {}
 @CopyWith()
 class InitedState extends SpotPageState {
   final LatLng playerPosition;
+  final int playerHealth;
   final List<PlayerPosition> otherPlayersPositions;
 
   final LatLng spotPosition;
@@ -31,6 +32,7 @@ class InitedState extends SpotPageState {
 
   const InitedState({
     required this.playerPosition,
+    required this.playerHealth,
     required this.otherPlayersPositions,
     required this.spotPosition,
     required this.zoneRadius,
@@ -41,6 +43,7 @@ class InitedState extends SpotPageState {
   @override
   List<Object> get props => [
         playerPosition,
+        playerHealth,
         otherPlayersPositions,
         spotPosition,
         zoneRadius,

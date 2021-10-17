@@ -45,6 +45,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
                 playerPosition!.latitude,
                 playerPosition.longitude,
               ),
+              playerHealth: 100,
               otherPlayersPositions: const [],
               spotPosition: LatLng(
                 r.position.latitude,
@@ -65,11 +66,11 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     _subscribeOnPlayersStates().fold(
       (l) => emit(InitErrorState(exception: l)),
       (r) => r.listen((value) => add(NewPlayersStatesEvent(
-            playerHealth: value.playerState.health,
             playerPosition: LatLng(
               value.playerState.position.latitude,
               value.playerState.position.longitude,
             ),
+            playerHealth: value.playerState.health,
             otherPlayersPositions: value.otherPlayersStates
                 .map((e) => PlayerPosition(
                     playerUuid: e.playerUuid,
@@ -141,6 +142,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     if (curState is InitedState) {
       emit(curState.copyWith(
         playerPosition: event.playerPosition,
+        playerHealth: event.playerHealth,
         otherPlayersPositions: event.otherPlayersPositions,
       ));
     }

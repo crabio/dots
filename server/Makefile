@@ -65,4 +65,4 @@ build_and_run_docker:
 
 run:
 	@echo "Run app"
-	LOG_FILE_NAME=log go run .
+	LOG_LEVEL=debug LOG_FILE_NAME=log go run .
