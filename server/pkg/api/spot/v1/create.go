@@ -13,7 +13,7 @@ import (
 )
 
 func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.CreateSpotRequest) (*proto.CreateSpotResponse, error) {
-	s.log.WithField("request", request.String()).Trace("Create spot request")
+	s.log.WithField("request", request.String()).Debug("Create spot request")
 
 	spotUUID := uuid.New()
 

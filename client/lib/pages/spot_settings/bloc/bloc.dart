@@ -57,6 +57,9 @@ class SpotSettingsPageBloc
             zonePeriod: curState.zonePeriod,
           ));
           final request = proto.CreateSpotRequest(
+            radius: event.zoneRadius,
+            zonePeriodInSeconds: event.zonePeriod.inSeconds,
+            scanPeriodInSeconds: event.scanPeriod.inSeconds,
             position: proto.Position(
               latitude: event.position.latitude,
               longitude: event.position.longitude,

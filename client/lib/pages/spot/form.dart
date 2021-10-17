@@ -84,15 +84,8 @@ class _InitedStateView extends StatelessWidget {
       ));
     }
 
-    print("Health: ${playerHealth.toDouble()}");
-
     return Stack(
       children: [
-        Positioned(
-          left: 0,
-          top: 0,
-          child: Text("Health: ${playerHealth.toDouble()}"),
-        ),
         FlutterMap(
           options: MapOptions(
             center: playerPosition,
@@ -111,12 +104,50 @@ class _InitedStateView extends StatelessWidget {
                 color: const Color.fromRGBO(0, 0, 0, 0),
                 borderColor: Colors.red,
                 borderStrokeWidth: 2,
-                radius: 200,
+                radius: zoneRadius.toDouble(),
               ),
             ])
           ],
         ),
+        Positioned(
+          right: 0,
+          top: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Text(
+                    "Health: $playerHealth",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .copyWith(color: _healthColor(playerHealth)),
+                  ),
+                ),
+                CircularProgressIndicator(
+                  value: playerHealth / 100,
+                  strokeWidth: 10,
+                  color: _healthColor(playerHealth),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
+  }
+
+  Color _healthColor(int health) {
+    if (health > 60) {
+      return Colors.green;
+    } else if (health > 30) {
+      return Colors.orange;
+    } else if (health > 0) {
+      return Colors.red;
+    } else {
+      return Colors.black;
+    }
   }
 }
