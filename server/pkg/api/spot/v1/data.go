@@ -2,6 +2,7 @@ package api_spot_v1
 
 import (
 	// External
+	"sync"
 	"time"
 
 	"github.com/golang/geo/s2"
@@ -10,8 +11,11 @@ import (
 )
 
 type Spot struct {
-	Position   s2.LatLng
-	Radius     int32
+	sync.Mutex
+
+	Position s2.LatLng
+	// Zone radius in meters
+	ZoneRadius int32
 	ScanPeriod time.Duration
 	ZonePeriod time.Duration
 	// Map with players posiiton
@@ -24,4 +28,11 @@ type Spot struct {
 type PlayerState struct {
 	Position s2.LatLng
 	Health   int16
+
+	// Zone damage
+
+	// Flag indicies that server has goroutine for zone damage for player
+	ZoneDamageActice bool
+	// Channel for stoping damage by zone onto player
+	StopZoneDmgCh chan bool
 }

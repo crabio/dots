@@ -31,12 +31,15 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 
 	// For each ticker tick
 	for _ = range ticker.C {
+		s.SpotsMapMx.Lock()
 		spot, ok := s.SpotsMap[spotUuid]
+		s.SpotsMapMx.Unlock()
 		if !ok {
 			ticker.Stop()
 			return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 		}
 
+		spot.Lock()
 		thisPlayerState := spot.PlayersStateMap[playerUuid]
 
 		otherPlayersStates := []*proto.PlayerState{}
@@ -52,6 +55,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 				})
 			}
 		}
+		spot.Unlock()
 
 		response := &proto.GetPlayersStatesResponse{
 			PlayerState: &proto.PlayerState{

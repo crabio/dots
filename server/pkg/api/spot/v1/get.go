@@ -19,7 +19,9 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 		return nil, fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 	}
 
+	s.SpotsMapMx.Lock()
 	spot, ok := s.SpotsMap[spotUuid]
+	s.SpotsMapMx.Unlock()
 	if !ok {
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
@@ -29,7 +31,7 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 			Latitude:  spot.Position.Lat.Degrees(),
 			Longitude: spot.Position.Lng.Degrees(),
 		},
-		Radius:              spot.Radius,
+		Radius:              spot.ZoneRadius,
 		ScanPeriodInSeconds: int32(spot.ScanPeriod.Seconds()),
 		ZonePeriodInSeconds: int32(spot.ZonePeriod.Seconds()),
 	}

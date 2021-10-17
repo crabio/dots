@@ -64,7 +64,7 @@ func TestGetPlayerPosition(t *testing.T) {
 	spot := s.SpotsMap[spotUuid]
 	s.SpotsMap[spotUuid] = api_spot_v1.Spot{
 		Position:   spot.Position,
-		Radius:     spot.Radius,
+		ZoneRadius: spot.ZoneRadius,
 		ScanPeriod: spot.ScanPeriod,
 		ZonePeriod: spot.ZonePeriod,
 		PlayersStateMap: map[uuid.UUID]api_spot_v1.PlayerState{

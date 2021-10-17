@@ -3,6 +3,7 @@ package api_spot_v1
 import (
 	// External
 	"context"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -26,7 +27,8 @@ type SpotServiceServer struct {
 	//
 	// key - spot UUID
 	// value - spot session data
-	SpotsMap map[uuid.UUID]Spot
+	SpotsMap   map[uuid.UUID]Spot
+	SpotsMapMx sync.Mutex
 }
 
 func New(playersPosUpdatePeriod time.Duration) *SpotServiceServer {
