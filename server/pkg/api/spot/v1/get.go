@@ -14,20 +14,22 @@ import (
 func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotRequest) (*proto.GetSpotResponse, error) {
 	s.log.WithField("request", request.String()).Trace("Get spot request")
 
-	spotUuid, err := uuid.Parse(request.Uuid)
+	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
 		return nil, fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 	}
 
-	spot, ok := s.spotsMap[spotUuid]
+	spot, ok := s.SpotsMap[spotUuid]
 	if !ok {
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
 	response := proto.GetSpotResponse{
-		Latiitude:           spot.Latiitude,
-		Longitude:           spot.Longitude,
-		Radius:              spot.Radius,
+		Position: &proto.Position{
+			Latitude:  spot.Position.Lat.Degrees(),
+			Longitude: spot.Position.Lng.Degrees(),
+		},
+		Radius:              spot.ZoneRadius,
 		ScanPeriodInSeconds: int32(spot.ScanPeriod.Seconds()),
 		ZonePeriodInSeconds: int32(spot.ZonePeriod.Seconds()),
 	}

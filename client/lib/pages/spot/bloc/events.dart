@@ -1,18 +1,32 @@
 // External
+import 'package:equatable/equatable.dart';
 import 'package:latlong2/latlong.dart';
 
-abstract class SpotPageEvent {}
+// Internal
+import 'package:dots_client/pages/spot/resources/player_position.dart';
 
-/// Event for initing all required components
-class InitEvent extends SpotPageEvent {
-  final String spotUuid;
+class SpotPageEvent extends Equatable {
+  const SpotPageEvent();
 
-  InitEvent({required this.spotUuid});
+  @override
+  List<Object> get props => [];
 }
 
-/// New geo location event
-class NewGeoPositionEvent extends SpotPageEvent {
-  final LatLng position;
+/// Event for initing all required components
+class InitEvent extends SpotPageEvent {}
 
-  NewGeoPositionEvent({required this.position});
+/// New players states event
+class NewPlayersStatesEvent extends SpotPageEvent {
+  final LatLng playerPosition;
+  final int playerHealth;
+  final List<PlayerPosition> otherPlayersPositions;
+
+  const NewPlayersStatesEvent({
+    required this.playerHealth,
+    required this.playerPosition,
+    required this.otherPlayersPositions,
+  });
+
+  @override
+  List<Object> get props => [playerPosition, otherPlayersPositions];
 }

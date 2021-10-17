@@ -57,7 +57,7 @@ run_docker:
 	@echo "Remove old docker container"
 	docker rm -f dots_server || echo "couldn't delete old container" 
 	@echo "Run app docker container"
-	docker run -d -p 8080:8080 -p 8090:8090 --name dots_server iakrevetkho/dots/server
+	docker run -d -e LOG_LEVEL=debug -p 8080:8080 -p 8090:8090 --name dots_server iakrevetkho/dots/server
 
 build_and_run_docker:
 	make build_docker
@@ -65,4 +65,4 @@ build_and_run_docker:
 
 run:
 	@echo "Run app"
-	LOG_FILE_NAME=log go run .
+	LOG_LEVEL=debug LOG_FILE_NAME=log go run .

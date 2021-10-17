@@ -29,3 +29,16 @@ Future<dynamic> navPopAndPush(BuildContext context, Widget target) async {
     MaterialPageRoute(builder: (_) => target),
   );
 }
+
+/// Function to perform pop and push naviagation to another route after build will be performed.
+/// This function adds zero delay for it.
+Future<dynamic> navPopAndPushAfterBuild(
+    BuildContext context, Widget target) async {
+  return await Future.delayed(Duration.zero, () {
+    Navigator.pop(context);
+    return Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => target),
+    );
+  });
+}

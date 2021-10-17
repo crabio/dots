@@ -20,6 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 type SpotServiceClient interface {
 	CreateSpot(ctx context.Context, in *CreateSpotRequest, opts ...grpc.CallOption) (*CreateSpotResponse, error)
 	GetSpot(ctx context.Context, in *GetSpotRequest, opts ...grpc.CallOption) (*GetSpotResponse, error)
+	SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error)
+	GetPlayersStates(ctx context.Context, in *GetPlayersStatesRequest, opts ...grpc.CallOption) (SpotService_GetPlayersStatesClient, error)
 }
 
 type spotServiceClient struct {
@@ -48,12 +50,80 @@ func (c *spotServiceClient) GetSpot(ctx context.Context, in *GetSpotRequest, opt
 	return out, nil
 }
 
+func (c *spotServiceClient) SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[0], "/spot.v1.SpotService/SendPlayerPosition", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &spotServiceSendPlayerPositionClient{stream}
+	return x, nil
+}
+
+type SpotService_SendPlayerPositionClient interface {
+	Send(*SendPlayerPositionRequest) error
+	CloseAndRecv() (*SendPlayerPositionResponse, error)
+	grpc.ClientStream
+}
+
+type spotServiceSendPlayerPositionClient struct {
+	grpc.ClientStream
+}
+
+func (x *spotServiceSendPlayerPositionClient) Send(m *SendPlayerPositionRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *spotServiceSendPlayerPositionClient) CloseAndRecv() (*SendPlayerPositionResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(SendPlayerPositionResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *spotServiceClient) GetPlayersStates(ctx context.Context, in *GetPlayersStatesRequest, opts ...grpc.CallOption) (SpotService_GetPlayersStatesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[1], "/spot.v1.SpotService/GetPlayersStates", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &spotServiceGetPlayersStatesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SpotService_GetPlayersStatesClient interface {
+	Recv() (*GetPlayersStatesResponse, error)
+	grpc.ClientStream
+}
+
+type spotServiceGetPlayersStatesClient struct {
+	grpc.ClientStream
+}
+
+func (x *spotServiceGetPlayersStatesClient) Recv() (*GetPlayersStatesResponse, error) {
+	m := new(GetPlayersStatesResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // SpotServiceServer is the server API for SpotService service.
 // All implementations must embed UnimplementedSpotServiceServer
 // for forward compatibility
 type SpotServiceServer interface {
 	CreateSpot(context.Context, *CreateSpotRequest) (*CreateSpotResponse, error)
 	GetSpot(context.Context, *GetSpotRequest) (*GetSpotResponse, error)
+	SendPlayerPosition(SpotService_SendPlayerPositionServer) error
+	GetPlayersStates(*GetPlayersStatesRequest, SpotService_GetPlayersStatesServer) error
 	mustEmbedUnimplementedSpotServiceServer()
 }
 
@@ -66,6 +136,12 @@ func (UnimplementedSpotServiceServer) CreateSpot(context.Context, *CreateSpotReq
 }
 func (UnimplementedSpotServiceServer) GetSpot(context.Context, *GetSpotRequest) (*GetSpotResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSpot not implemented")
+}
+func (UnimplementedSpotServiceServer) SendPlayerPosition(SpotService_SendPlayerPositionServer) error {
+	return status.Errorf(codes.Unimplemented, "method SendPlayerPosition not implemented")
+}
+func (UnimplementedSpotServiceServer) GetPlayersStates(*GetPlayersStatesRequest, SpotService_GetPlayersStatesServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetPlayersStates not implemented")
 }
 func (UnimplementedSpotServiceServer) mustEmbedUnimplementedSpotServiceServer() {}
 
@@ -116,6 +192,53 @@ func _SpotService_GetSpot_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SpotService_SendPlayerPosition_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(SpotServiceServer).SendPlayerPosition(&spotServiceSendPlayerPositionServer{stream})
+}
+
+type SpotService_SendPlayerPositionServer interface {
+	SendAndClose(*SendPlayerPositionResponse) error
+	Recv() (*SendPlayerPositionRequest, error)
+	grpc.ServerStream
+}
+
+type spotServiceSendPlayerPositionServer struct {
+	grpc.ServerStream
+}
+
+func (x *spotServiceSendPlayerPositionServer) SendAndClose(m *SendPlayerPositionResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *spotServiceSendPlayerPositionServer) Recv() (*SendPlayerPositionRequest, error) {
+	m := new(SendPlayerPositionRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _SpotService_GetPlayersStates_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetPlayersStatesRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SpotServiceServer).GetPlayersStates(m, &spotServiceGetPlayersStatesServer{stream})
+}
+
+type SpotService_GetPlayersStatesServer interface {
+	Send(*GetPlayersStatesResponse) error
+	grpc.ServerStream
+}
+
+type spotServiceGetPlayersStatesServer struct {
+	grpc.ServerStream
+}
+
+func (x *spotServiceGetPlayersStatesServer) Send(m *GetPlayersStatesResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // SpotService_ServiceDesc is the grpc.ServiceDesc for SpotService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -132,6 +255,17 @@ var SpotService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SpotService_GetSpot_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "SendPlayerPosition",
+			Handler:       _SpotService_SendPlayerPosition_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "GetPlayersStates",
+			Handler:       _SpotService_GetPlayersStates_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "spot/v1/spot_v1.proto",
 }

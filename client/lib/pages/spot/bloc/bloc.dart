@@ -1,83 +1,150 @@
 // External
-import 'package:dots_client/settings/settings.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dots_client/pages/spot/resources/player_position.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 
 // Internal
-import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart';
+import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
+import 'package:uuid/uuid.dart';
 import 'events.dart';
 import 'state.dart';
 
 class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
-  final AppSettings appSettings;
+  final proto.SpotServiceClient client;
+  final GeolocatorPlatform geolocator;
+  final String spotUuid;
+  final String playerUuid = const Uuid().v4();
+
   final _logger = Logger("SpotPageBloc");
 
   SpotPageBloc({
-    required this.appSettings,
-    required String spotUuid,
+    required this.client,
+    required this.geolocator,
+    required this.spotUuid,
   }) : super(InitingState()) {
-    on<InitEvent>((event, emit) async {
-      _logger.fine("Get spot data");
-      final channel = ClientChannel(
-        appSettings.environment.host,
-        port: appSettings.environment.port,
-        options: const ChannelOptions(
-          credentials: ChannelCredentials.insecure(),
+    on<InitEvent>(_onInitEvent);
+    on<NewPlayersStatesEvent>(_onNewPlayersGeoPositionEvent);
+
+    add(InitEvent());
+  }
+
+  void _onInitEvent(InitEvent event, Emitter<SpotPageState> emit) async {
+    _logger.fine("Get spot data");
+
+    final playerPosition = await geolocator.getLastKnownPosition();
+
+    final getSpotResponse = await _getSpotData();
+    getSpotResponse.fold(
+        (l) => emit(InitErrorState(exception: l)),
+        (r) => emit(InitedState(
+              playerPosition: LatLng(
+                playerPosition!.latitude,
+                playerPosition.longitude,
+              ),
+              playerHealth: 100,
+              otherPlayersPositions: const [],
+              spotPosition: LatLng(
+                r.position.latitude,
+                r.position.longitude,
+              ),
+              zoneRadius: r.radius,
+              scanPeriod: Duration(seconds: r.scanPeriodInSeconds),
+              zonePeriod: Duration(seconds: r.zonePeriodInSeconds),
+            )));
+
+    _logger.fine("Subscribe on geo position");
+    _subscribeOnGeoPosition().fold(
+      (l) => emit(InitErrorState(exception: l)),
+      (r) => null,
+    );
+
+    _logger.fine("Subscribe on players geo positions");
+    _subscribeOnPlayersStates().fold(
+      (l) => emit(InitErrorState(exception: l)),
+      (r) => r.listen((value) => add(NewPlayersStatesEvent(
+            playerPosition: LatLng(
+              value.playerState.position.latitude,
+              value.playerState.position.longitude,
+            ),
+            playerHealth: value.playerState.health,
+            otherPlayersPositions: value.otherPlayersStates
+                .map((e) => PlayerPosition(
+                    playerUuid: e.playerUuid,
+                    position: LatLng(
+                      e.position.latitude,
+                      e.position.longitude,
+                    )))
+                .toList(),
+          ))),
+    );
+  }
+
+  Stream<proto.SendPlayerPositionRequest> _createPlayerPositionStream(
+      Stream<Position> stream) async* {
+    await for (final position in stream) {
+      yield proto.SendPlayerPositionRequest(
+        spotUuid: spotUuid,
+        playerUuid: playerUuid,
+        position: proto.Position(
+          latitude: position.latitude,
+          longitude: position.longitude,
         ),
       );
+    }
+  }
 
-      final stub = SpotServiceClient(channel);
-      final request = GetSpotRequest(
-        uuid: event.spotUuid,
+  Future<Either<Exception, proto.GetSpotResponse>> _getSpotData() async {
+    final request = proto.GetSpotRequest(spotUuid: spotUuid);
+    try {
+      return Right(await client.getSpot(request));
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
+  }
+
+  Either<Exception, bool> _subscribeOnGeoPosition() {
+    final positionStream = geolocator.getPositionStream(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    try {
+      client.sendPlayerPosition(_createPlayerPositionStream(positionStream));
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
+
+    return const Right(true);
+  }
+
+  Either<Exception, ResponseStream<proto.GetPlayersStatesResponse>>
+      _subscribeOnPlayersStates() {
+    try {
+      final request = proto.GetPlayersStatesRequest(
+        spotUuid: spotUuid,
+        playerUuid: playerUuid,
       );
-      try {
-        final response = await stub.getSpot(request);
 
-        emit(InitedState(
-          spotPosition: LatLng(
-            response.latiitude,
-            response.longitude,
-          ),
-          zoneRadius: response.radius,
-          scanPeriod: Duration(seconds: response.scanPeriodInSeconds),
-          zonePeriod: Duration(seconds: response.zonePeriodInSeconds),
-        ));
-      } on Exception catch (ex) {
-        emit(InitErrorState(exception: ex));
-      }
+      return Right(client.getPlayersStates(request));
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
+  }
 
-      // // Couldn't check permission because we checked it before
-      // _logger.fine("Get last known position");
-      // final position = await Geolocator.getLastKnownPosition();
-      // if (position != null) {
-      //   emit(InitedState(
-      //     spotPosition: spotPosition,
-      //     position: LatLng(position.latitude, position.longitude),
-      //   ));
-      // } else {
-      //   throw Exception("Position is null");
-      // }
-
-      // _logger.fine("Subscribe on location");
-      // Geolocator.getPositionStream(
-      //   desiredAccuracy: LocationAccuracy.high,
-      // ).listen((position) => add(NewGeoPositionEvent(
-      //         position: LatLng(
-      //       position.latitude,
-      //       position.longitude,
-      //     ))));
-    });
-    // on<NewGeoPositionEvent>((event, emit) async {
-    //   if (state is InitedState) {
-    //     emit(InitedState(
-    //       spotPosition: spotPosition,
-    //       position: event.position,
-    //     ));
-    //   }
-    // });
-
-    add(InitEvent(spotUuid: spotUuid));
+  void _onNewPlayersGeoPositionEvent(
+    NewPlayersStatesEvent event,
+    Emitter<SpotPageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      emit(curState.copyWith(
+        playerPosition: event.playerPosition,
+        playerHealth: event.playerHealth,
+        otherPlayersPositions: event.otherPlayersPositions,
+      ));
+    }
   }
 }

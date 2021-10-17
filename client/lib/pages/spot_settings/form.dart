@@ -1,8 +1,6 @@
 // External
 import 'dart:math';
 
-import 'package:dots_client/pages/spot/page.dart';
-import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -10,6 +8,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 // Internal
+import 'package:dots_client/utils/nav.dart';
+import 'package:dots_client/pages/spot/page.dart';
 import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
@@ -42,14 +42,17 @@ class SpotSettingsForm extends StatelessWidget {
             creatingSpot: true,
           );
         } else if (curState is NewSpotCreatedState) {
-          navPushAfterBuild(
+          navPopAndPushAfterBuild(
             context,
-            SpotPage(spotUuid: curState.spotUuid),
+            SpotPage(
+              spotUuid: curState.spotUuid,
+            ),
           );
           return const CircularProgressIndicator();
         } else if (curState is CreateSpotErrorState) {
           return _SpotSettingsForm(
-            mapController: mapController,
+            // TODO Fix this hardcode
+            mapController: MapController(),
             position: curState.position,
             zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,

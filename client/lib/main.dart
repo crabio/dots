@@ -3,9 +3,11 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:grpc/grpc.dart';
 import 'package:logging/logging.dart' as log;
 
 // Internal
+import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 import 'package:dots_client/utils/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/settings/settings.dart';
@@ -36,6 +38,18 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AppSettings>(create: (context) => settings),
+        RepositoryProvider<GeolocatorPlatform>(
+            create: (context) => GeolocatorPlatform.instance),
+        RepositoryProvider<proto.SpotServiceClient>(
+            create: (context) => proto.SpotServiceClient(
+                  ClientChannel(
+                    settings.environment.host,
+                    port: settings.environment.port,
+                    options: const ChannelOptions(
+                      credentials: ChannelCredentials.insecure(),
+                    ),
+                  ),
+                )),
       ],
       child: AdaptiveTheme(
         light: lightTheme,
@@ -45,7 +59,7 @@ class App extends StatelessWidget {
           title: 'Dots App',
           theme: theme,
           darkTheme: darkTheme,
-          home: MainPage(geolocator: GeolocatorPlatform.instance),
+          home: const MainPage(),
         ),
       ),
     );

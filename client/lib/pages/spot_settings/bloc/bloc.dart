@@ -1,23 +1,21 @@
 // External
-import 'package:dots_client/settings/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 
 // Internal
-import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart';
+import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 import 'events.dart';
 import 'state.dart';
 
 class SpotSettingsPageBloc
     extends Bloc<SpotSettingsPageEvent, SpotSettingsPageState> {
-  final AppSettings appSettings;
+  final proto.SpotServiceClient client;
 
   final _logger = Logger("SpotSettingsPageBloc");
 
   SpotSettingsPageBloc({
-    required this.appSettings,
+    required this.client,
     required position,
   }) : super(InitedState(
           position: position,
@@ -57,24 +55,20 @@ class SpotSettingsPageBloc
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
           ));
-          final channel = ClientChannel(
-            appSettings.environment.host,
-            port: appSettings.environment.port,
-            options: const ChannelOptions(
-              credentials: ChannelCredentials.insecure(),
+          final request = proto.CreateSpotRequest(
+            radius: event.zoneRadius,
+            zonePeriodInSeconds: event.zonePeriod.inSeconds,
+            scanPeriodInSeconds: event.scanPeriod.inSeconds,
+            position: proto.Position(
+              latitude: event.position.latitude,
+              longitude: event.position.longitude,
             ),
           );
-
-          final stub = SpotServiceClient(channel);
-          final request = CreateSpotRequest(
-            latiitude: event.position.latitude,
-            longitude: event.position.longitude,
-          );
           try {
-            final response = await stub.createSpot(request);
+            final response = await client.createSpot(request);
 
             emit(NewSpotCreatedState(
-              spotUuid: response.uuid,
+              spotUuid: response.spotUuid,
               position: LatLng(
                 event.position.latitude,
                 event.position.longitude,
@@ -89,7 +83,6 @@ class SpotSettingsPageBloc
               exception: ex,
             ));
           }
-          await channel.shutdown();
         } else {}
       },
     );
