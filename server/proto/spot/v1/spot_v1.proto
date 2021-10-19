@@ -11,6 +11,8 @@ service SpotService {
   
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
+  // GetPlayersStates returns stream of all players data (this player and others)
+  // Data will be received on each new position or health status
   rpc GetPlayersStates (GetPlayersStatesRequest) returns (stream GetPlayersStatesResponse) {}
 }
 
@@ -53,7 +55,6 @@ message GetPlayersStatesRequest {
 
 message GetPlayersStatesResponse {
   PlayerState player_state = 1;
-  repeated PlayerState other_players_states = 2;
 }
 
 // Non RPC structures

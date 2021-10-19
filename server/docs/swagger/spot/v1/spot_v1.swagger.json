@@ -57,12 +57,6 @@
       "properties": {
         "playerState": {
           "$ref": "#/definitions/v1PlayerState"
-        },
-        "otherPlayersStates": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1PlayerState"
-          }
         }
       }
     },

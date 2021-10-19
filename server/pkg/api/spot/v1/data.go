@@ -35,4 +35,7 @@ type PlayerState struct {
 	ZoneDamageActice bool
 	// Channel for stoping damage by zone onto player
 	StopZoneDmgCh chan bool
+
+	// Channel for sending state about players states
+	Sub *chan PlayerState
 }

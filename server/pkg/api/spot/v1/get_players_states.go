@@ -4,7 +4,6 @@ import (
 	// External
 
 	"fmt"
-	"time"
 
 	"github.com/google/uuid"
 
@@ -20,53 +19,51 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 	}
 
+	spot, ok := s.SpotsMap[spotUuid]
+	if !ok {
+		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
+	}
+
 	playerUuid, err := uuid.Parse(request.PlayerUuid)
 	if err != nil {
 		return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 	}
 
-	// Create ticker for sending data updates
-	// TODO Use channels instead timers. Create channel to send position update to specific user
-	ticker := time.NewTicker(s.playersPosUpdatePeriod)
+	playerState := spot.PlayersStateMap[playerUuid]
 
-	// For each ticker tick
-	for range ticker.C {
-		spot, ok := s.SpotsMap[spotUuid]
-		if !ok {
-			ticker.Stop()
-			return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
-		}
+	// Check that player hadn't subscription
+	if playerState.Sub != nil {
+		return fmt.Errorf("User %v already has subscription", playerUuid)
+	}
 
-		thisPlayerState := spot.PlayersStateMap[playerUuid]
+	playerSub := make(chan PlayerState)
+	playerState.Sub = &playerSub
+	// Update player state
+	spot.Lock()
+	spot.PlayersStateMap[playerUuid] = playerState
+	spot.Unlock()
 
-		otherPlayersStates := []*proto.PlayerState{}
-		for k, v := range spot.PlayersStateMap {
-			if k != playerUuid {
-				otherPlayersStates = append(otherPlayersStates, &proto.PlayerState{
-					PlayerUuid: k.String(),
-					Position: &proto.Position{
-						Latitude:  v.Position.Lat.Degrees(),
-						Longitude: v.Position.Lng.Degrees(),
-					},
-					Health: int32(v.Health),
-				})
-			}
-		}
-
+	for playerState := range playerSub {
 		response := &proto.GetPlayersStatesResponse{
 			PlayerState: &proto.PlayerState{
 				Position: &proto.Position{
-					Latitude:  thisPlayerState.Position.Lat.Degrees(),
-					Longitude: thisPlayerState.Position.Lng.Degrees(),
+					Latitude:  playerState.Position.Lat.Degrees(),
+					Longitude: playerState.Position.Lng.Degrees(),
 				},
-				Health: int32(thisPlayerState.Health),
+				Health: int32(playerState.Health),
 			},
-			OtherPlayersStates: otherPlayersStates,
 		}
 
 		s.log.WithField("response", response.String()).Debug("Get players state response")
 		if err := stream.Send(response); err != nil {
-			ticker.Stop()
+			// Remove channel from current state
+			close(playerSub)
+			playerState := spot.PlayersStateMap[playerUuid]
+			playerState.Sub = nil
+			// Update player state
+			spot.Lock()
+			spot.PlayersStateMap[playerUuid] = playerState
+			spot.Unlock()
 			return err
 		}
 	}

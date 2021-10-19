@@ -78,6 +78,16 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			spot.Lock()
 			spot.PlayersStateMap[playerUuid] = playerState
 			spot.Unlock()
+
+			// Send player state to subscriptions which requires it
+			for _, v := range spot.PlayersStateMap {
+				// TODO Add checks for distance, scanning and etc
+				// Check that we have subscription
+				if v.Sub != nil {
+					// Send data to subscription channel
+					(*v.Sub) <- playerState
+				}
+			}
 		}
 
 		s.log.WithFields(logrus.Fields{
