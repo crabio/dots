@@ -35,7 +35,9 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			return fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 		}
 
+		s.SpotsMapMx.Lock()
 		spot, ok := s.SpotsMap[spotUuid]
+		s.SpotsMapMx.Unlock()
 		if !ok {
 			return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 		}
@@ -46,16 +48,15 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 		}
 
 		// Update player state
+		spot.PlayersStateMapMx.Lock()
 		playerState, ok := spot.PlayersStateMap[playerUuid]
 		if !ok {
 			// New player
 			// TODO Players should be inited on game start
-			spot.Lock()
 			spot.PlayersStateMap[playerUuid] = PlayerState{
 				Position: s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude),
 				Health:   100,
 			}
-			spot.Unlock()
 		} else {
 			playerState.Position = s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude)
 
@@ -75,9 +76,7 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			}
 
 			// Update player state
-			spot.Lock()
 			spot.PlayersStateMap[playerUuid] = playerState
-			spot.Unlock()
 
 			// Send player state to subscriptions which requires it
 			for _, v := range spot.PlayersStateMap {
@@ -85,10 +84,15 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 				// Check that we have subscription
 				if v.Sub != nil {
 					// Send data to subscription channel
-					(*v.Sub) <- playerState
+					(*v.Sub) <- PlayerPublicState{
+						PlayerUuid: playerUuid,
+						Position:   playerState.Position,
+						Health:     playerState.Health,
+					}
 				}
 			}
 		}
+		spot.PlayersStateMapMx.Unlock()
 
 		s.log.WithFields(logrus.Fields{
 			"spotUuid":   spotUuid,
@@ -105,43 +109,41 @@ func startPlayerZoneDamage(spot *Spot, playerUuid uuid.UUID) {
 		// TODO Move zone damage period to consts
 		const zoneDamagePeriod = 1 * time.Second
 
+		spot.PlayersStateMapMx.Lock()
 		playerState := spot.PlayersStateMap[playerUuid]
 		playerState.ZoneDamageActice = true
 		// Update state in spot
-		spot.Lock()
 		spot.PlayersStateMap[playerUuid] = playerState
-		spot.Unlock()
+		spot.PlayersStateMapMx.Unlock()
 
 		damageTicker := time.NewTicker(zoneDamagePeriod)
 		for {
 			select {
 			case <-playerState.StopZoneDmgCh:
+				spot.PlayersStateMapMx.Lock()
 				playerState := spot.PlayersStateMap[playerUuid]
 				playerState.ZoneDamageActice = false
 				// Update state in spot
-				spot.Lock()
 				spot.PlayersStateMap[playerUuid] = playerState
-				spot.Unlock()
+				spot.PlayersStateMapMx.Unlock()
 				return
 			case <-damageTicker.C:
+				spot.PlayersStateMapMx.Lock()
 				playerState := spot.PlayersStateMap[playerUuid]
 				logrus.Printf("Damage for %v", playerState)
 				if playerState.Health <= zoneDamage {
 					playerState.Health = 0
 					// Update state in spot
-					spot.Lock()
 					spot.PlayersStateMap[playerUuid] = playerState
-					spot.Unlock()
 					logrus.Printf("Death %v", playerState)
 					// Stop zone damage
 					playerState.StopZoneDmgCh <- true
 				} else {
 					playerState.Health -= zoneDamage
 					// Update state in spot
-					spot.Lock()
 					spot.PlayersStateMap[playerUuid] = playerState
-					spot.Unlock()
 				}
+				spot.PlayersStateMapMx.Unlock()
 				logrus.Printf("Damaged %v", playerState)
 			}
 		}

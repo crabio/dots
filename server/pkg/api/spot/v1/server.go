@@ -28,7 +28,7 @@ type SpotServiceServer struct {
 	// key - spot UUID
 	// value - spot session data
 	SpotsMap   map[uuid.UUID]Spot
-	SpotsMapMx sync.Mutex
+	SpotsMapMx sync.RWMutex
 }
 
 func New(playersPosUpdatePeriod time.Duration) *SpotServiceServer {
@@ -36,6 +36,7 @@ func New(playersPosUpdatePeriod time.Duration) *SpotServiceServer {
 	s.log = logger.CreateLogger("spot-v1")
 	s.playersPosUpdatePeriod = playersPosUpdatePeriod
 	s.SpotsMap = make(map[uuid.UUID]Spot)
+	s.SpotsMapMx = sync.RWMutex{}
 
 	return s
 }

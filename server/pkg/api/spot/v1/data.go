@@ -11,8 +11,6 @@ import (
 )
 
 type Spot struct {
-	sync.Mutex
-
 	Position s2.LatLng
 	// Zone radius in meters
 	ZoneRadius int32
@@ -22,7 +20,8 @@ type Spot struct {
 	//
 	// key - player uuid
 	// value - player state
-	PlayersStateMap map[uuid.UUID]PlayerState
+	PlayersStateMap   map[uuid.UUID]PlayerState
+	PlayersStateMapMx sync.RWMutex
 }
 
 type PlayerState struct {
@@ -37,5 +36,11 @@ type PlayerState struct {
 	StopZoneDmgCh chan bool
 
 	// Channel for sending state about players states
-	Sub *chan PlayerState
+	Sub *chan PlayerPublicState
+}
+
+type PlayerPublicState struct {
+	PlayerUuid uuid.UUID
+	Position   s2.LatLng
+	Health     int16
 }

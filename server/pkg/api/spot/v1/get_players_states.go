@@ -19,7 +19,9 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 	}
 
+	s.SpotsMapMx.Lock()
 	spot, ok := s.SpotsMap[spotUuid]
+	s.SpotsMapMx.Unlock()
 	if !ok {
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
@@ -29,19 +31,21 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 	}
 
+	spot.PlayersStateMapMx.Lock()
 	playerState := spot.PlayersStateMap[playerUuid]
+	spot.PlayersStateMapMx.Unlock()
 
 	// Check that player hadn't subscription
 	if playerState.Sub != nil {
 		return fmt.Errorf("User %v already has subscription", playerUuid)
 	}
 
-	playerSub := make(chan PlayerState)
+	playerSub := make(chan PlayerPublicState)
 	playerState.Sub = &playerSub
 	// Update player state
-	spot.Lock()
+	spot.PlayersStateMapMx.Lock()
 	spot.PlayersStateMap[playerUuid] = playerState
-	spot.Unlock()
+	spot.PlayersStateMapMx.Unlock()
 
 	for playerState := range playerSub {
 		response := &proto.GetPlayersStatesResponse{
@@ -58,12 +62,12 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		if err := stream.Send(response); err != nil {
 			// Remove channel from current state
 			close(playerSub)
+			spot.PlayersStateMapMx.Lock()
 			playerState := spot.PlayersStateMap[playerUuid]
 			playerState.Sub = nil
 			// Update player state
-			spot.Lock()
 			spot.PlayersStateMap[playerUuid] = playerState
-			spot.Unlock()
+			spot.PlayersStateMapMx.Unlock()
 			return err
 		}
 	}
