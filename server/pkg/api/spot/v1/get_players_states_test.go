@@ -97,8 +97,10 @@ func TestGetPlayerPosition(t *testing.T) {
 
 	// Wait channel ready
 	for {
+		s.SpotsMapMx.Lock()
 		spot := s.SpotsMap[spotUuid]
 		playerState := spot.PlayersStateMap[playerUuid]
+		s.SpotsMapMx.Unlock()
 		if playerState.Sub != nil {
 			break
 		}

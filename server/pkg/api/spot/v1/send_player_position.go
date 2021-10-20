@@ -37,7 +37,6 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 
 		s.SpotsMapMx.Lock()
 		spot, ok := s.SpotsMap[spotUuid]
-		s.SpotsMapMx.Unlock()
 		if !ok {
 			return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 		}
@@ -48,7 +47,6 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 		}
 
 		// Update player state
-		spot.PlayersStateMapMx.Lock()
 		playerState, ok := spot.PlayersStateMap[playerUuid]
 		if !ok {
 			// New player
@@ -66,7 +64,7 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 				s.log.Debugf("Player distance %f > %d zone radius", playerToSpotDistance, spot.ZoneRadius)
 				// Start goroutine with ticket for health decreasing
 				if !playerState.ZoneDamageActice {
-					startPlayerZoneDamage(&spot, playerUuid)
+					s.startPlayerZoneDamage(spotUuid, playerUuid)
 				}
 			} else {
 				// Stop player zone damage if needed
@@ -92,7 +90,8 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 				}
 			}
 		}
-		spot.PlayersStateMapMx.Unlock()
+		s.SpotsMap[spotUuid] = spot
+		s.SpotsMapMx.Unlock()
 
 		s.log.WithFields(logrus.Fields{
 			"spotUuid":   spotUuid,
@@ -102,39 +101,55 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 	}
 }
 
-func startPlayerZoneDamage(spot *Spot, playerUuid uuid.UUID) {
+func (s *SpotServiceServer) startPlayerZoneDamage(spotUuid uuid.UUID, playerUuid uuid.UUID) {
 	go func() {
 		// TODO Move zone damage to consts
 		const zoneDamage = 15
 		// TODO Move zone damage period to consts
 		const zoneDamagePeriod = 1 * time.Second
 
-		spot.PlayersStateMapMx.Lock()
+		s.SpotsMapMx.Lock()
+		spot, ok := s.SpotsMap[spotUuid]
+		s.SpotsMapMx.Unlock()
+		if !ok {
+			s.log.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
+			return
+		}
+
 		playerState := spot.PlayersStateMap[playerUuid]
 		playerState.ZoneDamageActice = true
 		// Update state in spot
 		spot.PlayersStateMap[playerUuid] = playerState
-		spot.PlayersStateMapMx.Unlock()
+		s.SpotsMapMx.Lock()
+		s.SpotsMap[spotUuid] = spot
+		s.SpotsMapMx.Unlock()
 
 		damageTicker := time.NewTicker(zoneDamagePeriod)
 		for {
+			s.SpotsMapMx.Lock()
+			spot, ok := s.SpotsMap[spotUuid]
+			if !ok {
+				s.log.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
+				return
+			}
+
 			select {
 			case <-playerState.StopZoneDmgCh:
-				spot.PlayersStateMapMx.Lock()
 				playerState := spot.PlayersStateMap[playerUuid]
 				playerState.ZoneDamageActice = false
 				// Update state in spot
 				spot.PlayersStateMap[playerUuid] = playerState
-				spot.PlayersStateMapMx.Unlock()
+				s.SpotsMap[spotUuid] = spot
+				s.SpotsMapMx.Unlock()
 				return
 			case <-damageTicker.C:
-				spot.PlayersStateMapMx.Lock()
 				playerState := spot.PlayersStateMap[playerUuid]
 				logrus.Printf("Damage for %v", playerState)
 				if playerState.Health <= zoneDamage {
 					playerState.Health = 0
 					// Update state in spot
 					spot.PlayersStateMap[playerUuid] = playerState
+					s.SpotsMap[spotUuid] = spot
 					logrus.Printf("Death %v", playerState)
 					// Stop zone damage
 					playerState.StopZoneDmgCh <- true
@@ -142,10 +157,11 @@ func startPlayerZoneDamage(spot *Spot, playerUuid uuid.UUID) {
 					playerState.Health -= zoneDamage
 					// Update state in spot
 					spot.PlayersStateMap[playerUuid] = playerState
+					s.SpotsMap[spotUuid] = spot
 				}
-				spot.PlayersStateMapMx.Unlock()
 				logrus.Printf("Damaged %v", playerState)
 			}
+			s.SpotsMapMx.Unlock()
 		}
 	}()
 }
