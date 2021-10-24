@@ -118,19 +118,8 @@ func TestGetPlayerPosition(t *testing.T) {
 		exit <- true
 	}()
 
-	// Wait channel ready
-	for {
-		spot, ok = s.SpotsMap.Load(spotUuid)
-		assert.True(t, ok)
-
-		playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
-		assert.True(t, ok)
-
-		if playerState.Sub != nil {
-			break
-		}
-		time.Sleep(10 * time.Millisecond)
-	}
+	// Wait subscription ready
+	time.Sleep(100 * time.Millisecond)
 
 	// Send data
 	spot, ok = s.SpotsMap.Load(spotUuid)
@@ -139,28 +128,26 @@ func TestGetPlayerPosition(t *testing.T) {
 	playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 	assert.True(t, ok)
 
-	sub := *playerState.Sub
-
-	sub <- player_state.PlayerPublicState{
+	playerState.Broadcaster.Send(player_state.PlayerPublicState{
 		PlayerUuid: playerUuid,
 		Position:   s2.LatLngFromDegrees(10, 20),
 		Health:     88,
-	}
-	sub <- player_state.PlayerPublicState{
+	})
+	playerState.Broadcaster.Send(player_state.PlayerPublicState{
 		PlayerUuid: player2Uuid,
 		Position:   s2.LatLngFromDegrees(60, 70),
 		Health:     33,
-	}
-	sub <- player_state.PlayerPublicState{
+	})
+	playerState.Broadcaster.Send(player_state.PlayerPublicState{
 		PlayerUuid: player3Uuid,
 		Position:   s2.LatLngFromDegrees(80, 90),
 		Health:     15,
-	}
-	sub <- player_state.PlayerPublicState{
+	})
+	playerState.Broadcaster.Send(player_state.PlayerPublicState{
 		PlayerUuid: playerUuid,
 		Position:   s2.LatLngFromDegrees(10, 20),
 		Health:     88,
-	}
+	})
 
 	<-exit
 

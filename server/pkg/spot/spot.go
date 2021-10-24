@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	"github.com/tjgq/broadcast"
 	// Internal
 )
 
@@ -20,12 +21,14 @@ type Spot struct {
 
 	PlayersList []uuid.UUID
 	// Channel for sending players list on update
-	PlayersListCh chan []uuid.UUID
+	PlayersListBroadcaster *broadcast.Broadcaster
 
 	Session *SpotSession
 
 	// Fla indicies that spot is active (players are playing)
 	IsActive bool
+	// Channel for sending start/stop flags
+	IsActiveBroadcaster *broadcast.Broadcaster
 }
 
 func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zonePeriod time.Duration, sessionDuration time.Duration) *Spot {

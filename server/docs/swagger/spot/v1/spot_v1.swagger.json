@@ -96,6 +96,22 @@
         }
       }
     },
+    "v1GetSpotStartFlagResponse": {
+      "type": "object",
+      "properties": {
+        "isActive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1IsPlayerHunterResponse": {
+      "type": "object",
+      "properties": {
+        "isHunter": {
+          "type": "boolean"
+        }
+      }
+    },
     "v1JoinToSpotResponse": {
       "type": "object"
     },

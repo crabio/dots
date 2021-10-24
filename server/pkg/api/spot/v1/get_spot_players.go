@@ -23,7 +23,9 @@ func (s *SpotServiceServer) GetSpotPlayers(request *proto.GetSpotPlayersRequest,
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	for playersList := range spot.PlayersListCh {
+	for playersListI := range spot.PlayersListBroadcaster.Listen().Ch {
+		playersList := playersListI.([]uuid.UUID)
+
 		response := &proto.GetSpotPlayersResponse{}
 		for _, playerUuid := range playersList {
 			response.PlayersList = append(response.PlayersList, playerUuid.String())

@@ -78,15 +78,13 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			// Send player state to subscriptions which requires it
 			spot.Session.PlayersStateMap.Range(func(k uuid.UUID, playerState player_state.PlayerState) {
 				// TODO Add checks for distance, scanning and etc
-				// Check that we have subscription
-				if playerState.Sub != nil {
-					// Send data to subscription channel
-					(*playerState.Sub) <- player_state.PlayerPublicState{
-						PlayerUuid: playerUuid,
-						Position:   playerState.Position,
-						Health:     playerState.Health,
-					}
-				}
+
+				// Send data to subscription channel
+				playerState.Broadcaster.Send(player_state.PlayerPublicState{
+					PlayerUuid: playerUuid,
+					Position:   playerState.Position,
+					Health:     playerState.Health,
+				})
 			})
 		}
 		s.SpotsMap.Store(spotUuid, spot)

@@ -25,6 +25,8 @@ type SpotServiceClient interface {
 	// If new player will be connected to spot, it will be sent
 	GetSpotPlayers(ctx context.Context, in *GetSpotPlayersRequest, opts ...grpc.CallOption) (SpotService_GetSpotPlayersClient, error)
 	StartSpot(ctx context.Context, in *StartSpotRequest, opts ...grpc.CallOption) (*StartSpotResponse, error)
+	IsPlayerHunter(ctx context.Context, in *IsPlayerHunterRequest, opts ...grpc.CallOption) (*IsPlayerHunterResponse, error)
+	GetSpotStartFlag(ctx context.Context, in *GetSpotStartFlagRequest, opts ...grpc.CallOption) (SpotService_GetSpotStartFlagClient, error)
 	SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error)
 	// GetPlayersStates returns stream of all players data (this player and others)
 	// Data will be received on each new position or health status
@@ -107,8 +109,49 @@ func (c *spotServiceClient) StartSpot(ctx context.Context, in *StartSpotRequest,
 	return out, nil
 }
 
+func (c *spotServiceClient) IsPlayerHunter(ctx context.Context, in *IsPlayerHunterRequest, opts ...grpc.CallOption) (*IsPlayerHunterResponse, error) {
+	out := new(IsPlayerHunterResponse)
+	err := c.cc.Invoke(ctx, "/spot.v1.SpotService/IsPlayerHunter", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *spotServiceClient) GetSpotStartFlag(ctx context.Context, in *GetSpotStartFlagRequest, opts ...grpc.CallOption) (SpotService_GetSpotStartFlagClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[1], "/spot.v1.SpotService/GetSpotStartFlag", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &spotServiceGetSpotStartFlagClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SpotService_GetSpotStartFlagClient interface {
+	Recv() (*GetSpotStartFlagResponse, error)
+	grpc.ClientStream
+}
+
+type spotServiceGetSpotStartFlagClient struct {
+	grpc.ClientStream
+}
+
+func (x *spotServiceGetSpotStartFlagClient) Recv() (*GetSpotStartFlagResponse, error) {
+	m := new(GetSpotStartFlagResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *spotServiceClient) SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error) {
-	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[1], "/spot.v1.SpotService/SendPlayerPosition", opts...)
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[2], "/spot.v1.SpotService/SendPlayerPosition", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +185,7 @@ func (x *spotServiceSendPlayerPositionClient) CloseAndRecv() (*SendPlayerPositio
 }
 
 func (c *spotServiceClient) GetPlayersStates(ctx context.Context, in *GetPlayersStatesRequest, opts ...grpc.CallOption) (SpotService_GetPlayersStatesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[2], "/spot.v1.SpotService/GetPlayersStates", opts...)
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[3], "/spot.v1.SpotService/GetPlayersStates", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -184,6 +227,8 @@ type SpotServiceServer interface {
 	// If new player will be connected to spot, it will be sent
 	GetSpotPlayers(*GetSpotPlayersRequest, SpotService_GetSpotPlayersServer) error
 	StartSpot(context.Context, *StartSpotRequest) (*StartSpotResponse, error)
+	IsPlayerHunter(context.Context, *IsPlayerHunterRequest) (*IsPlayerHunterResponse, error)
+	GetSpotStartFlag(*GetSpotStartFlagRequest, SpotService_GetSpotStartFlagServer) error
 	SendPlayerPosition(SpotService_SendPlayerPositionServer) error
 	// GetPlayersStates returns stream of all players data (this player and others)
 	// Data will be received on each new position or health status
@@ -209,6 +254,12 @@ func (UnimplementedSpotServiceServer) GetSpotPlayers(*GetSpotPlayersRequest, Spo
 }
 func (UnimplementedSpotServiceServer) StartSpot(context.Context, *StartSpotRequest) (*StartSpotResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartSpot not implemented")
+}
+func (UnimplementedSpotServiceServer) IsPlayerHunter(context.Context, *IsPlayerHunterRequest) (*IsPlayerHunterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsPlayerHunter not implemented")
+}
+func (UnimplementedSpotServiceServer) GetSpotStartFlag(*GetSpotStartFlagRequest, SpotService_GetSpotStartFlagServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetSpotStartFlag not implemented")
 }
 func (UnimplementedSpotServiceServer) SendPlayerPosition(SpotService_SendPlayerPositionServer) error {
 	return status.Errorf(codes.Unimplemented, "method SendPlayerPosition not implemented")
@@ -322,6 +373,45 @@ func _SpotService_StartSpot_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SpotService_IsPlayerHunter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsPlayerHunterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SpotServiceServer).IsPlayerHunter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/spot.v1.SpotService/IsPlayerHunter",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SpotServiceServer).IsPlayerHunter(ctx, req.(*IsPlayerHunterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SpotService_GetSpotStartFlag_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetSpotStartFlagRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SpotServiceServer).GetSpotStartFlag(m, &spotServiceGetSpotStartFlagServer{stream})
+}
+
+type SpotService_GetSpotStartFlagServer interface {
+	Send(*GetSpotStartFlagResponse) error
+	grpc.ServerStream
+}
+
+type spotServiceGetSpotStartFlagServer struct {
+	grpc.ServerStream
+}
+
+func (x *spotServiceGetSpotStartFlagServer) Send(m *GetSpotStartFlagResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _SpotService_SendPlayerPosition_Handler(srv interface{}, stream grpc.ServerStream) error {
 	return srv.(SpotServiceServer).SendPlayerPosition(&spotServiceSendPlayerPositionServer{stream})
 }
@@ -392,11 +482,20 @@ var SpotService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "StartSpot",
 			Handler:    _SpotService_StartSpot_Handler,
 		},
+		{
+			MethodName: "IsPlayerHunter",
+			Handler:    _SpotService_IsPlayerHunter_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "GetSpotPlayers",
 			Handler:       _SpotService_GetSpotPlayers_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetSpotStartFlag",
+			Handler:       _SpotService_GetSpotStartFlag_Handler,
 			ServerStreams: true,
 		},
 		{

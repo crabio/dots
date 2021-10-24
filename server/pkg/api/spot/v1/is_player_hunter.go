@@ -12,7 +12,7 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
-func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinToSpotRequest) (*proto.JoinToSpotResponse, error) {
+func (s *SpotServiceServer) IsPlayerHunter(ctx context.Context, request *proto.IsPlayerHunterRequest) (*proto.IsPlayerHunterResponse, error) {
 	s.log.WithField("request", request.String()).Debug("Join to spot request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
@@ -31,19 +31,16 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 	}
 
 	if spot.IsActive {
-		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
+		return nil, fmt.Errorf("Spot is not active")
 	}
 
-	// Append new player
-	spot.PlayersList = append(spot.PlayersList, playerUuid)
+	if spot.Session == nil {
+		return nil, fmt.Errorf("Spot has no session")
+	}
 
-	// Send updated players list
-	spot.PlayersListBroadcaster.Send(spot.PlayersList)
-
-	// Save spot
-	s.SpotsMap.Store(spotUuid, spot)
-
-	response := proto.JoinToSpotResponse{}
+	response := proto.IsPlayerHunterResponse{
+		IsHunter: spot.Session.HunterUuid == playerUuid,
+	}
 
 	return &response, nil
 }

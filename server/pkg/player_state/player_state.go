@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	"github.com/tjgq/broadcast"
 	// Internal
 )
 
@@ -21,7 +22,15 @@ type PlayerState struct {
 	StopZoneDmgCh chan bool
 
 	// Channel for sending state about players states
-	Sub *chan PlayerPublicState
+	Broadcaster *broadcast.Broadcaster
+}
+
+func NewPlayerState() *PlayerState {
+	playerState := new(PlayerState)
+
+	playerState.Broadcaster = broadcast.New(0)
+
+	return playerState
 }
 
 type PlayerStateMap struct {
