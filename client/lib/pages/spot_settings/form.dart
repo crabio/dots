@@ -9,15 +9,19 @@ import 'package:numberpicker/numberpicker.dart';
 
 // Internal
 import 'package:dots_client/utils/nav.dart';
-import 'package:dots_client/pages/spot/page.dart';
+import 'package:dots_client/pages/lobby/page.dart';
 import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class SpotSettingsForm extends StatelessWidget {
+  final String playerUuid;
   final mapController = MapController();
 
-  SpotSettingsForm({Key? key}) : super(key: key);
+  SpotSettingsForm({
+    required this.playerUuid,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +35,20 @@ class SpotSettingsForm extends StatelessWidget {
             zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
-          );
-        } else if (curState is CreatingNewSpotState) {
-          return _SpotSettingsForm(
-            mapController: mapController,
-            position: curState.position,
-            zoneRadius: curState.zoneRadius,
-            scanPeriod: curState.scanPeriod,
-            zonePeriod: curState.zonePeriod,
-            creatingSpot: true,
+            sessionDuration: curState.sessionDuration,
+            creatingSpot: curState.creating,
+            exception: curState.exception,
           );
         } else if (curState is NewSpotCreatedState) {
           navPopAndPushAfterBuild(
             context,
-            SpotPage(
+            LobbyPage(
               spotUuid: curState.spotUuid,
+              playerUuid: playerUuid,
+              isHost: true,
             ),
           );
           return const CircularProgressIndicator();
-        } else if (curState is CreateSpotErrorState) {
-          return _SpotSettingsForm(
-            // TODO Fix this hardcode
-            mapController: MapController(),
-            position: curState.position,
-            zoneRadius: curState.zoneRadius,
-            scanPeriod: curState.scanPeriod,
-            zonePeriod: curState.zonePeriod,
-            exception: curState.exception,
-          );
         }
 
         return Text("Unkown state: $state");
@@ -75,8 +65,9 @@ class _SpotSettingsForm extends StatelessWidget {
   final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
+  final Duration sessionDuration;
 
-  /// Exception on creating new spot on server
+  /// Error on creating new spot on server
   final Exception? exception;
 
   final bool creatingSpot;
@@ -87,6 +78,7 @@ class _SpotSettingsForm extends StatelessWidget {
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
+    required this.sessionDuration,
     this.exception,
     this.creatingSpot = false,
     Key? key,
@@ -185,59 +177,33 @@ class _SpotSettingsForm extends StatelessWidget {
                   .read<SpotSettingsPageBloc>()
                   .add(NewZoneDurationEvent(value: Duration(seconds: value))),
             ),
+            const Text("Session duration in seconds"),
+            NumberPicker(
+              axis: Axis.horizontal,
+              step: 10,
+              minValue: 0,
+              maxValue: 3600,
+              value: sessionDuration.inSeconds,
+              onChanged: (value) => context.read<SpotSettingsPageBloc>().add(
+                  NewSessionDurationEvent(value: Duration(seconds: value))),
+            ),
             creatingSpot
                 ? const CircularProgressIndicator()
-                : _CreateNewSpotBtn(
-                    position: position,
-                    zoneRadius: zoneRadius,
-                    scanPeriod: scanPeriod,
-                    zonePeriod: zonePeriod,
+                : ElevatedButton(
+                    key: const Key("btn_create_spot"),
+                    child: const Text("Create"),
+                    onPressed: () => context
+                        .read<SpotSettingsPageBloc>()
+                        .add(CreateNewSpotEvent(
+                          position: position,
+                          zoneRadius: zoneRadius,
+                          scanPeriod: scanPeriod,
+                          zonePeriod: zonePeriod,
+                          sessionDuration: sessionDuration,
+                        )),
                   ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _CreateNewSpotBtn extends StatelessWidget {
-  final LatLng position;
-  // Spot radius in meters
-  final int zoneRadius;
-  final Duration scanPeriod;
-  final Duration zonePeriod;
-
-  const _CreateNewSpotBtn({
-    required this.position,
-    required this.zoneRadius,
-    required this.scanPeriod,
-    required this.zonePeriod,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 40),
-            child: ElevatedButton(
-              key: const Key("btn_create_spot"),
-              child: const Text("Create"),
-              onPressed: () =>
-                  context.read<SpotSettingsPageBloc>().add(CreateNewSpotEvent(
-                        position: position,
-                        zoneRadius: zoneRadius,
-                        scanPeriod: scanPeriod,
-                        zonePeriod: zonePeriod,
-                      )),
-            ),
-          ),
-        ],
       ),
     );
   }

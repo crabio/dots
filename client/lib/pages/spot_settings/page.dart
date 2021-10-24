@@ -12,9 +12,11 @@ import 'form.dart';
 import 'bloc/bloc.dart';
 
 class SpotSettingsPage extends StatelessWidget {
+  final String playerUuid;
   final LatLng userPosition;
 
   const SpotSettingsPage({
+    required this.playerUuid,
     required this.userPosition,
     Key? key,
   }) : super(key: key);
@@ -23,17 +25,18 @@ class SpotSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SpotSettingsPageBloc(
+        playerUuid: playerUuid,
         client: RepositoryProvider.of<proto.SpotServiceClient>(context),
         position: userPosition,
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Dots'),
+          title: const Text('Spot settings'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => navPopAndPush(
               context,
-              const MainPage(),
+              MainPage(),
             ),
           ),
           actions: [
@@ -48,7 +51,9 @@ class SpotSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        body: SpotSettingsForm(),
+        body: SpotSettingsForm(
+          playerUuid: playerUuid,
+        ),
       ),
     );
   }

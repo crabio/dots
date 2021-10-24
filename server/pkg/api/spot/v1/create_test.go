@@ -33,9 +33,12 @@ func TestCreateSpot(t *testing.T) {
 	spotUuid, err := uuid.Parse(response.SpotUuid)
 	assert.NoError(t, err)
 
-	assert.Equal(t, 11.2344, s.SpotsMap[spotUuid].Position.Lat.Degrees())
-	assert.Equal(t, -234.12244, s.SpotsMap[spotUuid].Position.Lng.Degrees())
-	assert.Equal(t, int32(200), s.SpotsMap[spotUuid].ZoneRadius)
-	assert.Equal(t, float64(30), s.SpotsMap[spotUuid].ScanPeriod.Seconds())
-	assert.Equal(t, float64(60), s.SpotsMap[spotUuid].ZonePeriod.Seconds())
+	spot, ok := s.SpotsMap.Load(spotUuid)
+
+	assert.True(t, ok)
+	assert.Equal(t, 11.2344, spot.Position.Lat.Degrees())
+	assert.Equal(t, -234.12244, spot.Position.Lng.Degrees())
+	assert.Equal(t, int32(200), spot.ZoneRadius)
+	assert.Equal(t, float64(30), spot.ScanPeriod.Seconds())
+	assert.Equal(t, float64(60), spot.ZonePeriod.Seconds())
 }

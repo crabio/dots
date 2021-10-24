@@ -11,9 +11,13 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class MainForm extends StatelessWidget {
+  final String playerUuid;
   final MapController mapController = MapController();
 
-  MainForm({Key? key}) : super(key: key);
+  MainForm({
+    required this.playerUuid,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,29 @@ class MainForm extends StatelessWidget {
                 zoom: 17.0,
               ),
               // New spot button
-              _CreateNewSpotBtn(position: state.position),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 40),
+                      child: ElevatedButton(
+                        key: const Key("btn_create_spot"),
+                        child: const Text("Create new spot"),
+                        onPressed: () => navPopAndPush(
+                          context,
+                          SpotSettingsPage(
+                            playerUuid: playerUuid,
+                            userPosition: state.position,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           );
         } else if (state is CouldntGetPositionState) {
@@ -100,41 +126,6 @@ class _MapWidget extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _CreateNewSpotBtn extends StatelessWidget {
-  final LatLng position;
-
-  const _CreateNewSpotBtn({
-    required this.position,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 40),
-            child: ElevatedButton(
-              key: const Key("btn_create_spot"),
-              child: const Text("Create new spot"),
-              onPressed: () => navPopAndPush(
-                context,
-                SpotSettingsPage(
-                  userPosition: position,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

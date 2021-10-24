@@ -10,11 +10,14 @@ import 'state.dart';
 
 class SpotSettingsPageBloc
     extends Bloc<SpotSettingsPageEvent, SpotSettingsPageState> {
+  final String playerUuid;
+
   final proto.SpotServiceClient client;
 
   final _logger = Logger("SpotSettingsPageBloc");
 
   SpotSettingsPageBloc({
+    required this.playerUuid,
     required this.client,
     required position,
   }) : super(InitedState(
@@ -22,6 +25,7 @@ class SpotSettingsPageBloc
           zoneRadius: 50,
           scanPeriod: const Duration(seconds: 10),
           zonePeriod: const Duration(seconds: 30),
+          sessionDuration: const Duration(minutes: 5),
         )) {
     on<NewRadiusEvent>((event, emit) {
       if (state is InitedState) {
@@ -44,21 +48,24 @@ class SpotSettingsPageBloc
         _logger.shout("Not allowed $state for $event");
       }
     });
+    on<NewSessionDurationEvent>((event, emit) {
+      if (state is InitedState) {
+        emit((state as InitedState).copyWith(sessionDuration: event.value));
+      } else {
+        _logger.shout("Not allowed $state for $event");
+      }
+    });
 
     on<CreateNewSpotEvent>(
       (event, emit) async {
         final curState = state;
         if (curState is InitedState) {
-          emit(CreatingNewSpotState(
-            position: curState.position,
-            zoneRadius: curState.zoneRadius,
-            scanPeriod: curState.scanPeriod,
-            zonePeriod: curState.zonePeriod,
-          ));
+          emit(curState.copyWith(creating: true, exception: null));
           final request = proto.CreateSpotRequest(
             radius: event.zoneRadius,
             zonePeriodInSeconds: event.zonePeriod.inSeconds,
             scanPeriodInSeconds: event.scanPeriod.inSeconds,
+            sessionDurationInSeconds: event.sessionDuration.inSeconds,
             position: proto.Position(
               latitude: event.position.latitude,
               longitude: event.position.longitude,
@@ -66,6 +73,12 @@ class SpotSettingsPageBloc
           );
           try {
             final response = await client.createSpot(request);
+
+            // Join to spot
+            client.joinToSpot(proto.JoinToSpotRequest(
+              spotUuid: response.spotUuid,
+              playerUuid: playerUuid,
+            ));
 
             emit(NewSpotCreatedState(
               spotUuid: response.spotUuid,
@@ -75,13 +88,7 @@ class SpotSettingsPageBloc
               ),
             ));
           } on Exception catch (ex) {
-            emit(CreateSpotErrorState(
-              position: curState.position,
-              zoneRadius: curState.zoneRadius,
-              scanPeriod: curState.scanPeriod,
-              zonePeriod: curState.zonePeriod,
-              exception: ex,
-            ));
+            emit(curState.copyWith(creating: false, exception: ex));
           }
         } else {}
       },

@@ -70,6 +70,19 @@ func TestSendPlayerPosition(t *testing.T) {
 	spotUuid := uuid.MustParse(createSpotRet.SpotUuid)
 	playerUuid := uuid.New()
 
+	// Join to spot
+	_, err = s.JoinToSpot(context.Background(), &proto.JoinToSpotRequest{
+		SpotUuid:   spotUuid.String(),
+		PlayerUuid: playerUuid.String(),
+	})
+	assert.NoError(t, err)
+
+	// Start spot
+	_, err = s.StartSpot(context.Background(), &proto.StartSpotRequest{
+		SpotUuid: spotUuid.String(),
+	})
+	assert.NoError(t, err)
+
 	// Create stream for sending position
 	mockServer := MockSendPlayerPositionServer{
 		SpotUuid:   spotUuid,
@@ -82,7 +95,12 @@ func TestSendPlayerPosition(t *testing.T) {
 	assert.Equal(t, uint32(0), mockServer.MsgCount)
 	assert.True(t, mockServer.Closed)
 
-	playerState := s.SpotsMap[spotUuid].PlayersStateMap[playerUuid]
+	spot, ok := s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+
+	playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
+	assert.True(t, ok)
+
 	assert.Equal(t, float64(10), playerState.Position.Lat.Degrees())
 	assert.Equal(t, float64(20), playerState.Position.Lng.Degrees())
 	assert.Equal(t, int16(100), playerState.Health)

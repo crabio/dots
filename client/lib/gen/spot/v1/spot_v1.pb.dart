@@ -15,6 +15,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radius', $pb.PbFieldType.O3)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -24,6 +25,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     $core.int? radius,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
+    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
@@ -37,6 +39,9 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
+    }
+    if (sessionDurationInSeconds != null) {
+      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -98,6 +103,15 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
   void clearZonePeriodInSeconds() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get sessionDurationInSeconds => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasSessionDurationInSeconds() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSessionDurationInSeconds() => clearField(5);
 }
 
 class CreateSpotResponse extends $pb.GeneratedMessage {
@@ -197,9 +211,10 @@ class GetSpotRequest extends $pb.GeneratedMessage {
 class GetSpotResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radius', $pb.PbFieldType.O3)
-    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
+    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radius', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -209,6 +224,7 @@ class GetSpotResponse extends $pb.GeneratedMessage {
     $core.int? radius,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
+    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
@@ -222,6 +238,9 @@ class GetSpotResponse extends $pb.GeneratedMessage {
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
+    }
+    if (sessionDurationInSeconds != null) {
+      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -257,32 +276,497 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   Position ensurePosition() => $_ensure(0);
 
-  @$pb.TagNumber(3)
+  @$pb.TagNumber(2)
   $core.int get radius => $_getIZ(1);
-  @$pb.TagNumber(3)
+  @$pb.TagNumber(2)
   set radius($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(3)
+  @$pb.TagNumber(2)
   $core.bool hasRadius() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRadius() => clearField(2);
+
   @$pb.TagNumber(3)
-  void clearRadius() => clearField(3);
-
-  @$pb.TagNumber(4)
   $core.int get scanPeriodInSeconds => $_getIZ(2);
-  @$pb.TagNumber(4)
+  @$pb.TagNumber(3)
   set scanPeriodInSeconds($core.int v) { $_setSignedInt32(2, v); }
-  @$pb.TagNumber(4)
+  @$pb.TagNumber(3)
   $core.bool hasScanPeriodInSeconds() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearScanPeriodInSeconds() => clearField(3);
+
   @$pb.TagNumber(4)
-  void clearScanPeriodInSeconds() => clearField(4);
+  $core.int get zonePeriodInSeconds => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set zonePeriodInSeconds($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasZonePeriodInSeconds() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearZonePeriodInSeconds() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.int get zonePeriodInSeconds => $_getIZ(3);
+  $core.int get sessionDurationInSeconds => $_getIZ(4);
   @$pb.TagNumber(5)
-  set zonePeriodInSeconds($core.int v) { $_setSignedInt32(3, v); }
+  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasZonePeriodInSeconds() => $_has(3);
+  $core.bool hasSessionDurationInSeconds() => $_has(4);
   @$pb.TagNumber(5)
-  void clearZonePeriodInSeconds() => clearField(5);
+  void clearSessionDurationInSeconds() => clearField(5);
+}
+
+class JoinToSpotRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'JoinToSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..hasRequiredFields = false
+  ;
+
+  JoinToSpotRequest._() : super();
+  factory JoinToSpotRequest({
+    $core.String? spotUuid,
+    $core.String? playerUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    if (playerUuid != null) {
+      _result.playerUuid = playerUuid;
+    }
+    return _result;
+  }
+  factory JoinToSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory JoinToSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  JoinToSpotRequest clone() => JoinToSpotRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  JoinToSpotRequest copyWith(void Function(JoinToSpotRequest) updates) => super.copyWith((message) => updates(message as JoinToSpotRequest)) as JoinToSpotRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static JoinToSpotRequest create() => JoinToSpotRequest._();
+  JoinToSpotRequest createEmptyInstance() => create();
+  static $pb.PbList<JoinToSpotRequest> createRepeated() => $pb.PbList<JoinToSpotRequest>();
+  @$core.pragma('dart2js:noInline')
+  static JoinToSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<JoinToSpotRequest>(create);
+  static JoinToSpotRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get playerUuid => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set playerUuid($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPlayerUuid() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPlayerUuid() => clearField(2);
+}
+
+class JoinToSpotResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'JoinToSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  JoinToSpotResponse._() : super();
+  factory JoinToSpotResponse() => create();
+  factory JoinToSpotResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory JoinToSpotResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  JoinToSpotResponse clone() => JoinToSpotResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  JoinToSpotResponse copyWith(void Function(JoinToSpotResponse) updates) => super.copyWith((message) => updates(message as JoinToSpotResponse)) as JoinToSpotResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static JoinToSpotResponse create() => JoinToSpotResponse._();
+  JoinToSpotResponse createEmptyInstance() => create();
+  static $pb.PbList<JoinToSpotResponse> createRepeated() => $pb.PbList<JoinToSpotResponse>();
+  @$core.pragma('dart2js:noInline')
+  static JoinToSpotResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<JoinToSpotResponse>(create);
+  static JoinToSpotResponse? _defaultInstance;
+}
+
+class GetSpotPlayersRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotPlayersRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  GetSpotPlayersRequest._() : super();
+  factory GetSpotPlayersRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
+  }
+  factory GetSpotPlayersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotPlayersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersRequest clone() => GetSpotPlayersRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersRequest copyWith(void Function(GetSpotPlayersRequest) updates) => super.copyWith((message) => updates(message as GetSpotPlayersRequest)) as GetSpotPlayersRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetSpotPlayersRequest create() => GetSpotPlayersRequest._();
+  GetSpotPlayersRequest createEmptyInstance() => create();
+  static $pb.PbList<GetSpotPlayersRequest> createRepeated() => $pb.PbList<GetSpotPlayersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetSpotPlayersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotPlayersRequest>(create);
+  static GetSpotPlayersRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
+
+class GetSpotPlayersResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotPlayersResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..pPS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playersList')
+    ..hasRequiredFields = false
+  ;
+
+  GetSpotPlayersResponse._() : super();
+  factory GetSpotPlayersResponse({
+    $core.Iterable<$core.String>? playersList,
+  }) {
+    final _result = create();
+    if (playersList != null) {
+      _result.playersList.addAll(playersList);
+    }
+    return _result;
+  }
+  factory GetSpotPlayersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotPlayersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersResponse clone() => GetSpotPlayersResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersResponse copyWith(void Function(GetSpotPlayersResponse) updates) => super.copyWith((message) => updates(message as GetSpotPlayersResponse)) as GetSpotPlayersResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetSpotPlayersResponse create() => GetSpotPlayersResponse._();
+  GetSpotPlayersResponse createEmptyInstance() => create();
+  static $pb.PbList<GetSpotPlayersResponse> createRepeated() => $pb.PbList<GetSpotPlayersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetSpotPlayersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotPlayersResponse>(create);
+  static GetSpotPlayersResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$core.String> get playersList => $_getList(0);
+}
+
+class StartSpotRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  StartSpotRequest._() : super();
+  factory StartSpotRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
+  }
+  factory StartSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartSpotRequest clone() => StartSpotRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartSpotRequest copyWith(void Function(StartSpotRequest) updates) => super.copyWith((message) => updates(message as StartSpotRequest)) as StartSpotRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static StartSpotRequest create() => StartSpotRequest._();
+  StartSpotRequest createEmptyInstance() => create();
+  static $pb.PbList<StartSpotRequest> createRepeated() => $pb.PbList<StartSpotRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StartSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartSpotRequest>(create);
+  static StartSpotRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
+
+class StartSpotResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  StartSpotResponse._() : super();
+  factory StartSpotResponse() => create();
+  factory StartSpotResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartSpotResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartSpotResponse clone() => StartSpotResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartSpotResponse copyWith(void Function(StartSpotResponse) updates) => super.copyWith((message) => updates(message as StartSpotResponse)) as StartSpotResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static StartSpotResponse create() => StartSpotResponse._();
+  StartSpotResponse createEmptyInstance() => create();
+  static $pb.PbList<StartSpotResponse> createRepeated() => $pb.PbList<StartSpotResponse>();
+  @$core.pragma('dart2js:noInline')
+  static StartSpotResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartSpotResponse>(create);
+  static StartSpotResponse? _defaultInstance;
+}
+
+class IsPlayerHunterRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IsPlayerHunterRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..hasRequiredFields = false
+  ;
+
+  IsPlayerHunterRequest._() : super();
+  factory IsPlayerHunterRequest({
+    $core.String? spotUuid,
+    $core.String? playerUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    if (playerUuid != null) {
+      _result.playerUuid = playerUuid;
+    }
+    return _result;
+  }
+  factory IsPlayerHunterRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory IsPlayerHunterRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterRequest clone() => IsPlayerHunterRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterRequest copyWith(void Function(IsPlayerHunterRequest) updates) => super.copyWith((message) => updates(message as IsPlayerHunterRequest)) as IsPlayerHunterRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static IsPlayerHunterRequest create() => IsPlayerHunterRequest._();
+  IsPlayerHunterRequest createEmptyInstance() => create();
+  static $pb.PbList<IsPlayerHunterRequest> createRepeated() => $pb.PbList<IsPlayerHunterRequest>();
+  @$core.pragma('dart2js:noInline')
+  static IsPlayerHunterRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IsPlayerHunterRequest>(create);
+  static IsPlayerHunterRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get playerUuid => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set playerUuid($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPlayerUuid() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPlayerUuid() => clearField(2);
+}
+
+class IsPlayerHunterResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IsPlayerHunterResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isHunter')
+    ..hasRequiredFields = false
+  ;
+
+  IsPlayerHunterResponse._() : super();
+  factory IsPlayerHunterResponse({
+    $core.bool? isHunter,
+  }) {
+    final _result = create();
+    if (isHunter != null) {
+      _result.isHunter = isHunter;
+    }
+    return _result;
+  }
+  factory IsPlayerHunterResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory IsPlayerHunterResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterResponse clone() => IsPlayerHunterResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterResponse copyWith(void Function(IsPlayerHunterResponse) updates) => super.copyWith((message) => updates(message as IsPlayerHunterResponse)) as IsPlayerHunterResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static IsPlayerHunterResponse create() => IsPlayerHunterResponse._();
+  IsPlayerHunterResponse createEmptyInstance() => create();
+  static $pb.PbList<IsPlayerHunterResponse> createRepeated() => $pb.PbList<IsPlayerHunterResponse>();
+  @$core.pragma('dart2js:noInline')
+  static IsPlayerHunterResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IsPlayerHunterResponse>(create);
+  static IsPlayerHunterResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get isHunter => $_getBF(0);
+  @$pb.TagNumber(1)
+  set isHunter($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasIsHunter() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIsHunter() => clearField(1);
+}
+
+class GetSpotStartFlagRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotStartFlagRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  GetSpotStartFlagRequest._() : super();
+  factory GetSpotStartFlagRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
+  }
+  factory GetSpotStartFlagRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotStartFlagRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetSpotStartFlagRequest clone() => GetSpotStartFlagRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotStartFlagRequest copyWith(void Function(GetSpotStartFlagRequest) updates) => super.copyWith((message) => updates(message as GetSpotStartFlagRequest)) as GetSpotStartFlagRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetSpotStartFlagRequest create() => GetSpotStartFlagRequest._();
+  GetSpotStartFlagRequest createEmptyInstance() => create();
+  static $pb.PbList<GetSpotStartFlagRequest> createRepeated() => $pb.PbList<GetSpotStartFlagRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetSpotStartFlagRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotStartFlagRequest>(create);
+  static GetSpotStartFlagRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
+
+class GetSpotStartFlagResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotStartFlagResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isActive')
+    ..hasRequiredFields = false
+  ;
+
+  GetSpotStartFlagResponse._() : super();
+  factory GetSpotStartFlagResponse({
+    $core.bool? isActive,
+  }) {
+    final _result = create();
+    if (isActive != null) {
+      _result.isActive = isActive;
+    }
+    return _result;
+  }
+  factory GetSpotStartFlagResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotStartFlagResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetSpotStartFlagResponse clone() => GetSpotStartFlagResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotStartFlagResponse copyWith(void Function(GetSpotStartFlagResponse) updates) => super.copyWith((message) => updates(message as GetSpotStartFlagResponse)) as GetSpotStartFlagResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetSpotStartFlagResponse create() => GetSpotStartFlagResponse._();
+  GetSpotStartFlagResponse createEmptyInstance() => create();
+  static $pb.PbList<GetSpotStartFlagResponse> createRepeated() => $pb.PbList<GetSpotStartFlagResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetSpotStartFlagResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotStartFlagResponse>(create);
+  static GetSpotStartFlagResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get isActive => $_getBF(0);
+  @$pb.TagNumber(1)
+  set isActive($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasIsActive() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIsActive() => clearField(1);
 }
 
 class SendPlayerPositionRequest extends $pb.GeneratedMessage {
@@ -455,21 +939,16 @@ class GetPlayersStatesRequest extends $pb.GeneratedMessage {
 class GetPlayersStatesResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersStatesResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<PlayerState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerState', subBuilder: PlayerState.create)
-    ..pc<PlayerState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherPlayersStates', $pb.PbFieldType.PM, subBuilder: PlayerState.create)
     ..hasRequiredFields = false
   ;
 
   GetPlayersStatesResponse._() : super();
   factory GetPlayersStatesResponse({
     PlayerState? playerState,
-    $core.Iterable<PlayerState>? otherPlayersStates,
   }) {
     final _result = create();
     if (playerState != null) {
       _result.playerState = playerState;
-    }
-    if (otherPlayersStates != null) {
-      _result.otherPlayersStates.addAll(otherPlayersStates);
     }
     return _result;
   }
@@ -504,9 +983,6 @@ class GetPlayersStatesResponse extends $pb.GeneratedMessage {
   void clearPlayerState() => clearField(1);
   @$pb.TagNumber(1)
   PlayerState ensurePlayerState() => $_ensure(0);
-
-  @$pb.TagNumber(2)
-  $core.List<PlayerState> get otherPlayersStates => $_getList(1);
 }
 
 class PlayerState extends $pb.GeneratedMessage {

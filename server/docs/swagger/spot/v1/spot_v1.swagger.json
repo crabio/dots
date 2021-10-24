@@ -57,12 +57,18 @@
       "properties": {
         "playerState": {
           "$ref": "#/definitions/v1PlayerState"
-        },
-        "otherPlayersStates": {
+        }
+      }
+    },
+    "v1GetSpotPlayersResponse": {
+      "type": "object",
+      "properties": {
+        "playersList": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1PlayerState"
-          }
+            "type": "string"
+          },
+          "title": "List with players UUIDs"
         }
       }
     },
@@ -83,8 +89,31 @@
         "zonePeriodInSeconds": {
           "type": "integer",
           "format": "int32"
+        },
+        "sessionDurationInSeconds": {
+          "type": "integer",
+          "format": "int32"
         }
       }
+    },
+    "v1GetSpotStartFlagResponse": {
+      "type": "object",
+      "properties": {
+        "isActive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1IsPlayerHunterResponse": {
+      "type": "object",
+      "properties": {
+        "isHunter": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1JoinToSpotResponse": {
+      "type": "object"
     },
     "v1PlayerState": {
       "type": "object",
@@ -115,6 +144,9 @@
       }
     },
     "v1SendPlayerPositionResponse": {
+      "type": "object"
+    },
+    "v1StartSpotResponse": {
       "type": "object"
     }
   }

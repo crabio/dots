@@ -1,5 +1,5 @@
 // External
-import 'package:dots_client/pages/spot/resources/player_position.dart';
+import 'package:dots_client/pages/game/resources/player_position.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -7,24 +7,27 @@ import 'package:latlong2/latlong.dart';
 
 // Internal
 import 'bloc/bloc.dart';
-import 'bloc/state.dart';
 
-class SpotForm extends StatelessWidget {
-  const SpotForm({Key? key}) : super(key: key);
+class GameForm extends StatelessWidget {
+  final String spotUuid;
+
+  const GameForm({
+    required this.spotUuid,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SpotPageBloc, SpotPageState>(
+    return BlocBuilder<GamePageBloc, GamePageState>(
       builder: (context, state) {
-        if (state is InitingState) {
+        if (state is GamePageInitial) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (state is InitedState) {
           return _InitedStateView(
-            playerHealth: state.playerHealth,
-            playerPosition: state.playerPosition,
-            otherPlayersPositions: state.otherPlayersPositions,
+            playerState: state.playerState,
+            otherPlayersStates: state.otherPlayersStates,
             spotPosition: state.spotPosition,
             zoneRadius: state.zoneRadius,
           );
@@ -37,17 +40,15 @@ class SpotForm extends StatelessWidget {
 }
 
 class _InitedStateView extends StatelessWidget {
-  final LatLng playerPosition;
-  final int playerHealth;
-  final List<PlayerPosition> otherPlayersPositions;
+  final PlayerState playerState;
+  final Map<String, PlayerState> otherPlayersStates;
   final LatLng spotPosition;
   // Spot radius in meters
   final int zoneRadius;
 
   const _InitedStateView({
-    required this.playerPosition,
-    required this.playerHealth,
-    required this.otherPlayersPositions,
+    required this.playerState,
+    required this.otherPlayersStates,
     required this.spotPosition,
     required this.zoneRadius,
     Key? key,
@@ -67,28 +68,28 @@ class _InitedStateView extends StatelessWidget {
     ));
     // Player position pointer
     markers.add(Marker(
-      point: playerPosition,
+      point: playerState.position,
       builder: (ctx) => const Icon(
         Icons.circle,
       ),
     ));
 
     // Other players pointers
-    for (var otherPlayerPosition in otherPlayersPositions) {
+    otherPlayersStates.forEach((key, value) {
       markers.add(Marker(
-        point: otherPlayerPosition.position,
+        point: value.position,
         builder: (ctx) => const Icon(
           Icons.circle,
           color: Colors.amber,
         ),
       ));
-    }
+    });
 
     return Stack(
       children: [
         FlutterMap(
           options: MapOptions(
-            center: playerPosition,
+            center: playerState.position,
             zoom: 17.0,
           ),
           layers: [
@@ -119,17 +120,17 @@ class _InitedStateView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: Text(
-                    "Health: $playerHealth",
+                    "Health: ${playerState.health}",
                     style: Theme.of(context)
                         .textTheme
                         .headline4!
-                        .copyWith(color: _healthColor(playerHealth)),
+                        .copyWith(color: _healthColor(playerState.health)),
                   ),
                 ),
                 CircularProgressIndicator(
-                  value: playerHealth / 100,
+                  value: playerState.health / 100,
                   strokeWidth: 10,
-                  color: _healthColor(playerHealth),
+                  color: _healthColor(playerState.health),
                 ),
               ],
             ),

@@ -6,7 +6,7 @@ require (
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
-	github.com/iakrevetkho/archaeopteryx v0.5.0
+	github.com/iakrevetkho/archaeopteryx v0.6.0
 	github.com/jinzhu/configor v1.2.1
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
@@ -34,6 +34,8 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/soheilhy/cmux v0.1.5 // indirect
+	github.com/tjgq/broadcast v0.0.0-20140913210940-9d7fb01523c6 // indirect
 	github.com/toorop/gin-logrus v0.0.0-20210225092905-2c785434f26f // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect

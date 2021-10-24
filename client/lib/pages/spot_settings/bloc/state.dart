@@ -1,11 +1,17 @@
 // External
+import 'package:equatable/equatable.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 
 // Internal
 part 'state.g.dart';
 
-abstract class SpotSettingsPageState {}
+abstract class SpotSettingsPageState extends Equatable {
+  const SpotSettingsPageState();
+
+  @override
+  List<Object?> get props => [];
+}
 
 // Initial page state
 @CopyWith()
@@ -15,53 +21,44 @@ class InitedState extends SpotSettingsPageState {
   final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
+  final Duration sessionDuration;
+  final bool creating;
+  final Exception? exception;
 
-  InitedState({
+  const InitedState({
     required this.position,
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
+    required this.sessionDuration,
+    this.creating = false,
+    this.exception,
   });
-}
 
-class CreatingNewSpotState extends SpotSettingsPageState {
-  final LatLng position;
-  // Spot radius in meters
-  final int zoneRadius;
-  final Duration scanPeriod;
-  final Duration zonePeriod;
-
-  CreatingNewSpotState({
-    required this.position,
-    required this.zoneRadius,
-    required this.scanPeriod,
-    required this.zonePeriod,
-  });
+  @override
+  List<Object?> get props => [
+        position,
+        zoneRadius,
+        scanPeriod,
+        zonePeriod,
+        sessionDuration,
+        creating,
+        exception,
+      ];
 }
 
 class NewSpotCreatedState extends SpotSettingsPageState {
   final String spotUuid;
   final LatLng position;
 
-  NewSpotCreatedState({
+  const NewSpotCreatedState({
     required this.spotUuid,
     required this.position,
   });
-}
 
-class CreateSpotErrorState extends SpotSettingsPageState {
-  final LatLng position;
-  // Spot radius in meters
-  final int zoneRadius;
-  final Duration scanPeriod;
-  final Duration zonePeriod;
-  final Exception exception;
-
-  CreateSpotErrorState({
-    required this.position,
-    required this.zoneRadius,
-    required this.scanPeriod,
-    required this.zonePeriod,
-    required this.exception,
-  });
+  @override
+  List<Object> get props => [
+        spotUuid,
+        position,
+      ];
 }

@@ -9,8 +9,22 @@ service SpotService {
 
   rpc GetSpot (GetSpotRequest) returns (GetSpotResponse) {}
   
+  rpc JoinToSpot (JoinToSpotRequest) returns (JoinToSpotResponse) {}
+
+  // GetSpotPlayers returns stream of players in spot
+  // If new player will be connected to spot, it will be sent
+  rpc GetSpotPlayers (GetSpotPlayersRequest) returns (stream GetSpotPlayersResponse) {}
+
+  rpc StartSpot (StartSpotRequest) returns (StartSpotResponse) {}
+
+  rpc IsPlayerHunter (IsPlayerHunterRequest) returns (IsPlayerHunterResponse) {}
+
+  rpc GetSpotStartFlag (GetSpotStartFlagRequest) returns (stream GetSpotStartFlagResponse) {}
+
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
+  // GetPlayersStates returns stream of all players data (this player and others)
+  // Data will be received on each new position or health status
   rpc GetPlayersStates (GetPlayersStatesRequest) returns (stream GetPlayersStatesResponse) {}
 }
 
@@ -21,6 +35,7 @@ message CreateSpotRequest {
   int32 radius = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
+  int32 session_duration_in_seconds = 5;
 }
 
 message CreateSpotResponse {
@@ -33,9 +48,51 @@ message GetSpotRequest {
 
 message GetSpotResponse {
   Position position = 1;
-  int32 radius = 3;
-  int32 scan_period_in_seconds = 4;
-  int32 zone_period_in_seconds = 5;
+  int32 radius = 2;
+  int32 scan_period_in_seconds = 3;
+  int32 zone_period_in_seconds = 4;
+  int32 session_duration_in_seconds = 5;
+}
+
+message JoinToSpotRequest {
+  string spot_uuid = 1;
+  string player_uuid = 2;
+}
+
+message JoinToSpotResponse {
+}
+
+message GetSpotPlayersRequest {
+  string spot_uuid = 1;
+}
+
+message GetSpotPlayersResponse {
+  // List with players UUIDs
+  repeated string players_list = 1;
+}
+
+message StartSpotRequest {
+  string spot_uuid = 1;
+}
+
+message StartSpotResponse {
+}
+
+message IsPlayerHunterRequest {
+  string spot_uuid = 1;
+  string player_uuid = 2;
+}
+
+message IsPlayerHunterResponse {
+  bool is_hunter = 1;
+}
+
+message GetSpotStartFlagRequest {
+  string spot_uuid = 1;
+}
+
+message GetSpotStartFlagResponse {
+  bool is_active =1;
 }
 
 message SendPlayerPositionRequest {
@@ -53,7 +110,6 @@ message GetPlayersStatesRequest {
 
 message GetPlayersStatesResponse {
   PlayerState player_state = 1;
-  repeated PlayerState other_players_states = 2;
 }
 
 // Non RPC structures

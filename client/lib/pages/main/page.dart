@@ -3,13 +3,16 @@ import 'package:dots_client/pages/settings/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 // Internal
 import 'form.dart';
 import 'bloc/bloc.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({
+  final String playerUuid = const Uuid().v4();
+
+  MainPage({
     Key? key,
   }) : super(key: key);
 
@@ -31,7 +34,9 @@ class MainPage extends StatelessWidget {
             ),
           ],
         ),
-        body: MainForm(),
+        body: MainForm(
+          playerUuid: playerUuid,
+        ),
       ),
     );
   }
