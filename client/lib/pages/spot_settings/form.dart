@@ -45,6 +45,7 @@ class SpotSettingsForm extends StatelessWidget {
             LobbyPage(
               spotUuid: curState.spotUuid,
               playerUuid: playerUuid,
+              isHost: true,
             ),
           );
           return const CircularProgressIndicator();

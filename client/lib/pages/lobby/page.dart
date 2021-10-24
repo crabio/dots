@@ -14,9 +14,13 @@ class LobbyPage extends StatelessWidget {
   final String spotUuid;
   final String playerUuid;
 
+  /// Flag indicies that current player is spot host
+  final bool isHost;
+
   const LobbyPage({
     required this.spotUuid,
     required this.playerUuid,
+    required this.isHost,
     Key? key,
   }) : super(key: key);
 
@@ -28,6 +32,7 @@ class LobbyPage extends StatelessWidget {
         geolocator: RepositoryProvider.of(context),
         spotUuid: spotUuid,
         playerUuid: playerUuid,
+        isHost: isHost,
       ),
       child: Scaffold(
         appBar: AppBar(
@@ -55,6 +60,7 @@ class LobbyPage extends StatelessWidget {
         body: LobbyForm(
           spotUuid: spotUuid,
           playerUuid: playerUuid,
+          isHost: isHost,
         ),
       ),
     );

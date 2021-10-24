@@ -10,10 +10,12 @@ import 'bloc/bloc.dart';
 class LobbyForm extends StatelessWidget {
   final String spotUuid;
   final String playerUuid;
+  final bool isHost;
 
   const LobbyForm({
     required this.spotUuid,
     required this.playerUuid,
+    required this.isHost,
     Key? key,
   }) : super(key: key);
 
@@ -28,6 +30,7 @@ class LobbyForm extends StatelessWidget {
         } else if (state is InitedState) {
           return _InitedStateView(
             spotUuid: spotUuid,
+            isHost: isHost,
             playersList: state.playersList,
           );
         } else if (state is GoToGameState) {
@@ -52,16 +55,19 @@ class LobbyForm extends StatelessWidget {
 
 class _InitedStateView extends StatelessWidget {
   final String spotUuid;
+  final bool isHost;
   final List<String> playersList;
   final Exception? exception;
 
   const _InitedStateView({
     required this.spotUuid,
+    required this.isHost,
     required this.playersList,
     this.exception,
     Key? key,
   }) : super(key: key);
 
+// TODO Add leave button
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -84,15 +90,17 @@ class _InitedStateView extends StatelessWidget {
                   )
                 : Container(),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: ElevatedButton(
-              key: const Key("btn_start"),
-              child: const Text("Start"),
-              onPressed: () =>
-                  context.read<LobbyPageBloc>().add(StartGameEvent()),
-            ),
-          ),
+          isHost
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: ElevatedButton(
+                    key: const Key("btn_start"),
+                    child: const Text("Start"),
+                    onPressed: () =>
+                        context.read<LobbyPageBloc>().add(StartGameEvent()),
+                  ),
+                )
+              : Container(),
           SizedBox(
             height: 300,
             width: 300,

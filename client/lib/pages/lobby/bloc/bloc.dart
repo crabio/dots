@@ -17,6 +17,7 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
   final GeolocatorPlatform geolocator;
   final String spotUuid;
   final String playerUuid;
+  final bool isHost;
 
   final _logger = Logger("LobbyPageBloc");
 
@@ -25,6 +26,7 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     required this.geolocator,
     required this.spotUuid,
     required this.playerUuid,
+    required this.isHost,
   }) : super(InitingState()) {
     on<InitEvent>(_onInitEvent);
     on<NewSpotPlayersListEvent>(_onNewSpotPlayersListEvent);
@@ -44,25 +46,19 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
       }),
     );
 
-    //  TODO Only slaves should be subscribed on start flag
-    // _logger.fine("Subscribe on spot active state");
-    // _subscribeOnSpotStartFlag().fold(
-    //   (l) => emit(InitErrorState(exception: l)),
-    //   (r) => r.listen((value) {
-    //     if (value.isActive) {
-    //       emit(ActiveState(
-    //         spotPosition: LatLng(
-    //           spotData!.position.latitude,
-    //           spotData.position.longitude,
-    //         ),
-    //         otherPlayersStates: const {},
-    //       ));
-    //     } else {
-    //       // TODO Get players list again
-    //       emit(InitedState(playersList: []));
-    //     }
-    //   }),
-    // );
+    if (!isHost) {
+      _logger.fine("Subscribe on spot active state");
+      _subscribeOnSpotStartFlag().fold(
+        (l) => emit(InitErrorState(exception: l)),
+        (r) => r.listen((value) {
+          if (value.isActive) {
+            emit(GoToGameState());
+          } else {
+            throw Exception("Unimplemented");
+          }
+        }),
+      );
+    }
   }
 
   Either<Exception, ResponseStream<proto.GetSpotPlayersResponse>>
@@ -76,16 +72,16 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     }
   }
 
-  // Either<Exception, ResponseStream<proto.GetSpotStartFlagResponse>>
-  //     _subscribeOnSpotStartFlag() {
-  //   try {
-  //     return Right(client.getSpotStartFlag(proto.GetSpotStartFlagRequest(
-  //       spotUuid: spotUuid,
-  //     )));
-  //   } on Exception catch (ex) {
-  //     return Left(ex);
-  //   }
-  // }
+  Either<Exception, ResponseStream<proto.GetSpotStartFlagResponse>>
+      _subscribeOnSpotStartFlag() {
+    try {
+      return Right(client.getSpotStartFlag(proto.GetSpotStartFlagRequest(
+        spotUuid: spotUuid,
+      )));
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
+  }
 
   void _onNewSpotPlayersListEvent(
     NewSpotPlayersListEvent event,
