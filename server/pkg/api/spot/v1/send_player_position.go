@@ -47,7 +47,7 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 		}
 
 		// Update player state
-		playerState, ok := spot.PlayersStateMap.Load(playerUuid)
+		playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 		if !ok {
 			return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 		} else {
@@ -69,10 +69,10 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			}
 
 			// Update player state
-			spot.PlayersStateMap.Store(playerUuid, playerState)
+			spot.Session.PlayersStateMap.Store(playerUuid, playerState)
 
 			// Send player state to subscriptions which requires it
-			spot.PlayersStateMap.Range(func(k uuid.UUID, playerState player_state.PlayerState) {
+			spot.Session.PlayersStateMap.Range(func(k uuid.UUID, playerState player_state.PlayerState) {
 				// TODO Add checks for distance, scanning and etc
 				// Check that we have subscription
 				if playerState.Sub != nil {
@@ -108,7 +108,7 @@ func (s *SpotServiceServer) startPlayerZoneDamage(spotUuid uuid.UUID, playerUuid
 			return
 		}
 
-		playerState, ok := spot.PlayersStateMap.Load(playerUuid)
+		playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 		if !ok {
 			s.log.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 			return
@@ -116,7 +116,7 @@ func (s *SpotServiceServer) startPlayerZoneDamage(spotUuid uuid.UUID, playerUuid
 
 		playerState.ZoneDamageActice = true
 		// Update state in spot
-		spot.PlayersStateMap.Store(playerUuid, playerState)
+		spot.Session.PlayersStateMap.Store(playerUuid, playerState)
 		s.SpotsMap.Store(spotUuid, spot)
 
 		damageTicker := time.NewTicker(zoneDamagePeriod)
@@ -127,7 +127,7 @@ func (s *SpotServiceServer) startPlayerZoneDamage(spotUuid uuid.UUID, playerUuid
 				return
 			}
 
-			playerState, ok = spot.PlayersStateMap.Load(playerUuid)
+			playerState, ok = spot.Session.PlayersStateMap.Load(playerUuid)
 			if !ok {
 				s.log.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 				return
@@ -137,21 +137,21 @@ func (s *SpotServiceServer) startPlayerZoneDamage(spotUuid uuid.UUID, playerUuid
 			case <-playerState.StopZoneDmgCh:
 				playerState.ZoneDamageActice = false
 				// Update state in spot
-				spot.PlayersStateMap.Store(playerUuid, playerState)
+				spot.Session.PlayersStateMap.Store(playerUuid, playerState)
 				s.SpotsMap.Store(spotUuid, spot)
 				return
 			case <-damageTicker.C:
 				if playerState.Health <= zoneDamage {
 					playerState.Health = 0
 					// Update state in spot
-					spot.PlayersStateMap.Store(playerUuid, playerState)
+					spot.Session.PlayersStateMap.Store(playerUuid, playerState)
 					s.SpotsMap.Store(spotUuid, spot)
 					// Stop zone damage
 					playerState.StopZoneDmgCh <- true
 				} else {
 					playerState.Health -= zoneDamage
 					// Update state in spot
-					spot.PlayersStateMap.Store(playerUuid, playerState)
+					spot.Session.PlayersStateMap.Store(playerUuid, playerState)
 					s.SpotsMap.Store(spotUuid, spot)
 				}
 			}

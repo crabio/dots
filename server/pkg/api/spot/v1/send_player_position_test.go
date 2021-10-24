@@ -92,7 +92,7 @@ func TestSendPlayerPosition(t *testing.T) {
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
 
-	playerState, ok := spot.PlayersStateMap.Load(playerUuid)
+	playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 	assert.True(t, ok)
 
 	assert.Equal(t, float64(10), playerState.Position.Lat.Degrees())

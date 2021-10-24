@@ -34,7 +34,7 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
 	}
 
-	spot.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
+	spot.Session.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
 		Health: 100,
 	})
 	s.SpotsMap.Store(spotUuid, spot)

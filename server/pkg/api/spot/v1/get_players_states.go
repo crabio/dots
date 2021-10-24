@@ -30,7 +30,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 	}
 
-	playerState, ok := spot.PlayersStateMap.Load(playerUuid)
+	playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 	if !ok {
 		return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 	}
@@ -43,7 +43,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 	playerSub := make(chan player_state.PlayerPublicState)
 	playerState.Sub = &playerSub
 	// Update player state
-	spot.PlayersStateMap.Store(playerUuid, playerState)
+	spot.Session.PlayersStateMap.Store(playerUuid, playerState)
 	s.SpotsMap.Store(spotUuid, spot)
 
 	for playerState := range playerSub {
@@ -68,7 +68,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 				return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 			}
 
-			playerState, ok := spot.PlayersStateMap.Load(playerUuid)
+			playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 			if !ok {
 				return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 			}
@@ -76,7 +76,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 			playerState.Sub = nil
 
 			// Update player state
-			spot.PlayersStateMap.Store(playerUuid, playerState)
+			spot.Session.PlayersStateMap.Store(playerUuid, playerState)
 			s.SpotsMap.Store(spotUuid, spot)
 
 			return err

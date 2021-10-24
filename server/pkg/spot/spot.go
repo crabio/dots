@@ -7,9 +7,7 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
-
 	// Internal
-	"github.com/iakrevetkho/dots/server/pkg/player_state"
 )
 
 type Spot struct {
@@ -20,11 +18,7 @@ type Spot struct {
 	ZonePeriod      time.Duration
 	SessionDuration time.Duration
 
-	// Map with players posiiton
-	//
-	// key - player uuid
-	// value - player state
-	PlayersStateMap *player_state.PlayerStateMap
+	Session *SpotSession
 
 	// Fla indicies that spot is active (players are playing)
 	IsActive bool
@@ -38,7 +32,7 @@ func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zon
 	spot.ZonePeriod = zonePeriod
 	spot.SessionDuration = sessionDuration
 
-	spot.PlayersStateMap = player_state.NewPlayerStateMap()
+	spot.Session = NewSpotSession()
 	spot.IsActive = false
 
 	return spot
