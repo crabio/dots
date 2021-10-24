@@ -8,6 +8,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
 	github.com/iakrevetkho/archaeopteryx v0.6.0
 	github.com/jinzhu/configor v1.2.1
+	github.com/looplab/fsm v0.3.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
 	google.golang.org/grpc v1.41.0

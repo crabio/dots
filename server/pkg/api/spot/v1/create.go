@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
-	"github.com/iakrevetkho/dots/server/pkg/player_state"
+
 	"github.com/iakrevetkho/dots/server/pkg/spot"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
@@ -19,13 +19,12 @@ func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.Creat
 
 	spotUUID := uuid.New()
 
-	s.SpotsMap.Store(spotUUID, spot.Spot{
-		Position:        s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude),
-		ZoneRadius:      request.Radius,
-		ScanPeriod:      time.Second * time.Duration(request.ScanPeriodInSeconds),
-		ZonePeriod:      time.Second * time.Duration(request.ZonePeriodInSeconds),
-		PlayersStateMap: player_state.NewPlayerStateMap(),
-	})
+	s.SpotsMap.Store(spotUUID, *spot.NewSpot(
+		s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude),
+		request.Radius,
+		time.Second*time.Duration(request.ScanPeriodInSeconds),
+		time.Second*time.Duration(request.ZonePeriodInSeconds),
+	))
 	s.log.WithField("uuid", spotUUID).Debug("New spot created")
 
 	response := proto.CreateSpotResponse{

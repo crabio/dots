@@ -13,7 +13,7 @@ import (
 )
 
 func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinToSpotRequest) (*proto.JoinToSpotResponse, error) {
-	s.log.WithField("request", request.String()).Trace("Join to spot request")
+	s.log.WithField("request", request.String()).Debug("Join to spot request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
@@ -30,13 +30,16 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
+	if !spot.FSM.Is("idle") {
+		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
+	}
+
 	spot.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
 		Health: 100,
 	})
 	s.SpotsMap.Store(spotUuid, spot)
 
 	response := proto.JoinToSpotResponse{}
-	s.log.WithField("response", response.String()).Trace("Get spot response")
 
 	return &response, nil
 }

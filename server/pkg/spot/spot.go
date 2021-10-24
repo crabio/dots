@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	"github.com/looplab/fsm"
 
 	// Internal
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
@@ -23,6 +24,27 @@ type Spot struct {
 	// key - player uuid
 	// value - player state
 	PlayersStateMap *player_state.PlayerStateMap
+
+	FSM *fsm.FSM
+}
+
+func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zonePeriod time.Duration) *Spot {
+	spot := new(Spot)
+	spot.Position = position
+	spot.ZoneRadius = zoneRadius
+	spot.ScanPeriod = scanPeriod
+	spot.ZonePeriod = zonePeriod
+	spot.PlayersStateMap = player_state.NewPlayerStateMap()
+	spot.FSM = fsm.NewFSM(
+		"idle",
+		fsm.Events{
+			{Name: "start", Src: []string{"idle"}, Dst: "playing"},
+			{Name: "finish", Src: []string{"playing"}, Dst: "idle"},
+		},
+		fsm.Callbacks{},
+	)
+
+	return spot
 }
 
 type SpotMap struct {
