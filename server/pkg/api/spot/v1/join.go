@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
-	"github.com/iakrevetkho/dots/server/pkg/player_state"
+
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -34,9 +34,7 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
 	}
 
-	spot.Session.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
-		Health: 100,
-	})
+	spot.PlayersList = append(spot.PlayersList, playerUuid)
 	s.SpotsMap.Store(spotUuid, spot)
 
 	response := proto.JoinToSpotResponse{}

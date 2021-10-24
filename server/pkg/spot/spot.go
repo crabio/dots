@@ -18,6 +18,8 @@ type Spot struct {
 	ZonePeriod      time.Duration
 	SessionDuration time.Duration
 
+	PlayersList []uuid.UUID
+
 	Session *SpotSession
 
 	// Fla indicies that spot is active (players are playing)
@@ -32,7 +34,6 @@ func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zon
 	spot.ZonePeriod = zonePeriod
 	spot.SessionDuration = sessionDuration
 
-	spot.Session = NewSpotSession()
 	spot.IsActive = false
 
 	return spot

@@ -46,6 +46,10 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 		}
 
+		if spot.Session == nil {
+			return fmt.Errorf("Spot has no active session")
+		}
+
 		// Update player state
 		playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 		if !ok {

@@ -30,6 +30,10 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 	}
 
+	if spot.Session == nil {
+		return fmt.Errorf("Spot has no active session")
+	}
+
 	playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
 	if !ok {
 		return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)

@@ -77,6 +77,12 @@ func TestSendPlayerPosition(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
+	// Start spot
+	_, err = s.StartSpot(context.Background(), &proto.StartSpotRequest{
+		SpotUuid: spotUuid.String(),
+	})
+	assert.NoError(t, err)
+
 	// Create stream for sending position
 	mockServer := MockSendPlayerPositionServer{
 		SpotUuid:   spotUuid,

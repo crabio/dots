@@ -60,6 +60,29 @@ func TestGetPlayerPosition(t *testing.T) {
 	player2Uuid := uuid.New()
 	player3Uuid := uuid.New()
 
+	// Join players to spot
+	_, err = s.JoinToSpot(context.Background(), &proto.JoinToSpotRequest{
+		SpotUuid:   spotUuid.String(),
+		PlayerUuid: playerUuid.String(),
+	})
+	assert.NoError(t, err)
+	_, err = s.JoinToSpot(context.Background(), &proto.JoinToSpotRequest{
+		SpotUuid:   spotUuid.String(),
+		PlayerUuid: player2Uuid.String(),
+	})
+	assert.NoError(t, err)
+	_, err = s.JoinToSpot(context.Background(), &proto.JoinToSpotRequest{
+		SpotUuid:   spotUuid.String(),
+		PlayerUuid: player3Uuid.String(),
+	})
+	assert.NoError(t, err)
+
+	// Start spot
+	_, err = s.StartSpot(context.Background(), &proto.StartSpotRequest{
+		SpotUuid: spotUuid.String(),
+	})
+	assert.NoError(t, err)
+
 	// Add positions
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)

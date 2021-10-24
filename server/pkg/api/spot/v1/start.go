@@ -4,11 +4,13 @@ import (
 	// External
 	"context"
 	"fmt"
+	"math/rand"
+	"time"
 
 	"github.com/google/uuid"
 
 	// Internal
-
+	data "github.com/iakrevetkho/dots/server/pkg/spot"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -28,6 +30,19 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 	if spot.IsActive {
 		return nil, fmt.Errorf("Can't start active spot with uuid '%s'", spotUuid)
 	}
+
+	// Make spot active
+	spot.IsActive = true
+
+	// Choose hunter
+	rand.Seed(time.Now().Unix())
+	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
+
+	// Create spot session
+	spot.Session = data.NewSpotSession(hunterUuid, spot.PlayersList)
+
+	// Save spot on server
+	s.SpotsMap.Store(spotUuid, spot)
 
 	response := proto.StartSpotResponse{}
 
