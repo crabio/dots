@@ -40,7 +40,7 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
 
     _logger.fine("Subscribe on players list");
     _subscribeOnSpotPlayers().fold(
-      (l) => emit(InitErrorState(exception: l)),
+      (l) => emit(ErrorState(exception: l)),
       (r) => r.listen((value) {
         add(NewSpotPlayersListEvent(playersList: value.playersList));
       }),
@@ -49,10 +49,12 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     if (!isHost) {
       _logger.fine("Subscribe on spot active state");
       _subscribeOnSpotStartFlag().fold(
-        (l) => emit(InitErrorState(exception: l)),
-        (r) => r.listen((value) {
+        (l) => emit(ErrorState(exception: l)),
+        (r) => r.listen((value) async {
           if (value.isActive) {
-            emit(GoToGameState());
+            _isPlayerHunter().then((value) => value.fold(
+                (l) => emit(ErrorState(exception: l)),
+                (isHunter) => emit(GoToGameState(isHunter: isHunter))));
           } else {
             throw Exception("Unimplemented");
           }
@@ -83,6 +85,19 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     }
   }
 
+  Future<Either<Exception, bool>> _isPlayerHunter() async {
+    try {
+      final isPlayerHunterRet =
+          await client.isPlayerHunter(proto.IsPlayerHunterRequest(
+        spotUuid: spotUuid,
+        playerUuid: playerUuid,
+      ));
+      return Right(isPlayerHunterRet.isHunter);
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
+  }
+
   void _onNewSpotPlayersListEvent(
     NewSpotPlayersListEvent event,
     Emitter<LobbyPageState> emit,
@@ -98,10 +113,11 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     if (curState is InitedState) {
       try {
         client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid));
-
-        emit(GoToGameState());
+        _isPlayerHunter().then((value) => value.fold(
+            (l) => emit(ErrorState(exception: l)),
+            (isHunter) => emit(GoToGameState(isHunter: isHunter))));
       } on Exception catch (ex) {
-        emit(InitErrorState(exception: ex));
+        emit(ErrorState(exception: ex));
       }
     } else {
       _logger.shout("Wrong state $curState for $event");

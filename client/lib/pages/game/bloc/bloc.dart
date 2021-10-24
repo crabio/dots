@@ -7,10 +7,12 @@ import 'package:grpc/grpc_web.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
 
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 part 'event.dart';
 part 'state.dart';
+part 'bloc.g.dart';
 
 class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   final proto.SpotServiceClient client;
@@ -27,20 +29,53 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     required this.playerUuid,
   }) : super(GamePageInitial()) {
     on<InitEvent>(_onInitEvent);
+    on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
   }
 
   void _onInitEvent(InitEvent event, Emitter<GamePageState> emit) async {
     _logger.fine("Get spot data");
+    final spotData = await _getSpotData().then((value) => value.fold(
+          (l) {
+            emit(ErrorState(exception: l));
+            return null;
+          },
+          (r) => r,
+        ));
+    if (spotData == null) {
+      return;
+    }
+
+    _logger.fine("Get last player known geo position");
+    final lastKnownPlayerPos = await geolocator.getLastKnownPosition();
+    if (lastKnownPlayerPos == null) {
+      emit(ErrorState(
+          exception: Exception("Couldn't get last known player pos")));
+    }
+    emit(InitedState(
+      playerState: PlayerState(
+        position: LatLng(
+          lastKnownPlayerPos!.latitude,
+          lastKnownPlayerPos.longitude,
+        ),
+        health: 100,
+      ),
+      otherPlayersStates: const {},
+      spotPosition: LatLng(
+        spotData.position.latitude,
+        spotData.position.longitude,
+      ),
+      zoneRadius: spotData.radius,
+    ));
 
     _logger.fine("Subscribe on geo position");
     _subscribeOnGeoPosition().fold(
-      (l) => emit(InitErrorState(exception: l)),
+      (l) => emit(ErrorState(exception: l)),
       (r) => null,
     );
 
     _logger.fine("Subscribe on players states");
     _subscribeOnPlayersStates().fold(
-      (l) => emit(InitErrorState(exception: l)),
+      (l) => emit(ErrorState(exception: l)),
       (r) => r.listen((value) => add(NewPlayersStatesEvent(
             playerUuid: value.playerState.playerUuid,
             playerPosition: LatLng(
@@ -50,6 +85,15 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
             playerHealth: value.playerState.health,
           ))),
     );
+  }
+
+  Future<Either<Exception, proto.GetSpotResponse>> _getSpotData() async {
+    final request = proto.GetSpotRequest(spotUuid: spotUuid);
+    try {
+      return Right(await client.getSpot(request));
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
   }
 
   Either<Exception, bool> _subscribeOnGeoPosition() {
@@ -91,6 +135,34 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
       return Right(client.getPlayersStates(request));
     } on Exception catch (ex) {
       return Left(ex);
+    }
+  }
+
+  void _onNewPlayersStatesEvent(
+    NewPlayersStatesEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      if (event.playerUuid == playerUuid) {
+        // Update this player state
+        emit(curState.copyWith(
+          playerState: PlayerState(
+            position: event.playerPosition,
+            health: event.playerHealth,
+          ),
+        ));
+      } else {
+        // Update another player state
+        final otherPlayersStates = Map.of(curState.otherPlayersStates);
+        otherPlayersStates[event.playerUuid] = PlayerState(
+          position: event.playerPosition,
+          health: event.playerHealth,
+        );
+        emit(curState.copyWith(otherPlayersStates: otherPlayersStates));
+      }
+    } else {
+      _logger.shout("Wrong state $curState for $event");
     }
   }
 }

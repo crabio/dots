@@ -11,6 +11,7 @@ abstract class GamePageState extends Equatable {
 class GamePageInitial extends GamePageState {}
 
 // State when game is running
+@CopyWith()
 class InitedState extends GamePageState {
   /// Current player state
   final PlayerState playerState;
@@ -40,10 +41,10 @@ class InitedState extends GamePageState {
 }
 
 // State inited with error
-class InitErrorState extends GamePageState {
+class ErrorState extends GamePageState {
   final Exception exception;
 
-  const InitErrorState({required this.exception});
+  const ErrorState({required this.exception});
 
   @override
   List<Object> get props => [exception];

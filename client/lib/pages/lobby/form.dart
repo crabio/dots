@@ -39,11 +39,12 @@ class LobbyForm extends StatelessWidget {
               GamePage(
                 spotUuid: spotUuid,
                 playerUuid: playerUuid,
+                isHunter: state.isHunter,
               ));
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is InitErrorState) {
+        } else if (state is ErrorState) {
           return Text("Init error: ${state.exception.toString()}");
         }
 

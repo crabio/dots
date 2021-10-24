@@ -21,13 +21,20 @@ class InitedState extends LobbyPageState {
   List<Object?> get props => [playersList];
 }
 
-class GoToGameState extends LobbyPageState {}
+class GoToGameState extends LobbyPageState {
+  final bool isHunter;
+
+  const GoToGameState({required this.isHunter});
+
+  @override
+  List<Object?> get props => [isHunter];
+}
 
 // State inited with error
-class InitErrorState extends LobbyPageState {
+class ErrorState extends LobbyPageState {
   final Exception exception;
 
-  const InitErrorState({required this.exception});
+  const ErrorState({required this.exception});
 
   @override
   List<Object> get props => [exception];

@@ -13,10 +13,12 @@ import 'bloc/bloc.dart';
 class GamePage extends StatelessWidget {
   final String spotUuid;
   final String playerUuid;
+  final bool isHunter;
 
   const GamePage({
     required this.spotUuid,
     required this.playerUuid,
+    required this.isHunter,
     Key? key,
   }) : super(key: key);
 
