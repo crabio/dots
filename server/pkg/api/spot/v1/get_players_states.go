@@ -46,6 +46,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 	for playerState := range playerSub {
 		response := &proto.GetPlayersStatesResponse{
 			PlayerState: &proto.PlayerState{
+				PlayerUuid: playerState.PlayerUuid.String(),
 				Position: &proto.Position{
 					Latitude:  playerState.Position.Lat.Degrees(),
 					Longitude: playerState.Position.Lng.Degrees(),
