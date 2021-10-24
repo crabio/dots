@@ -52,9 +52,12 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
         (l) => emit(ErrorState(exception: l)),
         (r) => r.listen((value) async {
           if (value.isActive) {
-            _isPlayerHunter().then((value) => value.fold(
+            final isPlayerHunterRet = await _isPlayerHunter();
+            isPlayerHunterRet.fold(
                 (l) => emit(ErrorState(exception: l)),
-                (isHunter) => emit(GoToGameState(isHunter: isHunter))));
+                (isHunter) => emit(
+                      GoToGameState(isHunter: isHunter),
+                    ));
           } else {
             throw Exception("Unimplemented");
           }
@@ -113,9 +116,12 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     if (curState is InitedState) {
       try {
         client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid));
-        _isPlayerHunter().then((value) => value.fold(
+        final isPlayerHunterRet = await _isPlayerHunter();
+        isPlayerHunterRet.fold(
             (l) => emit(ErrorState(exception: l)),
-            (isHunter) => emit(GoToGameState(isHunter: isHunter))));
+            (isHunter) => emit(
+                  GoToGameState(isHunter: isHunter),
+                ));
       } on Exception catch (ex) {
         emit(ErrorState(exception: ex));
       }
