@@ -80,6 +80,9 @@
         }
       }
     },
+    "v1JoinToSpotResponse": {
+      "type": "object"
+    },
     "v1PlayerState": {
       "type": "object",
       "properties": {
@@ -109,6 +112,9 @@
       }
     },
     "v1SendPlayerPositionResponse": {
+      "type": "object"
+    },
+    "v1StartSpotResponse": {
       "type": "object"
     }
   }

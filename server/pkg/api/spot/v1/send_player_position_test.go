@@ -82,7 +82,14 @@ func TestSendPlayerPosition(t *testing.T) {
 	assert.Equal(t, uint32(0), mockServer.MsgCount)
 	assert.True(t, mockServer.Closed)
 
-	playerState := s.SpotsMap[spotUuid].PlayersStateMap[playerUuid]
+	v, ok := s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+	spot := v.(api_spot_v1.Spot)
+
+	v, ok = spot.PlayersStateMap.Load(playerUuid)
+	assert.True(t, ok)
+	playerState := v.(api_spot_v1.PlayerState)
+
 	assert.Equal(t, float64(10), playerState.Position.Lat.Degrees())
 	assert.Equal(t, float64(20), playerState.Position.Lng.Degrees())
 	assert.Equal(t, int16(100), playerState.Health)

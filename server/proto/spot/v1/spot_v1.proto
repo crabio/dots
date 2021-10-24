@@ -9,6 +9,10 @@ service SpotService {
 
   rpc GetSpot (GetSpotRequest) returns (GetSpotResponse) {}
   
+  rpc JoinToSpot (JoinToSpotRequest) returns (JoinToSpotResponse) {}
+
+  rpc StartSpot (StartSpotRequest) returns (StartSpotResponse) {}
+
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
   // GetPlayersStates returns stream of all players data (this player and others)
@@ -38,6 +42,21 @@ message GetSpotResponse {
   int32 radius = 3;
   int32 scan_period_in_seconds = 4;
   int32 zone_period_in_seconds = 5;
+}
+
+message JoinToSpotRequest {
+  string spot_uuid = 1;
+  string player_uuid = 2;
+}
+
+message JoinToSpotResponse {
+}
+
+message StartSpotRequest {
+  string spot_uuid = 1;
+}
+
+message StartSpotResponse {
 }
 
 message SendPlayerPositionRequest {

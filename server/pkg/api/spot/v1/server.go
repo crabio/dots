@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -27,16 +26,14 @@ type SpotServiceServer struct {
 	//
 	// key - spot UUID
 	// value - spot session data
-	SpotsMap   map[uuid.UUID]Spot
-	SpotsMapMx sync.RWMutex
+	SpotsMap sync.Map
 }
 
 func New(playersPosUpdatePeriod time.Duration) *SpotServiceServer {
 	s := new(SpotServiceServer)
 	s.log = logger.CreateLogger("spot-v1")
 	s.playersPosUpdatePeriod = playersPosUpdatePeriod
-	s.SpotsMap = make(map[uuid.UUID]Spot)
-	s.SpotsMapMx = sync.RWMutex{}
+	s.SpotsMap = sync.Map{}
 
 	return s
 }

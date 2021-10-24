@@ -11,12 +11,17 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
-func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotRequest) (*proto.GetSpotResponse, error) {
-	s.log.WithField("request", request.String()).Trace("Get spot request")
+func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinToSpotRequest) (*proto.JoinToSpotResponse, error) {
+	s.log.WithField("request", request.String()).Trace("Join to spot request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
 		return nil, fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
+	}
+
+	playerUuid, err := uuid.Parse(request.PlayerUuid)
+	if err != nil {
+		return nil, fmt.Errorf("Couldn't parse player uuid. " + err.Error())
 	}
 
 	v, ok := s.SpotsMap.Load(spotUuid)
@@ -25,15 +30,12 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 	}
 	spot := v.(Spot)
 
-	response := proto.GetSpotResponse{
-		Position: &proto.Position{
-			Latitude:  spot.Position.Lat.Degrees(),
-			Longitude: spot.Position.Lng.Degrees(),
-		},
-		Radius:              spot.ZoneRadius,
-		ScanPeriodInSeconds: int32(spot.ScanPeriod.Seconds()),
-		ZonePeriodInSeconds: int32(spot.ZonePeriod.Seconds()),
-	}
+	spot.PlayersStateMap.Store(playerUuid, PlayerState{
+		Health: 100,
+	})
+	s.SpotsMap.Store(spotUuid, spot)
+
+	response := proto.JoinToSpotResponse{}
 	s.log.WithField("response", response.String()).Trace("Get spot response")
 
 	return &response, nil

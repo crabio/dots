@@ -19,17 +19,22 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 	}
 
-	s.SpotsMapMx.Lock()
-	spot, ok := s.SpotsMap[spotUuid]
+	v, ok := s.SpotsMap.Load(spotUuid)
 	if !ok {
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
+	spot := v.(Spot)
 
 	playerUuid, err := uuid.Parse(request.PlayerUuid)
 	if err != nil {
 		return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 	}
-	playerState := spot.PlayersStateMap[playerUuid]
+
+	v, ok = spot.PlayersStateMap.Load(playerUuid)
+	if !ok {
+		return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
+	}
+	playerState := v.(PlayerState)
 
 	// Check that player hadn't subscription
 	if playerState.Sub != nil {
@@ -39,9 +44,8 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 	playerSub := make(chan PlayerPublicState)
 	playerState.Sub = &playerSub
 	// Update player state
-	spot.PlayersStateMap[playerUuid] = playerState
-	s.SpotsMap[spotUuid] = spot
-	s.SpotsMapMx.Unlock()
+	spot.PlayersStateMap.Store(playerUuid, playerState)
+	s.SpotsMap.Store(spotUuid, spot)
 
 	for playerState := range playerSub {
 		response := &proto.GetPlayersStatesResponse{
@@ -59,16 +63,25 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		if err := stream.Send(response); err != nil {
 			// Remove channel from current state
 			close(playerSub)
-			s.SpotsMapMx.Lock()
-			spot, ok := s.SpotsMap[spotUuid]
+
+			v, ok = s.SpotsMap.Load(spotUuid)
 			if !ok {
 				return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 			}
-			playerState := spot.PlayersStateMap[playerUuid]
+			spot := v.(Spot)
+
+			v, ok = spot.PlayersStateMap.Load(playerUuid)
+			if !ok {
+				return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
+			}
+			playerState := v.(PlayerState)
+
 			playerState.Sub = nil
+
 			// Update player state
-			spot.PlayersStateMap[playerUuid] = playerState
-			s.SpotsMapMx.Unlock()
+			spot.PlayersStateMap.Store(playerUuid, playerState)
+			s.SpotsMap.Store(spotUuid, spot)
+
 			return err
 		}
 	}

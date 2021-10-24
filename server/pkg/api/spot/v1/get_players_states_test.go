@@ -60,22 +60,22 @@ func TestGetPlayerPosition(t *testing.T) {
 	player3Uuid := uuid.New()
 
 	// Add positions
-	spot := s.SpotsMap[spotUuid]
-	spot.PlayersStateMap = map[uuid.UUID]api_spot_v1.PlayerState{
-		playerUuid: api_spot_v1.PlayerState{
-			Position: s2.LatLngFromDegrees(10, 20),
-			Health:   88,
-		},
-		player2Uuid: api_spot_v1.PlayerState{
-			Position: s2.LatLngFromDegrees(60, 70),
-			Health:   33,
-		},
-		player3Uuid: api_spot_v1.PlayerState{
-			Position: s2.LatLngFromDegrees(80, 90),
-			Health:   15,
-		},
-	}
-	s.SpotsMap[spotUuid] = spot
+	v, ok := s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+	spot := v.(api_spot_v1.Spot)
+	spot.PlayersStateMap.Store(playerUuid, api_spot_v1.PlayerState{
+		Position: s2.LatLngFromDegrees(10, 20),
+		Health:   88,
+	})
+	spot.PlayersStateMap.Store(player2Uuid, api_spot_v1.PlayerState{
+		Position: s2.LatLngFromDegrees(60, 70),
+		Health:   33,
+	})
+	spot.PlayersStateMap.Store(player3Uuid, api_spot_v1.PlayerState{
+		Position: s2.LatLngFromDegrees(80, 90),
+		Health:   15,
+	})
+	s.SpotsMap.Store(spotUuid, spot)
 
 	// Create stream for getting position
 	mockServer := MockGetPlayerPositionServer{
@@ -97,10 +97,14 @@ func TestGetPlayerPosition(t *testing.T) {
 
 	// Wait channel ready
 	for {
-		s.SpotsMapMx.Lock()
-		spot := s.SpotsMap[spotUuid]
-		playerState := spot.PlayersStateMap[playerUuid]
-		s.SpotsMapMx.Unlock()
+		v, ok = s.SpotsMap.Load(spotUuid)
+		assert.True(t, ok)
+		spot := v.(api_spot_v1.Spot)
+
+		v, ok = spot.PlayersStateMap.Load(playerUuid)
+		assert.True(t, ok)
+		playerState := v.(api_spot_v1.PlayerState)
+
 		if playerState.Sub != nil {
 			break
 		}
@@ -108,8 +112,14 @@ func TestGetPlayerPosition(t *testing.T) {
 	}
 
 	// Send data
-	spot = s.SpotsMap[spotUuid]
-	playerState := spot.PlayersStateMap[playerUuid]
+	v, ok = s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+	spot = v.(api_spot_v1.Spot)
+
+	v, ok = spot.PlayersStateMap.Load(playerUuid)
+	assert.True(t, ok)
+	playerState := v.(api_spot_v1.PlayerState)
+
 	sub := *playerState.Sub
 
 	sub <- api_spot_v1.PlayerPublicState{

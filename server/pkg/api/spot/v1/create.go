@@ -3,6 +3,7 @@ package api_spot_v1
 import (
 	// External
 	"context"
+	"sync"
 	"time"
 
 	"github.com/golang/geo/s2"
@@ -17,15 +18,13 @@ func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.Creat
 
 	spotUUID := uuid.New()
 
-	s.SpotsMapMx.Lock()
-	s.SpotsMap[spotUUID] = Spot{
+	s.SpotsMap.Store(spotUUID, Spot{
 		Position:        s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude),
 		ZoneRadius:      request.Radius,
 		ScanPeriod:      time.Second * time.Duration(request.ScanPeriodInSeconds),
 		ZonePeriod:      time.Second * time.Duration(request.ZonePeriodInSeconds),
-		PlayersStateMap: make(map[uuid.UUID]PlayerState),
-	}
-	s.SpotsMapMx.Unlock()
+		PlayersStateMap: sync.Map{},
+	})
 	s.log.WithField("uuid", spotUUID).Debug("New spot created")
 
 	response := proto.CreateSpotResponse{

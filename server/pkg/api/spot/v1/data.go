@@ -3,6 +3,7 @@ package api_spot_v1
 import (
 	// External
 
+	"sync"
 	"time"
 
 	"github.com/golang/geo/s2"
@@ -20,7 +21,7 @@ type Spot struct {
 	//
 	// key - player uuid
 	// value - player state
-	PlayersStateMap map[uuid.UUID]PlayerState
+	PlayersStateMap sync.Map
 }
 
 type PlayerState struct {
