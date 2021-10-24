@@ -177,10 +177,9 @@ class _SpotSettingsForm extends StatelessWidget {
               step: 10,
               minValue: 0,
               maxValue: 3600,
-              value: zonePeriod.inSeconds,
-              onChanged: (value) => context
-                  .read<SpotSettingsPageBloc>()
-                  .add(NewZoneDurationEvent(value: Duration(seconds: value))),
+              value: sessionDuration.inSeconds,
+              onChanged: (value) => context.read<SpotSettingsPageBloc>().add(
+                  NewSessionDurationEvent(value: Duration(seconds: value))),
             ),
             creatingSpot
                 ? const CircularProgressIndicator()

@@ -35,6 +35,15 @@ class NewZoneDurationEvent extends SpotSettingsPageEvent {
   List<Object> get props => [value];
 }
 
+class NewSessionDurationEvent extends SpotSettingsPageEvent {
+  final Duration value;
+
+  const NewSessionDurationEvent({required this.value});
+
+  @override
+  List<Object> get props => [value];
+}
+
 class CreateNewSpotEvent extends SpotSettingsPageEvent {
   final LatLng position;
   // Spot radius in meters

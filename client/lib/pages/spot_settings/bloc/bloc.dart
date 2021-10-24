@@ -45,6 +45,13 @@ class SpotSettingsPageBloc
         _logger.shout("Not allowed $state for $event");
       }
     });
+    on<NewSessionDurationEvent>((event, emit) {
+      if (state is InitedState) {
+        emit((state as InitedState).copyWith(sessionDuration: event.value));
+      } else {
+        _logger.shout("Not allowed $state for $event");
+      }
+    });
 
     on<CreateNewSpotEvent>(
       (event, emit) async {
