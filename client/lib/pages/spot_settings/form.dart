@@ -15,9 +15,13 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class SpotSettingsForm extends StatelessWidget {
+  final String playerUuid;
   final mapController = MapController();
 
-  SpotSettingsForm({Key? key}) : super(key: key);
+  SpotSettingsForm({
+    required this.playerUuid,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,7 @@ class SpotSettingsForm extends StatelessWidget {
             context,
             SpotPage(
               spotUuid: curState.spotUuid,
+              playerUuid: playerUuid,
             ),
           );
           return const CircularProgressIndicator();

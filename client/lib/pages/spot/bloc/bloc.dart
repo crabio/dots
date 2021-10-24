@@ -9,7 +9,6 @@ import 'package:logging/logging.dart';
 
 // Internal
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
-import 'package:uuid/uuid.dart';
 import 'events.dart';
 import 'state.dart';
 
@@ -17,7 +16,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
   final proto.SpotServiceClient client;
   final GeolocatorPlatform geolocator;
   final String spotUuid;
-  final String playerUuid = const Uuid().v4();
+  final String playerUuid;
 
   final _logger = Logger("SpotPageBloc");
 
@@ -25,6 +24,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     required this.client,
     required this.geolocator,
     required this.spotUuid,
+    required this.playerUuid,
   }) : super(InitingState()) {
     on<InitEvent>(_onInitEvent);
     on<NewSpotPlayersListEvent>(_onNewSpotPlayersListEvent);
@@ -49,11 +49,11 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
       return;
     }
 
-    _logger.fine("Subscribe on geo position");
-    _subscribeOnGeoPosition().fold(
-      (l) => emit(InitErrorState(exception: l)),
-      (r) => null,
-    );
+    // _logger.fine("Subscribe on geo position");
+    // _subscribeOnGeoPosition().fold(
+    //   (l) => emit(InitErrorState(exception: l)),
+    //   (r) => null,
+    // );
 
     _logger.fine("Subscribe on players list");
     _subscribeOnSpotPlayers().fold(

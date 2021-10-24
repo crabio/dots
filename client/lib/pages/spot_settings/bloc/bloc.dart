@@ -1,4 +1,5 @@
 // External
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
@@ -10,11 +11,14 @@ import 'state.dart';
 
 class SpotSettingsPageBloc
     extends Bloc<SpotSettingsPageEvent, SpotSettingsPageState> {
+  final String playerUuid;
+
   final proto.SpotServiceClient client;
 
   final _logger = Logger("SpotSettingsPageBloc");
 
   SpotSettingsPageBloc({
+    required this.playerUuid,
     required this.client,
     required position,
   }) : super(InitedState(
@@ -70,6 +74,12 @@ class SpotSettingsPageBloc
           );
           try {
             final response = await client.createSpot(request);
+
+            // Join to spot
+            client.joinToSpot(proto.JoinToSpotRequest(
+              spotUuid: response.spotUuid,
+              playerUuid: playerUuid,
+            ));
 
             emit(NewSpotCreatedState(
               spotUuid: response.spotUuid,

@@ -12,9 +12,11 @@ import 'bloc/bloc.dart';
 
 class SpotPage extends StatelessWidget {
   final String spotUuid;
+  final String playerUuid;
 
   const SpotPage({
     required this.spotUuid,
+    required this.playerUuid,
     Key? key,
   }) : super(key: key);
 
@@ -25,6 +27,7 @@ class SpotPage extends StatelessWidget {
         client: RepositoryProvider.of<proto.SpotServiceClient>(context),
         geolocator: RepositoryProvider.of(context),
         spotUuid: spotUuid,
+        playerUuid: playerUuid,
       ),
       child: Scaffold(
         appBar: AppBar(
@@ -36,7 +39,7 @@ class SpotPage extends StatelessWidget {
             IconButton(
               onPressed: () => navPopAndPush(
                 context,
-                const MainPage(),
+                MainPage(),
               ),
               icon: const Icon(Icons.close),
             ),
