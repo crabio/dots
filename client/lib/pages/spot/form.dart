@@ -1,4 +1,5 @@
 // External
+import 'package:dots_client/pages/spot/bloc/events.dart';
 import 'package:dots_client/pages/spot/resources/player_position.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,12 @@ import 'bloc/bloc.dart';
 import 'bloc/state.dart';
 
 class SpotForm extends StatelessWidget {
-  const SpotForm({Key? key}) : super(key: key);
+  final String spotUuid;
+
+  const SpotForm({
+    required this.spotUuid,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +26,60 @@ class SpotForm extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is InitedState) {
-          return _InitedStateView(
-            playerState: state.playerState,
-            otherPlayersStates: state.otherPlayersStates,
-            spotPosition: state.spotPosition,
-            zoneRadius: state.zoneRadius,
+        } else if (state is IdleState) {
+          return _IdleStateView(
+            spotUuid: spotUuid,
+            playersList: state.playersList,
           );
         }
 
         return Text("Unkown state: $state");
       },
+    );
+  }
+}
+
+class _IdleStateView extends StatelessWidget {
+  final String spotUuid;
+  final List<String> playersList;
+
+  const _IdleStateView({
+    required this.spotUuid,
+    required this.playersList,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text("Spot #$spotUuid"),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: ElevatedButton(
+              key: const Key("btn_start"),
+              child: const Text("Start"),
+              onPressed: () =>
+                  context.read<SpotPageBloc>().add(StartGameEvent()),
+            ),
+          ),
+          ListView.builder(
+            itemCount: playersList.length,
+            itemBuilder: (context, index) {
+              final item = playersList[index];
+              return ListTile(
+                title: Text("Player #$index"),
+                subtitle: Text(item),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

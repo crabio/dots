@@ -6,22 +6,28 @@ part of 'state.dart';
 // CopyWithGenerator
 // **************************************************************************
 
-extension InitedStateCopyWith on InitedState {
-  InitedState copyWith({
+extension IdleStateCopyWith on IdleState {
+  IdleState copyWith({
+    Exception? exception,
+    List<String>? playersList,
+  }) {
+    return IdleState(
+      exception: exception ?? this.exception,
+      playersList: playersList ?? this.playersList,
+    );
+  }
+}
+
+extension ActiveStateCopyWith on ActiveState {
+  ActiveState copyWith({
     Map<String, PlayerState>? otherPlayersStates,
     PlayerState? playerState,
-    Duration? scanPeriod,
     LatLng? spotPosition,
-    Duration? zonePeriod,
-    int? zoneRadius,
   }) {
-    return InitedState(
+    return ActiveState(
       otherPlayersStates: otherPlayersStates ?? this.otherPlayersStates,
       playerState: playerState ?? this.playerState,
-      scanPeriod: scanPeriod ?? this.scanPeriod,
       spotPosition: spotPosition ?? this.spotPosition,
-      zonePeriod: zonePeriod ?? this.zonePeriod,
-      zoneRadius: zoneRadius ?? this.zoneRadius,
     );
   }
 }

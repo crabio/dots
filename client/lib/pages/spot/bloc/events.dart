@@ -14,6 +14,17 @@ class SpotPageEvent extends Equatable {
 /// Event for initing all required components
 class InitEvent extends SpotPageEvent {}
 
+class NewSpotPlayersListEvent extends SpotPageEvent {
+  final List<String> playersList;
+
+  const NewSpotPlayersListEvent({required this.playersList});
+
+  @override
+  List<Object> get props => [playersList];
+}
+
+class StartGameEvent extends SpotPageEvent {}
+
 /// New players states event
 class NewPlayersStatesEvent extends SpotPageEvent {
   final String playerUuid;

@@ -49,7 +49,9 @@ class SpotPage extends StatelessWidget {
             ),
           ],
         ),
-        body: const SpotForm(),
+        body: SpotForm(
+          spotUuid: spotUuid,
+        ),
       ),
     );
   }

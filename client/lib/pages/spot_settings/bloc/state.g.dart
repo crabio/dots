@@ -9,7 +9,7 @@ part of 'state.dart';
 extension InitedStateCopyWith on InitedState {
   InitedState copyWith({
     bool? creating,
-    String? error,
+    Exception? exception,
     LatLng? position,
     Duration? scanPeriod,
     Duration? sessionDuration,
@@ -18,7 +18,7 @@ extension InitedStateCopyWith on InitedState {
   }) {
     return InitedState(
       creating: creating ?? this.creating,
-      error: error ?? this.error,
+      exception: exception ?? this.exception,
       position: position ?? this.position,
       scanPeriod: scanPeriod ?? this.scanPeriod,
       sessionDuration: sessionDuration ?? this.sessionDuration,

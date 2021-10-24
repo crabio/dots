@@ -11,17 +11,35 @@ abstract class SpotPageState extends Equatable {
   const SpotPageState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 // Initial page state
 class InitingState extends SpotPageState {}
 
-// State when all components are inited
+// State when spot is not active (not playing)
 @CopyWith()
-class InitedState extends SpotPageState {
+class IdleState extends SpotPageState {
+  final List<String> playersList;
+  final Exception? exception;
+
+  const IdleState({
+    required this.playersList,
+    this.exception,
+  });
+
+  @override
+  List<Object?> get props => [
+        playersList,
+        exception,
+      ];
+}
+
+// State when game is running
+@CopyWith()
+class ActiveState extends SpotPageState {
   /// Current player state
-  final PlayerState playerState;
+  final PlayerState? playerState;
 
   /// Map with other players states
   /// key - player uuid
@@ -30,28 +48,17 @@ class InitedState extends SpotPageState {
 
   final LatLng spotPosition;
 
-  /// Spot radius in meters
-  final int zoneRadius;
-  final Duration scanPeriod;
-  final Duration zonePeriod;
-
-  const InitedState({
-    required this.playerState,
+  const ActiveState({
+    this.playerState,
     required this.otherPlayersStates,
     required this.spotPosition,
-    required this.zoneRadius,
-    required this.scanPeriod,
-    required this.zonePeriod,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         playerState,
         otherPlayersStates,
         spotPosition,
-        zoneRadius,
-        scanPeriod,
-        zonePeriod,
       ];
 }
 
