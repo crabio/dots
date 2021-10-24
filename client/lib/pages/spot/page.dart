@@ -1,4 +1,5 @@
 // External
+import 'package:dots_client/pages/main/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,8 +28,18 @@ class SpotPage extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Dots'),
+          title: Text(
+            'Spot: $spotUuid',
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
           actions: [
+            IconButton(
+              onPressed: () => navPopAndPush(
+                context,
+                const MainPage(),
+              ),
+              icon: const Icon(Icons.close),
+            ),
             IconButton(
               onPressed: () => navPush(
                 context,

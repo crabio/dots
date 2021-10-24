@@ -28,7 +28,7 @@ class SpotSettingsPage extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Dots'),
+          title: const Text('Spot settings'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => navPopAndPush(

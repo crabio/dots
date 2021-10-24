@@ -18,7 +18,7 @@ class SettingsPage extends StatelessWidget {
         settings: RepositoryProvider.of<AppSettings>(context),
       ),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Dots')),
+        appBar: AppBar(title: const Text('Settings')),
         body: const SettingsForm(),
       ),
     );
