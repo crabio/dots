@@ -14,7 +14,7 @@ import (
 
 	// Internal
 	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
-	api_spot_v1_data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
+	"github.com/iakrevetkho/dots/server/pkg/player_state"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -63,15 +63,15 @@ func TestGetPlayerPosition(t *testing.T) {
 	// Add positions
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
-	spot.PlayersStateMap.Store(playerUuid, api_spot_v1_data.PlayerState{
+	spot.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
 		Position: s2.LatLngFromDegrees(10, 20),
 		Health:   88,
 	})
-	spot.PlayersStateMap.Store(player2Uuid, api_spot_v1_data.PlayerState{
+	spot.PlayersStateMap.Store(player2Uuid, player_state.PlayerState{
 		Position: s2.LatLngFromDegrees(60, 70),
 		Health:   33,
 	})
-	spot.PlayersStateMap.Store(player3Uuid, api_spot_v1_data.PlayerState{
+	spot.PlayersStateMap.Store(player3Uuid, player_state.PlayerState{
 		Position: s2.LatLngFromDegrees(80, 90),
 		Health:   15,
 	})
@@ -118,22 +118,22 @@ func TestGetPlayerPosition(t *testing.T) {
 
 	sub := *playerState.Sub
 
-	sub <- api_spot_v1_data.PlayerPublicState{
+	sub <- player_state.PlayerPublicState{
 		PlayerUuid: playerUuid,
 		Position:   s2.LatLngFromDegrees(10, 20),
 		Health:     88,
 	}
-	sub <- api_spot_v1_data.PlayerPublicState{
+	sub <- player_state.PlayerPublicState{
 		PlayerUuid: player2Uuid,
 		Position:   s2.LatLngFromDegrees(60, 70),
 		Health:     33,
 	}
-	sub <- api_spot_v1_data.PlayerPublicState{
+	sub <- player_state.PlayerPublicState{
 		PlayerUuid: player3Uuid,
 		Position:   s2.LatLngFromDegrees(80, 90),
 		Health:     15,
 	}
-	sub <- api_spot_v1_data.PlayerPublicState{
+	sub <- player_state.PlayerPublicState{
 		PlayerUuid: playerUuid,
 		Position:   s2.LatLngFromDegrees(10, 20),
 		Health:     88,

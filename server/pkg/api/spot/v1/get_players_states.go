@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
-	data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
+	"github.com/iakrevetkho/dots/server/pkg/player_state"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -40,7 +40,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("User %v already has subscription", playerUuid)
 	}
 
-	playerSub := make(chan data.PlayerPublicState)
+	playerSub := make(chan player_state.PlayerPublicState)
 	playerState.Sub = &playerSub
 	// Update player state
 	spot.PlayersStateMap.Store(playerUuid, playerState)

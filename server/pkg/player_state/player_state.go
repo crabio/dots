@@ -1,4 +1,4 @@
-package api_spot_v1_data
+package player_state
 
 import (
 	// External

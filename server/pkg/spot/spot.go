@@ -1,4 +1,4 @@
-package api_spot_v1_data
+package spot
 
 import (
 	// External
@@ -7,7 +7,9 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+
 	// Internal
+	"github.com/iakrevetkho/dots/server/pkg/player_state"
 )
 
 type Spot struct {
@@ -20,7 +22,7 @@ type Spot struct {
 	//
 	// key - player uuid
 	// value - player state
-	PlayersStateMap *PlayerStateMap
+	PlayersStateMap *player_state.PlayerStateMap
 }
 
 type SpotMap struct {

@@ -11,7 +11,7 @@ import (
 
 	// Internal
 	"github.com/iakrevetkho/archaeopteryx/logger"
-	data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
+	"github.com/iakrevetkho/dots/server/pkg/spot"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -26,14 +26,14 @@ type SpotServiceServer struct {
 	//
 	// key - spot UUID
 	// value - spot session data
-	SpotsMap *data.SpotMap
+	SpotsMap *spot.SpotMap
 }
 
 func New(playersPosUpdatePeriod time.Duration) *SpotServiceServer {
 	s := new(SpotServiceServer)
 	s.log = logger.CreateLogger("spot-v1")
 	s.playersPosUpdatePeriod = playersPosUpdatePeriod
-	s.SpotsMap = data.NewSpotMap()
+	s.SpotsMap = spot.NewSpotMap()
 
 	return s
 }

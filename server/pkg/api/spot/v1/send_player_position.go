@@ -11,7 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	// Internal
-	data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
+	"github.com/iakrevetkho/dots/server/pkg/player_state"
 	geo_utils "github.com/iakrevetkho/dots/server/pkg/utils/geo"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
@@ -72,12 +72,12 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			spot.PlayersStateMap.Store(playerUuid, playerState)
 
 			// Send player state to subscriptions which requires it
-			spot.PlayersStateMap.Range(func(k uuid.UUID, playerState data.PlayerState) {
+			spot.PlayersStateMap.Range(func(k uuid.UUID, playerState player_state.PlayerState) {
 				// TODO Add checks for distance, scanning and etc
 				// Check that we have subscription
 				if playerState.Sub != nil {
 					// Send data to subscription channel
-					(*playerState.Sub) <- data.PlayerPublicState{
+					(*playerState.Sub) <- player_state.PlayerPublicState{
 						PlayerUuid: playerUuid,
 						Position:   playerState.Position,
 						Health:     playerState.Health,
