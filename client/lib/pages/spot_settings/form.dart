@@ -9,7 +9,7 @@ import 'package:numberpicker/numberpicker.dart';
 
 // Internal
 import 'package:dots_client/utils/nav.dart';
-import 'package:dots_client/pages/spot/page.dart';
+import 'package:dots_client/pages/lobby/page.dart';
 import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
@@ -42,7 +42,7 @@ class SpotSettingsForm extends StatelessWidget {
         } else if (curState is NewSpotCreatedState) {
           navPopAndPushAfterBuild(
             context,
-            SpotPage(
+            LobbyPage(
               spotUuid: curState.spotUuid,
               playerUuid: playerUuid,
             ),

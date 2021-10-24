@@ -10,11 +10,11 @@ import 'package:dots_client/utils/nav.dart';
 import 'form.dart';
 import 'bloc/bloc.dart';
 
-class SpotPage extends StatelessWidget {
+class GamePage extends StatelessWidget {
   final String spotUuid;
   final String playerUuid;
 
-  const SpotPage({
+  const GamePage({
     required this.spotUuid,
     required this.playerUuid,
     Key? key,
@@ -23,7 +23,7 @@ class SpotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SpotPageBloc(
+      create: (_) => GamePageBloc(
         client: RepositoryProvider.of<proto.SpotServiceClient>(context),
         geolocator: RepositoryProvider.of(context),
         spotUuid: spotUuid,
@@ -52,7 +52,7 @@ class SpotPage extends StatelessWidget {
             ),
           ],
         ),
-        body: SpotForm(
+        body: GameForm(
           spotUuid: spotUuid,
         ),
       ),
