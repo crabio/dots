@@ -37,18 +37,6 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
   void _onInitEvent(InitEvent event, Emitter<SpotPageState> emit) async {
     _logger.fine("Get spot data");
 
-    final getSpotResponse = await _getSpotData();
-    final spotData = getSpotResponse.fold(
-      (l) {
-        emit(InitErrorState(exception: l));
-        return null;
-      },
-      (r) => r,
-    );
-    if (getSpotResponse.isLeft()) {
-      return;
-    }
-
     // _logger.fine("Subscribe on geo position");
     // _subscribeOnGeoPosition().fold(
     //   (l) => emit(InitErrorState(exception: l)),
@@ -63,19 +51,25 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
       }),
     );
 
-    _logger.fine("Subscribe on spot active state");
-    _subscribeOnSpotStartFlag().fold(
-      (l) => emit(InitErrorState(exception: l)),
-      (r) => r.listen((value) {
-        emit(ActiveState(
-          spotPosition: LatLng(
-            spotData!.position.latitude,
-            spotData.position.longitude,
-          ),
-          otherPlayersStates: const {},
-        ));
-      }),
-    );
+    //  TODO Only slaves should be subscribed on start flag
+    // _logger.fine("Subscribe on spot active state");
+    // _subscribeOnSpotStartFlag().fold(
+    //   (l) => emit(InitErrorState(exception: l)),
+    //   (r) => r.listen((value) {
+    //     if (value.isActive) {
+    //       emit(ActiveState(
+    //         spotPosition: LatLng(
+    //           spotData!.position.latitude,
+    //           spotData.position.longitude,
+    //         ),
+    //         otherPlayersStates: const {},
+    //       ));
+    //     } else {
+    //       // TODO Get players list again
+    //       emit(IdleState(playersList: []));
+    //     }
+    //   }),
+    // );
 
     // _logger.fine("Subscribe on players states");
     // _subscribeOnPlayersStates().fold(
@@ -179,6 +173,27 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     if (curState is IdleState) {
       try {
         client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid));
+
+        final getSpotResponse = await _getSpotData();
+        final spotData = getSpotResponse.fold(
+          (l) {
+            emit(InitErrorState(exception: l));
+            return null;
+          },
+          (r) => r,
+        );
+        if (getSpotResponse.isLeft()) {
+          return;
+        }
+
+        emit(ActiveState(
+          spotPosition: LatLng(
+            spotData!.position.latitude,
+            spotData.position.longitude,
+          ),
+          zoneRadius: spotData.radius,
+          otherPlayersStates: const {},
+        ));
       } on Exception catch (ex) {
         emit(curState.copyWith(exception: ex));
       }

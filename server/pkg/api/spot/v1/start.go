@@ -15,7 +15,7 @@ import (
 )
 
 func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartSpotRequest) (*proto.StartSpotResponse, error) {
-	s.log.WithField("request", request.String()).Debug("Join to spot request")
+	s.log.WithField("request", request.String()).Debug("Start spot request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
@@ -43,6 +43,9 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 
 	// Save spot on server
 	s.SpotsMap.Store(spotUuid, spot)
+
+	// Broadcast start flag
+	spot.IsActiveBroadcaster.Send(true)
 
 	response := proto.StartSpotResponse{}
 

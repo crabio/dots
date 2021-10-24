@@ -47,11 +47,13 @@ class ActiveState extends SpotPageState {
   final Map<String, PlayerState> otherPlayersStates;
 
   final LatLng spotPosition;
+  final int zoneRadius;
 
   const ActiveState({
     this.playerState,
     required this.otherPlayersStates,
     required this.spotPosition,
+    required this.zoneRadius,
   });
 
   @override
@@ -59,6 +61,7 @@ class ActiveState extends SpotPageState {
         playerState,
         otherPlayersStates,
         spotPosition,
+        zoneRadius,
       ];
 }
 

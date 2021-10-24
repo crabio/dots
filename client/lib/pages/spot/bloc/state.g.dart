@@ -23,11 +23,13 @@ extension ActiveStateCopyWith on ActiveState {
     Map<String, PlayerState>? otherPlayersStates,
     PlayerState? playerState,
     LatLng? spotPosition,
+    int? zoneRadius,
   }) {
     return ActiveState(
       otherPlayersStates: otherPlayersStates ?? this.otherPlayersStates,
       playerState: playerState ?? this.playerState,
       spotPosition: spotPosition ?? this.spotPosition,
+      zoneRadius: zoneRadius ?? this.zoneRadius,
     );
   }
 }

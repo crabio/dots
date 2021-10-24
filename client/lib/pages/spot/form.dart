@@ -31,6 +31,13 @@ class SpotForm extends StatelessWidget {
             spotUuid: spotUuid,
             playersList: state.playersList,
           );
+        } else if (state is ActiveState) {
+          return _ActiveStateView(
+            playerState: state.playerState,
+            otherPlayersStates: state.otherPlayersStates,
+            spotPosition: state.spotPosition,
+            zoneRadius: state.zoneRadius,
+          );
         }
 
         return Text("Unkown state: $state");
@@ -102,15 +109,15 @@ class _IdleStateView extends StatelessWidget {
   }
 }
 
-class _InitedStateView extends StatelessWidget {
-  final PlayerState playerState;
+class _ActiveStateView extends StatelessWidget {
+  final PlayerState? playerState;
   final Map<String, PlayerState> otherPlayersStates;
   final LatLng spotPosition;
   // Spot radius in meters
   final int zoneRadius;
 
-  const _InitedStateView({
-    required this.playerState,
+  const _ActiveStateView({
+    this.playerState,
     required this.otherPlayersStates,
     required this.spotPosition,
     required this.zoneRadius,
@@ -130,12 +137,14 @@ class _InitedStateView extends StatelessWidget {
       ),
     ));
     // Player position pointer
-    markers.add(Marker(
-      point: playerState.position,
-      builder: (ctx) => const Icon(
-        Icons.circle,
-      ),
-    ));
+    if (playerState != null) {
+      markers.add(Marker(
+        point: playerState!.position,
+        builder: (ctx) => const Icon(
+          Icons.circle,
+        ),
+      ));
+    }
 
     // Other players pointers
     otherPlayersStates.forEach((key, value) {
@@ -152,7 +161,7 @@ class _InitedStateView extends StatelessWidget {
       children: [
         FlutterMap(
           options: MapOptions(
-            center: playerState.position,
+            center: playerState != null ? playerState!.position : spotPosition,
             zoom: 17.0,
           ),
           layers: [
@@ -173,32 +182,35 @@ class _InitedStateView extends StatelessWidget {
             ])
           ],
         ),
-        Positioned(
-          right: 0,
-          top: 0,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Text(
-                    "Health: ${playerState.health}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(color: _healthColor(playerState.health)),
+        playerState != null
+            ? Positioned(
+                right: 0,
+                top: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
+                          "Health: ${playerState!.health}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(
+                                  color: _healthColor(playerState!.health)),
+                        ),
+                      ),
+                      CircularProgressIndicator(
+                        value: playerState!.health / 100,
+                        strokeWidth: 10,
+                        color: _healthColor(playerState!.health),
+                      ),
+                    ],
                   ),
                 ),
-                CircularProgressIndicator(
-                  value: playerState.health / 100,
-                  strokeWidth: 10,
-                  color: _healthColor(playerState.health),
-                ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : Container(),
       ],
     );
   }
