@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
+	data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -24,13 +25,12 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		return nil, fmt.Errorf("Couldn't parse player uuid. " + err.Error())
 	}
 
-	v, ok := s.SpotsMap.Load(spotUuid)
+	spot, ok := s.SpotsMap.Load(spotUuid)
 	if !ok {
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
-	spot := v.(Spot)
 
-	spot.PlayersStateMap.Store(playerUuid, PlayerState{
+	spot.PlayersStateMap.Store(playerUuid, data.PlayerState{
 		Health: 100,
 	})
 	s.SpotsMap.Store(spotUuid, spot)

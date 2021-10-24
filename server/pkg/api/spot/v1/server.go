@@ -3,7 +3,6 @@ package api_spot_v1
 import (
 	// External
 	"context"
-	"sync"
 	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -12,6 +11,7 @@ import (
 
 	// Internal
 	"github.com/iakrevetkho/archaeopteryx/logger"
+	data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -26,14 +26,14 @@ type SpotServiceServer struct {
 	//
 	// key - spot UUID
 	// value - spot session data
-	SpotsMap sync.Map
+	SpotsMap *data.SpotMap
 }
 
 func New(playersPosUpdatePeriod time.Duration) *SpotServiceServer {
 	s := new(SpotServiceServer)
 	s.log = logger.CreateLogger("spot-v1")
 	s.playersPosUpdatePeriod = playersPosUpdatePeriod
-	s.SpotsMap = sync.Map{}
+	s.SpotsMap = data.NewSpotMap()
 
 	return s
 }

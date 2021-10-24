@@ -11,6 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	// Internal
+	data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
 	geo_utils "github.com/iakrevetkho/dots/server/pkg/utils/geo"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
@@ -35,11 +36,10 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			return fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 		}
 
-		v, ok := s.SpotsMap.Load(spotUuid)
+		spot, ok := s.SpotsMap.Load(spotUuid)
 		if !ok {
 			return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 		}
-		spot := v.(Spot)
 
 		playerUuid, err := uuid.Parse(request.PlayerUuid)
 		if err != nil {
@@ -47,11 +47,10 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 		}
 
 		// Update player state
-		v, ok = spot.PlayersStateMap.Load(playerUuid)
+		playerState, ok := spot.PlayersStateMap.Load(playerUuid)
 		if !ok {
 			return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 		} else {
-			playerState := v.(PlayerState)
 			playerState.Position = s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude)
 
 			// Check player health
@@ -73,20 +72,17 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			spot.PlayersStateMap.Store(playerUuid, playerState)
 
 			// Send player state to subscriptions which requires it
-			spot.PlayersStateMap.Range(func(k, v interface{}) bool {
-				platerState := v.(PlayerState)
-
+			spot.PlayersStateMap.Range(func(k uuid.UUID, playerState data.PlayerState) {
 				// TODO Add checks for distance, scanning and etc
 				// Check that we have subscription
-				if platerState.Sub != nil {
+				if playerState.Sub != nil {
 					// Send data to subscription channel
-					(*platerState.Sub) <- PlayerPublicState{
+					(*playerState.Sub) <- data.PlayerPublicState{
 						PlayerUuid: playerUuid,
 						Position:   playerState.Position,
 						Health:     playerState.Health,
 					}
 				}
-				return true
 			})
 		}
 		s.SpotsMap.Store(spotUuid, spot)
@@ -106,19 +102,17 @@ func (s *SpotServiceServer) startPlayerZoneDamage(spotUuid uuid.UUID, playerUuid
 		// TODO Move zone damage period to consts
 		const zoneDamagePeriod = 1 * time.Second
 
-		v, ok := s.SpotsMap.Load(spotUuid)
+		spot, ok := s.SpotsMap.Load(spotUuid)
 		if !ok {
 			s.log.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 			return
 		}
-		spot := v.(Spot)
 
-		v, ok = spot.PlayersStateMap.Load(playerUuid)
+		playerState, ok := spot.PlayersStateMap.Load(playerUuid)
 		if !ok {
 			s.log.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 			return
 		}
-		playerState := v.(PlayerState)
 
 		playerState.ZoneDamageActice = true
 		// Update state in spot
@@ -127,19 +121,17 @@ func (s *SpotServiceServer) startPlayerZoneDamage(spotUuid uuid.UUID, playerUuid
 
 		damageTicker := time.NewTicker(zoneDamagePeriod)
 		for {
-			v, ok = s.SpotsMap.Load(spotUuid)
+			spot, ok = s.SpotsMap.Load(spotUuid)
 			if !ok {
 				s.log.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 				return
 			}
-			spot := v.(Spot)
 
-			v, ok = spot.PlayersStateMap.Load(playerUuid)
+			playerState, ok = spot.PlayersStateMap.Load(playerUuid)
 			if !ok {
 				s.log.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 				return
 			}
-			playerState := v.(PlayerState)
 
 			select {
 			case <-playerState.StopZoneDmgCh:

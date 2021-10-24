@@ -33,8 +33,7 @@ func TestCreateSpot(t *testing.T) {
 	spotUuid, err := uuid.Parse(response.SpotUuid)
 	assert.NoError(t, err)
 
-	v, ok := s.SpotsMap.Load(spotUuid)
-	spot := v.(api_spot_v1.Spot)
+	spot, ok := s.SpotsMap.Load(spotUuid)
 
 	assert.True(t, ok)
 	assert.Equal(t, 11.2344, spot.Position.Lat.Degrees())

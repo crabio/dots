@@ -19,11 +19,10 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 		return nil, fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 	}
 
-	v, ok := s.SpotsMap.Load(spotUuid)
+	spot, ok := s.SpotsMap.Load(spotUuid)
 	if !ok {
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
-	spot := v.(Spot)
 
 	response := proto.GetSpotResponse{
 		Position: &proto.Position{

@@ -14,6 +14,7 @@ import (
 
 	// Internal
 	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
+	api_spot_v1_data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -60,18 +61,17 @@ func TestGetPlayerPosition(t *testing.T) {
 	player3Uuid := uuid.New()
 
 	// Add positions
-	v, ok := s.SpotsMap.Load(spotUuid)
+	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
-	spot := v.(api_spot_v1.Spot)
-	spot.PlayersStateMap.Store(playerUuid, api_spot_v1.PlayerState{
+	spot.PlayersStateMap.Store(playerUuid, api_spot_v1_data.PlayerState{
 		Position: s2.LatLngFromDegrees(10, 20),
 		Health:   88,
 	})
-	spot.PlayersStateMap.Store(player2Uuid, api_spot_v1.PlayerState{
+	spot.PlayersStateMap.Store(player2Uuid, api_spot_v1_data.PlayerState{
 		Position: s2.LatLngFromDegrees(60, 70),
 		Health:   33,
 	})
-	spot.PlayersStateMap.Store(player3Uuid, api_spot_v1.PlayerState{
+	spot.PlayersStateMap.Store(player3Uuid, api_spot_v1_data.PlayerState{
 		Position: s2.LatLngFromDegrees(80, 90),
 		Health:   15,
 	})
@@ -97,13 +97,11 @@ func TestGetPlayerPosition(t *testing.T) {
 
 	// Wait channel ready
 	for {
-		v, ok = s.SpotsMap.Load(spotUuid)
+		spot, ok = s.SpotsMap.Load(spotUuid)
 		assert.True(t, ok)
-		spot := v.(api_spot_v1.Spot)
 
-		v, ok = spot.PlayersStateMap.Load(playerUuid)
+		playerState, ok := spot.PlayersStateMap.Load(playerUuid)
 		assert.True(t, ok)
-		playerState := v.(api_spot_v1.PlayerState)
 
 		if playerState.Sub != nil {
 			break
@@ -112,32 +110,30 @@ func TestGetPlayerPosition(t *testing.T) {
 	}
 
 	// Send data
-	v, ok = s.SpotsMap.Load(spotUuid)
+	spot, ok = s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
-	spot = v.(api_spot_v1.Spot)
 
-	v, ok = spot.PlayersStateMap.Load(playerUuid)
+	playerState, ok := spot.PlayersStateMap.Load(playerUuid)
 	assert.True(t, ok)
-	playerState := v.(api_spot_v1.PlayerState)
 
 	sub := *playerState.Sub
 
-	sub <- api_spot_v1.PlayerPublicState{
+	sub <- api_spot_v1_data.PlayerPublicState{
 		PlayerUuid: playerUuid,
 		Position:   s2.LatLngFromDegrees(10, 20),
 		Health:     88,
 	}
-	sub <- api_spot_v1.PlayerPublicState{
+	sub <- api_spot_v1_data.PlayerPublicState{
 		PlayerUuid: player2Uuid,
 		Position:   s2.LatLngFromDegrees(60, 70),
 		Health:     33,
 	}
-	sub <- api_spot_v1.PlayerPublicState{
+	sub <- api_spot_v1_data.PlayerPublicState{
 		PlayerUuid: player3Uuid,
 		Position:   s2.LatLngFromDegrees(80, 90),
 		Health:     15,
 	}
-	sub <- api_spot_v1.PlayerPublicState{
+	sub <- api_spot_v1_data.PlayerPublicState{
 		PlayerUuid: playerUuid,
 		Position:   s2.LatLngFromDegrees(10, 20),
 		Health:     88,

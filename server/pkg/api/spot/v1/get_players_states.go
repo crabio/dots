@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
+	data "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/data"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -19,29 +20,27 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Couldn't parse spot uuid. " + err.Error())
 	}
 
-	v, ok := s.SpotsMap.Load(spotUuid)
+	spot, ok := s.SpotsMap.Load(spotUuid)
 	if !ok {
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
-	spot := v.(Spot)
 
 	playerUuid, err := uuid.Parse(request.PlayerUuid)
 	if err != nil {
 		return fmt.Errorf("Couldn't parse user uuid. " + err.Error())
 	}
 
-	v, ok = spot.PlayersStateMap.Load(playerUuid)
+	playerState, ok := spot.PlayersStateMap.Load(playerUuid)
 	if !ok {
 		return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 	}
-	playerState := v.(PlayerState)
 
 	// Check that player hadn't subscription
 	if playerState.Sub != nil {
 		return fmt.Errorf("User %v already has subscription", playerUuid)
 	}
 
-	playerSub := make(chan PlayerPublicState)
+	playerSub := make(chan data.PlayerPublicState)
 	playerState.Sub = &playerSub
 	// Update player state
 	spot.PlayersStateMap.Store(playerUuid, playerState)
@@ -64,17 +63,15 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 			// Remove channel from current state
 			close(playerSub)
 
-			v, ok = s.SpotsMap.Load(spotUuid)
+			spot, ok := s.SpotsMap.Load(spotUuid)
 			if !ok {
 				return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 			}
-			spot := v.(Spot)
 
-			v, ok = spot.PlayersStateMap.Load(playerUuid)
+			playerState, ok := spot.PlayersStateMap.Load(playerUuid)
 			if !ok {
 				return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 			}
-			playerState := v.(PlayerState)
 
 			playerState.Sub = nil
 
