@@ -1,5 +1,4 @@
 // External
-import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';

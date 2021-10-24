@@ -85,19 +85,19 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     // );
   }
 
-  Stream<proto.SendPlayerPositionRequest> _createPlayerPositionStream(
-      Stream<Position> stream) async* {
-    await for (final position in stream) {
-      yield proto.SendPlayerPositionRequest(
-        spotUuid: spotUuid,
-        playerUuid: playerUuid,
-        position: proto.Position(
-          latitude: position.latitude,
-          longitude: position.longitude,
-        ),
-      );
-    }
-  }
+  // Stream<proto.SendPlayerPositionRequest> _createPlayerPositionStream(
+  //     Stream<Position> stream) async* {
+  //   await for (final position in stream) {
+  //     yield proto.SendPlayerPositionRequest(
+  //       spotUuid: spotUuid,
+  //       playerUuid: playerUuid,
+  //       position: proto.Position(
+  //         latitude: position.latitude,
+  //         longitude: position.longitude,
+  //       ),
+  //     );
+  //   }
+  // }
 
   Future<Either<Exception, proto.GetSpotResponse>> _getSpotData() async {
     final request = proto.GetSpotRequest(spotUuid: spotUuid);
@@ -108,19 +108,19 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     }
   }
 
-  Either<Exception, bool> _subscribeOnGeoPosition() {
-    final positionStream = geolocator.getPositionStream(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+  // Either<Exception, bool> _subscribeOnGeoPosition() {
+  //   final positionStream = geolocator.getPositionStream(
+  //     desiredAccuracy: LocationAccuracy.high,
+  //   );
 
-    try {
-      client.sendPlayerPosition(_createPlayerPositionStream(positionStream));
-    } on Exception catch (ex) {
-      return Left(ex);
-    }
+  //   try {
+  //     client.sendPlayerPosition(_createPlayerPositionStream(positionStream));
+  //   } on Exception catch (ex) {
+  //     return Left(ex);
+  //   }
 
-    return const Right(true);
-  }
+  //   return const Right(true);
+  // }
 
   Either<Exception, ResponseStream<proto.GetSpotPlayersResponse>>
       _subscribeOnSpotPlayers() {
@@ -133,30 +133,30 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     }
   }
 
-  Either<Exception, ResponseStream<proto.GetSpotStartFlagResponse>>
-      _subscribeOnSpotStartFlag() {
-    try {
-      return Right(client.getSpotStartFlag(proto.GetSpotStartFlagRequest(
-        spotUuid: spotUuid,
-      )));
-    } on Exception catch (ex) {
-      return Left(ex);
-    }
-  }
+  // Either<Exception, ResponseStream<proto.GetSpotStartFlagResponse>>
+  //     _subscribeOnSpotStartFlag() {
+  //   try {
+  //     return Right(client.getSpotStartFlag(proto.GetSpotStartFlagRequest(
+  //       spotUuid: spotUuid,
+  //     )));
+  //   } on Exception catch (ex) {
+  //     return Left(ex);
+  //   }
+  // }
 
-  Either<Exception, ResponseStream<proto.GetPlayersStatesResponse>>
-      _subscribeOnPlayersStates() {
-    try {
-      final request = proto.GetPlayersStatesRequest(
-        spotUuid: spotUuid,
-        playerUuid: playerUuid,
-      );
+  // Either<Exception, ResponseStream<proto.GetPlayersStatesResponse>>
+  //     _subscribeOnPlayersStates() {
+  //   try {
+  //     final request = proto.GetPlayersStatesRequest(
+  //       spotUuid: spotUuid,
+  //       playerUuid: playerUuid,
+  //     );
 
-      return Right(client.getPlayersStates(request));
-    } on Exception catch (ex) {
-      return Left(ex);
-    }
-  }
+  //     return Right(client.getPlayersStates(request));
+  //   } on Exception catch (ex) {
+  //     return Left(ex);
+  //   }
+  // }
 
   void _onNewSpotPlayersListEvent(
     NewSpotPlayersListEvent event,
