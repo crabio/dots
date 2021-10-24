@@ -23,18 +23,29 @@ func (s *SpotServiceServer) GetSpotPlayers(request *proto.GetSpotPlayersRequest,
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
+	// Send current players list
+	if err := s.sendSpotPlayersList(spot.PlayersList, stream); err != nil {
+		return err
+	}
+
 	for playersListI := range spot.PlayersListBroadcaster.Listen().Ch {
-		playersList := playersListI.([]uuid.UUID)
-
-		response := &proto.GetSpotPlayersResponse{}
-		for _, playerUuid := range playersList {
-			response.PlayersList = append(response.PlayersList, playerUuid.String())
-		}
-
-		s.log.WithField("response", response.String()).Debug("Get spot players list response")
-		if err := stream.Send(response); err != nil {
+		if err := s.sendSpotPlayersList(playersListI.([]uuid.UUID), stream); err != nil {
 			return err
 		}
 	}
+	return nil
+}
+
+func (s *SpotServiceServer) sendSpotPlayersList(playersList []uuid.UUID, stream proto.SpotService_GetSpotPlayersServer) error {
+	response := &proto.GetSpotPlayersResponse{}
+	for _, playerUuid := range playersList {
+		response.PlayersList = append(response.PlayersList, playerUuid.String())
+	}
+
+	s.log.WithField("response", response.String()).Debug("Get spot players list response")
+	if err := stream.Send(response); err != nil {
+		return err
+	}
+
 	return nil
 }
