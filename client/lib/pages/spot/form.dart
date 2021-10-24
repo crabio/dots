@@ -59,7 +59,7 @@ class _IdleStateView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: Text("Spot #$spotUuid"),
+            child: Text("Spot $spotUuid"),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
@@ -82,15 +82,19 @@ class _IdleStateView extends StatelessWidget {
                   context.read<SpotPageBloc>().add(StartGameEvent()),
             ),
           ),
-          ListView.builder(
-            itemCount: playersList.length,
-            itemBuilder: (context, index) {
-              final item = playersList[index];
-              return ListTile(
-                title: Text("Player #$index"),
-                subtitle: Text(item),
-              );
-            },
+          SizedBox(
+            height: 300,
+            width: 300,
+            child: ListView.builder(
+              itemCount: playersList.length,
+              itemBuilder: (context, index) {
+                final item = playersList[index];
+                return ListTile(
+                  title: Text("Player #$index"),
+                  subtitle: Text(item),
+                );
+              },
+            ),
           ),
         ],
       ),

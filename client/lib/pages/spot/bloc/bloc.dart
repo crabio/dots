@@ -168,10 +168,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     NewSpotPlayersListEvent event,
     Emitter<SpotPageState> emit,
   ) async {
-    final curState = state;
-    if (curState is IdleState) {
-      emit(IdleState(playersList: event.playersList));
-    }
+    emit(IdleState(playersList: event.playersList));
   }
 
   void _onStartGameEvent(
