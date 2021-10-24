@@ -38,6 +38,8 @@ func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zon
 	spot.ScanPeriod = scanPeriod
 	spot.ZonePeriod = zonePeriod
 	spot.SessionDuration = sessionDuration
+	spot.PlayersListBroadcaster = broadcast.New(0)
+	spot.IsActiveBroadcaster = broadcast.New(0)
 
 	spot.IsActive = false
 

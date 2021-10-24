@@ -42,10 +42,12 @@ class SpotForm extends StatelessWidget {
 class _IdleStateView extends StatelessWidget {
   final String spotUuid;
   final List<String> playersList;
+  final Exception? exception;
 
   const _IdleStateView({
     required this.spotUuid,
     required this.playersList,
+    this.exception,
     Key? key,
   }) : super(key: key);
 
@@ -58,6 +60,18 @@ class _IdleStateView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Text("Spot #$spotUuid"),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: exception != null
+                ? Text(
+                    "Spot #$spotUuid",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .copyWith(color: Colors.red),
+                  )
+                : Container(),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
