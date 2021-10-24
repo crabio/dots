@@ -60,6 +60,18 @@
         }
       }
     },
+    "v1GetSpotPlayersResponse": {
+      "type": "object",
+      "properties": {
+        "playersList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "List with players UUIDs"
+        }
+      }
+    },
     "v1GetSpotResponse": {
       "type": "object",
       "properties": {

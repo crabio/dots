@@ -19,6 +19,8 @@ type Spot struct {
 	SessionDuration time.Duration
 
 	PlayersList []uuid.UUID
+	// Channel for sending players list on update
+	PlayersListCh chan []uuid.UUID
 
 	Session *SpotSession
 

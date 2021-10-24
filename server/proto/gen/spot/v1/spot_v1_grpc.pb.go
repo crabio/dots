@@ -21,6 +21,9 @@ type SpotServiceClient interface {
 	CreateSpot(ctx context.Context, in *CreateSpotRequest, opts ...grpc.CallOption) (*CreateSpotResponse, error)
 	GetSpot(ctx context.Context, in *GetSpotRequest, opts ...grpc.CallOption) (*GetSpotResponse, error)
 	JoinToSpot(ctx context.Context, in *JoinToSpotRequest, opts ...grpc.CallOption) (*JoinToSpotResponse, error)
+	// GetSpotPlayers returns stream of players in spot
+	// If new player will be connected to spot, it will be sent
+	GetSpotPlayers(ctx context.Context, in *GetSpotPlayersRequest, opts ...grpc.CallOption) (SpotService_GetSpotPlayersClient, error)
 	StartSpot(ctx context.Context, in *StartSpotRequest, opts ...grpc.CallOption) (*StartSpotResponse, error)
 	SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error)
 	// GetPlayersStates returns stream of all players data (this player and others)
@@ -63,6 +66,38 @@ func (c *spotServiceClient) JoinToSpot(ctx context.Context, in *JoinToSpotReques
 	return out, nil
 }
 
+func (c *spotServiceClient) GetSpotPlayers(ctx context.Context, in *GetSpotPlayersRequest, opts ...grpc.CallOption) (SpotService_GetSpotPlayersClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[0], "/spot.v1.SpotService/GetSpotPlayers", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &spotServiceGetSpotPlayersClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SpotService_GetSpotPlayersClient interface {
+	Recv() (*GetSpotPlayersResponse, error)
+	grpc.ClientStream
+}
+
+type spotServiceGetSpotPlayersClient struct {
+	grpc.ClientStream
+}
+
+func (x *spotServiceGetSpotPlayersClient) Recv() (*GetSpotPlayersResponse, error) {
+	m := new(GetSpotPlayersResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *spotServiceClient) StartSpot(ctx context.Context, in *StartSpotRequest, opts ...grpc.CallOption) (*StartSpotResponse, error) {
 	out := new(StartSpotResponse)
 	err := c.cc.Invoke(ctx, "/spot.v1.SpotService/StartSpot", in, out, opts...)
@@ -73,7 +108,7 @@ func (c *spotServiceClient) StartSpot(ctx context.Context, in *StartSpotRequest,
 }
 
 func (c *spotServiceClient) SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error) {
-	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[0], "/spot.v1.SpotService/SendPlayerPosition", opts...)
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[1], "/spot.v1.SpotService/SendPlayerPosition", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +142,7 @@ func (x *spotServiceSendPlayerPositionClient) CloseAndRecv() (*SendPlayerPositio
 }
 
 func (c *spotServiceClient) GetPlayersStates(ctx context.Context, in *GetPlayersStatesRequest, opts ...grpc.CallOption) (SpotService_GetPlayersStatesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[1], "/spot.v1.SpotService/GetPlayersStates", opts...)
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[2], "/spot.v1.SpotService/GetPlayersStates", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -145,6 +180,9 @@ type SpotServiceServer interface {
 	CreateSpot(context.Context, *CreateSpotRequest) (*CreateSpotResponse, error)
 	GetSpot(context.Context, *GetSpotRequest) (*GetSpotResponse, error)
 	JoinToSpot(context.Context, *JoinToSpotRequest) (*JoinToSpotResponse, error)
+	// GetSpotPlayers returns stream of players in spot
+	// If new player will be connected to spot, it will be sent
+	GetSpotPlayers(*GetSpotPlayersRequest, SpotService_GetSpotPlayersServer) error
 	StartSpot(context.Context, *StartSpotRequest) (*StartSpotResponse, error)
 	SendPlayerPosition(SpotService_SendPlayerPositionServer) error
 	// GetPlayersStates returns stream of all players data (this player and others)
@@ -165,6 +203,9 @@ func (UnimplementedSpotServiceServer) GetSpot(context.Context, *GetSpotRequest) 
 }
 func (UnimplementedSpotServiceServer) JoinToSpot(context.Context, *JoinToSpotRequest) (*JoinToSpotResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinToSpot not implemented")
+}
+func (UnimplementedSpotServiceServer) GetSpotPlayers(*GetSpotPlayersRequest, SpotService_GetSpotPlayersServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetSpotPlayers not implemented")
 }
 func (UnimplementedSpotServiceServer) StartSpot(context.Context, *StartSpotRequest) (*StartSpotResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartSpot not implemented")
@@ -240,6 +281,27 @@ func _SpotService_JoinToSpot_Handler(srv interface{}, ctx context.Context, dec f
 		return srv.(SpotServiceServer).JoinToSpot(ctx, req.(*JoinToSpotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
+}
+
+func _SpotService_GetSpotPlayers_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetSpotPlayersRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SpotServiceServer).GetSpotPlayers(m, &spotServiceGetSpotPlayersServer{stream})
+}
+
+type SpotService_GetSpotPlayersServer interface {
+	Send(*GetSpotPlayersResponse) error
+	grpc.ServerStream
+}
+
+type spotServiceGetSpotPlayersServer struct {
+	grpc.ServerStream
+}
+
+func (x *spotServiceGetSpotPlayersServer) Send(m *GetSpotPlayersResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 func _SpotService_StartSpot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -332,6 +394,11 @@ var SpotService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetSpotPlayers",
+			Handler:       _SpotService_GetSpotPlayers_Handler,
+			ServerStreams: true,
+		},
 		{
 			StreamName:    "SendPlayerPosition",
 			Handler:       _SpotService_SendPlayerPosition_Handler,

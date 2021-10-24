@@ -34,7 +34,13 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
 	}
 
+	// Append new player
 	spot.PlayersList = append(spot.PlayersList, playerUuid)
+
+	// Send updated players list
+	spot.PlayersListCh <- spot.PlayersList
+
+	// Save spot
 	s.SpotsMap.Store(spotUuid, spot)
 
 	response := proto.JoinToSpotResponse{}
