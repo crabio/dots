@@ -10,6 +10,7 @@ import (
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/tjgq/broadcast"
 	"google.golang.org/grpc"
 
 	// Internal
@@ -87,16 +88,19 @@ func TestGetPlayerPosition(t *testing.T) {
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
 	spot.Session.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
-		Position: s2.LatLngFromDegrees(10, 20),
-		Health:   88,
+		Position:    s2.LatLngFromDegrees(10, 20),
+		Broadcaster: broadcast.New(0),
+		Health:      88,
 	})
 	spot.Session.PlayersStateMap.Store(player2Uuid, player_state.PlayerState{
-		Position: s2.LatLngFromDegrees(60, 70),
-		Health:   33,
+		Position:    s2.LatLngFromDegrees(60, 70),
+		Broadcaster: broadcast.New(0),
+		Health:      33,
 	})
 	spot.Session.PlayersStateMap.Store(player3Uuid, player_state.PlayerState{
-		Position: s2.LatLngFromDegrees(80, 90),
-		Health:   15,
+		Position:    s2.LatLngFromDegrees(80, 90),
+		Broadcaster: broadcast.New(0),
+		Health:      15,
 	})
 	s.SpotsMap.Store(spotUuid, spot)
 

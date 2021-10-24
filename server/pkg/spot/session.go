@@ -24,9 +24,9 @@ func NewSpotSession(hunterUuid uuid.UUID, playersList []uuid.UUID) *SpotSession 
 
 	session.PlayersStateMap = player_state.NewPlayerStateMap()
 	for _, playerUuid := range playersList {
-		session.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
-			Health: 100,
-		})
+		playerState := player_state.NewPlayerState()
+		playerState.Health = 100
+		session.PlayersStateMap.Store(playerUuid, *playerState)
 	}
 
 	return session
