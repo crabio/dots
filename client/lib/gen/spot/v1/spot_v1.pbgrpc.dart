@@ -26,6 +26,36 @@ class SpotServiceClient extends $grpc.Client {
           ($0.GetSpotRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.GetSpotResponse.fromBuffer(value));
+  static final _$joinToSpot =
+      $grpc.ClientMethod<$0.JoinToSpotRequest, $0.JoinToSpotResponse>(
+          '/spot.v1.SpotService/JoinToSpot',
+          ($0.JoinToSpotRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.JoinToSpotResponse.fromBuffer(value));
+  static final _$getSpotPlayers =
+      $grpc.ClientMethod<$0.GetSpotPlayersRequest, $0.GetSpotPlayersResponse>(
+          '/spot.v1.SpotService/GetSpotPlayers',
+          ($0.GetSpotPlayersRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.GetSpotPlayersResponse.fromBuffer(value));
+  static final _$startSpot =
+      $grpc.ClientMethod<$0.StartSpotRequest, $0.StartSpotResponse>(
+          '/spot.v1.SpotService/StartSpot',
+          ($0.StartSpotRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.StartSpotResponse.fromBuffer(value));
+  static final _$isPlayerHunter =
+      $grpc.ClientMethod<$0.IsPlayerHunterRequest, $0.IsPlayerHunterResponse>(
+          '/spot.v1.SpotService/IsPlayerHunter',
+          ($0.IsPlayerHunterRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.IsPlayerHunterResponse.fromBuffer(value));
+  static final _$getSpotStartFlag = $grpc.ClientMethod<
+          $0.GetSpotStartFlagRequest, $0.GetSpotStartFlagResponse>(
+      '/spot.v1.SpotService/GetSpotStartFlag',
+      ($0.GetSpotStartFlagRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $0.GetSpotStartFlagResponse.fromBuffer(value));
   static final _$sendPlayerPosition = $grpc.ClientMethod<
           $0.SendPlayerPositionRequest, $0.SendPlayerPositionResponse>(
       '/spot.v1.SpotService/SendPlayerPosition',
@@ -53,6 +83,40 @@ class SpotServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.GetSpotResponse> getSpot($0.GetSpotRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getSpot, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.JoinToSpotResponse> joinToSpot(
+      $0.JoinToSpotRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$joinToSpot, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.GetSpotPlayersResponse> getSpotPlayers(
+      $0.GetSpotPlayersRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(
+        _$getSpotPlayers, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$0.StartSpotResponse> startSpot(
+      $0.StartSpotRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$startSpot, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.IsPlayerHunterResponse> isPlayerHunter(
+      $0.IsPlayerHunterRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$isPlayerHunter, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.GetSpotStartFlagResponse> getSpotStartFlag(
+      $0.GetSpotStartFlagRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(
+        _$getSpotStartFlag, $async.Stream.fromIterable([request]),
+        options: options);
   }
 
   $grpc.ResponseFuture<$0.SendPlayerPositionResponse> sendPlayerPosition(
@@ -89,6 +153,47 @@ abstract class SpotServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.GetSpotRequest.fromBuffer(value),
         ($0.GetSpotResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.JoinToSpotRequest, $0.JoinToSpotResponse>(
+        'JoinToSpot',
+        joinToSpot_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.JoinToSpotRequest.fromBuffer(value),
+        ($0.JoinToSpotResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetSpotPlayersRequest,
+            $0.GetSpotPlayersResponse>(
+        'GetSpotPlayers',
+        getSpotPlayers_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) =>
+            $0.GetSpotPlayersRequest.fromBuffer(value),
+        ($0.GetSpotPlayersResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.StartSpotRequest, $0.StartSpotResponse>(
+        'StartSpot',
+        startSpot_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.StartSpotRequest.fromBuffer(value),
+        ($0.StartSpotResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.IsPlayerHunterRequest,
+            $0.IsPlayerHunterResponse>(
+        'IsPlayerHunter',
+        isPlayerHunter_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.IsPlayerHunterRequest.fromBuffer(value),
+        ($0.IsPlayerHunterResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetSpotStartFlagRequest,
+            $0.GetSpotStartFlagResponse>(
+        'GetSpotStartFlag',
+        getSpotStartFlag_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) =>
+            $0.GetSpotStartFlagRequest.fromBuffer(value),
+        ($0.GetSpotStartFlagResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.SendPlayerPositionRequest,
             $0.SendPlayerPositionResponse>(
         'SendPlayerPosition',
@@ -119,6 +224,34 @@ abstract class SpotServiceBase extends $grpc.Service {
     return getSpot(call, await request);
   }
 
+  $async.Future<$0.JoinToSpotResponse> joinToSpot_Pre($grpc.ServiceCall call,
+      $async.Future<$0.JoinToSpotRequest> request) async {
+    return joinToSpot(call, await request);
+  }
+
+  $async.Stream<$0.GetSpotPlayersResponse> getSpotPlayers_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.GetSpotPlayersRequest> request) async* {
+    yield* getSpotPlayers(call, await request);
+  }
+
+  $async.Future<$0.StartSpotResponse> startSpot_Pre($grpc.ServiceCall call,
+      $async.Future<$0.StartSpotRequest> request) async {
+    return startSpot(call, await request);
+  }
+
+  $async.Future<$0.IsPlayerHunterResponse> isPlayerHunter_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.IsPlayerHunterRequest> request) async {
+    return isPlayerHunter(call, await request);
+  }
+
+  $async.Stream<$0.GetSpotStartFlagResponse> getSpotStartFlag_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.GetSpotStartFlagRequest> request) async* {
+    yield* getSpotStartFlag(call, await request);
+  }
+
   $async.Stream<$0.GetPlayersStatesResponse> getPlayersStates_Pre(
       $grpc.ServiceCall call,
       $async.Future<$0.GetPlayersStatesRequest> request) async* {
@@ -129,6 +262,16 @@ abstract class SpotServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.CreateSpotRequest request);
   $async.Future<$0.GetSpotResponse> getSpot(
       $grpc.ServiceCall call, $0.GetSpotRequest request);
+  $async.Future<$0.JoinToSpotResponse> joinToSpot(
+      $grpc.ServiceCall call, $0.JoinToSpotRequest request);
+  $async.Stream<$0.GetSpotPlayersResponse> getSpotPlayers(
+      $grpc.ServiceCall call, $0.GetSpotPlayersRequest request);
+  $async.Future<$0.StartSpotResponse> startSpot(
+      $grpc.ServiceCall call, $0.StartSpotRequest request);
+  $async.Future<$0.IsPlayerHunterResponse> isPlayerHunter(
+      $grpc.ServiceCall call, $0.IsPlayerHunterRequest request);
+  $async.Stream<$0.GetSpotStartFlagResponse> getSpotStartFlag(
+      $grpc.ServiceCall call, $0.GetSpotStartFlagRequest request);
   $async.Future<$0.SendPlayerPositionResponse> sendPlayerPosition(
       $grpc.ServiceCall call,
       $async.Stream<$0.SendPlayerPositionRequest> request);

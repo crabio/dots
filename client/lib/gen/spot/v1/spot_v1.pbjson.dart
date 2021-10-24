@@ -16,11 +16,12 @@ const CreateSpotRequest$json = const {
     const {'1': 'radius', '3': 2, '4': 1, '5': 5, '10': 'radius'},
     const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
     const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
+    const {'1': 'session_duration_in_seconds', '3': 5, '4': 1, '5': 5, '10': 'sessionDurationInSeconds'},
   ],
 };
 
 /// Descriptor for `CreateSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEhYKBnJhZGl1cxgCIAEoBVIGcmFkaXVzEjMKFnNjYW5fcGVyaW9kX2luX3NlY29uZHMYAyABKAVSE3NjYW5QZXJpb2RJblNlY29uZHMSMwoWem9uZV9wZXJpb2RfaW5fc2Vjb25kcxgEIAEoBVITem9uZVBlcmlvZEluU2Vjb25kcw==');
+final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEhYKBnJhZGl1cxgCIAEoBVIGcmFkaXVzEjMKFnNjYW5fcGVyaW9kX2luX3NlY29uZHMYAyABKAVSE3NjYW5QZXJpb2RJblNlY29uZHMSMwoWem9uZV9wZXJpb2RfaW5fc2Vjb25kcxgEIAEoBVITem9uZVBlcmlvZEluU2Vjb25kcxI9ChtzZXNzaW9uX2R1cmF0aW9uX2luX3NlY29uZHMYBSABKAVSGHNlc3Npb25EdXJhdGlvbkluU2Vjb25kcw==');
 @$core.Deprecated('Use createSpotResponseDescriptor instead')
 const CreateSpotResponse$json = const {
   '1': 'CreateSpotResponse',
@@ -46,14 +47,111 @@ const GetSpotResponse$json = const {
   '1': 'GetSpotResponse',
   '2': const [
     const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'radius', '3': 3, '4': 1, '5': 5, '10': 'radius'},
-    const {'1': 'scan_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
-    const {'1': 'zone_period_in_seconds', '3': 5, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
+    const {'1': 'radius', '3': 2, '4': 1, '5': 5, '10': 'radius'},
+    const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
+    const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
+    const {'1': 'session_duration_in_seconds', '3': 5, '4': 1, '5': 5, '10': 'sessionDurationInSeconds'},
   ],
 };
 
 /// Descriptor for `GetSpotResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSpotResponseDescriptor = $convert.base64Decode('Cg9HZXRTcG90UmVzcG9uc2USLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIWCgZyYWRpdXMYAyABKAVSBnJhZGl1cxIzChZzY2FuX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhNzY2FuUGVyaW9kSW5TZWNvbmRzEjMKFnpvbmVfcGVyaW9kX2luX3NlY29uZHMYBSABKAVSE3pvbmVQZXJpb2RJblNlY29uZHM=');
+final $typed_data.Uint8List getSpotResponseDescriptor = $convert.base64Decode('Cg9HZXRTcG90UmVzcG9uc2USLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIWCgZyYWRpdXMYAiABKAVSBnJhZGl1cxIzChZzY2FuX3BlcmlvZF9pbl9zZWNvbmRzGAMgASgFUhNzY2FuUGVyaW9kSW5TZWNvbmRzEjMKFnpvbmVfcGVyaW9kX2luX3NlY29uZHMYBCABKAVSE3pvbmVQZXJpb2RJblNlY29uZHMSPQobc2Vzc2lvbl9kdXJhdGlvbl9pbl9zZWNvbmRzGAUgASgFUhhzZXNzaW9uRHVyYXRpb25JblNlY29uZHM=');
+@$core.Deprecated('Use joinToSpotRequestDescriptor instead')
+const JoinToSpotRequest$json = const {
+  '1': 'JoinToSpotRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+    const {'1': 'player_uuid', '3': 2, '4': 1, '5': 9, '10': 'playerUuid'},
+  ],
+};
+
+/// Descriptor for `JoinToSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List joinToSpotRequestDescriptor = $convert.base64Decode('ChFKb2luVG9TcG90UmVxdWVzdBIbCglzcG90X3V1aWQYASABKAlSCHNwb3RVdWlkEh8KC3BsYXllcl91dWlkGAIgASgJUgpwbGF5ZXJVdWlk');
+@$core.Deprecated('Use joinToSpotResponseDescriptor instead')
+const JoinToSpotResponse$json = const {
+  '1': 'JoinToSpotResponse',
+};
+
+/// Descriptor for `JoinToSpotResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List joinToSpotResponseDescriptor = $convert.base64Decode('ChJKb2luVG9TcG90UmVzcG9uc2U=');
+@$core.Deprecated('Use getSpotPlayersRequestDescriptor instead')
+const GetSpotPlayersRequest$json = const {
+  '1': 'GetSpotPlayersRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+  ],
+};
+
+/// Descriptor for `GetSpotPlayersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getSpotPlayersRequestDescriptor = $convert.base64Decode('ChVHZXRTcG90UGxheWVyc1JlcXVlc3QSGwoJc3BvdF91dWlkGAEgASgJUghzcG90VXVpZA==');
+@$core.Deprecated('Use getSpotPlayersResponseDescriptor instead')
+const GetSpotPlayersResponse$json = const {
+  '1': 'GetSpotPlayersResponse',
+  '2': const [
+    const {'1': 'players_list', '3': 1, '4': 3, '5': 9, '10': 'playersList'},
+  ],
+};
+
+/// Descriptor for `GetSpotPlayersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getSpotPlayersResponseDescriptor = $convert.base64Decode('ChZHZXRTcG90UGxheWVyc1Jlc3BvbnNlEiEKDHBsYXllcnNfbGlzdBgBIAMoCVILcGxheWVyc0xpc3Q=');
+@$core.Deprecated('Use startSpotRequestDescriptor instead')
+const StartSpotRequest$json = const {
+  '1': 'StartSpotRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+  ],
+};
+
+/// Descriptor for `StartSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List startSpotRequestDescriptor = $convert.base64Decode('ChBTdGFydFNwb3RSZXF1ZXN0EhsKCXNwb3RfdXVpZBgBIAEoCVIIc3BvdFV1aWQ=');
+@$core.Deprecated('Use startSpotResponseDescriptor instead')
+const StartSpotResponse$json = const {
+  '1': 'StartSpotResponse',
+};
+
+/// Descriptor for `StartSpotResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List startSpotResponseDescriptor = $convert.base64Decode('ChFTdGFydFNwb3RSZXNwb25zZQ==');
+@$core.Deprecated('Use isPlayerHunterRequestDescriptor instead')
+const IsPlayerHunterRequest$json = const {
+  '1': 'IsPlayerHunterRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+    const {'1': 'player_uuid', '3': 2, '4': 1, '5': 9, '10': 'playerUuid'},
+  ],
+};
+
+/// Descriptor for `IsPlayerHunterRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List isPlayerHunterRequestDescriptor = $convert.base64Decode('ChVJc1BsYXllckh1bnRlclJlcXVlc3QSGwoJc3BvdF91dWlkGAEgASgJUghzcG90VXVpZBIfCgtwbGF5ZXJfdXVpZBgCIAEoCVIKcGxheWVyVXVpZA==');
+@$core.Deprecated('Use isPlayerHunterResponseDescriptor instead')
+const IsPlayerHunterResponse$json = const {
+  '1': 'IsPlayerHunterResponse',
+  '2': const [
+    const {'1': 'is_hunter', '3': 1, '4': 1, '5': 8, '10': 'isHunter'},
+  ],
+};
+
+/// Descriptor for `IsPlayerHunterResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List isPlayerHunterResponseDescriptor = $convert.base64Decode('ChZJc1BsYXllckh1bnRlclJlc3BvbnNlEhsKCWlzX2h1bnRlchgBIAEoCFIIaXNIdW50ZXI=');
+@$core.Deprecated('Use getSpotStartFlagRequestDescriptor instead')
+const GetSpotStartFlagRequest$json = const {
+  '1': 'GetSpotStartFlagRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+  ],
+};
+
+/// Descriptor for `GetSpotStartFlagRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getSpotStartFlagRequestDescriptor = $convert.base64Decode('ChdHZXRTcG90U3RhcnRGbGFnUmVxdWVzdBIbCglzcG90X3V1aWQYASABKAlSCHNwb3RVdWlk');
+@$core.Deprecated('Use getSpotStartFlagResponseDescriptor instead')
+const GetSpotStartFlagResponse$json = const {
+  '1': 'GetSpotStartFlagResponse',
+  '2': const [
+    const {'1': 'is_active', '3': 1, '4': 1, '5': 8, '10': 'isActive'},
+  ],
+};
+
+/// Descriptor for `GetSpotStartFlagResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getSpotStartFlagResponseDescriptor = $convert.base64Decode('ChhHZXRTcG90U3RhcnRGbGFnUmVzcG9uc2USGwoJaXNfYWN0aXZlGAEgASgIUghpc0FjdGl2ZQ==');
 @$core.Deprecated('Use sendPlayerPositionRequestDescriptor instead')
 const SendPlayerPositionRequest$json = const {
   '1': 'SendPlayerPositionRequest',

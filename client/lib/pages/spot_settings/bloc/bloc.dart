@@ -22,6 +22,7 @@ class SpotSettingsPageBloc
           zoneRadius: 50,
           scanPeriod: const Duration(seconds: 10),
           zonePeriod: const Duration(seconds: 30),
+          sessionDuration: const Duration(minutes: 5),
         )) {
     on<NewRadiusEvent>((event, emit) {
       if (state is InitedState) {
@@ -49,16 +50,12 @@ class SpotSettingsPageBloc
       (event, emit) async {
         final curState = state;
         if (curState is InitedState) {
-          emit(CreatingNewSpotState(
-            position: curState.position,
-            zoneRadius: curState.zoneRadius,
-            scanPeriod: curState.scanPeriod,
-            zonePeriod: curState.zonePeriod,
-          ));
+          emit(curState.copyWith(creating: true, error: ""));
           final request = proto.CreateSpotRequest(
             radius: event.zoneRadius,
             zonePeriodInSeconds: event.zonePeriod.inSeconds,
             scanPeriodInSeconds: event.scanPeriod.inSeconds,
+            sessionDurationInSeconds: event.sessionDuration.inSeconds,
             position: proto.Position(
               latitude: event.position.latitude,
               longitude: event.position.longitude,
@@ -75,13 +72,7 @@ class SpotSettingsPageBloc
               ),
             ));
           } on Exception catch (ex) {
-            emit(CreateSpotErrorState(
-              position: curState.position,
-              zoneRadius: curState.zoneRadius,
-              scanPeriod: curState.scanPeriod,
-              zonePeriod: curState.zonePeriod,
-              exception: ex,
-            ));
+            emit(curState.copyWith(creating: false, error: ex.toString()));
           }
         } else {}
       },
