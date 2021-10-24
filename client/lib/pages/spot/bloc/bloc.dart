@@ -27,7 +27,7 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     required this.spotUuid,
   }) : super(InitingState()) {
     on<InitEvent>(_onInitEvent);
-    on<NewPlayersStatesEvent>(_onNewPlayersGeoPositionEvent);
+    on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
 
     add(InitEvent());
   }
@@ -41,12 +41,14 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     getSpotResponse.fold(
         (l) => emit(InitErrorState(exception: l)),
         (r) => emit(InitedState(
-              playerPosition: LatLng(
-                playerPosition!.latitude,
-                playerPosition.longitude,
+              playerState: PlayerState(
+                health: 100,
+                position: LatLng(
+                  playerPosition!.latitude,
+                  playerPosition.longitude,
+                ),
               ),
-              playerHealth: 100,
-              otherPlayersPositions: const [],
+              otherPlayersStates: const {},
               spotPosition: LatLng(
                 r.position.latitude,
                 r.position.longitude,
@@ -62,23 +64,16 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
       (r) => null,
     );
 
-    _logger.fine("Subscribe on players geo positions");
+    _logger.fine("Subscribe on players states");
     _subscribeOnPlayersStates().fold(
       (l) => emit(InitErrorState(exception: l)),
       (r) => r.listen((value) => add(NewPlayersStatesEvent(
+            playerUuid: value.playerState.playerUuid,
             playerPosition: LatLng(
               value.playerState.position.latitude,
               value.playerState.position.longitude,
             ),
             playerHealth: value.playerState.health,
-            otherPlayersPositions: value.otherPlayersStates
-                .map((e) => PlayerPosition(
-                    playerUuid: e.playerUuid,
-                    position: LatLng(
-                      e.position.latitude,
-                      e.position.longitude,
-                    )))
-                .toList(),
           ))),
     );
   }
@@ -134,17 +129,29 @@ class SpotPageBloc extends Bloc<SpotPageEvent, SpotPageState> {
     }
   }
 
-  void _onNewPlayersGeoPositionEvent(
+  void _onNewPlayersStatesEvent(
     NewPlayersStatesEvent event,
     Emitter<SpotPageState> emit,
   ) async {
     final curState = state;
     if (curState is InitedState) {
-      emit(curState.copyWith(
-        playerPosition: event.playerPosition,
-        playerHealth: event.playerHealth,
-        otherPlayersPositions: event.otherPlayersPositions,
-      ));
+      if (event.playerUuid == playerUuid) {
+        // Update this player state
+        emit(curState.copyWith(
+          playerState: PlayerState(
+            position: event.playerPosition,
+            health: event.playerHealth,
+          ),
+        ));
+      } else {
+        // Update another player state
+        final otherPlayersStates = Map.of(curState.otherPlayersStates);
+        otherPlayersStates[event.playerUuid] = PlayerState(
+          position: event.playerPosition,
+          health: event.playerHealth,
+        );
+        emit(curState.copyWith(otherPlayersStates: otherPlayersStates));
+      }
     }
   }
 }

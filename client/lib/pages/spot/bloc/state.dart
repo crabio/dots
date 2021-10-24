@@ -20,20 +20,24 @@ class InitingState extends SpotPageState {}
 // State when all components are inited
 @CopyWith()
 class InitedState extends SpotPageState {
-  final LatLng playerPosition;
-  final int playerHealth;
-  final List<PlayerPosition> otherPlayersPositions;
+  /// Current player state
+  final PlayerState playerState;
+
+  /// Map with other players states
+  /// key - player uuid
+  /// value - player state
+  final Map<String, PlayerState> otherPlayersStates;
 
   final LatLng spotPosition;
-  // Spot radius in meters
+
+  /// Spot radius in meters
   final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
   const InitedState({
-    required this.playerPosition,
-    required this.playerHealth,
-    required this.otherPlayersPositions,
+    required this.playerState,
+    required this.otherPlayersStates,
     required this.spotPosition,
     required this.zoneRadius,
     required this.scanPeriod,
@@ -42,9 +46,8 @@ class InitedState extends SpotPageState {
 
   @override
   List<Object> get props => [
-        playerPosition,
-        playerHealth,
-        otherPlayersPositions,
+        playerState,
+        otherPlayersStates,
         spotPosition,
         zoneRadius,
         scanPeriod,

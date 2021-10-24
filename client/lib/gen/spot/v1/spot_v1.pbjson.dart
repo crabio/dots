@@ -89,12 +89,11 @@ const GetPlayersStatesResponse$json = const {
   '1': 'GetPlayersStatesResponse',
   '2': const [
     const {'1': 'player_state', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.PlayerState', '10': 'playerState'},
-    const {'1': 'other_players_states', '3': 2, '4': 3, '5': 11, '6': '.spot.v1.PlayerState', '10': 'otherPlayersStates'},
   ],
 };
 
 /// Descriptor for `GetPlayersStatesResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getPlayersStatesResponseDescriptor = $convert.base64Decode('ChhHZXRQbGF5ZXJzU3RhdGVzUmVzcG9uc2USNwoMcGxheWVyX3N0YXRlGAEgASgLMhQuc3BvdC52MS5QbGF5ZXJTdGF0ZVILcGxheWVyU3RhdGUSRgoUb3RoZXJfcGxheWVyc19zdGF0ZXMYAiADKAsyFC5zcG90LnYxLlBsYXllclN0YXRlUhJvdGhlclBsYXllcnNTdGF0ZXM=');
+final $typed_data.Uint8List getPlayersStatesResponseDescriptor = $convert.base64Decode('ChhHZXRQbGF5ZXJzU3RhdGVzUmVzcG9uc2USNwoMcGxheWVyX3N0YXRlGAEgASgLMhQuc3BvdC52MS5QbGF5ZXJTdGF0ZVILcGxheWVyU3RhdGU=');
 @$core.Deprecated('Use playerStateDescriptor instead')
 const PlayerState$json = const {
   '1': 'PlayerState',

@@ -455,21 +455,16 @@ class GetPlayersStatesRequest extends $pb.GeneratedMessage {
 class GetPlayersStatesResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersStatesResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<PlayerState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerState', subBuilder: PlayerState.create)
-    ..pc<PlayerState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otherPlayersStates', $pb.PbFieldType.PM, subBuilder: PlayerState.create)
     ..hasRequiredFields = false
   ;
 
   GetPlayersStatesResponse._() : super();
   factory GetPlayersStatesResponse({
     PlayerState? playerState,
-    $core.Iterable<PlayerState>? otherPlayersStates,
   }) {
     final _result = create();
     if (playerState != null) {
       _result.playerState = playerState;
-    }
-    if (otherPlayersStates != null) {
-      _result.otherPlayersStates.addAll(otherPlayersStates);
     }
     return _result;
   }
@@ -504,9 +499,6 @@ class GetPlayersStatesResponse extends $pb.GeneratedMessage {
   void clearPlayerState() => clearField(1);
   @$pb.TagNumber(1)
   PlayerState ensurePlayerState() => $_ensure(0);
-
-  @$pb.TagNumber(2)
-  $core.List<PlayerState> get otherPlayersStates => $_getList(1);
 }
 
 class PlayerState extends $pb.GeneratedMessage {

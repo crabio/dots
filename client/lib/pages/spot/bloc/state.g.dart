@@ -8,19 +8,16 @@ part of 'state.dart';
 
 extension InitedStateCopyWith on InitedState {
   InitedState copyWith({
-    List<PlayerPosition>? otherPlayersPositions,
-    int? playerHealth,
-    LatLng? playerPosition,
+    Map<String, PlayerState>? otherPlayersStates,
+    PlayerState? playerState,
     Duration? scanPeriod,
     LatLng? spotPosition,
     Duration? zonePeriod,
     int? zoneRadius,
   }) {
     return InitedState(
-      otherPlayersPositions:
-          otherPlayersPositions ?? this.otherPlayersPositions,
-      playerHealth: playerHealth ?? this.playerHealth,
-      playerPosition: playerPosition ?? this.playerPosition,
+      otherPlayersStates: otherPlayersStates ?? this.otherPlayersStates,
+      playerState: playerState ?? this.playerState,
       scanPeriod: scanPeriod ?? this.scanPeriod,
       spotPosition: spotPosition ?? this.spotPosition,
       zonePeriod: zonePeriod ?? this.zonePeriod,

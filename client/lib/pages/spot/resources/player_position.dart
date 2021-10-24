@@ -1,12 +1,12 @@
 // External
 import 'package:latlong2/latlong.dart';
 
-class PlayerPosition {
-  final String playerUuid;
+class PlayerState {
   final LatLng position;
+  final int health;
 
-  PlayerPosition({
-    required this.playerUuid,
+  PlayerState({
     required this.position,
+    required this.health,
   });
 }
