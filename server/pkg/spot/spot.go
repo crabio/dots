@@ -7,7 +7,6 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
-	"github.com/looplab/fsm"
 
 	// Internal
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
@@ -16,33 +15,31 @@ import (
 type Spot struct {
 	Position s2.LatLng
 	// Zone radius in meters
-	ZoneRadius int32
-	ScanPeriod time.Duration
-	ZonePeriod time.Duration
+	ZoneRadius      int32
+	ScanPeriod      time.Duration
+	ZonePeriod      time.Duration
+	SessionDuration time.Duration
+
 	// Map with players posiiton
 	//
 	// key - player uuid
 	// value - player state
 	PlayersStateMap *player_state.PlayerStateMap
 
-	FSM *fsm.FSM
+	// Fla indicies that spot is active (players are playing)
+	IsActive bool
 }
 
-func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zonePeriod time.Duration) *Spot {
+func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zonePeriod time.Duration, sessionDuration time.Duration) *Spot {
 	spot := new(Spot)
 	spot.Position = position
 	spot.ZoneRadius = zoneRadius
 	spot.ScanPeriod = scanPeriod
 	spot.ZonePeriod = zonePeriod
+	spot.SessionDuration = sessionDuration
+
 	spot.PlayersStateMap = player_state.NewPlayerStateMap()
-	spot.FSM = fsm.NewFSM(
-		"idle",
-		fsm.Events{
-			{Name: "start", Src: []string{"idle"}, Dst: "playing"},
-			{Name: "finish", Src: []string{"playing"}, Dst: "idle"},
-		},
-		fsm.Callbacks{},
-	)
+	spot.IsActive = false
 
 	return spot
 }

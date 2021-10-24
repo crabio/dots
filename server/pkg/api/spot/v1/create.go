@@ -24,6 +24,7 @@ func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.Creat
 		request.Radius,
 		time.Second*time.Duration(request.ScanPeriodInSeconds),
 		time.Second*time.Duration(request.ZonePeriodInSeconds),
+		time.Second*time.Duration(request.SessionDurationInSeconds),
 	))
 	s.log.WithField("uuid", spotUUID).Debug("New spot created")
 

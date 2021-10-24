@@ -30,7 +30,7 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if !spot.FSM.Is("idle") {
+	if spot.IsActive {
 		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
 	}
 

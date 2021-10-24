@@ -25,8 +25,8 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if err := spot.FSM.Event("start"); err != nil {
-		return nil, fmt.Errorf("Couldn't start spot with uuid '%s'. %s", spotUuid, err.Error())
+	if spot.IsActive {
+		return nil, fmt.Errorf("Can't start active spot with uuid '%s'", spotUuid)
 	}
 
 	response := proto.StartSpotResponse{}

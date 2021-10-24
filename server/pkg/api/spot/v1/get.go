@@ -29,9 +29,10 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 			Latitude:  spot.Position.Lat.Degrees(),
 			Longitude: spot.Position.Lng.Degrees(),
 		},
-		Radius:              spot.ZoneRadius,
-		ScanPeriodInSeconds: int32(spot.ScanPeriod.Seconds()),
-		ZonePeriodInSeconds: int32(spot.ZonePeriod.Seconds()),
+		Radius:                   spot.ZoneRadius,
+		ScanPeriodInSeconds:      int32(spot.ScanPeriod.Seconds()),
+		ZonePeriodInSeconds:      int32(spot.ZonePeriod.Seconds()),
+		SessionDurationInSeconds: int32(spot.SessionDuration),
 	}
 	s.log.WithField("response", response.String()).Trace("Get spot response")
 
