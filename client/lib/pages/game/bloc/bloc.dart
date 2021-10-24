@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_position.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:grpc/grpc_web.dart';
+import 'package:grpc/grpc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
