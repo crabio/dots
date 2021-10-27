@@ -10,16 +10,24 @@ import (
 )
 
 const (
-	minZoneRadiusInMeter = 10
+	minZoneRadiusInMeter         = 10
+	zoneSpeedInKilometersPerHour = 10
 )
 
-var randFloat = rand.Float64
+// Functions as variable required for unit tests
+var (
+	randFloat = rand.Float64
+	timeNow   = time.Now().UTC
+)
 
 type Controller struct {
 	ZonePeriod time.Duration
 
+	prevZone    *Zone
 	CurrentZone *Zone
 	NextZone    *Zone
+
+	nextZoneCreationTime *time.Time
 }
 
 func NewController(zonePosition s2.LatLng, zoneRadius uint32, zonePeriod time.Duration) *Controller {
@@ -58,6 +66,69 @@ func NewController(zonePosition s2.LatLng, zoneRadius uint32, zonePeriod time.Du
 // Create next zone
 func (c *Controller) Next() {
 	c.NextZone = nextZone(c.CurrentZone)
+	now := timeNow()
+	c.nextZoneCreationTime = &now
+	// Also save current zone as previous zone
+	c.prevZone = c.CurrentZone
+}
+
+// Approximate zone to next zone
+//
+// Function returns current zone
+func (c *Controller) Tick() *Zone {
+	// Calc zone overal distance in meters from previous
+	overalDistance := geo.AngleToM(c.prevZone.Position.Distance(c.NextZone.Position))
+
+	// Calc zone distance from farrest circle point to next zone in meters
+	zoneMaxCircleDistance := float64(c.prevZone.Radius-c.NextZone.Radius) + overalDistance
+
+	// Calc zone time duration in seconds for transition to next zone
+	zoneOveralTransDuration := zoneMaxCircleDistance / (zoneSpeedInKilometersPerHour * 3600 / 1000)
+
+	// Calc current zone transition percentage from overal distance to next zone
+	secondsFromTickStart := timeNow().Sub(*c.nextZoneCreationTime).Seconds()
+
+	// If we have some time from start
+	if secondsFromTickStart != 0 {
+		transitionPercentage := (secondsFromTickStart - zoneOveralTransDuration) / secondsFromTickStart
+
+		if transitionPercentage >= 1.0 {
+			// Next zone reached
+			c.CurrentZone = c.NextZone
+			c.NextZone = nil
+			c.prevZone = nil
+			c.nextZoneCreationTime = nil
+		} else if transitionPercentage == 0 {
+			// Do nothing
+		} else {
+			// Transition in progress
+
+			// Calc zone current distance in meters from previous
+			distance := overalDistance * transitionPercentage
+
+			// Calc zone latitude difference in meters
+			latDiff := geo.AngleToM(c.prevZone.Position.Lat - c.NextZone.Position.Lat)
+
+			// Latitude distance = Distance * Latitude diff / Overal Distance
+			latDistance := distance * latDiff / overalDistance
+
+			// Calc zone longitude difference in meters
+			lngDiff := geo.AngleToM(c.prevZone.Position.Lng - c.NextZone.Position.Lng)
+
+			// Longitude distance = Distance * Longitude diff / Overal Distance
+			lngDistance := distance * lngDiff / overalDistance
+
+			lat := c.NextZone.Position.Lat + geo.MToAngle(latDistance)
+			lng := c.NextZone.Position.Lng + geo.MToAngle(lngDistance)
+
+			// Zone radius = Next zone radius + (Prev zone radius - Next zone radius) * transition percentage
+			radius := float64(c.NextZone.Radius) + float64(c.prevZone.Radius-c.NextZone.Radius)*transitionPercentage
+
+			c.CurrentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, uint32(radius))
+		}
+	}
+
+	return c.CurrentZone
 }
 
 // Creates new zone inside current zone
