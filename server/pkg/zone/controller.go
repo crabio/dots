@@ -1,6 +1,7 @@
 package zone
 
 import (
+	"errors"
 	"math"
 	"math/rand"
 	"time"
@@ -11,13 +12,12 @@ import (
 
 const (
 	minZoneRadiusInMeter         = 10
-	zoneSpeedInKilometersPerHour = 10
+	zoneSpeedInKilometersPerHour = 10.0
 )
 
 // Functions as variable required for unit tests
 var (
 	randFloat = rand.Float64
-	timeNow   = time.Now().UTC
 )
 
 type Controller struct {
@@ -64,9 +64,8 @@ func NewController(zonePosition s2.LatLng, zoneRadius uint32, zonePeriod time.Du
 // Damage - 5 hp / s
 
 // Create next zone
-func (c *Controller) Next() {
+func (c *Controller) Next(now time.Time) {
 	c.NextZone = nextZone(c.CurrentZone)
-	now := timeNow()
 	c.nextZoneCreationTime = &now
 	// Also save current zone as previous zone
 	c.prevZone = c.CurrentZone
@@ -75,7 +74,12 @@ func (c *Controller) Next() {
 // Approximate zone to next zone
 //
 // Function returns current zone
-func (c *Controller) Tick() *Zone {
+func (c *Controller) Tick(now time.Time) (*Zone, error) {
+	// Check that we have inited new zone
+	if c.NextZone == nil {
+		return nil, errors.New("NextZone is not inited for tick. Call Next() method to init next zone first.")
+	}
+
 	// Calc zone overal distance in meters from previous
 	overalDistance := geo.AngleToM(c.prevZone.Position.Distance(c.NextZone.Position))
 
@@ -83,23 +87,25 @@ func (c *Controller) Tick() *Zone {
 	zoneMaxCircleDistance := float64(c.prevZone.Radius-c.NextZone.Radius) + overalDistance
 
 	// Calc zone time duration in seconds for transition to next zone
-	zoneOveralTransDuration := zoneMaxCircleDistance / (zoneSpeedInKilometersPerHour * 3600 / 1000)
+	zoneOveralTransDuration := zoneMaxCircleDistance / (zoneSpeedInKilometersPerHour * 1000 / 3600)
 
 	// Calc current zone transition percentage from overal distance to next zone
-	secondsFromTickStart := timeNow().Sub(*c.nextZoneCreationTime).Seconds()
+	secondsFromTickStart := now.Sub(*c.nextZoneCreationTime).Seconds()
 
 	// If we have some time from start
 	if secondsFromTickStart != 0 {
-		transitionPercentage := (secondsFromTickStart - zoneOveralTransDuration) / secondsFromTickStart
+		transitionPercentage := 1 - (zoneOveralTransDuration-secondsFromTickStart)/zoneOveralTransDuration
 
 		if transitionPercentage >= 1.0 {
 			// Next zone reached
+
 			c.CurrentZone = c.NextZone
 			c.NextZone = nil
 			c.prevZone = nil
 			c.nextZoneCreationTime = nil
 		} else if transitionPercentage == 0 {
 			// Do nothing
+
 		} else {
 			// Transition in progress
 
@@ -118,17 +124,17 @@ func (c *Controller) Tick() *Zone {
 			// Longitude distance = Distance * Longitude diff / Overal Distance
 			lngDistance := distance * lngDiff / overalDistance
 
-			lat := c.NextZone.Position.Lat + geo.MToAngle(latDistance)
-			lng := c.NextZone.Position.Lng + geo.MToAngle(lngDistance)
+			lat := c.prevZone.Position.Lat + geo.MToAngle(latDistance)
+			lng := c.prevZone.Position.Lng + geo.MToAngle(lngDistance)
 
 			// Zone radius = Next zone radius + (Prev zone radius - Next zone radius) * transition percentage
-			radius := float64(c.NextZone.Radius) + float64(c.prevZone.Radius-c.NextZone.Radius)*transitionPercentage
+			radius := float64(c.NextZone.Radius) + float64(c.prevZone.Radius-c.NextZone.Radius)*(1-transitionPercentage)
 
 			c.CurrentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, uint32(radius))
 		}
 	}
 
-	return c.CurrentZone
+	return c.CurrentZone, nil
 }
 
 // Creates new zone inside current zone
