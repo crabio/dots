@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	zoneTickPeriod = time.Millisecond * 500
+	zoneTickPeriod = time.Millisecond * 100
 )
 
 // Functions as variable required for unit tests

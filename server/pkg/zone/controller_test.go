@@ -148,3 +148,28 @@ func TestTickZone(t *testing.T) {
 	_, _, err = c.Tick(time.Date(2000, 1, 1, 0, 2, 0, 0, time.UTC))
 	assert.Error(t, err)
 }
+
+func TestStartTickZone(t *testing.T) {
+	// Test max random
+	randFloat = func() float64 {
+		return 0.5
+	}
+
+	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Millisecond*1, time.Millisecond*1, 1000.0)
+
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.CurrentZone.Position)
+	assert.Equal(t, uint32(200), c.CurrentZone.Radius)
+	assert.Equal(t, float32(0.25), c.CurrentZone.Damage)
+	assert.Nil(t, c.NextZone)
+
+	err := c.Start()
+	assert.NoError(t, err)
+
+	time.Sleep(2 * time.Second)
+
+	assert.Equal(t, s2.LatLng{Lat: -2.2197635263060256e-05, Lng: 2.718426297354712e-21}, c.CurrentZone.Position)
+	assert.Equal(t, uint32(0), c.CurrentZone.Radius)
+	assert.Equal(t, float32(5), c.CurrentZone.Damage)
+	assert.Nil(t, c.prevZone)
+	assert.Nil(t, c.NextZone)
+}
