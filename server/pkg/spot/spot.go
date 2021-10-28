@@ -12,6 +12,8 @@ import (
 )
 
 type Spot struct {
+	Id uuid.UUID
+
 	Position s2.LatLng
 	// Zone radius in meters
 	ZoneRadius      int32
@@ -33,6 +35,7 @@ type Spot struct {
 
 func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zonePeriod time.Duration, sessionDuration time.Duration) *Spot {
 	spot := new(Spot)
+	spot.Id = uuid.New()
 	spot.Position = position
 	spot.ZoneRadius = zoneRadius
 	spot.ScanPeriod = scanPeriod

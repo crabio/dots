@@ -20,18 +20,18 @@ type Zone struct {
 	Damage float32
 }
 
-func NewZone(position s2.LatLng, radius uint32) *Zone {
+func NewZone(position s2.LatLng, radius uint32, minZoneRadiusInMeter uint32) *Zone {
 	z := new(Zone)
 
 	z.Position = position
 	z.Radius = radius
-	z.Damage = calcDamage(radius)
+	z.Damage = calcDamage(radius, minZoneRadiusInMeter)
 
 	return z
 }
 
 // Calc damage to have target damage at last zone
-func calcDamage(radius uint32) float32 {
+func calcDamage(radius uint32, minZoneRadiusInMeter uint32) float32 {
 	if radius > minZoneRadiusInMeter {
 		zonesCount := math.Log2(float64(radius)) - math.Log2(float64(minZoneRadiusInMeter))
 

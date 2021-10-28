@@ -1,7 +1,6 @@
 package api_spot_v1
 
 import (
-	// External
 	"context"
 	"time"
 
@@ -9,7 +8,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
-	// Internal
 	"github.com/iakrevetkho/archaeopteryx/logger"
 	"github.com/iakrevetkho/dots/server/pkg/spot"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
