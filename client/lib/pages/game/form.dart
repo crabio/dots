@@ -1,5 +1,8 @@
 // External
+import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_position.dart';
+import 'package:dots_client/pages/game/resources/zone_state.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
@@ -28,8 +31,10 @@ class GameForm extends StatelessWidget {
           return _InitedStateView(
             playerState: state.playerState,
             otherPlayersStates: state.otherPlayersStates,
-            spotPosition: state.spotPosition,
-            zoneRadius: state.zoneRadius,
+            currentZone: state.currentZone,
+            nextZone: state.nextZone,
+            nextZoneTime: state.nextZoneTime,
+            zoneTickStartTimestamp: state.zoneTickStartTimestamp,
           );
         }
 
@@ -42,30 +47,26 @@ class GameForm extends StatelessWidget {
 class _InitedStateView extends StatelessWidget {
   final PlayerState playerState;
   final Map<String, PlayerState> otherPlayersStates;
-  final LatLng spotPosition;
-  // Spot radius in meters
-  final int zoneRadius;
+
+  final ZoneState? currentZone;
+  final ZoneState? nextZone;
+
+  final DateTime? nextZoneTime;
+  final DateTime? zoneTickStartTimestamp;
 
   const _InitedStateView({
     required this.playerState,
     required this.otherPlayersStates,
-    required this.spotPosition,
-    required this.zoneRadius,
+    this.currentZone,
+    this.nextZone,
+    this.nextZoneTime,
+    this.zoneTickStartTimestamp,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final markers = <Marker>[];
-    // Spot position pointer
-    markers.add(Marker(
-      point: spotPosition,
-      builder: (ctx) => const Icon(
-        Icons.location_pin,
-        size: 40,
-        color: Colors.red,
-      ),
-    ));
     // Player position pointer
     markers.add(Marker(
       point: playerState.position,
@@ -73,7 +74,6 @@ class _InitedStateView extends StatelessWidget {
         Icons.circle,
       ),
     ));
-
     // Other players pointers
     otherPlayersStates.forEach((key, value) {
       markers.add(Marker(
@@ -84,6 +84,28 @@ class _InitedStateView extends StatelessWidget {
         ),
       ));
     });
+
+    final circles = <CircleMarker>[];
+    if (currentZone != null) {
+      circles.add(CircleMarker(
+        point: currentZone!.position,
+        useRadiusInMeter: true,
+        color: const Color.fromRGBO(0, 0, 0, 0),
+        borderColor: Colors.red,
+        borderStrokeWidth: 2,
+        radius: currentZone!.radiusInM.toDouble(),
+      ));
+    }
+    if (nextZone != null) {
+      circles.add(CircleMarker(
+        point: nextZone!.position,
+        useRadiusInMeter: true,
+        color: const Color.fromRGBO(0, 0, 0, 0),
+        borderColor: Colors.blue,
+        borderStrokeWidth: 2,
+        radius: nextZone!.radiusInM.toDouble(),
+      ));
+    }
 
     return Stack(
       children: [
@@ -98,20 +120,34 @@ class _InitedStateView extends StatelessWidget {
               subdomains: ['a', 'b', 'c'],
             ),
             MarkerLayerOptions(markers: markers),
-            CircleLayerOptions(circles: [
-              CircleMarker(
-                point: spotPosition,
-                useRadiusInMeter: true,
-                color: const Color.fromRGBO(0, 0, 0, 0),
-                borderColor: Colors.red,
-                borderStrokeWidth: 2,
-                radius: zoneRadius.toDouble(),
-              ),
-            ])
+            CircleLayerOptions(circles: circles)
           ],
         ),
         Positioned(
-          right: 0,
+          right: 10,
+          top: 0,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Text(
+                  "Health: ${playerState.health}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(color: _healthColor(playerState.health)),
+                ),
+              ),
+              CircularProgressIndicator(
+                value: playerState.health / 100,
+                strokeWidth: 10,
+                color: _healthColor(playerState.health),
+              ),
+            ],
+          ),
+        ),
+        // Zone vevent widget
+        Positioned(
           top: 0,
           child: Padding(
             padding: const EdgeInsets.all(10),
@@ -120,17 +156,13 @@ class _InitedStateView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: Text(
-                    "Health: ${playerState.health}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(color: _healthColor(playerState.health)),
+                    nextZoneTime != null
+                        ? "Next zone in ${prettyDuration(DateTime.now().difference(nextZoneTime!))}"
+                        : zoneTickStartTimestamp != null
+                            ? "Zone tick in ${prettyDuration(DateTime.now().difference(zoneTickStartTimestamp!))}"
+                            : "Zone is ticking",
+                    style: Theme.of(context).textTheme.headline4,
                   ),
-                ),
-                CircularProgressIndicator(
-                  value: playerState.health / 100,
-                  strokeWidth: 10,
-                  color: _healthColor(playerState.health),
                 ),
               ],
             ),

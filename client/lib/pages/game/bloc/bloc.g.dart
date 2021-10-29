@@ -8,16 +8,21 @@ part of 'bloc.dart';
 
 extension InitedStateCopyWith on InitedState {
   InitedState copyWith({
+    ZoneState? currentZone,
+    ZoneState? nextZone,
+    DateTime? nextZoneTime,
     Map<String, PlayerState>? otherPlayersStates,
     PlayerState? playerState,
-    LatLng? spotPosition,
-    int? zoneRadius,
+    DateTime? zoneTickStartTimestamp,
   }) {
     return InitedState(
+      currentZone: currentZone ?? this.currentZone,
+      nextZone: nextZone ?? this.nextZone,
+      nextZoneTime: nextZoneTime ?? this.nextZoneTime,
       otherPlayersStates: otherPlayersStates ?? this.otherPlayersStates,
       playerState: playerState ?? this.playerState,
-      spotPosition: spotPosition ?? this.spotPosition,
-      zoneRadius: zoneRadius ?? this.zoneRadius,
+      zoneTickStartTimestamp:
+          zoneTickStartTimestamp ?? this.zoneTickStartTimestamp,
     );
   }
 }

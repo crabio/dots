@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_position.dart';
+import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grpc/grpc.dart';
@@ -30,6 +31,9 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   }) : super(GamePageInitial()) {
     on<InitEvent>(_onInitEvent);
     on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
+    on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
+    on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
+    on<ZoneTickEvent>(_onZoneTickEvent);
   }
 
   void _onInitEvent(InitEvent event, Emitter<GamePageState> emit) async {
@@ -60,11 +64,6 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
         health: 100,
       ),
       otherPlayersStates: const {},
-      spotPosition: LatLng(
-        spotData.position.latitude,
-        spotData.position.longitude,
-      ),
-      zoneRadius: spotData.radius,
     ));
 
     _logger.fine("Subscribe on geo position");
@@ -85,6 +84,82 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
             playerHealth: value.playerState.health,
           ))),
     );
+
+    _logger.fine("Subscribe on zone state");
+    _subscribeOnZoneStates().fold(
+      (l) => emit(ErrorState(exception: l)),
+      (r) => r.listen((value) {
+        switch (value.whichEvent()) {
+          case proto.SubZoneEventResponse_Event.startNextZoneTimerEvent:
+            final event = value.startNextZoneTimerEvent;
+            add(StartNextZoneTimerEvent(
+              currentZone: ZoneState(
+                position: LatLng(
+                  event.currentZone.position.latitude,
+                  event.currentZone.position.latitude,
+                ),
+                radiusInM: event.currentZone.radiusInM,
+                damage: event.currentZone.damage,
+              ),
+              nextZoneTime: DateTime.fromMillisecondsSinceEpoch(
+                  event.nextZoneTimestamp.toInt() * 1000),
+            ));
+            break;
+
+          case proto.SubZoneEventResponse_Event.startZoneDelayTimerEvent:
+            final event = value.startZoneDelayTimerEvent;
+            add(StartZoneDelayTimerEvent(
+              currentZone: ZoneState(
+                position: LatLng(
+                  event.currentZone.position.latitude,
+                  event.currentZone.position.latitude,
+                ),
+                radiusInM: event.currentZone.radiusInM,
+                damage: event.currentZone.damage,
+              ),
+              nextZone: ZoneState(
+                position: LatLng(
+                  event.nextZone.position.latitude,
+                  event.nextZone.position.latitude,
+                ),
+                radiusInM: event.nextZone.radiusInM,
+                damage: event.nextZone.damage,
+              ),
+              zoneTickStartTimestamp: DateTime.fromMillisecondsSinceEpoch(
+                  event.zoneTickStartTimestamp.toInt() * 1000),
+            ));
+            break;
+
+          case proto.SubZoneEventResponse_Event.zoneTickEvent:
+            final event = value.zoneTickEvent;
+            add(ZoneTickEvent(
+              currentZone: ZoneState(
+                position: LatLng(
+                  event.currentZone.position.latitude,
+                  event.currentZone.position.latitude,
+                ),
+                radiusInM: event.currentZone.radiusInM,
+                damage: event.currentZone.damage,
+              ),
+              nextZone: ZoneState(
+                position: LatLng(
+                  event.nextZone.position.latitude,
+                  event.nextZone.position.latitude,
+                ),
+                radiusInM: event.nextZone.radiusInM,
+                damage: event.nextZone.damage,
+              ),
+            ));
+            break;
+
+          default:
+        }
+      }),
+    );
+
+    on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
+    on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
+    on<ZoneTickEvent>(_onZoneTickEvent);
   }
 
   Future<Either<Exception, proto.GetSpotResponse>> _getSpotData() async {
@@ -138,6 +213,17 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     }
   }
 
+  Either<Exception, ResponseStream<proto.SubZoneEventResponse>>
+      _subscribeOnZoneStates() {
+    try {
+      final request = proto.SubZoneEventRequest(spotUuid: spotUuid);
+
+      return Right(client.subZoneEvent(request));
+    } on Exception catch (ex) {
+      return Left(ex);
+    }
+  }
+
   void _onNewPlayersStatesEvent(
     NewPlayersStatesEvent event,
     Emitter<GamePageState> emit,
@@ -161,6 +247,52 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
         );
         emit(curState.copyWith(otherPlayersStates: otherPlayersStates));
       }
+    } else {
+      _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onStartNextZoneTimerEvent(
+    StartNextZoneTimerEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      emit(curState.copyWith(
+        currentZone: event.currentZone,
+        nextZoneTime: event.nextZoneTime,
+      ));
+    } else {
+      _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onStartZoneDelayTimerEvent(
+    StartZoneDelayTimerEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      emit(curState.copyWith(
+        currentZone: event.currentZone,
+        nextZone: event.nextZone,
+        zoneTickStartTimestamp: event.zoneTickStartTimestamp,
+      ));
+    } else {
+      _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onZoneTickEvent(
+    ZoneTickEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      emit(curState.copyWith(
+        currentZone: event.currentZone,
+        nextZone: event.nextZone,
+      ));
     } else {
       _logger.shout("Wrong state $curState for $event");
     }

@@ -68,6 +68,12 @@ class SpotServiceClient extends $grpc.Client {
       ($0.GetPlayersStatesRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $0.GetPlayersStatesResponse.fromBuffer(value));
+  static final _$subZoneEvent =
+      $grpc.ClientMethod<$0.SubZoneEventRequest, $0.SubZoneEventResponse>(
+          '/spot.v1.SpotService/SubZoneEvent',
+          ($0.SubZoneEventRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.SubZoneEventResponse.fromBuffer(value));
 
   SpotServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -131,6 +137,14 @@ class SpotServiceClient extends $grpc.Client {
       {$grpc.CallOptions? options}) {
     return $createStreamingCall(
         _$getPlayersStates, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
+  $grpc.ResponseStream<$0.SubZoneEventResponse> subZoneEvent(
+      $0.SubZoneEventRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(
+        _$subZoneEvent, $async.Stream.fromIterable([request]),
         options: options);
   }
 }
@@ -212,6 +226,15 @@ abstract class SpotServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.GetPlayersStatesRequest.fromBuffer(value),
         ($0.GetPlayersStatesResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.SubZoneEventRequest, $0.SubZoneEventResponse>(
+            'SubZoneEvent',
+            subZoneEvent_Pre,
+            false,
+            true,
+            ($core.List<$core.int> value) =>
+                $0.SubZoneEventRequest.fromBuffer(value),
+            ($0.SubZoneEventResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.CreateSpotResponse> createSpot_Pre($grpc.ServiceCall call,
@@ -258,6 +281,12 @@ abstract class SpotServiceBase extends $grpc.Service {
     yield* getPlayersStates(call, await request);
   }
 
+  $async.Stream<$0.SubZoneEventResponse> subZoneEvent_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.SubZoneEventRequest> request) async* {
+    yield* subZoneEvent(call, await request);
+  }
+
   $async.Future<$0.CreateSpotResponse> createSpot(
       $grpc.ServiceCall call, $0.CreateSpotRequest request);
   $async.Future<$0.GetSpotResponse> getSpot(
@@ -277,4 +306,6 @@ abstract class SpotServiceBase extends $grpc.Service {
       $async.Stream<$0.SendPlayerPositionRequest> request);
   $async.Stream<$0.GetPlayersStatesResponse> getPlayersStates(
       $grpc.ServiceCall call, $0.GetPlayersStatesRequest request);
+  $async.Stream<$0.SubZoneEventResponse> subZoneEvent(
+      $grpc.ServiceCall call, $0.SubZoneEventRequest request);
 }

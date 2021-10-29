@@ -62,7 +62,7 @@ class SpotSettingsPageBloc
         if (curState is InitedState) {
           emit(curState.copyWith(creating: true, exception: null));
           final request = proto.CreateSpotRequest(
-            radius: event.zoneRadius,
+            radiusInM: event.zoneRadius,
             zonePeriodInSeconds: event.zonePeriod.inSeconds,
             scanPeriodInSeconds: event.scanPeriod.inSeconds,
             sessionDurationInSeconds: event.sessionDuration.inSeconds,
