@@ -88,19 +88,6 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     }
   }
 
-  Future<Either<Exception, bool>> _isPlayerHunter() async {
-    try {
-      final isPlayerHunterRet =
-          await client.isPlayerHunter(proto.IsPlayerHunterRequest(
-        spotUuid: spotUuid,
-        playerUuid: playerUuid,
-      ));
-      return Right(isPlayerHunterRet.isHunter);
-    } on Exception catch (ex) {
-      return Left(ex);
-    }
-  }
-
   void _onNewSpotPlayersListEvent(
     NewSpotPlayersListEvent event,
     Emitter<LobbyPageState> emit,
@@ -115,7 +102,7 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     final curState = state;
     if (curState is InitedState) {
       try {
-        client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid));
+        await client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid));
         final isPlayerHunterRet = await _isPlayerHunter();
         isPlayerHunterRet.fold(
             (l) => emit(ErrorState(exception: l)),
@@ -127,6 +114,19 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
       }
     } else {
       _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  Future<Either<Exception, bool>> _isPlayerHunter() async {
+    try {
+      final isPlayerHunterRet =
+          await client.isPlayerHunter(proto.IsPlayerHunterRequest(
+        spotUuid: spotUuid,
+        playerUuid: playerUuid,
+      ));
+      return Right(isPlayerHunterRet.isHunter);
+    } on Exception catch (ex) {
+      return Left(ex);
     }
   }
 }

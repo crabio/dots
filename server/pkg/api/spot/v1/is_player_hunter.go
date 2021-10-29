@@ -30,7 +30,7 @@ func (s *SpotServiceServer) IsPlayerHunter(ctx context.Context, request *proto.I
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if spot.IsActive {
+	if !spot.IsActive {
 		return nil, fmt.Errorf("Spot is not active")
 	}
 
