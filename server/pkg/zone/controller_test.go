@@ -11,7 +11,6 @@ import (
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
-	"github.com/tjgq/broadcast"
 	// Internal
 )
 
@@ -40,7 +39,7 @@ func TestNextZone(t *testing.T) {
 	// Test max random
 	randFloat = func() float64 { return 1 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0, nil)
+	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, uint32(200), c.currentZone.Radius)
@@ -64,7 +63,7 @@ func TestTickZone(t *testing.T) {
 	// Test max random
 	randFloat = func() float64 { return 0.5 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0, nil)
+	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, uint32(200), c.currentZone.Radius)
@@ -150,9 +149,7 @@ func TestStartTickZone(t *testing.T) {
 	randFloat = func() float64 { return 0.5 }
 	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
 
-	zoneEventBroadcaster := broadcast.New(0)
-
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Nanosecond*1, time.Nanosecond*1, 10.0, zoneEventBroadcaster)
+	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Nanosecond*1, time.Nanosecond*1, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, uint32(200), c.currentZone.Radius)
@@ -162,7 +159,7 @@ func TestStartTickZone(t *testing.T) {
 	err := c.Start()
 	assert.NoError(t, err)
 
-	zoneEventCh := zoneEventBroadcaster.Listen().Ch
+	zoneEventCh := c.ZoneEventBroadcaster.Listen().Ch
 
 	event := <-zoneEventCh
 	assert.IsType(t, StartNextZoneTimerEvent{}, event)

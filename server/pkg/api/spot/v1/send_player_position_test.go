@@ -61,7 +61,7 @@ func TestSendPlayerPosition(t *testing.T) {
 			Latitude:  10,
 			Longitude: 20,
 		},
-		Radius:              100,
+		RadiusInM:           100,
 		ScanPeriodInSeconds: 10,
 		ZonePeriodInSeconds: 30,
 	})

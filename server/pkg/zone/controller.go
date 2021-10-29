@@ -48,10 +48,10 @@ type Controller struct {
 	zoneTicker *time.Ticker
 
 	// Channel for sending zone event (one of NextZone, NextZoneTick, ZoneTickEnd)
-	zoneEventBroadcaster *broadcast.Broadcaster
+	ZoneEventBroadcaster *broadcast.Broadcaster
 }
 
-func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM uint32, minZoneRadiusInM uint32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64, zoneEventBroadcaster *broadcast.Broadcaster) *Controller {
+func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM uint32, minZoneRadiusInM uint32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
 	c := new(Controller)
 	c.log = logger.CreateLogger("zone-controller-" + spotId.String())
 	c.minZoneRadiusInM = minZoneRadiusInM
@@ -59,7 +59,7 @@ func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM uint3
 	c.currentZone = NewZone(spotPosition, spotRadiusInM, minZoneRadiusInM)
 	c.nextZonePeriod = nextZonePeriod
 	c.nextZoneDelay = nextZoneDelay
-	c.zoneEventBroadcaster = zoneEventBroadcaster
+	c.ZoneEventBroadcaster = broadcast.New(0)
 
 	return c
 }
@@ -179,7 +179,7 @@ func (c *Controller) Start() error {
 		// While current zone radius is bigger that 0
 		for c.currentZone.Radius > 0 {
 			timeNowMx.Lock()
-			c.zoneEventBroadcaster.Send(StartNextZoneTimerEvent{
+			c.ZoneEventBroadcaster.Send(StartNextZoneTimerEvent{
 				CurrentZone:  c.currentZone,
 				NextZoneTime: timeNow().UTC().Add(c.nextZonePeriod),
 			})
@@ -196,7 +196,7 @@ func (c *Controller) Start() error {
 
 			// Send next zone event to players
 			timeNowMx.Lock()
-			c.zoneEventBroadcaster.Send(StartZoneDelayTimerEvent{
+			c.ZoneEventBroadcaster.Send(StartZoneDelayTimerEvent{
 				CurrentZone:       c.currentZone,
 				NextZone:          c.nextZone,
 				ZoneTickStartTime: timeNow().UTC().Add(c.nextZoneDelay),
@@ -218,7 +218,7 @@ func (c *Controller) Start() error {
 					c.log.Error("Couldn't Tick next zone. " + err.Error())
 				}
 				c.log.WithFields(logrus.Fields{"curZone": curZone, "lastTick": lastTick}).Debug("Next zone tick")
-				c.zoneEventBroadcaster.Send(ZoneTickEvent{
+				c.ZoneEventBroadcaster.Send(ZoneTickEvent{
 					CurrentZone: curZone,
 					NextZone:    c.nextZone,
 					LastTick:    lastTick,

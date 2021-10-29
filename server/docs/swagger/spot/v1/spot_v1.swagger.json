@@ -78,7 +78,7 @@
         "position": {
           "$ref": "#/definitions/v1Position"
         },
-        "radius": {
+        "radiusInM": {
           "type": "integer",
           "format": "int32"
         },
@@ -146,8 +146,76 @@
     "v1SendPlayerPositionResponse": {
       "type": "object"
     },
+    "v1StartNextZoneTimerEvent": {
+      "type": "object",
+      "properties": {
+        "currentZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "nextZoneTimestamp": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1StartSpotResponse": {
       "type": "object"
+    },
+    "v1StartZoneDelayTimerEvent": {
+      "type": "object",
+      "properties": {
+        "currentZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "nextZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "zoneTickStartTimestamp": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1SubZoneEventResponse": {
+      "type": "object",
+      "properties": {
+        "startNextZoneTimerEvent": {
+          "$ref": "#/definitions/v1StartNextZoneTimerEvent"
+        },
+        "startZoneDelayTimerEvent": {
+          "$ref": "#/definitions/v1StartZoneDelayTimerEvent"
+        },
+        "zoneTickEvent": {
+          "$ref": "#/definitions/v1ZoneTickEvent"
+        }
+      }
+    },
+    "v1ZoneState": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "$ref": "#/definitions/v1Position"
+        },
+        "radiusInM": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "damage": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "v1ZoneTickEvent": {
+      "type": "object",
+      "properties": {
+        "currentZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "nextZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        }
+      }
     }
   }
 }

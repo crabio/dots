@@ -31,6 +31,8 @@ type SpotServiceClient interface {
 	// GetPlayersStates returns stream of all players data (this player and others)
 	// Data will be received on each new position or health status
 	GetPlayersStates(ctx context.Context, in *GetPlayersStatesRequest, opts ...grpc.CallOption) (SpotService_GetPlayersStatesClient, error)
+	// SubZoneEvent returns stream of zones events
+	SubZoneEvent(ctx context.Context, in *SubZoneEventRequest, opts ...grpc.CallOption) (SpotService_SubZoneEventClient, error)
 }
 
 type spotServiceClient struct {
@@ -216,6 +218,38 @@ func (x *spotServiceGetPlayersStatesClient) Recv() (*GetPlayersStatesResponse, e
 	return m, nil
 }
 
+func (c *spotServiceClient) SubZoneEvent(ctx context.Context, in *SubZoneEventRequest, opts ...grpc.CallOption) (SpotService_SubZoneEventClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[4], "/spot.v1.SpotService/SubZoneEvent", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &spotServiceSubZoneEventClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type SpotService_SubZoneEventClient interface {
+	Recv() (*SubZoneEventResponse, error)
+	grpc.ClientStream
+}
+
+type spotServiceSubZoneEventClient struct {
+	grpc.ClientStream
+}
+
+func (x *spotServiceSubZoneEventClient) Recv() (*SubZoneEventResponse, error) {
+	m := new(SubZoneEventResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // SpotServiceServer is the server API for SpotService service.
 // All implementations must embed UnimplementedSpotServiceServer
 // for forward compatibility
@@ -233,6 +267,8 @@ type SpotServiceServer interface {
 	// GetPlayersStates returns stream of all players data (this player and others)
 	// Data will be received on each new position or health status
 	GetPlayersStates(*GetPlayersStatesRequest, SpotService_GetPlayersStatesServer) error
+	// SubZoneEvent returns stream of zones events
+	SubZoneEvent(*SubZoneEventRequest, SpotService_SubZoneEventServer) error
 	mustEmbedUnimplementedSpotServiceServer()
 }
 
@@ -266,6 +302,9 @@ func (UnimplementedSpotServiceServer) SendPlayerPosition(SpotService_SendPlayerP
 }
 func (UnimplementedSpotServiceServer) GetPlayersStates(*GetPlayersStatesRequest, SpotService_GetPlayersStatesServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetPlayersStates not implemented")
+}
+func (UnimplementedSpotServiceServer) SubZoneEvent(*SubZoneEventRequest, SpotService_SubZoneEventServer) error {
+	return status.Errorf(codes.Unimplemented, "method SubZoneEvent not implemented")
 }
 func (UnimplementedSpotServiceServer) mustEmbedUnimplementedSpotServiceServer() {}
 
@@ -459,6 +498,27 @@ func (x *spotServiceGetPlayersStatesServer) Send(m *GetPlayersStatesResponse) er
 	return x.ServerStream.SendMsg(m)
 }
 
+func _SpotService_SubZoneEvent_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(SubZoneEventRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(SpotServiceServer).SubZoneEvent(m, &spotServiceSubZoneEventServer{stream})
+}
+
+type SpotService_SubZoneEventServer interface {
+	Send(*SubZoneEventResponse) error
+	grpc.ServerStream
+}
+
+type spotServiceSubZoneEventServer struct {
+	grpc.ServerStream
+}
+
+func (x *spotServiceSubZoneEventServer) Send(m *SubZoneEventResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // SpotService_ServiceDesc is the grpc.ServiceDesc for SpotService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -506,6 +566,11 @@ var SpotService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "GetPlayersStates",
 			Handler:       _SpotService_GetPlayersStates_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "SubZoneEvent",
+			Handler:       _SpotService_SubZoneEvent_Handler,
 			ServerStreams: true,
 		},
 	},
