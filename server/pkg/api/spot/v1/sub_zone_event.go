@@ -3,6 +3,7 @@ package api_spot_v1
 import (
 	// External
 
+	"errors"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -24,6 +25,10 @@ func (s *SpotServiceServer) SubZoneEvent(request *proto.SubZoneEventRequest, str
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	if !ok {
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
+	}
+
+	if spot.ZoneController == nil {
+		return errors.New("ZoneController in spot is not inited")
 	}
 
 	for zoneEventI := range spot.ZoneController.ZoneEventBroadcaster.Listen().Ch {
