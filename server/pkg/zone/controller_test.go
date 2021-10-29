@@ -9,7 +9,9 @@ import (
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
+	"github.com/tjgq/broadcast"
 	// Internal
 )
 
@@ -24,77 +26,69 @@ func TestNewRadius(t *testing.T) {
 
 func TestRandomR(t *testing.T) {
 	// Test min random
-	randFloat = func() float64 {
-		return 0
-	}
+	randFloat = func() float64 { return 0 }
 	r := randomR(200, 100)
 	assert.Equal(t, float64(0), r)
 
 	// Test max random
-	randFloat = func() float64 {
-		return 1
-	}
+	randFloat = func() float64 { return 1 }
 	r = randomR(200, 100)
 	assert.Equal(t, float64(100), r)
 }
 
 func TestNextZone(t *testing.T) {
 	// Test max random
-	randFloat = func() float64 {
-		return 1
-	}
+	randFloat = func() float64 { return 1 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
+	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0, nil)
 
-	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.CurrentZone.Position)
-	assert.Equal(t, uint32(200), c.CurrentZone.Radius)
-	assert.Equal(t, float32(0.25), c.CurrentZone.Damage)
-	assert.Nil(t, c.NextZone)
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
+	assert.Equal(t, uint32(200), c.currentZone.Radius)
+	assert.Equal(t, float32(0.25), c.currentZone.Damage)
+	assert.Nil(t, c.nextZone)
 
 	c.Next(time.Now())
 
-	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.CurrentZone.Position)
-	assert.Equal(t, uint32(200), c.CurrentZone.Radius)
-	assert.Equal(t, float32(0.25), c.CurrentZone.Damage)
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
+	assert.Equal(t, uint32(200), c.currentZone.Radius)
+	assert.Equal(t, float32(0.25), c.currentZone.Damage)
 
-	assert.Equal(t, s2.LatLng{Lat: 1.5696098420815538e-05, Lng: -3.844435338030709e-21}, c.NextZone.Position)
-	assert.Equal(t, uint32(100), c.NextZone.Radius)
-	assert.Equal(t, float32(0.5), c.NextZone.Damage)
+	assert.Equal(t, s2.LatLng{Lat: 1.5696098420815538e-05, Lng: -3.844435338030709e-21}, c.nextZone.Position)
+	assert.Equal(t, uint32(100), c.nextZone.Radius)
+	assert.Equal(t, float32(0.5), c.nextZone.Damage)
 
-	assert.Equal(t, uint16(99), uint16(geo.AngleToM(c.NextZone.Position.Distance(c.CurrentZone.Position))))
+	assert.Equal(t, uint16(99), uint16(geo.AngleToM(c.nextZone.Position.Distance(c.currentZone.Position))))
 }
 
 func TestTickZone(t *testing.T) {
 	// Test max random
-	randFloat = func() float64 {
-		return 0.5
-	}
+	randFloat = func() float64 { return 0.5 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
+	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0, nil)
 
-	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.CurrentZone.Position)
-	assert.Equal(t, uint32(200), c.CurrentZone.Radius)
-	assert.Equal(t, float32(0.25), c.CurrentZone.Damage)
-	assert.Nil(t, c.NextZone)
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
+	assert.Equal(t, uint32(200), c.currentZone.Radius)
+	assert.Equal(t, float32(0.25), c.currentZone.Damage)
+	assert.Nil(t, c.nextZone)
 
 	c.Next(time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC))
 
-	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.CurrentZone.Position)
-	assert.Equal(t, uint32(200), c.CurrentZone.Radius)
-	assert.Equal(t, float32(0.25), c.CurrentZone.Damage)
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
+	assert.Equal(t, uint32(200), c.currentZone.Radius)
+	assert.Equal(t, float32(0.25), c.currentZone.Damage)
 
-	assert.Equal(t, s2.LatLng{Lat: -1.1098817631530128e-05, Lng: 1.359213148677356e-21}, c.NextZone.Position)
-	assert.Equal(t, uint32(100), c.NextZone.Radius)
-	assert.Equal(t, float32(0.5), c.NextZone.Damage)
+	assert.Equal(t, s2.LatLng{Lat: -1.1098817631530128e-05, Lng: 1.359213148677356e-21}, c.nextZone.Position)
+	assert.Equal(t, uint32(100), c.nextZone.Radius)
+	assert.Equal(t, float32(0.5), c.nextZone.Damage)
 
-	assert.Equal(t, uint16(70), uint16(geo.AngleToM(c.NextZone.Position.Distance(c.CurrentZone.Position))))
+	assert.Equal(t, uint16(70), uint16(geo.AngleToM(c.nextZone.Position.Distance(c.currentZone.Position))))
 
 	// Zero zone tick
 	curZone, lastTick, err := c.Tick(time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC))
 	assert.NoError(t, err)
 	assert.False(t, lastTick)
 	assert.Equal(t, uint32(0), uint32(geo.AngleToM(c.prevZone.Position.Distance(curZone.Position)))+c.prevZone.Radius-curZone.Radius)
-	assert.Equal(t, uint32(170), uint32(geo.AngleToM(c.NextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.NextZone.Radius)
+	assert.Equal(t, uint32(170), uint32(geo.AngleToM(c.nextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.nextZone.Radius)
 	assert.Equal(t, uint32(200), curZone.Radius)
 	assert.Equal(t, float32(0.25), curZone.Damage)
 
@@ -103,7 +97,7 @@ func TestTickZone(t *testing.T) {
 	assert.NoError(t, err)
 	assert.False(t, lastTick)
 	assert.Equal(t, uint32(3), uint32(geo.AngleToM(c.prevZone.Position.Distance(curZone.Position)))+c.prevZone.Radius-curZone.Radius)
-	assert.Equal(t, uint32(169), uint32(geo.AngleToM(c.NextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.NextZone.Radius)
+	assert.Equal(t, uint32(169), uint32(geo.AngleToM(c.nextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.nextZone.Radius)
 	assert.Equal(t, uint32(198), curZone.Radius)
 	assert.Equal(t, float32(0.25252524), curZone.Damage)
 
@@ -112,25 +106,25 @@ func TestTickZone(t *testing.T) {
 	assert.NoError(t, err)
 	assert.False(t, lastTick)
 	assert.Equal(t, uint32(28), uint32(geo.AngleToM(c.prevZone.Position.Distance(curZone.Position)))+c.prevZone.Radius-curZone.Radius)
-	assert.Equal(t, uint32(165), uint32(geo.AngleToM(c.NextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.NextZone.Radius)
+	assert.Equal(t, uint32(165), uint32(geo.AngleToM(c.nextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.nextZone.Radius)
 	assert.Equal(t, uint32(183), curZone.Radius)
 	assert.Equal(t, float32(0.27322406), curZone.Damage)
 
 	// 30 seconds zone tick
-	curZone, lastTick, err = c.Tick(time.Date(2000, 1, 1, 0, 0, 10, 0, time.UTC))
+	curZone, lastTick, err = c.Tick(time.Date(2000, 1, 1, 0, 0, 30, 0, time.UTC))
 	assert.NoError(t, err)
 	assert.False(t, lastTick)
-	assert.Equal(t, uint32(28), uint32(geo.AngleToM(c.prevZone.Position.Distance(curZone.Position)))+c.prevZone.Radius-curZone.Radius)
-	assert.Equal(t, uint32(165), uint32(geo.AngleToM(c.NextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.NextZone.Radius)
-	assert.Equal(t, uint32(183), curZone.Radius)
-	assert.Equal(t, float32(0.27322406), curZone.Damage)
+	assert.Equal(t, uint32(83), uint32(geo.AngleToM(c.prevZone.Position.Distance(curZone.Position)))+c.prevZone.Radius-curZone.Radius)
+	assert.Equal(t, uint32(156), uint32(geo.AngleToM(c.nextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.nextZone.Radius)
+	assert.Equal(t, uint32(151), curZone.Radius)
+	assert.Equal(t, float32(0.33112583), curZone.Damage)
 
 	// 1 min zone tick
 	curZone, lastTick, err = c.Tick(time.Date(2000, 1, 1, 0, 1, 0, 0, time.UTC))
 	assert.NoError(t, err)
 	assert.False(t, lastTick)
 	assert.Equal(t, uint32(167), uint32(geo.AngleToM(c.prevZone.Position.Distance(curZone.Position)))+c.prevZone.Radius-curZone.Radius)
-	assert.Equal(t, uint32(141), uint32(geo.AngleToM(c.NextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.NextZone.Radius)
+	assert.Equal(t, uint32(141), uint32(geo.AngleToM(c.nextZone.Position.Distance(curZone.Position)))+curZone.Radius-c.nextZone.Radius)
 	assert.Equal(t, uint32(102), curZone.Radius)
 	assert.Equal(t, float32(0.49019608), curZone.Damage)
 
@@ -139,7 +133,7 @@ func TestTickZone(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, lastTick)
 	assert.Nil(t, c.prevZone)
-	assert.Nil(t, c.NextZone)
+	assert.Nil(t, c.nextZone)
 	assert.Equal(t, s2.LatLng{Lat: -1.1098817631530128e-05, Lng: 1.359213148677356e-21}, curZone.Position)
 	assert.Equal(t, uint32(100), curZone.Radius)
 	assert.Equal(t, float32(0.5), curZone.Damage)
@@ -150,26 +144,99 @@ func TestTickZone(t *testing.T) {
 }
 
 func TestStartTickZone(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
+
 	// Test max random
-	randFloat = func() float64 {
-		return 0.5
-	}
+	randFloat = func() float64 { return 0.5 }
+	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Millisecond*1, time.Millisecond*1, 1000.0)
+	zoneEventBroadcaster := broadcast.New(0)
 
-	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.CurrentZone.Position)
-	assert.Equal(t, uint32(200), c.CurrentZone.Radius)
-	assert.Equal(t, float32(0.25), c.CurrentZone.Damage)
-	assert.Nil(t, c.NextZone)
+	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Nanosecond*1, time.Nanosecond*1, 10.0, zoneEventBroadcaster)
+
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
+	assert.Equal(t, uint32(200), c.currentZone.Radius)
+	assert.Equal(t, float32(0.25), c.currentZone.Damage)
+	assert.Nil(t, c.nextZone)
 
 	err := c.Start()
 	assert.NoError(t, err)
 
-	time.Sleep(2 * time.Second)
+	zoneEventCh := zoneEventBroadcaster.Listen().Ch
 
-	assert.Equal(t, s2.LatLng{Lat: -2.2197635263060256e-05, Lng: 2.718426297354712e-21}, c.CurrentZone.Position)
-	assert.Equal(t, uint32(0), c.CurrentZone.Radius)
-	assert.Equal(t, float32(5), c.CurrentZone.Damage)
-	assert.Nil(t, c.prevZone)
-	assert.Nil(t, c.NextZone)
+	event := <-zoneEventCh
+	assert.IsType(t, StartNextZoneTimerEvent{}, event)
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, event.(StartNextZoneTimerEvent).CurrentZone.Position)
+	assert.Equal(t, uint32(200), event.(StartNextZoneTimerEvent).CurrentZone.Radius)
+	assert.Equal(t, time.Date(2000, 1, 1, 0, 0, 0, 1, time.UTC), event.(StartNextZoneTimerEvent).NextZoneTime)
+
+	event = <-zoneEventCh
+	assert.IsType(t, StartZoneDelayTimerEvent{}, event)
+	curZone := event.(StartZoneDelayTimerEvent).CurrentZone
+	nextZone := event.(StartZoneDelayTimerEvent).NextZone
+	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, curZone.Position)
+	assert.Equal(t, uint32(200), curZone.Radius)
+	assert.Equal(t, uint32(170), uint32(geo.AngleToM(nextZone.Position.Distance(curZone.Position)))+curZone.Radius-nextZone.Radius)
+	assert.Equal(t, uint32(100), nextZone.Radius)
+	assert.Equal(t, time.Date(2000, 1, 1, 0, 0, 0, 1, time.UTC), event.(StartZoneDelayTimerEvent).ZoneTickStartTime)
+
+	// Tick after 1 second
+	timeNowMx.Lock()
+	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 1, 0, time.UTC) }
+	timeNowMx.Unlock()
+	event = <-zoneEventCh
+	assert.IsType(t, ZoneTickEvent{}, event)
+	curZone = event.(ZoneTickEvent).CurrentZone
+	nextZone = event.(ZoneTickEvent).NextZone
+	assert.False(t, event.(ZoneTickEvent).LastTick)
+	assert.Equal(t, uint32(198), curZone.Radius)
+	assert.Equal(t, uint32(169), uint32(geo.AngleToM(nextZone.Position.Distance(curZone.Position)))+curZone.Radius-nextZone.Radius)
+
+	// Tick after 10 seconds
+	timeNowMx.Lock()
+	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 10, 0, time.UTC) }
+	timeNowMx.Unlock()
+	event = <-zoneEventCh
+	assert.IsType(t, ZoneTickEvent{}, event)
+	curZone = event.(ZoneTickEvent).CurrentZone
+	nextZone = event.(ZoneTickEvent).NextZone
+	assert.False(t, event.(ZoneTickEvent).LastTick)
+	assert.Equal(t, uint32(183), curZone.Radius)
+	assert.Equal(t, uint32(165), uint32(geo.AngleToM(nextZone.Position.Distance(curZone.Position)))+curZone.Radius-nextZone.Radius)
+
+	// Tick after 30 seconds
+	timeNowMx.Lock()
+	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 30, 0, time.UTC) }
+	timeNowMx.Unlock()
+	event = <-zoneEventCh
+	assert.IsType(t, ZoneTickEvent{}, event)
+	curZone = event.(ZoneTickEvent).CurrentZone
+	nextZone = event.(ZoneTickEvent).NextZone
+	assert.False(t, event.(ZoneTickEvent).LastTick)
+	assert.Equal(t, uint32(151), curZone.Radius)
+	assert.Equal(t, uint32(156), uint32(geo.AngleToM(nextZone.Position.Distance(curZone.Position)))+curZone.Radius-nextZone.Radius)
+
+	// Tick after 1 min
+	timeNowMx.Lock()
+	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 1, 0, 0, time.UTC) }
+	timeNowMx.Unlock()
+	event = <-zoneEventCh
+	assert.IsType(t, ZoneTickEvent{}, event)
+	curZone = event.(ZoneTickEvent).CurrentZone
+	nextZone = event.(ZoneTickEvent).NextZone
+	assert.False(t, event.(ZoneTickEvent).LastTick)
+	assert.Equal(t, uint32(102), curZone.Radius)
+	assert.Equal(t, uint32(141), uint32(geo.AngleToM(nextZone.Position.Distance(curZone.Position)))+curZone.Radius-nextZone.Radius)
+
+	// Tick after 1 min 10 seconds
+	timeNowMx.Lock()
+	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 1, 30, 0, time.UTC) }
+	timeNowMx.Unlock()
+	event = <-zoneEventCh
+	assert.IsType(t, ZoneTickEvent{}, event)
+	assert.True(t, event.(ZoneTickEvent).LastTick)
+	assert.Equal(t, s2.LatLng{Lat: -1.1098817631530128e-05, Lng: 1.359213148677356e-21}, event.(ZoneTickEvent).CurrentZone.Position)
+	assert.Equal(t, float32(0.5), event.(ZoneTickEvent).CurrentZone.Damage)
+	assert.Equal(t, uint32(100), event.(ZoneTickEvent).CurrentZone.Radius)
+	assert.Nil(t, event.(ZoneTickEvent).NextZone)
 }

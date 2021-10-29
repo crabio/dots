@@ -4,6 +4,7 @@ import (
 	"errors"
 	"math"
 	"math/rand"
+	"sync"
 	"time"
 
 	"github.com/golang/geo/s2"
@@ -11,6 +12,7 @@ import (
 	"github.com/iakrevetkho/archaeopteryx/logger"
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
 	"github.com/sirupsen/logrus"
+	"github.com/tjgq/broadcast"
 )
 
 const (
@@ -20,17 +22,20 @@ const (
 // Functions as variable required for unit tests
 var (
 	randFloat = rand.Float64
+	timeNow   = time.Now
+	// This mutex is required to prevent race in unit tests
+	timeNowMx = sync.RWMutex{}
 )
 
 type Controller struct {
 	log *logrus.Entry
 
-	minZoneRadiusInMeter       uint32
+	minZoneRadiusInM           uint32
 	zoneSpeedInMetersPerSecond float64
 
 	prevZone             *Zone
-	CurrentZone          *Zone
-	NextZone             *Zone
+	currentZone          *Zone
+	nextZone             *Zone
 	nextZoneCreationTime *time.Time
 
 	nextZonePeriod time.Duration
@@ -41,16 +46,20 @@ type Controller struct {
 	nextZoneDelayTimer *time.Timer
 
 	zoneTicker *time.Ticker
+
+	// Channel for sending zone event (one of NextZone, NextZoneTick, ZoneTickEnd)
+	zoneEventBroadcaster *broadcast.Broadcaster
 }
 
-func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInMeter uint32, minZoneRadiusInMeter uint32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKilometersPerHour float64) *Controller {
+func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM uint32, minZoneRadiusInM uint32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64, zoneEventBroadcaster *broadcast.Broadcaster) *Controller {
 	c := new(Controller)
 	c.log = logger.CreateLogger("zone-controller-" + spotId.String())
-	c.minZoneRadiusInMeter = minZoneRadiusInMeter
-	c.zoneSpeedInMetersPerSecond = zoneSpeedInKilometersPerHour * 1000 / 3600
-	c.CurrentZone = NewZone(spotPosition, spotRadiusInMeter, minZoneRadiusInMeter)
+	c.minZoneRadiusInM = minZoneRadiusInM
+	c.zoneSpeedInMetersPerSecond = zoneSpeedInKmPerH * 1000 / 3600
+	c.currentZone = NewZone(spotPosition, spotRadiusInM, minZoneRadiusInM)
 	c.nextZonePeriod = nextZonePeriod
 	c.nextZoneDelay = nextZoneDelay
+	c.zoneEventBroadcaster = zoneEventBroadcaster
 
 	return c
 }
@@ -81,10 +90,10 @@ func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInMeter u
 
 // Create next zone
 func (c *Controller) Next(now time.Time) {
-	c.NextZone = nextZone(c.CurrentZone, c.minZoneRadiusInMeter)
+	c.nextZone = nextZone(c.currentZone, c.minZoneRadiusInM)
 	c.nextZoneCreationTime = &now
 	// Also save current zone as previous zone
-	c.prevZone = c.CurrentZone
+	c.prevZone = c.currentZone
 }
 
 // Approximate zone to next zone
@@ -92,15 +101,15 @@ func (c *Controller) Next(now time.Time) {
 // Function returns current zone, flag about last tick (true if it was last tick), error
 func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 	// Check that we have inited new zone
-	if c.NextZone == nil {
+	if c.nextZone == nil {
 		return nil, false, errors.New("NextZone is not inited for tick. Call Next() method to init next zone first.")
 	}
 
 	// Calc zone overal distance in meters from previous
-	overalDistance := geo.AngleToM(c.prevZone.Position.Distance(c.NextZone.Position))
+	overalDistance := geo.AngleToM(c.prevZone.Position.Distance(c.nextZone.Position))
 
 	// Calc zone distance from farrest circle point to next zone in meters
-	zoneMaxCircleDistance := float64(c.prevZone.Radius-c.NextZone.Radius) + overalDistance
+	zoneMaxCircleDistance := float64(c.prevZone.Radius-c.nextZone.Radius) + overalDistance
 
 	// Calc zone time duration in seconds for transition to next zone
 	zoneOveralTransDuration := zoneMaxCircleDistance / c.zoneSpeedInMetersPerSecond
@@ -115,13 +124,13 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 		if transitionPercentage >= 1.0 {
 			// Next zone reached
 
-			c.CurrentZone = c.NextZone
-			c.NextZone = nil
+			c.currentZone = c.nextZone
+			c.nextZone = nil
 			c.prevZone = nil
 			c.nextZoneCreationTime = nil
 
 			// This is last tick
-			return c.CurrentZone, true, nil
+			return c.currentZone, true, nil
 
 		} else if transitionPercentage == 0 {
 			// Do nothing
@@ -133,13 +142,13 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 			distance := overalDistance * transitionPercentage
 
 			// Calc zone latitude difference in meters
-			latDiff := geo.AngleToM(c.prevZone.Position.Lat - c.NextZone.Position.Lat)
+			latDiff := geo.AngleToM(c.prevZone.Position.Lat - c.nextZone.Position.Lat)
 
 			// Latitude distance = Distance * Latitude diff / Overal Distance
 			latDistance := distance * latDiff / overalDistance
 
 			// Calc zone longitude difference in meters
-			lngDiff := geo.AngleToM(c.prevZone.Position.Lng - c.NextZone.Position.Lng)
+			lngDiff := geo.AngleToM(c.prevZone.Position.Lng - c.nextZone.Position.Lng)
 
 			// Longitude distance = Distance * Longitude diff / Overal Distance
 			lngDistance := distance * lngDiff / overalDistance
@@ -148,13 +157,13 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 			lng := c.prevZone.Position.Lng + geo.MToAngle(lngDistance)
 
 			// Zone radius = Next zone radius + (Prev zone radius - Next zone radius) * transition percentage
-			radius := float64(c.NextZone.Radius) + float64(c.prevZone.Radius-c.NextZone.Radius)*(1-transitionPercentage)
+			radius := float64(c.nextZone.Radius) + float64(c.prevZone.Radius-c.nextZone.Radius)*(1-transitionPercentage)
 
-			c.CurrentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, uint32(radius), 10)
+			c.currentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, uint32(radius), 10)
 		}
 	}
 
-	return c.CurrentZone, false, nil
+	return c.currentZone, false, nil
 }
 
 // Function for starting zone changing workflow
@@ -168,31 +177,52 @@ func (c *Controller) Start() error {
 
 	go func() {
 		// While current zone radius is bigger that 0
-		for c.CurrentZone.Radius > 0 {
+		for c.currentZone.Radius > 0 {
+			timeNowMx.Lock()
+			c.zoneEventBroadcaster.Send(StartNextZoneTimerEvent{
+				CurrentZone:  c.currentZone,
+				NextZoneTime: timeNow().UTC().Add(c.nextZonePeriod),
+			})
+			timeNowMx.Unlock()
 			c.nextZoneTimer = time.NewTimer(c.nextZonePeriod)
 			<-c.nextZoneTimer.C
 			c.nextZoneTimer = nil
 			c.log.Debug("Next zone timer fired")
 
-			c.Next(time.Now().UTC())
-			// TODO Add sending next zone event to players
+			// Create next zone
+			timeNowMx.Lock()
+			c.Next(timeNow().UTC())
+			timeNowMx.Unlock()
 
+			// Send next zone event to players
+			timeNowMx.Lock()
+			c.zoneEventBroadcaster.Send(StartZoneDelayTimerEvent{
+				CurrentZone:       c.currentZone,
+				NextZone:          c.nextZone,
+				ZoneTickStartTime: timeNow().UTC().Add(c.nextZoneDelay),
+			})
+			timeNowMx.Unlock()
 			c.nextZoneDelayTimer = time.NewTimer(c.nextZoneDelay)
 			<-c.nextZoneDelayTimer.C
 			c.nextZoneDelayTimer = nil
 			c.log.Debug("Next zone delay timer fired")
-			// TODO Add sending next zone delay end event to players
 
 			c.zoneTicker = time.NewTicker(zoneTickPeriod)
 
 		tickerLoop:
 			for range c.zoneTicker.C {
-				c.log.Debug("Next zone tick")
-				_, lastTick, err := c.Tick(time.Now().UTC())
+				timeNowMx.Lock()
+				curZone, lastTick, err := c.Tick(timeNow().UTC())
+				timeNowMx.Unlock()
 				if err != nil {
 					c.log.Error("Couldn't Tick next zone. " + err.Error())
 				}
-				// TODO Add sending current zone to players
+				c.log.WithFields(logrus.Fields{"curZone": curZone, "lastTick": lastTick}).Debug("Next zone tick")
+				c.zoneEventBroadcaster.Send(ZoneTickEvent{
+					CurrentZone: curZone,
+					NextZone:    c.nextZone,
+					LastTick:    lastTick,
+				})
 
 				// Check that it was last tick
 				if lastTick {
@@ -211,8 +241,8 @@ func (c *Controller) Start() error {
 }
 
 // Creates new zone inside current zone
-func nextZone(zone *Zone, minZoneRadiusInMeter uint32) *Zone {
-	newR := newRadius(zone.Radius, minZoneRadiusInMeter)
+func nextZone(zone *Zone, minZoneRadiusInM uint32) *Zone {
+	newR := newRadius(zone.Radius, minZoneRadiusInM)
 
 	// Calc radius of random area
 	r := randomR(zone.Radius, newR)
@@ -229,8 +259,8 @@ func randomR(curZoneR uint32, newZoneR uint32) float64 {
 	return float64((curZoneR - newZoneR)) * math.Sqrt(randFloat())
 }
 
-func newRadius(radius uint32, minZoneRadiusInMeter uint32) uint32 {
-	if radius > minZoneRadiusInMeter*2 {
+func newRadius(radius uint32, minZoneRadiusInM uint32) uint32 {
+	if radius > minZoneRadiusInM*2 {
 		return radius / 2
 	} else {
 		return 0
