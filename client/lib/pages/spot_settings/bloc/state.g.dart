@@ -12,7 +12,6 @@ extension InitedStateCopyWith on InitedState {
     Exception? exception,
     LatLng? position,
     Duration? scanPeriod,
-    Duration? sessionDuration,
     Duration? zonePeriod,
     int? zoneRadius,
   }) {
@@ -21,7 +20,6 @@ extension InitedStateCopyWith on InitedState {
       exception: exception ?? this.exception,
       position: position ?? this.position,
       scanPeriod: scanPeriod ?? this.scanPeriod,
-      sessionDuration: sessionDuration ?? this.sessionDuration,
       zonePeriod: zonePeriod ?? this.zonePeriod,
       zoneRadius: zoneRadius ?? this.zoneRadius,
     );

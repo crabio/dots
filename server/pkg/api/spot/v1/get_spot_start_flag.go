@@ -11,7 +11,7 @@ import (
 )
 
 func (s *SpotServiceServer) GetSpotStartFlag(request *proto.GetSpotStartFlagRequest, stream proto.SpotService_GetSpotStartFlagServer) error {
-	s.log.WithField("request", request.String()).Trace("Get spot start flag request")
+	s.log.WithField("request", request.String()).Debug("Get spot start flag request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {

@@ -89,10 +89,6 @@
         "zonePeriodInSeconds": {
           "type": "integer",
           "format": "int32"
-        },
-        "sessionDurationInSeconds": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },

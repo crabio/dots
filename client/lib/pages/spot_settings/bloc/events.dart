@@ -35,29 +35,18 @@ class NewZoneDurationEvent extends SpotSettingsPageEvent {
   List<Object> get props => [value];
 }
 
-class NewSessionDurationEvent extends SpotSettingsPageEvent {
-  final Duration value;
-
-  const NewSessionDurationEvent({required this.value});
-
-  @override
-  List<Object> get props => [value];
-}
-
 class CreateNewSpotEvent extends SpotSettingsPageEvent {
   final LatLng position;
   // Spot radius in meters
   final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
-  final Duration sessionDuration;
 
   const CreateNewSpotEvent({
     required this.position,
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
-    required this.sessionDuration,
   });
 
   @override
@@ -66,6 +55,5 @@ class CreateNewSpotEvent extends SpotSettingsPageEvent {
         zoneRadius,
         scanPeriod,
         zonePeriod,
-        sessionDuration,
       ];
 }

@@ -38,7 +38,6 @@ message CreateSpotRequest {
   int32 radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
-  int32 session_duration_in_seconds = 5;
 }
 
 message CreateSpotResponse {
@@ -54,7 +53,6 @@ message GetSpotResponse {
   int32 radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
-  int32 session_duration_in_seconds = 5;
 }
 
 message JoinToSpotRequest {

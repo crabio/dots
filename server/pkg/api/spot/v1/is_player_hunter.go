@@ -13,7 +13,7 @@ import (
 )
 
 func (s *SpotServiceServer) IsPlayerHunter(ctx context.Context, request *proto.IsPlayerHunterRequest) (*proto.IsPlayerHunterResponse, error) {
-	s.log.WithField("request", request.String()).Debug("Join to spot request")
+	s.log.WithField("request", request.String()).Debug("Is player hunter request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
@@ -41,6 +41,7 @@ func (s *SpotServiceServer) IsPlayerHunter(ctx context.Context, request *proto.I
 	response := proto.IsPlayerHunterResponse{
 		IsHunter: spot.Session.HunterUuid == playerUuid,
 	}
+	s.log.WithField("response", response.String()).Debug("Is player hunter response")
 
 	return &response, nil
 }

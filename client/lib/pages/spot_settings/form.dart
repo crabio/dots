@@ -35,7 +35,6 @@ class SpotSettingsForm extends StatelessWidget {
             zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
-            sessionDuration: curState.sessionDuration,
             creatingSpot: curState.creating,
             exception: curState.exception,
           );
@@ -65,7 +64,6 @@ class _SpotSettingsForm extends StatelessWidget {
   final int zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
-  final Duration sessionDuration;
 
   /// Error on creating new spot on server
   final Exception? exception;
@@ -78,7 +76,6 @@ class _SpotSettingsForm extends StatelessWidget {
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
-    required this.sessionDuration,
     this.exception,
     this.creatingSpot = false,
     Key? key,
@@ -177,16 +174,6 @@ class _SpotSettingsForm extends StatelessWidget {
                   .read<SpotSettingsPageBloc>()
                   .add(NewZoneDurationEvent(value: Duration(seconds: value))),
             ),
-            const Text("Session duration in seconds"),
-            NumberPicker(
-              axis: Axis.horizontal,
-              step: 10,
-              minValue: 0,
-              maxValue: 3600,
-              value: sessionDuration.inSeconds,
-              onChanged: (value) => context.read<SpotSettingsPageBloc>().add(
-                  NewSessionDurationEvent(value: Duration(seconds: value))),
-            ),
             creatingSpot
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
@@ -199,7 +186,6 @@ class _SpotSettingsForm extends StatelessWidget {
                           zoneRadius: zoneRadius,
                           scanPeriod: scanPeriod,
                           zonePeriod: zonePeriod,
-                          sessionDuration: sessionDuration,
                         )),
                   ),
           ],

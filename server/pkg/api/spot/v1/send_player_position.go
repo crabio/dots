@@ -17,19 +17,17 @@ import (
 )
 
 func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlayerPositionServer) error {
-	s.log.Trace("Open send user position stream")
-
 	for {
 		request, err := stream.Recv()
 		if err == io.EOF {
 			// End of stream
-			s.log.Trace("Close user position stream")
+			s.log.Debug("Close user position stream")
 			return stream.SendAndClose(&proto.SendPlayerPositionResponse{})
 		}
 		if err != nil {
 			return err
 		}
-		s.log.WithField("request", request.String()).Trace("Open send user position stream")
+		s.log.WithField("request", request.String()).Debug("Open send user position stream")
 
 		spotUuid, err := uuid.Parse(request.SpotUuid)
 		if err != nil {
@@ -60,7 +58,6 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			// Check player health
 			playerToSpotDistance := geo_utils.AngleToM(spot.Position.Distance(playerState.Position))
 			if playerToSpotDistance > float64(spot.RadiusInM) {
-				s.log.Debugf("Player distance %f > %d zone radius", playerToSpotDistance, spot.RadiusInM)
 				// Start goroutine with ticket for health decreasing
 				if !playerState.ZoneDamageActice {
 					s.startPlayerZoneDamage(spotUuid, playerUuid)
@@ -93,7 +90,7 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			"spotUuid":   spotUuid,
 			"playeruuid": playerUuid,
 			"position":   request.Position,
-		}).Trace("Player position updated")
+		}).Debug("Player position updated")
 	}
 }
 

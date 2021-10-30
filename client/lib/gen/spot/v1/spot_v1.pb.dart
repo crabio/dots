@@ -16,7 +16,6 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.O3)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -26,7 +25,6 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     $core.int? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
-    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
@@ -40,9 +38,6 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
-    }
-    if (sessionDurationInSeconds != null) {
-      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -104,15 +99,6 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
   void clearZonePeriodInSeconds() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get sessionDurationInSeconds => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasSessionDurationInSeconds() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearSessionDurationInSeconds() => clearField(5);
 }
 
 class CreateSpotResponse extends $pb.GeneratedMessage {
@@ -215,7 +201,6 @@ class GetSpotResponse extends $pb.GeneratedMessage {
     ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.O3)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -225,7 +210,6 @@ class GetSpotResponse extends $pb.GeneratedMessage {
     $core.int? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
-    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
@@ -239,9 +223,6 @@ class GetSpotResponse extends $pb.GeneratedMessage {
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
-    }
-    if (sessionDurationInSeconds != null) {
-      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -303,15 +284,6 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
   void clearZonePeriodInSeconds() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get sessionDurationInSeconds => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasSessionDurationInSeconds() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearSessionDurationInSeconds() => clearField(5);
 }
 
 class JoinToSpotRequest extends $pb.GeneratedMessage {

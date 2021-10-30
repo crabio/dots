@@ -15,7 +15,7 @@ import (
 )
 
 func (s *SpotServiceServer) SubZoneEvent(request *proto.SubZoneEventRequest, stream proto.SpotService_SubZoneEventServer) error {
-	s.log.WithField("request", request.String()).Trace("Get players positions")
+	s.log.WithField("request", request.String()).Debug("Sub zone state request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
