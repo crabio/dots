@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/golang/geo/s1"
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/archaeopteryx/logger"
@@ -138,23 +139,14 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 		} else {
 			// Transition in progress
 
-			// Calc zone current distance in meters from previous
-			distance := overalDistance * transitionPercentage
-
 			// Calc zone latitude difference in meters
-			latDiff := geo.AngleToM(c.prevZone.Position.Lat - c.nextZone.Position.Lat)
-
-			// Latitude distance = Distance * Latitude diff / Overal Distance
-			latDistance := distance * latDiff / overalDistance
+			latDiff := (c.nextZone.Position.Lat - c.prevZone.Position.Lat) * s1.Angle(transitionPercentage)
 
 			// Calc zone longitude difference in meters
-			lngDiff := geo.AngleToM(c.prevZone.Position.Lng - c.nextZone.Position.Lng)
+			lngDiff := (c.nextZone.Position.Lng - c.prevZone.Position.Lng) * s1.Angle(transitionPercentage)
 
-			// Longitude distance = Distance * Longitude diff / Overal Distance
-			lngDistance := distance * lngDiff / overalDistance
-
-			lat := c.prevZone.Position.Lat + geo.MToAngle(latDistance)
-			lng := c.prevZone.Position.Lng + geo.MToAngle(lngDistance)
+			lat := c.prevZone.Position.Lat + latDiff
+			lng := c.prevZone.Position.Lng + lngDiff
 
 			// Zone radius = Next zone radius + (Prev zone radius - Next zone radius) * transition percentage
 			radius := float64(c.nextZone.Radius) + float64(c.prevZone.Radius-c.nextZone.Radius)*(1-transitionPercentage)
