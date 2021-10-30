@@ -25,7 +25,7 @@ class SpotSettingsPageBloc
           zoneRadius: 50,
           scanPeriod: const Duration(seconds: 10),
           zonePeriod: const Duration(seconds: 30),
-          sessionDuration: const Duration(minutes: 5),
+          error: "",
         )) {
     on<NewRadiusEvent>((event, emit) {
       if (state is InitedState) {
@@ -48,24 +48,16 @@ class SpotSettingsPageBloc
         _logger.shout("Not allowed $state for $event");
       }
     });
-    on<NewSessionDurationEvent>((event, emit) {
-      if (state is InitedState) {
-        emit((state as InitedState).copyWith(sessionDuration: event.value));
-      } else {
-        _logger.shout("Not allowed $state for $event");
-      }
-    });
 
     on<CreateNewSpotEvent>(
       (event, emit) async {
         final curState = state;
         if (curState is InitedState) {
-          emit(curState.copyWith(creating: true, exception: null));
+          emit(curState.copyWith(creating: true));
           final request = proto.CreateSpotRequest(
-            radius: event.zoneRadius,
+            radiusInM: event.zoneRadius,
             zonePeriodInSeconds: event.zonePeriod.inSeconds,
             scanPeriodInSeconds: event.scanPeriod.inSeconds,
-            sessionDurationInSeconds: event.sessionDuration.inSeconds,
             position: proto.Position(
               latitude: event.position.latitude,
               longitude: event.position.longitude,
@@ -79,7 +71,6 @@ class SpotSettingsPageBloc
               spotUuid: response.spotUuid,
               playerUuid: playerUuid,
             ));
-
             emit(NewSpotCreatedState(
               spotUuid: response.spotUuid,
               position: LatLng(
@@ -88,7 +79,7 @@ class SpotSettingsPageBloc
               ),
             ));
           } on Exception catch (ex) {
-            emit(curState.copyWith(creating: false, exception: ex));
+            emit(curState.copyWith(creating: false, error: ex.toString()));
           }
         } else {}
       },

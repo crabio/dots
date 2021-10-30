@@ -8,13 +8,14 @@ class BlocObserverLogMiddleware extends BlocObserver {
 
   @override
   void onEvent(Bloc bloc, Object? event) {
-    _log.finer("New Bloc $bloc event: $event");
+    _log.finer("New ${bloc.runtimeType} ${event.runtimeType}");
     super.onEvent(bloc, event);
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    _log.finer("New Bloc $bloc transition: $transition");
+    _log.finer(
+        "New ${bloc.runtimeType} transition from ${transition.currentState.runtimeType} to ${transition.nextState.runtimeType} fired by ${transition.event.runtimeType}");
     super.onTransition(bloc, transition);
   }
 

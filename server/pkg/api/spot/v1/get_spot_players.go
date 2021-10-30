@@ -11,7 +11,7 @@ import (
 )
 
 func (s *SpotServiceServer) GetSpotPlayers(request *proto.GetSpotPlayersRequest, stream proto.SpotService_GetSpotPlayersServer) error {
-	s.log.WithField("request", request.String()).Trace("Get spot players list request")
+	s.log.WithField("request", request.String()).Debug("Get spot players list request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {

@@ -73,11 +73,6 @@ class AppSettings {
     );
   }
 
-  Future<bool> save() async {
-    final prefs = await SharedPreferences.getInstance();
-    return await update(prefs, this);
-  }
-
   // JSON methods
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
       _$AppSettingsFromJson(json);

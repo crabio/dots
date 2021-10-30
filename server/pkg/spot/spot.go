@@ -1,23 +1,22 @@
 package spot
 
 import (
-	// External
 	"sync"
 	"time"
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/tjgq/broadcast"
-	// Internal
 )
 
 type Spot struct {
-	Position s2.LatLng
-	// Zone radius in meters
-	ZoneRadius      int32
-	ScanPeriod      time.Duration
-	ZonePeriod      time.Duration
-	SessionDuration time.Duration
+	Id uuid.UUID
+
+	Position   s2.LatLng
+	RadiusInM  float32
+	ScanPeriod time.Duration
+	ZonePeriod time.Duration
 
 	PlayersList []uuid.UUID
 	// Channel for sending players list on update
@@ -25,21 +24,24 @@ type Spot struct {
 
 	Session *SpotSession
 
-	// Fla indicies that spot is active (players are playing)
+	ZoneController *zone.Controller
+
+	// Flag indicies that spot is active (players are playing)
 	IsActive bool
 	// Channel for sending start/stop flags
 	IsActiveBroadcaster *broadcast.Broadcaster
 }
 
-func NewSpot(position s2.LatLng, zoneRadius int32, scanPeriod time.Duration, zonePeriod time.Duration, sessionDuration time.Duration) *Spot {
+func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zonePeriod time.Duration) *Spot {
 	spot := new(Spot)
+	spot.Id = uuid.New()
 	spot.Position = position
-	spot.ZoneRadius = zoneRadius
+	spot.RadiusInM = radiusInM
 	spot.ScanPeriod = scanPeriod
 	spot.ZonePeriod = zonePeriod
-	spot.SessionDuration = sessionDuration
 	spot.PlayersListBroadcaster = broadcast.New(0)
 	spot.IsActiveBroadcaster = broadcast.New(0)
+	spot.ZoneController = zone.NewController(spot.Id, position, radiusInM, 10, zonePeriod, 15*time.Second, 20.0)
 
 	spot.IsActive = false
 

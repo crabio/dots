@@ -10,7 +10,7 @@ abstract class SpotSettingsPageState extends Equatable {
   const SpotSettingsPageState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 // Initial page state
@@ -18,32 +18,29 @@ abstract class SpotSettingsPageState extends Equatable {
 class InitedState extends SpotSettingsPageState {
   final LatLng position;
   // Spot radius in meters
-  final int zoneRadius;
+  final double zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
-  final Duration sessionDuration;
   final bool creating;
-  final Exception? exception;
+  final String error;
 
   const InitedState({
     required this.position,
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
-    required this.sessionDuration,
     this.creating = false,
-    this.exception,
+    required this.error,
   });
 
   @override
-  List<Object?> get props => [
+  List<Object> get props => [
         position,
         zoneRadius,
         scanPeriod,
         zonePeriod,
-        sessionDuration,
         creating,
-        exception,
+        error,
       ];
 }
 

@@ -12,7 +12,7 @@ import (
 
 type PlayerState struct {
 	Position s2.LatLng
-	Health   int16
+	Health   float32
 
 	// Zone damage
 
@@ -74,5 +74,5 @@ func (m *PlayerStateMap) Store(key uuid.UUID, value PlayerState) {
 type PlayerPublicState struct {
 	PlayerUuid uuid.UUID
 	Position   s2.LatLng
-	Health     int16
+	Health     float32
 }

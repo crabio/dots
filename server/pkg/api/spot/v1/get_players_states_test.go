@@ -50,7 +50,7 @@ func TestGetPlayerPosition(t *testing.T) {
 			Latitude:  10,
 			Longitude: 20,
 		},
-		Radius:              100,
+		RadiusInM:           100,
 		ScanPeriodInSeconds: 10,
 		ZonePeriodInSeconds: 30,
 	})
@@ -159,5 +159,5 @@ func TestGetPlayerPosition(t *testing.T) {
 	assert.NotNil(t, mockServer.LastPlayersPositions)
 	assert.Equal(t, float64(10), mockServer.LastPlayersPositions.PlayerState.Position.Latitude)
 	assert.Equal(t, float64(20), mockServer.LastPlayersPositions.PlayerState.Position.Longitude)
-	assert.Equal(t, int32(88), mockServer.LastPlayersPositions.PlayerState.Health)
+	assert.Equal(t, float32(88), mockServer.LastPlayersPositions.PlayerState.Health)
 }

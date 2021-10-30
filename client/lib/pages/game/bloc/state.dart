@@ -5,7 +5,7 @@ abstract class GamePageState extends Equatable {
   const GamePageState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class GamePageInitial extends GamePageState {}
@@ -21,22 +21,26 @@ class InitedState extends GamePageState {
   /// value - player state
   final Map<String, PlayerState> otherPlayersStates;
 
-  final LatLng spotPosition;
-  final int zoneRadius;
+  final ZoneState? currentZone;
+  final DateTime? nextZoneTime;
+  final ZoneState? nextZone;
+  final DateTime? zoneTickStartTimestamp;
 
   const InitedState({
     required this.playerState,
     required this.otherPlayersStates,
-    required this.spotPosition,
-    required this.zoneRadius,
+    this.currentZone,
+    this.nextZoneTime,
+    this.nextZone,
+    this.zoneTickStartTimestamp,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         playerState,
         otherPlayersStates,
-        spotPosition,
-        zoneRadius,
+        currentZone,
+        nextZoneTime,
       ];
 }
 

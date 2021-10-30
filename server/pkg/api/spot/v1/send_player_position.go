@@ -17,8 +17,6 @@ import (
 )
 
 func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlayerPositionServer) error {
-	s.log.Trace("Open send user position stream")
-
 	for {
 		request, err := stream.Recv()
 		if err == io.EOF {
@@ -59,8 +57,7 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 
 			// Check player health
 			playerToSpotDistance := geo_utils.AngleToM(spot.Position.Distance(playerState.Position))
-			if playerToSpotDistance > float64(spot.ZoneRadius) {
-				s.log.Debugf("Player distance %f > %d zone radius", playerToSpotDistance, spot.ZoneRadius)
+			if playerToSpotDistance > float64(spot.RadiusInM) {
 				// Start goroutine with ticket for health decreasing
 				if !playerState.ZoneDamageActice {
 					s.startPlayerZoneDamage(spotUuid, playerUuid)

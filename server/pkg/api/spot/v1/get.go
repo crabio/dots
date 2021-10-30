@@ -12,7 +12,7 @@ import (
 )
 
 func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotRequest) (*proto.GetSpotResponse, error) {
-	s.log.WithField("request", request.String()).Trace("Get spot request")
+	s.log.WithField("request", request.String()).Debug("Get spot request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
@@ -29,12 +29,11 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 			Latitude:  spot.Position.Lat.Degrees(),
 			Longitude: spot.Position.Lng.Degrees(),
 		},
-		Radius:                   spot.ZoneRadius,
-		ScanPeriodInSeconds:      int32(spot.ScanPeriod.Seconds()),
-		ZonePeriodInSeconds:      int32(spot.ZonePeriod.Seconds()),
-		SessionDurationInSeconds: int32(spot.SessionDuration),
+		RadiusInM:           spot.RadiusInM,
+		ScanPeriodInSeconds: int32(spot.ScanPeriod.Seconds()),
+		ZonePeriodInSeconds: int32(spot.ZonePeriod.Seconds()),
 	}
-	s.log.WithField("response", response.String()).Trace("Get spot response")
+	s.log.WithField("response", response.String()).Debug("Get spot response")
 
 	return &response, nil
 }

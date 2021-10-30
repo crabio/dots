@@ -53,11 +53,11 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 					Latitude:  playerState.Position.Lat.Degrees(),
 					Longitude: playerState.Position.Lng.Degrees(),
 				},
-				Health: int32(playerState.Health),
+				Health: playerState.Health,
 			},
 		}
 
-		s.log.WithField("response", response.String()).Debug("Get players state response")
+		s.log.WithField("response", response.String()).Trace("Get players state response")
 		if err := stream.Send(response); err != nil {
 			return err
 		}

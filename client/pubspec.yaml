@@ -41,6 +41,7 @@ dependencies:
   mockito: any
   dartz: any
   uuid: any
+  duration: any
 
 dev_dependencies:
   flutter_test:

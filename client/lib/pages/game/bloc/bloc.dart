@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_position.dart';
+import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grpc/grpc.dart';
@@ -8,7 +9,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
-
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 part 'event.dart';
 part 'state.dart';
@@ -30,6 +30,11 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   }) : super(GamePageInitial()) {
     on<InitEvent>(_onInitEvent);
     on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
+    on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
+    on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
+    on<ZoneTickEvent>(_onZoneTickEvent);
+
+    add(InitEvent());
   }
 
   void _onInitEvent(InitEvent event, Emitter<GamePageState> emit) async {
@@ -60,11 +65,6 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
         health: 100,
       ),
       otherPlayersStates: const {},
-      spotPosition: LatLng(
-        spotData.position.latitude,
-        spotData.position.longitude,
-      ),
-      zoneRadius: spotData.radius,
     ));
 
     _logger.fine("Subscribe on geo position");
@@ -85,6 +85,18 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
             playerHealth: value.playerState.health,
           ))),
     );
+
+    _logger.fine("Subscribe on zone state");
+    var ex = _subscribeOnZoneEvents();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
+
+    _logger.fine("Get last zone event");
+    ex = await _getLastZoneEvent();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
   }
 
   Future<Either<Exception, proto.GetSpotResponse>> _getSpotData() async {
@@ -138,6 +150,162 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     }
   }
 
+  Exception? _subscribeOnZoneEvents() {
+    try {
+      final request = proto.SubZoneEventRequest(spotUuid: spotUuid);
+
+      client.subZoneEvent(request).listen((value) {
+        switch (value.whichEvent()) {
+          case proto.SubZoneEventResponse_Event.startNextZoneTimerEvent:
+            final event = value.startNextZoneTimerEvent;
+            add(StartNextZoneTimerEvent(
+              currentZone: ZoneState(
+                position: LatLng(
+                  event.currentZone.position.latitude,
+                  event.currentZone.position.longitude,
+                ),
+                radiusInM: event.currentZone.radiusInM,
+                damage: event.currentZone.damage,
+              ),
+              nextZoneTime: DateTime.fromMillisecondsSinceEpoch(
+                  event.nextZoneTimestamp.toInt() * 1000),
+            ));
+            break;
+
+          case proto.SubZoneEventResponse_Event.startZoneDelayTimerEvent:
+            final event = value.startZoneDelayTimerEvent;
+            add(StartZoneDelayTimerEvent(
+              currentZone: ZoneState(
+                position: LatLng(
+                  event.currentZone.position.latitude,
+                  event.currentZone.position.longitude,
+                ),
+                radiusInM: event.currentZone.radiusInM,
+                damage: event.currentZone.damage,
+              ),
+              nextZone: ZoneState(
+                position: LatLng(
+                  event.nextZone.position.latitude,
+                  event.nextZone.position.longitude,
+                ),
+                radiusInM: event.nextZone.radiusInM,
+                damage: event.nextZone.damage,
+              ),
+              zoneTickStartTimestamp: DateTime.fromMillisecondsSinceEpoch(
+                  event.zoneTickStartTimestamp.toInt() * 1000),
+            ));
+            break;
+
+          case proto.SubZoneEventResponse_Event.zoneTickEvent:
+            final event = value.zoneTickEvent;
+            add(ZoneTickEvent(
+              currentZone: ZoneState(
+                position: LatLng(
+                  event.currentZone.position.latitude,
+                  event.currentZone.position.longitude,
+                ),
+                radiusInM: event.currentZone.radiusInM,
+                damage: event.currentZone.damage,
+              ),
+              nextZone: ZoneState(
+                position: LatLng(
+                  event.nextZone.position.latitude,
+                  event.nextZone.position.longitude,
+                ),
+                radiusInM: event.nextZone.radiusInM,
+                damage: event.nextZone.damage,
+              ),
+            ));
+            break;
+
+          default:
+            throw Exception("Unimplemented");
+        }
+      });
+      return null;
+    } on Exception catch (ex) {
+      return ex;
+    }
+  }
+
+  Future<Exception?> _getLastZoneEvent() async {
+    try {
+      final response = await client
+          .getLastZoneEvent(proto.GetLastZoneEventRequest(spotUuid: spotUuid));
+
+      switch (response.whichEvent()) {
+        case proto.GetLastZoneEventResponse_Event.startNextZoneTimerEvent:
+          final event = response.startNextZoneTimerEvent;
+          add(StartNextZoneTimerEvent(
+            currentZone: ZoneState(
+              position: LatLng(
+                event.currentZone.position.latitude,
+                event.currentZone.position.longitude,
+              ),
+              radiusInM: event.currentZone.radiusInM,
+              damage: event.currentZone.damage,
+            ),
+            nextZoneTime: DateTime.fromMillisecondsSinceEpoch(
+                event.nextZoneTimestamp.toInt() * 1000),
+          ));
+          break;
+
+        case proto.GetLastZoneEventResponse_Event.startZoneDelayTimerEvent:
+          final event = response.startZoneDelayTimerEvent;
+          add(StartZoneDelayTimerEvent(
+            currentZone: ZoneState(
+              position: LatLng(
+                event.currentZone.position.latitude,
+                event.currentZone.position.longitude,
+              ),
+              radiusInM: event.currentZone.radiusInM,
+              damage: event.currentZone.damage,
+            ),
+            nextZone: ZoneState(
+              position: LatLng(
+                event.nextZone.position.latitude,
+                event.nextZone.position.longitude,
+              ),
+              radiusInM: event.nextZone.radiusInM,
+              damage: event.nextZone.damage,
+            ),
+            zoneTickStartTimestamp: DateTime.fromMillisecondsSinceEpoch(
+                event.zoneTickStartTimestamp.toInt() * 1000),
+          ));
+          break;
+
+        case proto.GetLastZoneEventResponse_Event.zoneTickEvent:
+          final event = response.zoneTickEvent;
+          add(ZoneTickEvent(
+            currentZone: ZoneState(
+              position: LatLng(
+                event.currentZone.position.latitude,
+                event.currentZone.position.longitude,
+              ),
+              radiusInM: event.currentZone.radiusInM,
+              damage: event.currentZone.damage,
+            ),
+            nextZone: ZoneState(
+              position: LatLng(
+                event.nextZone.position.latitude,
+                event.nextZone.position.longitude,
+              ),
+              radiusInM: event.nextZone.radiusInM,
+              damage: event.nextZone.damage,
+            ),
+          ));
+          break;
+
+        default:
+          throw Exception("Unimplemented");
+      }
+
+      return null;
+    } on Exception catch (ex) {
+      return ex;
+    }
+  }
+
   void _onNewPlayersStatesEvent(
     NewPlayersStatesEvent event,
     Emitter<GamePageState> emit,
@@ -161,6 +329,63 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
         );
         emit(curState.copyWith(otherPlayersStates: otherPlayersStates));
       }
+    } else {
+      _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onStartNextZoneTimerEvent(
+    StartNextZoneTimerEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      emit(InitedState(
+        playerState: curState.playerState,
+        otherPlayersStates: curState.otherPlayersStates,
+        currentZone: event.currentZone,
+        nextZone: null,
+        nextZoneTime: event.nextZoneTime,
+        zoneTickStartTimestamp: null,
+      ));
+    } else {
+      _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onStartZoneDelayTimerEvent(
+    StartZoneDelayTimerEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      emit(InitedState(
+        playerState: curState.playerState,
+        otherPlayersStates: curState.otherPlayersStates,
+        currentZone: event.currentZone,
+        nextZone: event.nextZone,
+        nextZoneTime: null,
+        zoneTickStartTimestamp: event.zoneTickStartTimestamp,
+      ));
+    } else {
+      _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onZoneTickEvent(
+    ZoneTickEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    final curState = state;
+    if (curState is InitedState) {
+      emit(InitedState(
+        playerState: curState.playerState,
+        otherPlayersStates: curState.otherPlayersStates,
+        currentZone: event.currentZone,
+        nextZone: event.nextZone,
+        nextZoneTime: null,
+        zoneTickStartTimestamp: null,
+      ));
     } else {
       _logger.shout("Wrong state $curState for $event");
     }

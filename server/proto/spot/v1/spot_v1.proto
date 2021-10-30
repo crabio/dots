@@ -26,16 +26,20 @@ service SpotService {
   // GetPlayersStates returns stream of all players data (this player and others)
   // Data will be received on each new position or health status
   rpc GetPlayersStates (GetPlayersStatesRequest) returns (stream GetPlayersStatesResponse) {}
+
+  // SubZoneEvent returns stream of zones events
+  rpc SubZoneEvent (SubZoneEventRequest) returns (stream SubZoneEventResponse) {}
+  
+  rpc GetLastZoneEvent (GetLastZoneEventRequest) returns (GetLastZoneEventResponse) {}
 }
 
 // RPC structures
 
 message CreateSpotRequest {
   Position position = 1;
-  int32 radius = 2;
+  float radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
-  int32 session_duration_in_seconds = 5;
 }
 
 message CreateSpotResponse {
@@ -48,10 +52,9 @@ message GetSpotRequest {
 
 message GetSpotResponse {
   Position position = 1;
-  int32 radius = 2;
+  float radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
-  int32 session_duration_in_seconds = 5;
 }
 
 message JoinToSpotRequest {
@@ -112,12 +115,58 @@ message GetPlayersStatesResponse {
   PlayerState player_state = 1;
 }
 
+message SubZoneEventRequest {
+  string spot_uuid = 1;
+}
+
+message SubZoneEventResponse {
+  oneof event {
+    StartNextZoneTimerEvent start_next_zone_timer_event = 1;
+    StartZoneDelayTimerEvent start_zone_delay_timer_event = 2;
+    ZoneTickEvent zone_tick_event = 3;
+  }
+}
+
+message GetLastZoneEventRequest {
+  string spot_uuid = 1;
+}
+
+message GetLastZoneEventResponse {
+  oneof event {
+    StartNextZoneTimerEvent start_next_zone_timer_event = 1;
+    StartZoneDelayTimerEvent start_zone_delay_timer_event = 2;
+    ZoneTickEvent zone_tick_event = 3;
+  }
+}
+
+message StartNextZoneTimerEvent {
+  ZoneState current_zone  =1;
+	int64 next_zone_timestamp =2;
+}
+
+message StartZoneDelayTimerEvent {
+  ZoneState current_zone  =1;
+	ZoneState next_zone  =2;
+	int64 zone_tick_start_timestamp =3;
+}
+
+message ZoneTickEvent {
+  ZoneState current_zone  =1;
+	ZoneState next_zone  =2;
+}
+
 // Non RPC structures
 
 message PlayerState {
   string player_uuid = 1;
   Position position = 2;
-  int32 health = 3;
+  float health = 3;
+}
+
+message ZoneState {
+  Position position = 1;
+  float radius_in_m =2;
+  float damage = 3;
 }
 
 message Position {

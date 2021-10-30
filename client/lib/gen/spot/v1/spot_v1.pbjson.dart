@@ -13,15 +13,14 @@ const CreateSpotRequest$json = const {
   '1': 'CreateSpotRequest',
   '2': const [
     const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'radius', '3': 2, '4': 1, '5': 5, '10': 'radius'},
+    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
     const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
     const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
-    const {'1': 'session_duration_in_seconds', '3': 5, '4': 1, '5': 5, '10': 'sessionDurationInSeconds'},
   ],
 };
 
 /// Descriptor for `CreateSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEhYKBnJhZGl1cxgCIAEoBVIGcmFkaXVzEjMKFnNjYW5fcGVyaW9kX2luX3NlY29uZHMYAyABKAVSE3NjYW5QZXJpb2RJblNlY29uZHMSMwoWem9uZV9wZXJpb2RfaW5fc2Vjb25kcxgEIAEoBVITem9uZVBlcmlvZEluU2Vjb25kcxI9ChtzZXNzaW9uX2R1cmF0aW9uX2luX3NlY29uZHMYBSABKAVSGHNlc3Npb25EdXJhdGlvbkluU2Vjb25kcw==');
+final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEh4KC3JhZGl1c19pbl9tGAIgASgCUglyYWRpdXNJbk0SMwoWc2Nhbl9wZXJpb2RfaW5fc2Vjb25kcxgDIAEoBVITc2NhblBlcmlvZEluU2Vjb25kcxIzChZ6b25lX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhN6b25lUGVyaW9kSW5TZWNvbmRz');
 @$core.Deprecated('Use createSpotResponseDescriptor instead')
 const CreateSpotResponse$json = const {
   '1': 'CreateSpotResponse',
@@ -47,15 +46,14 @@ const GetSpotResponse$json = const {
   '1': 'GetSpotResponse',
   '2': const [
     const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'radius', '3': 2, '4': 1, '5': 5, '10': 'radius'},
+    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
     const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
     const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
-    const {'1': 'session_duration_in_seconds', '3': 5, '4': 1, '5': 5, '10': 'sessionDurationInSeconds'},
   ],
 };
 
 /// Descriptor for `GetSpotResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSpotResponseDescriptor = $convert.base64Decode('Cg9HZXRTcG90UmVzcG9uc2USLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIWCgZyYWRpdXMYAiABKAVSBnJhZGl1cxIzChZzY2FuX3BlcmlvZF9pbl9zZWNvbmRzGAMgASgFUhNzY2FuUGVyaW9kSW5TZWNvbmRzEjMKFnpvbmVfcGVyaW9kX2luX3NlY29uZHMYBCABKAVSE3pvbmVQZXJpb2RJblNlY29uZHMSPQobc2Vzc2lvbl9kdXJhdGlvbl9pbl9zZWNvbmRzGAUgASgFUhhzZXNzaW9uRHVyYXRpb25JblNlY29uZHM=');
+final $typed_data.Uint8List getSpotResponseDescriptor = $convert.base64Decode('Cg9HZXRTcG90UmVzcG9uc2USLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIeCgtyYWRpdXNfaW5fbRgCIAEoAlIJcmFkaXVzSW5NEjMKFnNjYW5fcGVyaW9kX2luX3NlY29uZHMYAyABKAVSE3NjYW5QZXJpb2RJblNlY29uZHMSMwoWem9uZV9wZXJpb2RfaW5fc2Vjb25kcxgEIAEoBVITem9uZVBlcmlvZEluU2Vjb25kcw==');
 @$core.Deprecated('Use joinToSpotRequestDescriptor instead')
 const JoinToSpotRequest$json = const {
   '1': 'JoinToSpotRequest',
@@ -192,18 +190,114 @@ const GetPlayersStatesResponse$json = const {
 
 /// Descriptor for `GetPlayersStatesResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getPlayersStatesResponseDescriptor = $convert.base64Decode('ChhHZXRQbGF5ZXJzU3RhdGVzUmVzcG9uc2USNwoMcGxheWVyX3N0YXRlGAEgASgLMhQuc3BvdC52MS5QbGF5ZXJTdGF0ZVILcGxheWVyU3RhdGU=');
+@$core.Deprecated('Use subZoneEventRequestDescriptor instead')
+const SubZoneEventRequest$json = const {
+  '1': 'SubZoneEventRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+  ],
+};
+
+/// Descriptor for `SubZoneEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subZoneEventRequestDescriptor = $convert.base64Decode('ChNTdWJab25lRXZlbnRSZXF1ZXN0EhsKCXNwb3RfdXVpZBgBIAEoCVIIc3BvdFV1aWQ=');
+@$core.Deprecated('Use subZoneEventResponseDescriptor instead')
+const SubZoneEventResponse$json = const {
+  '1': 'SubZoneEventResponse',
+  '2': const [
+    const {'1': 'start_next_zone_timer_event', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.StartNextZoneTimerEvent', '9': 0, '10': 'startNextZoneTimerEvent'},
+    const {'1': 'start_zone_delay_timer_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.StartZoneDelayTimerEvent', '9': 0, '10': 'startZoneDelayTimerEvent'},
+    const {'1': 'zone_tick_event', '3': 3, '4': 1, '5': 11, '6': '.spot.v1.ZoneTickEvent', '9': 0, '10': 'zoneTickEvent'},
+  ],
+  '8': const [
+    const {'1': 'event'},
+  ],
+};
+
+/// Descriptor for `SubZoneEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subZoneEventResponseDescriptor = $convert.base64Decode('ChRTdWJab25lRXZlbnRSZXNwb25zZRJgChtzdGFydF9uZXh0X3pvbmVfdGltZXJfZXZlbnQYASABKAsyIC5zcG90LnYxLlN0YXJ0TmV4dFpvbmVUaW1lckV2ZW50SABSF3N0YXJ0TmV4dFpvbmVUaW1lckV2ZW50EmMKHHN0YXJ0X3pvbmVfZGVsYXlfdGltZXJfZXZlbnQYAiABKAsyIS5zcG90LnYxLlN0YXJ0Wm9uZURlbGF5VGltZXJFdmVudEgAUhhzdGFydFpvbmVEZWxheVRpbWVyRXZlbnQSQAoPem9uZV90aWNrX2V2ZW50GAMgASgLMhYuc3BvdC52MS5ab25lVGlja0V2ZW50SABSDXpvbmVUaWNrRXZlbnRCBwoFZXZlbnQ=');
+@$core.Deprecated('Use getLastZoneEventRequestDescriptor instead')
+const GetLastZoneEventRequest$json = const {
+  '1': 'GetLastZoneEventRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+  ],
+};
+
+/// Descriptor for `GetLastZoneEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLastZoneEventRequestDescriptor = $convert.base64Decode('ChdHZXRMYXN0Wm9uZUV2ZW50UmVxdWVzdBIbCglzcG90X3V1aWQYASABKAlSCHNwb3RVdWlk');
+@$core.Deprecated('Use getLastZoneEventResponseDescriptor instead')
+const GetLastZoneEventResponse$json = const {
+  '1': 'GetLastZoneEventResponse',
+  '2': const [
+    const {'1': 'start_next_zone_timer_event', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.StartNextZoneTimerEvent', '9': 0, '10': 'startNextZoneTimerEvent'},
+    const {'1': 'start_zone_delay_timer_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.StartZoneDelayTimerEvent', '9': 0, '10': 'startZoneDelayTimerEvent'},
+    const {'1': 'zone_tick_event', '3': 3, '4': 1, '5': 11, '6': '.spot.v1.ZoneTickEvent', '9': 0, '10': 'zoneTickEvent'},
+  ],
+  '8': const [
+    const {'1': 'event'},
+  ],
+};
+
+/// Descriptor for `GetLastZoneEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLastZoneEventResponseDescriptor = $convert.base64Decode('ChhHZXRMYXN0Wm9uZUV2ZW50UmVzcG9uc2USYAobc3RhcnRfbmV4dF96b25lX3RpbWVyX2V2ZW50GAEgASgLMiAuc3BvdC52MS5TdGFydE5leHRab25lVGltZXJFdmVudEgAUhdzdGFydE5leHRab25lVGltZXJFdmVudBJjChxzdGFydF96b25lX2RlbGF5X3RpbWVyX2V2ZW50GAIgASgLMiEuc3BvdC52MS5TdGFydFpvbmVEZWxheVRpbWVyRXZlbnRIAFIYc3RhcnRab25lRGVsYXlUaW1lckV2ZW50EkAKD3pvbmVfdGlja19ldmVudBgDIAEoCzIWLnNwb3QudjEuWm9uZVRpY2tFdmVudEgAUg16b25lVGlja0V2ZW50QgcKBWV2ZW50');
+@$core.Deprecated('Use startNextZoneTimerEventDescriptor instead')
+const StartNextZoneTimerEvent$json = const {
+  '1': 'StartNextZoneTimerEvent',
+  '2': const [
+    const {'1': 'current_zone', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.ZoneState', '10': 'currentZone'},
+    const {'1': 'next_zone_timestamp', '3': 2, '4': 1, '5': 3, '10': 'nextZoneTimestamp'},
+  ],
+};
+
+/// Descriptor for `StartNextZoneTimerEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List startNextZoneTimerEventDescriptor = $convert.base64Decode('ChdTdGFydE5leHRab25lVGltZXJFdmVudBI1CgxjdXJyZW50X3pvbmUYASABKAsyEi5zcG90LnYxLlpvbmVTdGF0ZVILY3VycmVudFpvbmUSLgoTbmV4dF96b25lX3RpbWVzdGFtcBgCIAEoA1IRbmV4dFpvbmVUaW1lc3RhbXA=');
+@$core.Deprecated('Use startZoneDelayTimerEventDescriptor instead')
+const StartZoneDelayTimerEvent$json = const {
+  '1': 'StartZoneDelayTimerEvent',
+  '2': const [
+    const {'1': 'current_zone', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.ZoneState', '10': 'currentZone'},
+    const {'1': 'next_zone', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.ZoneState', '10': 'nextZone'},
+    const {'1': 'zone_tick_start_timestamp', '3': 3, '4': 1, '5': 3, '10': 'zoneTickStartTimestamp'},
+  ],
+};
+
+/// Descriptor for `StartZoneDelayTimerEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List startZoneDelayTimerEventDescriptor = $convert.base64Decode('ChhTdGFydFpvbmVEZWxheVRpbWVyRXZlbnQSNQoMY3VycmVudF96b25lGAEgASgLMhIuc3BvdC52MS5ab25lU3RhdGVSC2N1cnJlbnRab25lEi8KCW5leHRfem9uZRgCIAEoCzISLnNwb3QudjEuWm9uZVN0YXRlUghuZXh0Wm9uZRI5Chl6b25lX3RpY2tfc3RhcnRfdGltZXN0YW1wGAMgASgDUhZ6b25lVGlja1N0YXJ0VGltZXN0YW1w');
+@$core.Deprecated('Use zoneTickEventDescriptor instead')
+const ZoneTickEvent$json = const {
+  '1': 'ZoneTickEvent',
+  '2': const [
+    const {'1': 'current_zone', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.ZoneState', '10': 'currentZone'},
+    const {'1': 'next_zone', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.ZoneState', '10': 'nextZone'},
+  ],
+};
+
+/// Descriptor for `ZoneTickEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List zoneTickEventDescriptor = $convert.base64Decode('Cg1ab25lVGlja0V2ZW50EjUKDGN1cnJlbnRfem9uZRgBIAEoCzISLnNwb3QudjEuWm9uZVN0YXRlUgtjdXJyZW50Wm9uZRIvCgluZXh0X3pvbmUYAiABKAsyEi5zcG90LnYxLlpvbmVTdGF0ZVIIbmV4dFpvbmU=');
 @$core.Deprecated('Use playerStateDescriptor instead')
 const PlayerState$json = const {
   '1': 'PlayerState',
   '2': const [
     const {'1': 'player_uuid', '3': 1, '4': 1, '5': 9, '10': 'playerUuid'},
     const {'1': 'position', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'health', '3': 3, '4': 1, '5': 5, '10': 'health'},
+    const {'1': 'health', '3': 3, '4': 1, '5': 2, '10': 'health'},
   ],
 };
 
 /// Descriptor for `PlayerState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List playerStateDescriptor = $convert.base64Decode('CgtQbGF5ZXJTdGF0ZRIfCgtwbGF5ZXJfdXVpZBgBIAEoCVIKcGxheWVyVXVpZBItCghwb3NpdGlvbhgCIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEhYKBmhlYWx0aBgDIAEoBVIGaGVhbHRo');
+final $typed_data.Uint8List playerStateDescriptor = $convert.base64Decode('CgtQbGF5ZXJTdGF0ZRIfCgtwbGF5ZXJfdXVpZBgBIAEoCVIKcGxheWVyVXVpZBItCghwb3NpdGlvbhgCIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEhYKBmhlYWx0aBgDIAEoAlIGaGVhbHRo');
+@$core.Deprecated('Use zoneStateDescriptor instead')
+const ZoneState$json = const {
+  '1': 'ZoneState',
+  '2': const [
+    const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
+    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
+    const {'1': 'damage', '3': 3, '4': 1, '5': 2, '10': 'damage'},
+  ],
+};
+
+/// Descriptor for `ZoneState`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List zoneStateDescriptor = $convert.base64Decode('Cglab25lU3RhdGUSLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIeCgtyYWRpdXNfaW5fbRgCIAEoAlIJcmFkaXVzSW5NEhYKBmRhbWFnZRgDIAEoAlIGZGFtYWdl');
 @$core.Deprecated('Use positionDescriptor instead')
 const Position$json = const {
   '1': 'Position',

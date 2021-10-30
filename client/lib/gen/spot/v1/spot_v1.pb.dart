@@ -7,41 +7,37 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class CreateSpotRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radius', $pb.PbFieldType.O3)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
   CreateSpotRequest._() : super();
   factory CreateSpotRequest({
     Position? position,
-    $core.int? radius,
+    $core.double? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
-    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
       _result.position = position;
     }
-    if (radius != null) {
-      _result.radius = radius;
+    if (radiusInM != null) {
+      _result.radiusInM = radiusInM;
     }
     if (scanPeriodInSeconds != null) {
       _result.scanPeriodInSeconds = scanPeriodInSeconds;
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
-    }
-    if (sessionDurationInSeconds != null) {
-      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -78,13 +74,13 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   Position ensurePosition() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get radius => $_getIZ(1);
+  $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radius($core.int v) { $_setSignedInt32(1, v); }
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasRadius() => $_has(1);
+  $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)
-  void clearRadius() => clearField(2);
+  void clearRadiusInM() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.int get scanPeriodInSeconds => $_getIZ(2);
@@ -103,15 +99,6 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
   void clearZonePeriodInSeconds() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get sessionDurationInSeconds => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasSessionDurationInSeconds() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearSessionDurationInSeconds() => clearField(5);
 }
 
 class CreateSpotResponse extends $pb.GeneratedMessage {
@@ -211,36 +198,31 @@ class GetSpotRequest extends $pb.GeneratedMessage {
 class GetSpotResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radius', $pb.PbFieldType.O3)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
-    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
   GetSpotResponse._() : super();
   factory GetSpotResponse({
     Position? position,
-    $core.int? radius,
+    $core.double? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
-    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
       _result.position = position;
     }
-    if (radius != null) {
-      _result.radius = radius;
+    if (radiusInM != null) {
+      _result.radiusInM = radiusInM;
     }
     if (scanPeriodInSeconds != null) {
       _result.scanPeriodInSeconds = scanPeriodInSeconds;
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
-    }
-    if (sessionDurationInSeconds != null) {
-      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -277,13 +259,13 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   Position ensurePosition() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get radius => $_getIZ(1);
+  $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radius($core.int v) { $_setSignedInt32(1, v); }
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasRadius() => $_has(1);
+  $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)
-  void clearRadius() => clearField(2);
+  void clearRadiusInM() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.int get scanPeriodInSeconds => $_getIZ(2);
@@ -302,15 +284,6 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
   void clearZonePeriodInSeconds() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get sessionDurationInSeconds => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasSessionDurationInSeconds() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearSessionDurationInSeconds() => clearField(5);
 }
 
 class JoinToSpotRequest extends $pb.GeneratedMessage {
@@ -985,11 +958,508 @@ class GetPlayersStatesResponse extends $pb.GeneratedMessage {
   PlayerState ensurePlayerState() => $_ensure(0);
 }
 
+class SubZoneEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubZoneEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  SubZoneEventRequest._() : super();
+  factory SubZoneEventRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
+  }
+  factory SubZoneEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubZoneEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SubZoneEventRequest clone() => SubZoneEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SubZoneEventRequest copyWith(void Function(SubZoneEventRequest) updates) => super.copyWith((message) => updates(message as SubZoneEventRequest)) as SubZoneEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SubZoneEventRequest create() => SubZoneEventRequest._();
+  SubZoneEventRequest createEmptyInstance() => create();
+  static $pb.PbList<SubZoneEventRequest> createRepeated() => $pb.PbList<SubZoneEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SubZoneEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubZoneEventRequest>(create);
+  static SubZoneEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
+
+enum SubZoneEventResponse_Event {
+  startNextZoneTimerEvent, 
+  startZoneDelayTimerEvent, 
+  zoneTickEvent, 
+  notSet
+}
+
+class SubZoneEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, SubZoneEventResponse_Event> _SubZoneEventResponse_EventByTag = {
+    1 : SubZoneEventResponse_Event.startNextZoneTimerEvent,
+    2 : SubZoneEventResponse_Event.startZoneDelayTimerEvent,
+    3 : SubZoneEventResponse_Event.zoneTickEvent,
+    0 : SubZoneEventResponse_Event.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubZoneEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..oo(0, [1, 2, 3])
+    ..aOM<StartNextZoneTimerEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startNextZoneTimerEvent', subBuilder: StartNextZoneTimerEvent.create)
+    ..aOM<StartZoneDelayTimerEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startZoneDelayTimerEvent', subBuilder: StartZoneDelayTimerEvent.create)
+    ..aOM<ZoneTickEvent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickEvent', subBuilder: ZoneTickEvent.create)
+    ..hasRequiredFields = false
+  ;
+
+  SubZoneEventResponse._() : super();
+  factory SubZoneEventResponse({
+    StartNextZoneTimerEvent? startNextZoneTimerEvent,
+    StartZoneDelayTimerEvent? startZoneDelayTimerEvent,
+    ZoneTickEvent? zoneTickEvent,
+  }) {
+    final _result = create();
+    if (startNextZoneTimerEvent != null) {
+      _result.startNextZoneTimerEvent = startNextZoneTimerEvent;
+    }
+    if (startZoneDelayTimerEvent != null) {
+      _result.startZoneDelayTimerEvent = startZoneDelayTimerEvent;
+    }
+    if (zoneTickEvent != null) {
+      _result.zoneTickEvent = zoneTickEvent;
+    }
+    return _result;
+  }
+  factory SubZoneEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubZoneEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SubZoneEventResponse clone() => SubZoneEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SubZoneEventResponse copyWith(void Function(SubZoneEventResponse) updates) => super.copyWith((message) => updates(message as SubZoneEventResponse)) as SubZoneEventResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static SubZoneEventResponse create() => SubZoneEventResponse._();
+  SubZoneEventResponse createEmptyInstance() => create();
+  static $pb.PbList<SubZoneEventResponse> createRepeated() => $pb.PbList<SubZoneEventResponse>();
+  @$core.pragma('dart2js:noInline')
+  static SubZoneEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubZoneEventResponse>(create);
+  static SubZoneEventResponse? _defaultInstance;
+
+  SubZoneEventResponse_Event whichEvent() => _SubZoneEventResponse_EventByTag[$_whichOneof(0)]!;
+  void clearEvent() => clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  StartNextZoneTimerEvent get startNextZoneTimerEvent => $_getN(0);
+  @$pb.TagNumber(1)
+  set startNextZoneTimerEvent(StartNextZoneTimerEvent v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStartNextZoneTimerEvent() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStartNextZoneTimerEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartNextZoneTimerEvent ensureStartNextZoneTimerEvent() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  StartZoneDelayTimerEvent get startZoneDelayTimerEvent => $_getN(1);
+  @$pb.TagNumber(2)
+  set startZoneDelayTimerEvent(StartZoneDelayTimerEvent v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStartZoneDelayTimerEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStartZoneDelayTimerEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  StartZoneDelayTimerEvent ensureStartZoneDelayTimerEvent() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  ZoneTickEvent get zoneTickEvent => $_getN(2);
+  @$pb.TagNumber(3)
+  set zoneTickEvent(ZoneTickEvent v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasZoneTickEvent() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearZoneTickEvent() => clearField(3);
+  @$pb.TagNumber(3)
+  ZoneTickEvent ensureZoneTickEvent() => $_ensure(2);
+}
+
+class GetLastZoneEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastZoneEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  GetLastZoneEventRequest._() : super();
+  factory GetLastZoneEventRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
+  }
+  factory GetLastZoneEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastZoneEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventRequest clone() => GetLastZoneEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventRequest copyWith(void Function(GetLastZoneEventRequest) updates) => super.copyWith((message) => updates(message as GetLastZoneEventRequest)) as GetLastZoneEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventRequest create() => GetLastZoneEventRequest._();
+  GetLastZoneEventRequest createEmptyInstance() => create();
+  static $pb.PbList<GetLastZoneEventRequest> createRepeated() => $pb.PbList<GetLastZoneEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventRequest>(create);
+  static GetLastZoneEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
+
+enum GetLastZoneEventResponse_Event {
+  startNextZoneTimerEvent, 
+  startZoneDelayTimerEvent, 
+  zoneTickEvent, 
+  notSet
+}
+
+class GetLastZoneEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, GetLastZoneEventResponse_Event> _GetLastZoneEventResponse_EventByTag = {
+    1 : GetLastZoneEventResponse_Event.startNextZoneTimerEvent,
+    2 : GetLastZoneEventResponse_Event.startZoneDelayTimerEvent,
+    3 : GetLastZoneEventResponse_Event.zoneTickEvent,
+    0 : GetLastZoneEventResponse_Event.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastZoneEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..oo(0, [1, 2, 3])
+    ..aOM<StartNextZoneTimerEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startNextZoneTimerEvent', subBuilder: StartNextZoneTimerEvent.create)
+    ..aOM<StartZoneDelayTimerEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startZoneDelayTimerEvent', subBuilder: StartZoneDelayTimerEvent.create)
+    ..aOM<ZoneTickEvent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickEvent', subBuilder: ZoneTickEvent.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetLastZoneEventResponse._() : super();
+  factory GetLastZoneEventResponse({
+    StartNextZoneTimerEvent? startNextZoneTimerEvent,
+    StartZoneDelayTimerEvent? startZoneDelayTimerEvent,
+    ZoneTickEvent? zoneTickEvent,
+  }) {
+    final _result = create();
+    if (startNextZoneTimerEvent != null) {
+      _result.startNextZoneTimerEvent = startNextZoneTimerEvent;
+    }
+    if (startZoneDelayTimerEvent != null) {
+      _result.startZoneDelayTimerEvent = startZoneDelayTimerEvent;
+    }
+    if (zoneTickEvent != null) {
+      _result.zoneTickEvent = zoneTickEvent;
+    }
+    return _result;
+  }
+  factory GetLastZoneEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastZoneEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventResponse clone() => GetLastZoneEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventResponse copyWith(void Function(GetLastZoneEventResponse) updates) => super.copyWith((message) => updates(message as GetLastZoneEventResponse)) as GetLastZoneEventResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventResponse create() => GetLastZoneEventResponse._();
+  GetLastZoneEventResponse createEmptyInstance() => create();
+  static $pb.PbList<GetLastZoneEventResponse> createRepeated() => $pb.PbList<GetLastZoneEventResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventResponse>(create);
+  static GetLastZoneEventResponse? _defaultInstance;
+
+  GetLastZoneEventResponse_Event whichEvent() => _GetLastZoneEventResponse_EventByTag[$_whichOneof(0)]!;
+  void clearEvent() => clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  StartNextZoneTimerEvent get startNextZoneTimerEvent => $_getN(0);
+  @$pb.TagNumber(1)
+  set startNextZoneTimerEvent(StartNextZoneTimerEvent v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStartNextZoneTimerEvent() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStartNextZoneTimerEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartNextZoneTimerEvent ensureStartNextZoneTimerEvent() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  StartZoneDelayTimerEvent get startZoneDelayTimerEvent => $_getN(1);
+  @$pb.TagNumber(2)
+  set startZoneDelayTimerEvent(StartZoneDelayTimerEvent v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStartZoneDelayTimerEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStartZoneDelayTimerEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  StartZoneDelayTimerEvent ensureStartZoneDelayTimerEvent() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  ZoneTickEvent get zoneTickEvent => $_getN(2);
+  @$pb.TagNumber(3)
+  set zoneTickEvent(ZoneTickEvent v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasZoneTickEvent() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearZoneTickEvent() => clearField(3);
+  @$pb.TagNumber(3)
+  ZoneTickEvent ensureZoneTickEvent() => $_ensure(2);
+}
+
+class StartNextZoneTimerEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartNextZoneTimerEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<ZoneState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentZone', subBuilder: ZoneState.create)
+    ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZoneTimestamp')
+    ..hasRequiredFields = false
+  ;
+
+  StartNextZoneTimerEvent._() : super();
+  factory StartNextZoneTimerEvent({
+    ZoneState? currentZone,
+    $fixnum.Int64? nextZoneTimestamp,
+  }) {
+    final _result = create();
+    if (currentZone != null) {
+      _result.currentZone = currentZone;
+    }
+    if (nextZoneTimestamp != null) {
+      _result.nextZoneTimestamp = nextZoneTimestamp;
+    }
+    return _result;
+  }
+  factory StartNextZoneTimerEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartNextZoneTimerEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartNextZoneTimerEvent clone() => StartNextZoneTimerEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartNextZoneTimerEvent copyWith(void Function(StartNextZoneTimerEvent) updates) => super.copyWith((message) => updates(message as StartNextZoneTimerEvent)) as StartNextZoneTimerEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static StartNextZoneTimerEvent create() => StartNextZoneTimerEvent._();
+  StartNextZoneTimerEvent createEmptyInstance() => create();
+  static $pb.PbList<StartNextZoneTimerEvent> createRepeated() => $pb.PbList<StartNextZoneTimerEvent>();
+  @$core.pragma('dart2js:noInline')
+  static StartNextZoneTimerEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartNextZoneTimerEvent>(create);
+  static StartNextZoneTimerEvent? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ZoneState get currentZone => $_getN(0);
+  @$pb.TagNumber(1)
+  set currentZone(ZoneState v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCurrentZone() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCurrentZone() => clearField(1);
+  @$pb.TagNumber(1)
+  ZoneState ensureCurrentZone() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get nextZoneTimestamp => $_getI64(1);
+  @$pb.TagNumber(2)
+  set nextZoneTimestamp($fixnum.Int64 v) { $_setInt64(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasNextZoneTimestamp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNextZoneTimestamp() => clearField(2);
+}
+
+class StartZoneDelayTimerEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartZoneDelayTimerEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<ZoneState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentZone', subBuilder: ZoneState.create)
+    ..aOM<ZoneState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZone', subBuilder: ZoneState.create)
+    ..aInt64(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickStartTimestamp')
+    ..hasRequiredFields = false
+  ;
+
+  StartZoneDelayTimerEvent._() : super();
+  factory StartZoneDelayTimerEvent({
+    ZoneState? currentZone,
+    ZoneState? nextZone,
+    $fixnum.Int64? zoneTickStartTimestamp,
+  }) {
+    final _result = create();
+    if (currentZone != null) {
+      _result.currentZone = currentZone;
+    }
+    if (nextZone != null) {
+      _result.nextZone = nextZone;
+    }
+    if (zoneTickStartTimestamp != null) {
+      _result.zoneTickStartTimestamp = zoneTickStartTimestamp;
+    }
+    return _result;
+  }
+  factory StartZoneDelayTimerEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartZoneDelayTimerEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartZoneDelayTimerEvent clone() => StartZoneDelayTimerEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartZoneDelayTimerEvent copyWith(void Function(StartZoneDelayTimerEvent) updates) => super.copyWith((message) => updates(message as StartZoneDelayTimerEvent)) as StartZoneDelayTimerEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static StartZoneDelayTimerEvent create() => StartZoneDelayTimerEvent._();
+  StartZoneDelayTimerEvent createEmptyInstance() => create();
+  static $pb.PbList<StartZoneDelayTimerEvent> createRepeated() => $pb.PbList<StartZoneDelayTimerEvent>();
+  @$core.pragma('dart2js:noInline')
+  static StartZoneDelayTimerEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartZoneDelayTimerEvent>(create);
+  static StartZoneDelayTimerEvent? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ZoneState get currentZone => $_getN(0);
+  @$pb.TagNumber(1)
+  set currentZone(ZoneState v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCurrentZone() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCurrentZone() => clearField(1);
+  @$pb.TagNumber(1)
+  ZoneState ensureCurrentZone() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  ZoneState get nextZone => $_getN(1);
+  @$pb.TagNumber(2)
+  set nextZone(ZoneState v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasNextZone() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNextZone() => clearField(2);
+  @$pb.TagNumber(2)
+  ZoneState ensureNextZone() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get zoneTickStartTimestamp => $_getI64(2);
+  @$pb.TagNumber(3)
+  set zoneTickStartTimestamp($fixnum.Int64 v) { $_setInt64(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasZoneTickStartTimestamp() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearZoneTickStartTimestamp() => clearField(3);
+}
+
+class ZoneTickEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ZoneTickEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<ZoneState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentZone', subBuilder: ZoneState.create)
+    ..aOM<ZoneState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZone', subBuilder: ZoneState.create)
+    ..hasRequiredFields = false
+  ;
+
+  ZoneTickEvent._() : super();
+  factory ZoneTickEvent({
+    ZoneState? currentZone,
+    ZoneState? nextZone,
+  }) {
+    final _result = create();
+    if (currentZone != null) {
+      _result.currentZone = currentZone;
+    }
+    if (nextZone != null) {
+      _result.nextZone = nextZone;
+    }
+    return _result;
+  }
+  factory ZoneTickEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ZoneTickEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ZoneTickEvent clone() => ZoneTickEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ZoneTickEvent copyWith(void Function(ZoneTickEvent) updates) => super.copyWith((message) => updates(message as ZoneTickEvent)) as ZoneTickEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ZoneTickEvent create() => ZoneTickEvent._();
+  ZoneTickEvent createEmptyInstance() => create();
+  static $pb.PbList<ZoneTickEvent> createRepeated() => $pb.PbList<ZoneTickEvent>();
+  @$core.pragma('dart2js:noInline')
+  static ZoneTickEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZoneTickEvent>(create);
+  static ZoneTickEvent? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ZoneState get currentZone => $_getN(0);
+  @$pb.TagNumber(1)
+  set currentZone(ZoneState v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCurrentZone() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCurrentZone() => clearField(1);
+  @$pb.TagNumber(1)
+  ZoneState ensureCurrentZone() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  ZoneState get nextZone => $_getN(1);
+  @$pb.TagNumber(2)
+  set nextZone(ZoneState v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasNextZone() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNextZone() => clearField(2);
+  @$pb.TagNumber(2)
+  ZoneState ensureNextZone() => $_ensure(1);
+}
+
 class PlayerState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PlayerState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
     ..aOM<Position>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'health', $pb.PbFieldType.O3)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'health', $pb.PbFieldType.OF)
     ..hasRequiredFields = false
   ;
 
@@ -997,7 +1467,7 @@ class PlayerState extends $pb.GeneratedMessage {
   factory PlayerState({
     $core.String? playerUuid,
     Position? position,
-    $core.int? health,
+    $core.double? health,
   }) {
     final _result = create();
     if (playerUuid != null) {
@@ -1053,13 +1523,90 @@ class PlayerState extends $pb.GeneratedMessage {
   Position ensurePosition() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $core.int get health => $_getIZ(2);
+  $core.double get health => $_getN(2);
   @$pb.TagNumber(3)
-  set health($core.int v) { $_setSignedInt32(2, v); }
+  set health($core.double v) { $_setFloat(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasHealth() => $_has(2);
   @$pb.TagNumber(3)
   void clearHealth() => clearField(3);
+}
+
+class ZoneState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ZoneState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'damage', $pb.PbFieldType.OF)
+    ..hasRequiredFields = false
+  ;
+
+  ZoneState._() : super();
+  factory ZoneState({
+    Position? position,
+    $core.double? radiusInM,
+    $core.double? damage,
+  }) {
+    final _result = create();
+    if (position != null) {
+      _result.position = position;
+    }
+    if (radiusInM != null) {
+      _result.radiusInM = radiusInM;
+    }
+    if (damage != null) {
+      _result.damage = damage;
+    }
+    return _result;
+  }
+  factory ZoneState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ZoneState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ZoneState clone() => ZoneState()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ZoneState copyWith(void Function(ZoneState) updates) => super.copyWith((message) => updates(message as ZoneState)) as ZoneState; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ZoneState create() => ZoneState._();
+  ZoneState createEmptyInstance() => create();
+  static $pb.PbList<ZoneState> createRepeated() => $pb.PbList<ZoneState>();
+  @$core.pragma('dart2js:noInline')
+  static ZoneState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZoneState>(create);
+  static ZoneState? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Position get position => $_getN(0);
+  @$pb.TagNumber(1)
+  set position(Position v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPosition() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPosition() => clearField(1);
+  @$pb.TagNumber(1)
+  Position ensurePosition() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.double get radiusInM => $_getN(1);
+  @$pb.TagNumber(2)
+  set radiusInM($core.double v) { $_setFloat(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasRadiusInM() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRadiusInM() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get damage => $_getN(2);
+  @$pb.TagNumber(3)
+  set damage($core.double v) { $_setFloat(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDamage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDamage() => clearField(3);
 }
 
 class Position extends $pb.GeneratedMessage {

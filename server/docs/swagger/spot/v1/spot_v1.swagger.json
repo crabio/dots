@@ -52,6 +52,20 @@
         }
       }
     },
+    "v1GetLastZoneEventResponse": {
+      "type": "object",
+      "properties": {
+        "startNextZoneTimerEvent": {
+          "$ref": "#/definitions/v1StartNextZoneTimerEvent"
+        },
+        "startZoneDelayTimerEvent": {
+          "$ref": "#/definitions/v1StartZoneDelayTimerEvent"
+        },
+        "zoneTickEvent": {
+          "$ref": "#/definitions/v1ZoneTickEvent"
+        }
+      }
+    },
     "v1GetPlayersStatesResponse": {
       "type": "object",
       "properties": {
@@ -78,19 +92,15 @@
         "position": {
           "$ref": "#/definitions/v1Position"
         },
-        "radius": {
-          "type": "integer",
-          "format": "int32"
+        "radiusInM": {
+          "type": "number",
+          "format": "float"
         },
         "scanPeriodInSeconds": {
           "type": "integer",
           "format": "int32"
         },
         "zonePeriodInSeconds": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "sessionDurationInSeconds": {
           "type": "integer",
           "format": "int32"
         }
@@ -125,8 +135,8 @@
           "$ref": "#/definitions/v1Position"
         },
         "health": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         }
       }
     },
@@ -146,8 +156,76 @@
     "v1SendPlayerPositionResponse": {
       "type": "object"
     },
+    "v1StartNextZoneTimerEvent": {
+      "type": "object",
+      "properties": {
+        "currentZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "nextZoneTimestamp": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1StartSpotResponse": {
       "type": "object"
+    },
+    "v1StartZoneDelayTimerEvent": {
+      "type": "object",
+      "properties": {
+        "currentZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "nextZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "zoneTickStartTimestamp": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1SubZoneEventResponse": {
+      "type": "object",
+      "properties": {
+        "startNextZoneTimerEvent": {
+          "$ref": "#/definitions/v1StartNextZoneTimerEvent"
+        },
+        "startZoneDelayTimerEvent": {
+          "$ref": "#/definitions/v1StartZoneDelayTimerEvent"
+        },
+        "zoneTickEvent": {
+          "$ref": "#/definitions/v1ZoneTickEvent"
+        }
+      }
+    },
+    "v1ZoneState": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "$ref": "#/definitions/v1Position"
+        },
+        "radiusInM": {
+          "type": "number",
+          "format": "float"
+        },
+        "damage": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "v1ZoneTickEvent": {
+      "type": "object",
+      "properties": {
+        "currentZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        },
+        "nextZone": {
+          "$ref": "#/definitions/v1ZoneState"
+        }
+      }
     }
   }
 }
