@@ -1,5 +1,6 @@
 // External
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:dots_client/settings/controller.dart';
 import 'package:dots_client/settings/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,15 +9,17 @@ import 'events.dart';
 import 'state.dart';
 
 class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
-  SettingsPageBloc({required AppSettings settings})
-      : super(InitedState(settings: settings)) {
+  final AppSettingsController appSettingsController;
+
+  SettingsPageBloc({required this.appSettingsController})
+      : super(InitedState(settings: appSettingsController.settings)) {
     on<ChangeUseOsThemeEvent>((event, emit) async {
       final curState = state;
       if (curState is InitedState) {
         final newSettings = curState.settings.copyWith(
           useOsThemeSettings: event.value,
         );
-        if (!await newSettings.save()) {
+        if (!await appSettingsController.save(newSettings)) {
           throw Exception("Couldn't save settings");
         }
         AdaptiveTheme.of(event.context).setThemeMode(newSettings.themeMode);
@@ -31,7 +34,7 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
         final newSettings = curState.settings.copyWith(
           ligthTheme: event.value,
         );
-        if (!await newSettings.save()) {
+        if (!await appSettingsController.save(newSettings)) {
           throw Exception("Couldn't save settings");
         }
         event.value
@@ -49,7 +52,7 @@ class SettingsPageBloc extends Bloc<SettingsPageEvent, SettingsPageState> {
           environment:
               EnvironmentType.values.elementAt(event.index).toEnvironment(),
         );
-        if (!await newSettings.save()) {
+        if (!await appSettingsController.save(newSettings)) {
           throw Exception("Couldn't save settings");
         }
         emit(InitedState(settings: newSettings));

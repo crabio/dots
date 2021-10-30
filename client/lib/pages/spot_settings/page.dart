@@ -1,4 +1,5 @@
 // External
+import 'package:dots_client/api/connector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -7,7 +8,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/pages/settings/page.dart';
 import 'package:dots_client/utils/nav.dart';
-import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 import 'form.dart';
 import 'bloc/bloc.dart';
 
@@ -26,7 +26,7 @@ class SpotSettingsPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => SpotSettingsPageBloc(
         playerUuid: playerUuid,
-        client: RepositoryProvider.of<proto.SpotServiceClient>(context),
+        client: RepositoryProvider.of<SpotServiceConnector>(context).connect,
         position: userPosition,
       ),
       child: Scaffold(
