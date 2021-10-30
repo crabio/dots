@@ -215,6 +215,31 @@ const SubZoneEventResponse$json = const {
 
 /// Descriptor for `SubZoneEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List subZoneEventResponseDescriptor = $convert.base64Decode('ChRTdWJab25lRXZlbnRSZXNwb25zZRJgChtzdGFydF9uZXh0X3pvbmVfdGltZXJfZXZlbnQYASABKAsyIC5zcG90LnYxLlN0YXJ0TmV4dFpvbmVUaW1lckV2ZW50SABSF3N0YXJ0TmV4dFpvbmVUaW1lckV2ZW50EmMKHHN0YXJ0X3pvbmVfZGVsYXlfdGltZXJfZXZlbnQYAiABKAsyIS5zcG90LnYxLlN0YXJ0Wm9uZURlbGF5VGltZXJFdmVudEgAUhhzdGFydFpvbmVEZWxheVRpbWVyRXZlbnQSQAoPem9uZV90aWNrX2V2ZW50GAMgASgLMhYuc3BvdC52MS5ab25lVGlja0V2ZW50SABSDXpvbmVUaWNrRXZlbnRCBwoFZXZlbnQ=');
+@$core.Deprecated('Use getLastZoneEventRequestDescriptor instead')
+const GetLastZoneEventRequest$json = const {
+  '1': 'GetLastZoneEventRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+  ],
+};
+
+/// Descriptor for `GetLastZoneEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLastZoneEventRequestDescriptor = $convert.base64Decode('ChdHZXRMYXN0Wm9uZUV2ZW50UmVxdWVzdBIbCglzcG90X3V1aWQYASABKAlSCHNwb3RVdWlk');
+@$core.Deprecated('Use getLastZoneEventResponseDescriptor instead')
+const GetLastZoneEventResponse$json = const {
+  '1': 'GetLastZoneEventResponse',
+  '2': const [
+    const {'1': 'start_next_zone_timer_event', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.StartNextZoneTimerEvent', '9': 0, '10': 'startNextZoneTimerEvent'},
+    const {'1': 'start_zone_delay_timer_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.StartZoneDelayTimerEvent', '9': 0, '10': 'startZoneDelayTimerEvent'},
+    const {'1': 'zone_tick_event', '3': 3, '4': 1, '5': 11, '6': '.spot.v1.ZoneTickEvent', '9': 0, '10': 'zoneTickEvent'},
+  ],
+  '8': const [
+    const {'1': 'event'},
+  ],
+};
+
+/// Descriptor for `GetLastZoneEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLastZoneEventResponseDescriptor = $convert.base64Decode('ChhHZXRMYXN0Wm9uZUV2ZW50UmVzcG9uc2USYAobc3RhcnRfbmV4dF96b25lX3RpbWVyX2V2ZW50GAEgASgLMiAuc3BvdC52MS5TdGFydE5leHRab25lVGltZXJFdmVudEgAUhdzdGFydE5leHRab25lVGltZXJFdmVudBJjChxzdGFydF96b25lX2RlbGF5X3RpbWVyX2V2ZW50GAIgASgLMiEuc3BvdC52MS5TdGFydFpvbmVEZWxheVRpbWVyRXZlbnRIAFIYc3RhcnRab25lRGVsYXlUaW1lckV2ZW50EkAKD3pvbmVfdGlja19ldmVudBgDIAEoCzIWLnNwb3QudjEuWm9uZVRpY2tFdmVudEgAUg16b25lVGlja0V2ZW50QgcKBWV2ZW50');
 @$core.Deprecated('Use startNextZoneTimerEventDescriptor instead')
 const StartNextZoneTimerEvent$json = const {
   '1': 'StartNextZoneTimerEvent',

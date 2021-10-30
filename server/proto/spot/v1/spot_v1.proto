@@ -29,6 +29,8 @@ service SpotService {
 
   // SubZoneEvent returns stream of zones events
   rpc SubZoneEvent (SubZoneEventRequest) returns (stream SubZoneEventResponse) {}
+  
+  rpc GetLastZoneEvent (GetLastZoneEventRequest) returns (GetLastZoneEventResponse) {}
 }
 
 // RPC structures
@@ -125,19 +127,31 @@ message SubZoneEventResponse {
   }
 }
 
+message GetLastZoneEventRequest {
+  string spot_uuid = 1;
+}
+
+message GetLastZoneEventResponse {
+  oneof event {
+    StartNextZoneTimerEvent start_next_zone_timer_event = 1;
+    StartZoneDelayTimerEvent start_zone_delay_timer_event = 2;
+    ZoneTickEvent zone_tick_event = 3;
+  }
+}
+
 message StartNextZoneTimerEvent {
-	ZoneState current_zone  =1;
+  ZoneState current_zone  =1;
 	int64 next_zone_timestamp =2;
 }
 
 message StartZoneDelayTimerEvent {
-	ZoneState current_zone  =1;
+  ZoneState current_zone  =1;
 	ZoneState next_zone  =2;
 	int64 zone_tick_start_timestamp =3;
 }
 
 message ZoneTickEvent {
-	ZoneState current_zone  =1;
+  ZoneState current_zone  =1;
 	ZoneState next_zone  =2;
 }
 

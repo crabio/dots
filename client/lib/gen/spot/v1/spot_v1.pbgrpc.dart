@@ -74,6 +74,12 @@ class SpotServiceClient extends $grpc.Client {
           ($0.SubZoneEventRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.SubZoneEventResponse.fromBuffer(value));
+  static final _$getLastZoneEvent = $grpc.ClientMethod<
+          $0.GetLastZoneEventRequest, $0.GetLastZoneEventResponse>(
+      '/spot.v1.SpotService/GetLastZoneEvent',
+      ($0.GetLastZoneEventRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $0.GetLastZoneEventResponse.fromBuffer(value));
 
   SpotServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -146,6 +152,12 @@ class SpotServiceClient extends $grpc.Client {
     return $createStreamingCall(
         _$subZoneEvent, $async.Stream.fromIterable([request]),
         options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetLastZoneEventResponse> getLastZoneEvent(
+      $0.GetLastZoneEventRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getLastZoneEvent, request, options: options);
   }
 }
 
@@ -235,6 +247,15 @@ abstract class SpotServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.SubZoneEventRequest.fromBuffer(value),
             ($0.SubZoneEventResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetLastZoneEventRequest,
+            $0.GetLastZoneEventResponse>(
+        'GetLastZoneEvent',
+        getLastZoneEvent_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.GetLastZoneEventRequest.fromBuffer(value),
+        ($0.GetLastZoneEventResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.CreateSpotResponse> createSpot_Pre($grpc.ServiceCall call,
@@ -287,6 +308,12 @@ abstract class SpotServiceBase extends $grpc.Service {
     yield* subZoneEvent(call, await request);
   }
 
+  $async.Future<$0.GetLastZoneEventResponse> getLastZoneEvent_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.GetLastZoneEventRequest> request) async {
+    return getLastZoneEvent(call, await request);
+  }
+
   $async.Future<$0.CreateSpotResponse> createSpot(
       $grpc.ServiceCall call, $0.CreateSpotRequest request);
   $async.Future<$0.GetSpotResponse> getSpot(
@@ -308,4 +335,6 @@ abstract class SpotServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.GetPlayersStatesRequest request);
   $async.Stream<$0.SubZoneEventResponse> subZoneEvent(
       $grpc.ServiceCall call, $0.SubZoneEventRequest request);
+  $async.Future<$0.GetLastZoneEventResponse> getLastZoneEvent(
+      $grpc.ServiceCall call, $0.GetLastZoneEventRequest request);
 }

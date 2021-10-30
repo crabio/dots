@@ -52,6 +52,20 @@
         }
       }
     },
+    "v1GetLastZoneEventResponse": {
+      "type": "object",
+      "properties": {
+        "startNextZoneTimerEvent": {
+          "$ref": "#/definitions/v1StartNextZoneTimerEvent"
+        },
+        "startZoneDelayTimerEvent": {
+          "$ref": "#/definitions/v1StartZoneDelayTimerEvent"
+        },
+        "zoneTickEvent": {
+          "$ref": "#/definitions/v1ZoneTickEvent"
+        }
+      }
+    },
     "v1GetPlayersStatesResponse": {
       "type": "object",
       "properties": {

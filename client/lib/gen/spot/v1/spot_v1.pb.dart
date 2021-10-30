@@ -1103,6 +1103,151 @@ class SubZoneEventResponse extends $pb.GeneratedMessage {
   ZoneTickEvent ensureZoneTickEvent() => $_ensure(2);
 }
 
+class GetLastZoneEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastZoneEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  GetLastZoneEventRequest._() : super();
+  factory GetLastZoneEventRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
+  }
+  factory GetLastZoneEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastZoneEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventRequest clone() => GetLastZoneEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventRequest copyWith(void Function(GetLastZoneEventRequest) updates) => super.copyWith((message) => updates(message as GetLastZoneEventRequest)) as GetLastZoneEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventRequest create() => GetLastZoneEventRequest._();
+  GetLastZoneEventRequest createEmptyInstance() => create();
+  static $pb.PbList<GetLastZoneEventRequest> createRepeated() => $pb.PbList<GetLastZoneEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventRequest>(create);
+  static GetLastZoneEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
+
+enum GetLastZoneEventResponse_Event {
+  startNextZoneTimerEvent, 
+  startZoneDelayTimerEvent, 
+  zoneTickEvent, 
+  notSet
+}
+
+class GetLastZoneEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, GetLastZoneEventResponse_Event> _GetLastZoneEventResponse_EventByTag = {
+    1 : GetLastZoneEventResponse_Event.startNextZoneTimerEvent,
+    2 : GetLastZoneEventResponse_Event.startZoneDelayTimerEvent,
+    3 : GetLastZoneEventResponse_Event.zoneTickEvent,
+    0 : GetLastZoneEventResponse_Event.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastZoneEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..oo(0, [1, 2, 3])
+    ..aOM<StartNextZoneTimerEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startNextZoneTimerEvent', subBuilder: StartNextZoneTimerEvent.create)
+    ..aOM<StartZoneDelayTimerEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startZoneDelayTimerEvent', subBuilder: StartZoneDelayTimerEvent.create)
+    ..aOM<ZoneTickEvent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickEvent', subBuilder: ZoneTickEvent.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetLastZoneEventResponse._() : super();
+  factory GetLastZoneEventResponse({
+    StartNextZoneTimerEvent? startNextZoneTimerEvent,
+    StartZoneDelayTimerEvent? startZoneDelayTimerEvent,
+    ZoneTickEvent? zoneTickEvent,
+  }) {
+    final _result = create();
+    if (startNextZoneTimerEvent != null) {
+      _result.startNextZoneTimerEvent = startNextZoneTimerEvent;
+    }
+    if (startZoneDelayTimerEvent != null) {
+      _result.startZoneDelayTimerEvent = startZoneDelayTimerEvent;
+    }
+    if (zoneTickEvent != null) {
+      _result.zoneTickEvent = zoneTickEvent;
+    }
+    return _result;
+  }
+  factory GetLastZoneEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastZoneEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventResponse clone() => GetLastZoneEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventResponse copyWith(void Function(GetLastZoneEventResponse) updates) => super.copyWith((message) => updates(message as GetLastZoneEventResponse)) as GetLastZoneEventResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventResponse create() => GetLastZoneEventResponse._();
+  GetLastZoneEventResponse createEmptyInstance() => create();
+  static $pb.PbList<GetLastZoneEventResponse> createRepeated() => $pb.PbList<GetLastZoneEventResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastZoneEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventResponse>(create);
+  static GetLastZoneEventResponse? _defaultInstance;
+
+  GetLastZoneEventResponse_Event whichEvent() => _GetLastZoneEventResponse_EventByTag[$_whichOneof(0)]!;
+  void clearEvent() => clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  StartNextZoneTimerEvent get startNextZoneTimerEvent => $_getN(0);
+  @$pb.TagNumber(1)
+  set startNextZoneTimerEvent(StartNextZoneTimerEvent v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStartNextZoneTimerEvent() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStartNextZoneTimerEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartNextZoneTimerEvent ensureStartNextZoneTimerEvent() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  StartZoneDelayTimerEvent get startZoneDelayTimerEvent => $_getN(1);
+  @$pb.TagNumber(2)
+  set startZoneDelayTimerEvent(StartZoneDelayTimerEvent v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStartZoneDelayTimerEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStartZoneDelayTimerEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  StartZoneDelayTimerEvent ensureStartZoneDelayTimerEvent() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  ZoneTickEvent get zoneTickEvent => $_getN(2);
+  @$pb.TagNumber(3)
+  set zoneTickEvent(ZoneTickEvent v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasZoneTickEvent() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearZoneTickEvent() => clearField(3);
+  @$pb.TagNumber(3)
+  ZoneTickEvent ensureZoneTickEvent() => $_ensure(2);
+}
+
 class StartNextZoneTimerEvent extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartNextZoneTimerEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<ZoneState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentZone', subBuilder: ZoneState.create)

@@ -50,6 +50,7 @@ type Controller struct {
 
 	// Channel for sending zone event (one of NextZone, NextZoneTick, ZoneTickEnd)
 	ZoneEventBroadcaster *broadcast.Broadcaster
+	LastZoneEvent        interface{}
 }
 
 func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float32, minZoneRadiusInM float32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
@@ -171,10 +172,12 @@ func (c *Controller) Start() error {
 		// While current zone radius is bigger that 0
 		for c.currentZone.Radius > 0 {
 			timeNowMx.Lock()
-			c.ZoneEventBroadcaster.Send(StartNextZoneTimerEvent{
+			startNextZoneTimerEvent := StartNextZoneTimerEvent{
 				CurrentZone:  c.currentZone,
 				NextZoneTime: timeNow().UTC().Add(c.nextZonePeriod),
-			})
+			}
+			c.ZoneEventBroadcaster.Send(startNextZoneTimerEvent)
+			c.LastZoneEvent = startNextZoneTimerEvent
 			timeNowMx.Unlock()
 			c.nextZoneTimer = time.NewTimer(c.nextZonePeriod)
 			<-c.nextZoneTimer.C
@@ -190,11 +193,13 @@ func (c *Controller) Start() error {
 
 			// Send next zone event to players
 			timeNowMx.Lock()
-			c.ZoneEventBroadcaster.Send(StartZoneDelayTimerEvent{
+			startZoneDelayTimerEvent := StartZoneDelayTimerEvent{
 				CurrentZone:       c.currentZone,
 				NextZone:          c.nextZone,
 				ZoneTickStartTime: nextZoneCreationTime,
-			})
+			}
+			c.ZoneEventBroadcaster.Send(startZoneDelayTimerEvent)
+			c.LastZoneEvent = startZoneDelayTimerEvent
 			timeNowMx.Unlock()
 			c.nextZoneDelayTimer = time.NewTimer(c.nextZoneDelay)
 			<-c.nextZoneDelayTimer.C
@@ -221,11 +226,13 @@ func (c *Controller) Start() error {
 					break tickerLoop
 				} else {
 					c.log.WithFields(logrus.Fields{"curZone": curZone, "lastTick": lastTick}).Debug("Next zone tick")
-					c.ZoneEventBroadcaster.Send(ZoneTickEvent{
+					zoneTickEvent := ZoneTickEvent{
 						CurrentZone: curZone,
 						NextZone:    c.nextZone,
 						LastTick:    lastTick,
-					})
+					}
+					c.ZoneEventBroadcaster.Send(zoneTickEvent)
+					c.LastZoneEvent = zoneTickEvent
 				}
 			}
 		}
