@@ -98,7 +98,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
               currentZone: ZoneState(
                 position: LatLng(
                   event.currentZone.position.latitude,
-                  event.currentZone.position.latitude,
+                  event.currentZone.position.longitude,
                 ),
                 radiusInM: event.currentZone.radiusInM,
                 damage: event.currentZone.damage,
@@ -114,7 +114,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
               currentZone: ZoneState(
                 position: LatLng(
                   event.currentZone.position.latitude,
-                  event.currentZone.position.latitude,
+                  event.currentZone.position.longitude,
                 ),
                 radiusInM: event.currentZone.radiusInM,
                 damage: event.currentZone.damage,
@@ -122,7 +122,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
               nextZone: ZoneState(
                 position: LatLng(
                   event.nextZone.position.latitude,
-                  event.nextZone.position.latitude,
+                  event.nextZone.position.longitude,
                 ),
                 radiusInM: event.nextZone.radiusInM,
                 damage: event.nextZone.damage,
@@ -138,7 +138,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
               currentZone: ZoneState(
                 position: LatLng(
                   event.currentZone.position.latitude,
-                  event.currentZone.position.latitude,
+                  event.currentZone.position.longitude,
                 ),
                 radiusInM: event.currentZone.radiusInM,
                 damage: event.currentZone.damage,
@@ -146,7 +146,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
               nextZone: ZoneState(
                 position: LatLng(
                   event.nextZone.position.latitude,
-                  event.nextZone.position.latitude,
+                  event.nextZone.position.longitude,
                 ),
                 radiusInM: event.nextZone.radiusInM,
                 damage: event.nextZone.damage,
