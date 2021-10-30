@@ -2,14 +2,13 @@ package zone
 
 import (
 	"math"
-	"time"
 
 	"github.com/golang/geo/s2"
 )
 
 const (
-	zoneDamagePeriod = time.Second * 2
-	maxZoneDamage    = 5.0
+	// zoneDamagePeriod = time.Second * 2
+	maxZoneDamage = 5.0
 )
 
 type Zone struct {

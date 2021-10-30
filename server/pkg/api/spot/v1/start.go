@@ -48,7 +48,9 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 	spot.IsActiveBroadcaster.Send(true)
 
 	// Start zone ticker
-	spot.ZoneController.Start()
+	if err := spot.ZoneController.Start(); err != nil {
+		return nil, err
+	}
 
 	response := proto.StartSpotResponse{}
 

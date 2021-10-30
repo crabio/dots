@@ -103,5 +103,5 @@ func TestSendPlayerPosition(t *testing.T) {
 
 	assert.Equal(t, float64(10), playerState.Position.Lat.Degrees())
 	assert.Equal(t, float64(20), playerState.Position.Lng.Degrees())
-	assert.Equal(t, int16(100), playerState.Health)
+	assert.Equal(t, float32(100), playerState.Health)
 }

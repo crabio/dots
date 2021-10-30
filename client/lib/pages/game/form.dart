@@ -1,15 +1,9 @@
-// External
-import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_position.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:logging/logging.dart';
-
-// Internal
 import 'bloc/bloc.dart';
 
 class GameForm extends StatelessWidget {

@@ -32,9 +32,8 @@ func (s *SpotServiceServer) SubZoneEvent(request *proto.SubZoneEventRequest, str
 	}
 
 	for zoneEventI := range spot.ZoneController.ZoneEventBroadcaster.Listen().Ch {
-		switch zoneEventI.(type) {
+		switch event := zoneEventI.(type) {
 		case zone.StartNextZoneTimerEvent:
-			event := zoneEventI.(zone.StartNextZoneTimerEvent)
 			response := &proto.SubZoneEventResponse{
 				Event: &proto.SubZoneEventResponse_StartNextZoneTimerEvent{
 					StartNextZoneTimerEvent: &proto.StartNextZoneTimerEvent{
@@ -56,7 +55,6 @@ func (s *SpotServiceServer) SubZoneEvent(request *proto.SubZoneEventRequest, str
 			}
 
 		case zone.StartZoneDelayTimerEvent:
-			event := zoneEventI.(zone.StartZoneDelayTimerEvent)
 			response := &proto.SubZoneEventResponse{
 				Event: &proto.SubZoneEventResponse_StartZoneDelayTimerEvent{
 					StartZoneDelayTimerEvent: &proto.StartZoneDelayTimerEvent{
@@ -86,7 +84,6 @@ func (s *SpotServiceServer) SubZoneEvent(request *proto.SubZoneEventRequest, str
 			}
 
 		case zone.ZoneTickEvent:
-			event := zoneEventI.(zone.ZoneTickEvent)
 			response := &proto.SubZoneEventResponse{
 				Event: &proto.SubZoneEventResponse_ZoneTickEvent{
 					ZoneTickEvent: &proto.ZoneTickEvent{

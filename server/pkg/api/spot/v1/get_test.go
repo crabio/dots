@@ -38,7 +38,7 @@ func TestGetSpot(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 11.2344, getResponse.Position.Latitude)
 	assert.Equal(t, -234.12244, getResponse.Position.Longitude)
-	assert.Equal(t, int32(200), getResponse.RadiusInM)
+	assert.Equal(t, float32(200), getResponse.RadiusInM)
 	assert.Equal(t, int32(30), getResponse.ScanPeriodInSeconds)
 	assert.Equal(t, int32(60), getResponse.ZonePeriodInSeconds)
 }

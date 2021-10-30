@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_position.dart';
@@ -11,7 +9,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
-
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 part 'event.dart';
 part 'state.dart';

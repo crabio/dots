@@ -38,7 +38,7 @@ func TestCreateSpot(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, 11.2344, spot.Position.Lat.Degrees())
 	assert.Equal(t, -234.12244, spot.Position.Lng.Degrees())
-	assert.Equal(t, uint32(200), spot.RadiusInM)
+	assert.Equal(t, float32(200), spot.RadiusInM)
 	assert.Equal(t, float64(30), spot.ScanPeriod.Seconds())
 	assert.Equal(t, float64(60), spot.ZonePeriod.Seconds())
 }
