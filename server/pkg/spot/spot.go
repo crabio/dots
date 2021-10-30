@@ -41,7 +41,7 @@ func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zo
 	spot.ZonePeriod = zonePeriod
 	spot.PlayersListBroadcaster = broadcast.New(0)
 	spot.IsActiveBroadcaster = broadcast.New(0)
-	spot.ZoneController = zone.NewController(spot.Id, position, radiusInM, 10, zonePeriod, 15*time.Second, 5.0)
+	spot.ZoneController = zone.NewController(spot.Id, position, radiusInM, 10, zonePeriod, 15*time.Second, 20.0)
 
 	spot.IsActive = false
 

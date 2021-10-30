@@ -309,8 +309,6 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     }
   }
 
-  void _processZoneEvent(args) {}
-
   void _onNewPlayersStatesEvent(
     NewPlayersStatesEvent event,
     Emitter<GamePageState> emit,
@@ -345,9 +343,13 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   ) async {
     final curState = state;
     if (curState is InitedState) {
-      emit(curState.copyWith(
+      emit(InitedState(
+        playerState: curState.playerState,
+        otherPlayersStates: curState.otherPlayersStates,
         currentZone: event.currentZone,
+        nextZone: null,
         nextZoneTime: event.nextZoneTime,
+        zoneTickStartTimestamp: null,
       ));
     } else {
       _logger.shout("Wrong state $curState for $event");
@@ -360,9 +362,12 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   ) async {
     final curState = state;
     if (curState is InitedState) {
-      emit(curState.copyWith(
+      emit(InitedState(
+        playerState: curState.playerState,
+        otherPlayersStates: curState.otherPlayersStates,
         currentZone: event.currentZone,
         nextZone: event.nextZone,
+        nextZoneTime: null,
         zoneTickStartTimestamp: event.zoneTickStartTimestamp,
       ));
     } else {
@@ -376,9 +381,13 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   ) async {
     final curState = state;
     if (curState is InitedState) {
-      emit(curState.copyWith(
+      emit(InitedState(
+        playerState: curState.playerState,
+        otherPlayersStates: curState.otherPlayersStates,
         currentZone: event.currentZone,
         nextZone: event.nextZone,
+        nextZoneTime: null,
+        zoneTickStartTimestamp: null,
       ));
     } else {
       _logger.shout("Wrong state $curState for $event");
