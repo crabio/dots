@@ -13,7 +13,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 class CreateSpotRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.O3)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
@@ -22,7 +22,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   CreateSpotRequest._() : super();
   factory CreateSpotRequest({
     Position? position,
-    $core.int? radiusInM,
+    $core.double? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
   }) {
@@ -74,9 +74,9 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   Position ensurePosition() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get radiusInM => $_getIZ(1);
+  $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radiusInM($core.int v) { $_setSignedInt32(1, v); }
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)
@@ -198,7 +198,7 @@ class GetSpotRequest extends $pb.GeneratedMessage {
 class GetSpotResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.O3)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
@@ -207,7 +207,7 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   GetSpotResponse._() : super();
   factory GetSpotResponse({
     Position? position,
-    $core.int? radiusInM,
+    $core.double? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
   }) {
@@ -259,9 +259,9 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   Position ensurePosition() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get radiusInM => $_getIZ(1);
+  $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radiusInM($core.int v) { $_setSignedInt32(1, v); }
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)
@@ -1314,7 +1314,7 @@ class PlayerState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PlayerState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
     ..aOM<Position>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'health', $pb.PbFieldType.O3)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'health', $pb.PbFieldType.OF)
     ..hasRequiredFields = false
   ;
 
@@ -1322,7 +1322,7 @@ class PlayerState extends $pb.GeneratedMessage {
   factory PlayerState({
     $core.String? playerUuid,
     Position? position,
-    $core.int? health,
+    $core.double? health,
   }) {
     final _result = create();
     if (playerUuid != null) {
@@ -1378,9 +1378,9 @@ class PlayerState extends $pb.GeneratedMessage {
   Position ensurePosition() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $core.int get health => $_getIZ(2);
+  $core.double get health => $_getN(2);
   @$pb.TagNumber(3)
-  set health($core.int v) { $_setSignedInt32(2, v); }
+  set health($core.double v) { $_setFloat(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasHealth() => $_has(2);
   @$pb.TagNumber(3)
@@ -1390,7 +1390,7 @@ class PlayerState extends $pb.GeneratedMessage {
 class ZoneState extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ZoneState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.O3)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'damage', $pb.PbFieldType.OF)
     ..hasRequiredFields = false
   ;
@@ -1398,7 +1398,7 @@ class ZoneState extends $pb.GeneratedMessage {
   ZoneState._() : super();
   factory ZoneState({
     Position? position,
-    $core.int? radiusInM,
+    $core.double? radiusInM,
     $core.double? damage,
   }) {
     final _result = create();
@@ -1446,9 +1446,9 @@ class ZoneState extends $pb.GeneratedMessage {
   Position ensurePosition() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get radiusInM => $_getIZ(1);
+  $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radiusInM($core.int v) { $_setSignedInt32(1, v); }
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)

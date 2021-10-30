@@ -79,8 +79,8 @@
           "$ref": "#/definitions/v1Position"
         },
         "radiusInM": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         },
         "scanPeriodInSeconds": {
           "type": "integer",
@@ -121,8 +121,8 @@
           "$ref": "#/definitions/v1Position"
         },
         "health": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         }
       }
     },
@@ -193,8 +193,8 @@
           "$ref": "#/definitions/v1Position"
         },
         "radiusInM": {
-          "type": "integer",
-          "format": "int32"
+          "type": "number",
+          "format": "float"
         },
         "damage": {
           "type": "number",

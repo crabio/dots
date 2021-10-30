@@ -13,14 +13,14 @@ const CreateSpotRequest$json = const {
   '1': 'CreateSpotRequest',
   '2': const [
     const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 5, '10': 'radiusInM'},
+    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
     const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
     const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
   ],
 };
 
 /// Descriptor for `CreateSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEh4KC3JhZGl1c19pbl9tGAIgASgFUglyYWRpdXNJbk0SMwoWc2Nhbl9wZXJpb2RfaW5fc2Vjb25kcxgDIAEoBVITc2NhblBlcmlvZEluU2Vjb25kcxIzChZ6b25lX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhN6b25lUGVyaW9kSW5TZWNvbmRz');
+final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEh4KC3JhZGl1c19pbl9tGAIgASgCUglyYWRpdXNJbk0SMwoWc2Nhbl9wZXJpb2RfaW5fc2Vjb25kcxgDIAEoBVITc2NhblBlcmlvZEluU2Vjb25kcxIzChZ6b25lX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhN6b25lUGVyaW9kSW5TZWNvbmRz');
 @$core.Deprecated('Use createSpotResponseDescriptor instead')
 const CreateSpotResponse$json = const {
   '1': 'CreateSpotResponse',
@@ -46,14 +46,14 @@ const GetSpotResponse$json = const {
   '1': 'GetSpotResponse',
   '2': const [
     const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 5, '10': 'radiusInM'},
+    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
     const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
     const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
   ],
 };
 
 /// Descriptor for `GetSpotResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSpotResponseDescriptor = $convert.base64Decode('Cg9HZXRTcG90UmVzcG9uc2USLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIeCgtyYWRpdXNfaW5fbRgCIAEoBVIJcmFkaXVzSW5NEjMKFnNjYW5fcGVyaW9kX2luX3NlY29uZHMYAyABKAVSE3NjYW5QZXJpb2RJblNlY29uZHMSMwoWem9uZV9wZXJpb2RfaW5fc2Vjb25kcxgEIAEoBVITem9uZVBlcmlvZEluU2Vjb25kcw==');
+final $typed_data.Uint8List getSpotResponseDescriptor = $convert.base64Decode('Cg9HZXRTcG90UmVzcG9uc2USLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIeCgtyYWRpdXNfaW5fbRgCIAEoAlIJcmFkaXVzSW5NEjMKFnNjYW5fcGVyaW9kX2luX3NlY29uZHMYAyABKAVSE3NjYW5QZXJpb2RJblNlY29uZHMSMwoWem9uZV9wZXJpb2RfaW5fc2Vjb25kcxgEIAEoBVITem9uZVBlcmlvZEluU2Vjb25kcw==');
 @$core.Deprecated('Use joinToSpotRequestDescriptor instead')
 const JoinToSpotRequest$json = const {
   '1': 'JoinToSpotRequest',
@@ -255,24 +255,24 @@ const PlayerState$json = const {
   '2': const [
     const {'1': 'player_uuid', '3': 1, '4': 1, '5': 9, '10': 'playerUuid'},
     const {'1': 'position', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'health', '3': 3, '4': 1, '5': 5, '10': 'health'},
+    const {'1': 'health', '3': 3, '4': 1, '5': 2, '10': 'health'},
   ],
 };
 
 /// Descriptor for `PlayerState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List playerStateDescriptor = $convert.base64Decode('CgtQbGF5ZXJTdGF0ZRIfCgtwbGF5ZXJfdXVpZBgBIAEoCVIKcGxheWVyVXVpZBItCghwb3NpdGlvbhgCIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEhYKBmhlYWx0aBgDIAEoBVIGaGVhbHRo');
+final $typed_data.Uint8List playerStateDescriptor = $convert.base64Decode('CgtQbGF5ZXJTdGF0ZRIfCgtwbGF5ZXJfdXVpZBgBIAEoCVIKcGxheWVyVXVpZBItCghwb3NpdGlvbhgCIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEhYKBmhlYWx0aBgDIAEoAlIGaGVhbHRo');
 @$core.Deprecated('Use zoneStateDescriptor instead')
 const ZoneState$json = const {
   '1': 'ZoneState',
   '2': const [
     const {'1': 'position', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.Position', '10': 'position'},
-    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 5, '10': 'radiusInM'},
+    const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
     const {'1': 'damage', '3': 3, '4': 1, '5': 2, '10': 'damage'},
   ],
 };
 
 /// Descriptor for `ZoneState`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List zoneStateDescriptor = $convert.base64Decode('Cglab25lU3RhdGUSLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIeCgtyYWRpdXNfaW5fbRgCIAEoBVIJcmFkaXVzSW5NEhYKBmRhbWFnZRgDIAEoAlIGZGFtYWdl');
+final $typed_data.Uint8List zoneStateDescriptor = $convert.base64Decode('Cglab25lU3RhdGUSLQoIcG9zaXRpb24YASABKAsyES5zcG90LnYxLlBvc2l0aW9uUghwb3NpdGlvbhIeCgtyYWRpdXNfaW5fbRgCIAEoAlIJcmFkaXVzSW5NEhYKBmRhbWFnZRgDIAEoAlIGZGFtYWdl');
 @$core.Deprecated('Use positionDescriptor instead')
 const Position$json = const {
   '1': 'Position',

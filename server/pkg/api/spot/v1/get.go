@@ -29,7 +29,7 @@ func (s *SpotServiceServer) GetSpot(ctx context.Context, request *proto.GetSpotR
 			Latitude:  spot.Position.Lat.Degrees(),
 			Longitude: spot.Position.Lng.Degrees(),
 		},
-		RadiusInM:           int32(spot.RadiusInM),
+		RadiusInM:           spot.RadiusInM,
 		ScanPeriodInSeconds: int32(spot.ScanPeriod.Seconds()),
 		ZonePeriodInSeconds: int32(spot.ZonePeriod.Seconds()),
 	}

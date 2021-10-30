@@ -2,7 +2,7 @@ import 'package:latlong2/latlong.dart';
 
 class ZoneState {
   final LatLng position;
-  int radiusInM;
+  double radiusInM;
   double damage;
 
   ZoneState({

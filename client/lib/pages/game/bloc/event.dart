@@ -15,7 +15,7 @@ class InitEvent extends GamePageEvent {}
 class NewPlayersStatesEvent extends GamePageEvent {
   final String playerUuid;
   final LatLng playerPosition;
-  final int playerHealth;
+  final double playerHealth;
 
   const NewPlayersStatesEvent({
     required this.playerUuid,

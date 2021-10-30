@@ -53,7 +53,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 					Latitude:  playerState.Position.Lat.Degrees(),
 					Longitude: playerState.Position.Lng.Degrees(),
 				},
-				Health: int32(playerState.Health),
+				Health: playerState.Health,
 			},
 		}
 

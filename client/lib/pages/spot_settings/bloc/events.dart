@@ -9,7 +9,7 @@ abstract class SpotSettingsPageEvent extends Equatable {
 }
 
 class NewRadiusEvent extends SpotSettingsPageEvent {
-  final int value;
+  final double value;
 
   const NewRadiusEvent({required this.value});
 
@@ -38,7 +38,7 @@ class NewZoneDurationEvent extends SpotSettingsPageEvent {
 class CreateNewSpotEvent extends SpotSettingsPageEvent {
   final LatLng position;
   // Spot radius in meters
-  final int zoneRadius;
+  final double zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 

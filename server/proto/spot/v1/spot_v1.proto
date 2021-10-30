@@ -35,7 +35,7 @@ service SpotService {
 
 message CreateSpotRequest {
   Position position = 1;
-  int32 radius_in_m = 2;
+  float radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
 }
@@ -50,7 +50,7 @@ message GetSpotRequest {
 
 message GetSpotResponse {
   Position position = 1;
-  int32 radius_in_m = 2;
+  float radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
 }
@@ -146,12 +146,12 @@ message ZoneTickEvent {
 message PlayerState {
   string player_uuid = 1;
   Position position = 2;
-  int32 health = 3;
+  float health = 3;
 }
 
 message ZoneState {
   Position position = 1;
-  int32 radius_in_m =2;
+  float radius_in_m =2;
   float damage = 3;
 }
 

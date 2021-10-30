@@ -14,7 +14,7 @@ type Spot struct {
 	Id uuid.UUID
 
 	Position   s2.LatLng
-	RadiusInM  uint32
+	RadiusInM  float32
 	ScanPeriod time.Duration
 	ZonePeriod time.Duration
 
@@ -32,7 +32,7 @@ type Spot struct {
 	IsActiveBroadcaster *broadcast.Broadcaster
 }
 
-func NewSpot(position s2.LatLng, radiusInM uint32, scanPeriod time.Duration, zonePeriod time.Duration) *Spot {
+func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zonePeriod time.Duration) *Spot {
 	spot := new(Spot)
 	spot.Id = uuid.New()
 	spot.Position = position

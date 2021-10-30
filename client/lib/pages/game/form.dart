@@ -173,7 +173,7 @@ class _InitedStateView extends StatelessWidget {
     );
   }
 
-  Color _healthColor(int health) {
+  Color _healthColor(double health) {
     if (health > 60) {
       return Colors.green;
     } else if (health > 30) {

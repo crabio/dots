@@ -18,7 +18,7 @@ abstract class SpotSettingsPageState extends Equatable {
 class InitedState extends SpotSettingsPageState {
   final LatLng position;
   // Spot radius in meters
-  final int zoneRadius;
+  final double zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
   final bool creating;

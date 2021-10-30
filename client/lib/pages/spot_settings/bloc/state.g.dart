@@ -13,7 +13,7 @@ extension InitedStateCopyWith on InitedState {
     LatLng? position,
     Duration? scanPeriod,
     Duration? zonePeriod,
-    int? zoneRadius,
+    double? zoneRadius,
   }) {
     return InitedState(
       creating: creating ?? this.creating,

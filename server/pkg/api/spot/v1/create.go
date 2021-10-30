@@ -21,7 +21,7 @@ func (s *SpotServiceServer) CreateSpot(ctx context.Context, request *proto.Creat
 
 	s.SpotsMap.Store(spotUUID, *spot.NewSpot(
 		s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude),
-		uint32(request.RadiusInM),
+		request.RadiusInM,
 		time.Second*time.Duration(request.ScanPeriodInSeconds),
 		time.Second*time.Duration(request.ZonePeriodInSeconds),
 	))

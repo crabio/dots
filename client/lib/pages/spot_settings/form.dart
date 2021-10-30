@@ -61,7 +61,7 @@ class _SpotSettingsForm extends StatelessWidget {
   final LatLng position;
 
   /// Spot radius in meters
-  final int zoneRadius;
+  final double zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
 
@@ -147,10 +147,10 @@ class _SpotSettingsForm extends StatelessWidget {
               step: 10,
               minValue: 40,
               maxValue: 1000,
-              value: zoneRadius,
+              value: zoneRadius.toInt(),
               onChanged: (value) => context
                   .read<SpotSettingsPageBloc>()
-                  .add(NewRadiusEvent(value: value)),
+                  .add(NewRadiusEvent(value: value.toDouble())),
             ),
             const Text("Scan time in seconds"),
             NumberPicker(

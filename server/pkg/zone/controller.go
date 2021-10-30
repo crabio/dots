@@ -30,7 +30,7 @@ var (
 type Controller struct {
 	log *logrus.Entry
 
-	minZoneRadiusInM           uint32
+	minZoneRadiusInM           float32
 	zoneSpeedInMetersPerSecond float64
 
 	prevZone             *Zone
@@ -51,7 +51,7 @@ type Controller struct {
 	ZoneEventBroadcaster *broadcast.Broadcaster
 }
 
-func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM uint32, minZoneRadiusInM uint32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
+func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float32, minZoneRadiusInM float32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
 	c := new(Controller)
 	c.log = logger.CreateLogger("zone-controller-" + spotId.String())
 	c.minZoneRadiusInM = minZoneRadiusInM
@@ -159,7 +159,7 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 			// Zone radius = Next zone radius + (Prev zone radius - Next zone radius) * transition percentage
 			radius := float64(c.nextZone.Radius) + float64(c.prevZone.Radius-c.nextZone.Radius)*(1-transitionPercentage)
 
-			c.currentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, uint32(radius), 10)
+			c.currentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, float32(radius), 10)
 		}
 	}
 
@@ -242,7 +242,7 @@ func (c *Controller) Start() error {
 }
 
 // Creates new zone inside current zone
-func nextZone(zone *Zone, minZoneRadiusInM uint32) *Zone {
+func nextZone(zone *Zone, minZoneRadiusInM float32) *Zone {
 	newR := newRadius(zone.Radius, minZoneRadiusInM)
 
 	// Calc radius of random area
@@ -256,11 +256,11 @@ func nextZone(zone *Zone, minZoneRadiusInM uint32) *Zone {
 }
 
 // Creeate random radius as circle position for new zone
-func randomR(curZoneR uint32, newZoneR uint32) float64 {
-	return float64((curZoneR - newZoneR)) * math.Sqrt(randFloat())
+func randomR(curZoneR float32, newZoneR float32) float64 {
+	return float64(curZoneR-newZoneR) * math.Sqrt(randFloat())
 }
 
-func newRadius(radius uint32, minZoneRadiusInM uint32) uint32 {
+func newRadius(radius float32, minZoneRadiusInM float32) float32 {
 	if radius > minZoneRadiusInM*2 {
 		return radius / 2
 	} else {
