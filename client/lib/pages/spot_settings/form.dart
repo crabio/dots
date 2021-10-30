@@ -36,7 +36,7 @@ class SpotSettingsForm extends StatelessWidget {
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
             creatingSpot: curState.creating,
-            exception: curState.exception,
+            error: curState.error,
           );
         } else if (curState is NewSpotCreatedState) {
           navPopAndPushAfterBuild(
@@ -66,7 +66,7 @@ class _SpotSettingsForm extends StatelessWidget {
   final Duration zonePeriod;
 
   /// Error on creating new spot on server
-  final Exception? exception;
+  final String error;
 
   final bool creatingSpot;
 
@@ -76,7 +76,7 @@ class _SpotSettingsForm extends StatelessWidget {
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
-    this.exception,
+    required this.error,
     this.creatingSpot = false,
     Key? key,
   }) : super(key: key);
@@ -91,17 +91,15 @@ class _SpotSettingsForm extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            exception != null
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 16),
-                    child: Text(
-                      exception.toString(),
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  )
-                : Container(),
+            Padding(
+              padding: const EdgeInsets.only(top: 16, bottom: 16),
+              child: Text(
+                error,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
             const Text("Location"),
             SizedBox(
               width: 300,
