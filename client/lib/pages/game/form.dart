@@ -148,7 +148,7 @@ class _InitedStateView extends StatelessWidget {
         ),
         // Zone vevent widget
         Positioned(
-          top: 0,
+          top: 30,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -157,9 +157,9 @@ class _InitedStateView extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 10),
                   child: Text(
                     nextZoneTime != null
-                        ? "Next zone in ${prettyDuration(DateTime.now().difference(nextZoneTime!))}"
+                        ? "Next zone in ${prettyDuration(nextZoneTime!.difference(DateTime.now()))}"
                         : zoneTickStartTimestamp != null
-                            ? "Zone tick in ${prettyDuration(DateTime.now().difference(zoneTickStartTimestamp!))}"
+                            ? "Zone tick in ${prettyDuration(zoneTickStartTimestamp!.difference(DateTime.now()))}"
                             : "Zone is ticking",
                     style: Theme.of(context).textTheme.headline4,
                   ),

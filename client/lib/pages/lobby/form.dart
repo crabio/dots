@@ -34,7 +34,7 @@ class LobbyForm extends StatelessWidget {
             playersList: state.playersList,
           );
         } else if (state is GoToGameState) {
-          navPopAndPush(
+          navPopAndPushAfterBuild(
               context,
               GamePage(
                 spotUuid: spotUuid,

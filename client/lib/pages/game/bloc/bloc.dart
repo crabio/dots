@@ -34,6 +34,8 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
     on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
     on<ZoneTickEvent>(_onZoneTickEvent);
+
+    add(InitEvent());
   }
 
   void _onInitEvent(InitEvent event, Emitter<GamePageState> emit) async {
@@ -156,10 +158,6 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
         }
       }),
     );
-
-    on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
-    on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
-    on<ZoneTickEvent>(_onZoneTickEvent);
   }
 
   Future<Either<Exception, proto.GetSpotResponse>> _getSpotData() async {

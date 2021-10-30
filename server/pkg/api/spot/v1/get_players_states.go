@@ -13,7 +13,7 @@ import (
 )
 
 func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequest, stream proto.SpotService_GetPlayersStatesServer) error {
-	s.log.WithField("request", request.String()).Debug("Get players positions")
+	s.log.WithField("request", request.String()).Trace("Get players positions")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
@@ -57,7 +57,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 			},
 		}
 
-		s.log.WithField("response", response.String()).Debug("Get players state response")
+		s.log.WithField("response", response.String()).Trace("Get players state response")
 		if err := stream.Send(response); err != nil {
 			return err
 		}

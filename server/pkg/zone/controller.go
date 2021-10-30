@@ -217,12 +217,6 @@ func (c *Controller) Start() error {
 				if err != nil {
 					c.log.Error("Couldn't Tick next zone. " + err.Error())
 				}
-				c.log.WithFields(logrus.Fields{"curZone": curZone, "lastTick": lastTick}).Debug("Next zone tick")
-				c.ZoneEventBroadcaster.Send(ZoneTickEvent{
-					CurrentZone: curZone,
-					NextZone:    c.nextZone,
-					LastTick:    lastTick,
-				})
 
 				// Check that it was last tick
 				if lastTick {
@@ -231,6 +225,13 @@ func (c *Controller) Start() error {
 					c.zoneTicker = nil
 					// Go away from ticker loop
 					break tickerLoop
+				} else {
+					c.log.WithFields(logrus.Fields{"curZone": curZone, "lastTick": lastTick}).Debug("Next zone tick")
+					c.ZoneEventBroadcaster.Send(ZoneTickEvent{
+						CurrentZone: curZone,
+						NextZone:    c.nextZone,
+						LastTick:    lastTick,
+					})
 				}
 			}
 		}
