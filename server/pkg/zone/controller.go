@@ -90,9 +90,9 @@ func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float
 // Damage - 5 hp / s
 
 // Create next zone
-func (c *Controller) Next(now time.Time) {
+func (c *Controller) Next(nextZoneCreationTime time.Time) {
 	c.nextZone = nextZone(c.currentZone, c.minZoneRadiusInM)
-	c.nextZoneCreationTime = &now
+	c.nextZoneCreationTime = &nextZoneCreationTime
 	// Also save current zone as previous zone
 	c.prevZone = c.currentZone
 }
@@ -183,7 +183,9 @@ func (c *Controller) Start() error {
 
 			// Create next zone
 			timeNowMx.Lock()
-			c.Next(timeNow().UTC())
+			// Add delay to current time, because zone will tick after delay
+			nextZoneCreationTime := timeNow().UTC().Add(c.nextZoneDelay)
+			c.Next(nextZoneCreationTime)
 			timeNowMx.Unlock()
 
 			// Send next zone event to players
@@ -191,7 +193,7 @@ func (c *Controller) Start() error {
 			c.ZoneEventBroadcaster.Send(StartZoneDelayTimerEvent{
 				CurrentZone:       c.currentZone,
 				NextZone:          c.nextZone,
-				ZoneTickStartTime: timeNow().UTC().Add(c.nextZoneDelay),
+				ZoneTickStartTime: nextZoneCreationTime,
 			})
 			timeNowMx.Unlock()
 			c.nextZoneDelayTimer = time.NewTimer(c.nextZoneDelay)
