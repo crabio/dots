@@ -32,34 +32,33 @@ func NewDamageController(zoneEventBroadcaster *broadcast.Broadcaster, spotSessio
 	c.zoneEventBroadcaster = zoneEventBroadcaster
 	c.spotSession = spotSession
 	c.playerDamageTickerMap = NewPlayerDamageTickerMap()
+	c.subOnZoneEvents()
 	return c
 }
 
 func (c *DamageController) subOnZoneEvents() {
-	for zoneEventI := range c.zoneEventBroadcaster.Listen().Ch {
-		switch event := zoneEventI.(type) {
-		case zone.StartNextZoneTimerEvent:
-			c.currentZone = event.CurrentZone
+	go func() {
+		for zoneEventI := range c.zoneEventBroadcaster.Listen().Ch {
+			switch event := zoneEventI.(type) {
+			case zone.StartNextZoneTimerEvent:
+				c.currentZone = event.CurrentZone
 
-		case zone.StartZoneDelayTimerEvent:
-			c.currentZone = event.CurrentZone
+			case zone.StartZoneDelayTimerEvent:
+				c.currentZone = event.CurrentZone
 
-		case zone.ZoneTickEvent:
-			c.currentZone = event.CurrentZone
+			case zone.ZoneTickEvent:
+				c.currentZone = event.CurrentZone
 
-		default:
-			logrus.Fatalf("Unimplemented zone event type: %v", event)
+			default:
+				logrus.Fatalf("Unimplemented zone event type: %v", event)
+			}
+
+			// On new zone event controller should check all users in new zone
+			c.spotSession.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
+				c.NewPlayerState(k, v)
+			})
 		}
-	}
-
-	// On new zone event controller should check all users in new zone
-	c.spotSession.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
-		c.NewPlayerState(k, v)
-	})
-}
-
-func (c *DamageController) NewZone(zone *zone.Zone) {
-	c.currentZone = zone
+	}()
 }
 
 // Function trigger indicator about new player position for damage conditions check
@@ -78,18 +77,23 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 				go func() {
 					// TODO Check what will happen if ticker wiil be stop
 					for range damageTicker.C {
-						logrus.Debug("Damage ticker tick")
-						playerState.Lock()
-						playerState.Health = playerState.Health - c.currentZone.Damage
-						playerState.Unlock()
+						if playerState.Health < c.currentZone.Damage {
+							playerState.Health = 0
+						} else {
+							playerState.Health = playerState.Health - c.currentZone.Damage
+						}
 
 						playerState.Broadcaster.Send(player_state.PlayerPublicState{
 							PlayerUuid: playerUuid,
 							Position:   playerState.Position,
 							Health:     playerState.Health,
 						})
+
+						// Exit on death
+						if playerState.Health == 0 {
+							break
+						}
 					}
-					logrus.Debug("Exit from damage ticker loop")
 				}()
 			}
 		}

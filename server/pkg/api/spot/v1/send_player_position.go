@@ -63,6 +63,9 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 				Position:   playerState.Position,
 				Health:     playerState.Health,
 			})
+
+			// Send new player position to damage controller
+			spot.DamageController.NewPlayerState(playerUuid, playerState)
 		}
 		s.SpotsMap.Store(spotUuid, spot)
 

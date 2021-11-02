@@ -126,7 +126,7 @@ class _InitedStateView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Text(
-                  "Health: ${playerState.health}",
+                  "Health: ${playerState.health.toStringAsFixed(1)}",
                   style: Theme.of(context)
                       .textTheme
                       .headline4!

@@ -2,7 +2,6 @@ package player_state
 
 import (
 	// External
-	"sync"
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
@@ -11,8 +10,6 @@ import (
 )
 
 type PlayerState struct {
-	sync.Mutex
-
 	Position s2.LatLng
 	Health   float32
 
