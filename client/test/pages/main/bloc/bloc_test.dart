@@ -49,19 +49,19 @@ void main() {
         ]));
 
     blocTest<MainPageBloc, MainPageState>(
-      'emits [MyState] when MyEvent is added.',
+      'emits [MainPageState] on init.',
       build: () => MainPageBloc(
         geolocator: geolocator,
       ),
-      expect: () => <MainPageState>[InitedState(position: LatLng(20, 10))],
+      expect: () => <MainPageState>[],
     );
     blocTest<MainPageBloc, MainPageState>(
-      'emits [MyState] when MyEvent is added.',
+      'emits [MainPageState] when InitEvent is added.',
       build: () => MainPageBloc(
         geolocator: geolocator,
       ),
       act: (bloc) => bloc.add(InitEvent()),
-      expect: () => <MainPageState>[InitedState(position: LatLng(20, 10))],
+      expect: () => <MainPageState>[],
     );
     blocTest<MainPageBloc, MainPageState>(
       'emits [InitedState] when NewGeoPositionEvent is added.',
@@ -71,7 +71,6 @@ void main() {
       act: (bloc) => bloc.add(NewGeoPositionEvent(position: LatLng(60, 10))),
       expect: () => <MainPageState>[
         InitedState(position: LatLng(60, 10)),
-        InitedState(position: LatLng(20, 10)),
       ],
     );
   });
