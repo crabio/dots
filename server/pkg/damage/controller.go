@@ -67,8 +67,8 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 	damageTicker, ok := c.playerDamageTickerMap.Load(playerUuid)
 
 	// Check damage condition
-	if geo.AngleToM(playerState.Position.Distance(c.currentZone.Position)) > float64(c.currentZone.Radius) {
-		if c.currentZone != nil {
+	if c.currentZone != nil {
+		if geo.AngleToM(playerState.Position.Distance(c.currentZone.Position)) > float64(c.currentZone.Radius) {
 			if !ok {
 				damageTicker := time.NewTicker(zoneDamagePeriod)
 				c.playerDamageTickerMap.Store(playerUuid, damageTicker)
@@ -96,11 +96,11 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 					}
 				}()
 			}
-		}
-	} else {
-		if ok {
-			damageTicker.Stop()
-			c.playerDamageTickerMap.Delete(playerUuid)
+		} else {
+			if ok {
+				damageTicker.Stop()
+				c.playerDamageTickerMap.Delete(playerUuid)
+			}
 		}
 	}
 }
