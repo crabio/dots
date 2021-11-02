@@ -1,6 +1,7 @@
 package damage
 
 import (
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -16,6 +17,8 @@ const zoneDamagePeriod = time.Second * 2
 
 // Damage controller performs damage function if player is out of zone
 type DamageController struct {
+	sync.RWMutex
+
 	currentZone *zone.Zone
 
 	// Channel for receiving zone event (one of NextZone, NextZoneTick, ZoneTickEnd)
@@ -39,6 +42,7 @@ func NewDamageController(zoneEventBroadcaster *broadcast.Broadcaster, spotSessio
 func (c *DamageController) subOnZoneEvents() {
 	go func() {
 		for zoneEventI := range c.zoneEventBroadcaster.Listen().Ch {
+			c.Lock()
 			switch event := zoneEventI.(type) {
 			case zone.StartNextZoneTimerEvent:
 				c.currentZone = event.CurrentZone
@@ -57,6 +61,7 @@ func (c *DamageController) subOnZoneEvents() {
 			c.spotSession.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
 				c.NewPlayerState(k, v)
 			})
+			c.Unlock()
 		}
 	}()
 }
@@ -67,6 +72,7 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 	damageTicker, ok := c.playerDamageTickerMap.Load(playerUuid)
 
 	// Check damage condition
+	c.Lock()
 	if c.currentZone != nil {
 		if geo.AngleToM(playerState.Position.Distance(c.currentZone.Position)) > float64(c.currentZone.Radius) {
 			if !ok {
@@ -103,4 +109,5 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 			}
 		}
 	}
+	c.Unlock()
 }
