@@ -72,7 +72,6 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 	damageTicker, ok := c.playerDamageTickerMap.Load(playerUuid)
 
 	// Check damage condition
-	c.Lock()
 	if c.currentZone != nil {
 		if geo.AngleToM(playerState.Position.Distance(c.currentZone.Position)) > float64(c.currentZone.Radius) {
 			if !ok {
@@ -83,11 +82,13 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 				go func() {
 					// TODO Check what will happen if ticker wiil be stop
 					for range damageTicker.C {
+						c.Lock()
 						if playerState.Health < c.currentZone.Damage {
 							playerState.Health = 0
 						} else {
 							playerState.Health = playerState.Health - c.currentZone.Damage
 						}
+						c.Unlock()
 
 						playerState.Broadcaster.Send(player_state.PlayerPublicState{
 							PlayerUuid: playerUuid,
@@ -109,5 +110,4 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 			}
 		}
 	}
-	c.Unlock()
 }
