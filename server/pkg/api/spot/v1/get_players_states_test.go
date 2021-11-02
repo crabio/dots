@@ -87,17 +87,17 @@ func TestGetPlayerPosition(t *testing.T) {
 	// Add positions
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
-	spot.Session.PlayersStateMap.Store(playerUuid, player_state.PlayerState{
+	spot.Session.PlayersStateMap.Store(playerUuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(10, 20),
 		Broadcaster: broadcast.New(0),
 		Health:      88,
 	})
-	spot.Session.PlayersStateMap.Store(player2Uuid, player_state.PlayerState{
+	spot.Session.PlayersStateMap.Store(player2Uuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(60, 70),
 		Broadcaster: broadcast.New(0),
 		Health:      33,
 	})
-	spot.Session.PlayersStateMap.Store(player3Uuid, player_state.PlayerState{
+	spot.Session.PlayersStateMap.Store(player3Uuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(80, 90),
 		Broadcaster: broadcast.New(0),
 		Health:      15,

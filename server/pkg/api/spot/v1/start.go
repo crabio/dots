@@ -10,7 +10,8 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
-	data "github.com/iakrevetkho/dots/server/pkg/spot"
+	"github.com/iakrevetkho/dots/server/pkg/damage"
+	spot_session "github.com/iakrevetkho/dots/server/pkg/spot_session"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -39,7 +40,10 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
 
 	// Create spot session
-	spot.Session = data.NewSpotSession(hunterUuid, spot.PlayersList)
+	spot.Session = spot_session.NewSpotSession(hunterUuid, spot.PlayersList)
+
+	// Create damage controller
+	spot.DamageController = damage.NewDamageController(spot.ZoneController.ZoneEventBroadcaster, spot.Session)
 
 	// Save spot on server
 	s.SpotsMap.Store(spotUuid, spot)

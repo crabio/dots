@@ -1,4 +1,4 @@
-package spot
+package spot_session
 
 import (
 	// External
@@ -25,8 +25,7 @@ func NewSpotSession(hunterUuid uuid.UUID, playersList []uuid.UUID) *SpotSession 
 	session.PlayersStateMap = player_state.NewPlayerStateMap()
 	for _, playerUuid := range playersList {
 		playerState := player_state.NewPlayerState()
-		playerState.Health = 100
-		session.PlayersStateMap.Store(playerUuid, *playerState)
+		session.PlayersStateMap.Store(playerUuid, playerState)
 	}
 
 	return session
