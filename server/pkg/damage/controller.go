@@ -56,12 +56,12 @@ func (c *DamageController) subOnZoneEvents() {
 			default:
 				logrus.Fatalf("Unimplemented zone event type: %v", event)
 			}
+			c.Unlock()
 
 			// On new zone event controller should check all users in new zone
 			c.spotSession.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
 				c.NewPlayerState(k, v)
 			})
-			c.Unlock()
 		}
 	}()
 }
@@ -72,6 +72,7 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 	damageTicker, ok := c.playerDamageTickerMap.Load(playerUuid)
 
 	// Check damage condition
+	c.Lock()
 	if c.currentZone != nil {
 		if geo.AngleToM(playerState.Position.Distance(c.currentZone.Position)) > float64(c.currentZone.Radius) {
 			if !ok {
@@ -110,4 +111,5 @@ func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *pla
 			}
 		}
 	}
+	c.Unlock()
 }
