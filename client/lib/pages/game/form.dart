@@ -1,4 +1,4 @@
-import 'package:dots_client/pages/game/resources/player_position.dart';
+import 'package:dots_client/pages/game/resources/player_state.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';

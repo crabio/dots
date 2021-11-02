@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dots_client/pages/game/resources/player_position.dart';
+import 'package:dots_client/pages/game/resources/player_state.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
