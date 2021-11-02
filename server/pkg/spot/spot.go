@@ -6,6 +6,8 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	"github.com/iakrevetkho/dots/server/pkg/damage"
+	"github.com/iakrevetkho/dots/server/pkg/spot_session"
 	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/tjgq/broadcast"
 )
@@ -22,9 +24,11 @@ type Spot struct {
 	// Channel for sending players list on update
 	PlayersListBroadcaster *broadcast.Broadcaster
 
-	Session *SpotSession
+	Session *spot_session.SpotSession
 
 	ZoneController *zone.Controller
+
+	DamageController *damage.DamageController
 
 	// Flag indicies that spot is active (players are playing)
 	IsActive bool

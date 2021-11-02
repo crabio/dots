@@ -27,7 +27,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     Emitter<MainPageState> emit,
   ) async {
     _logger.fine("Check geolocation permission");
-    LocationPermission permission = await geolocator.requestPermission();
+    LocationPermission permission = await geolocator.checkPermission();
     if (permission != LocationPermission.always &&
         permission != LocationPermission.whileInUse) {
       emit(LocationsPermissionIsNotAllowedState());

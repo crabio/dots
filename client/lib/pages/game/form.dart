@@ -1,4 +1,4 @@
-import 'package:dots_client/pages/game/resources/player_position.dart';
+import 'package:dots_client/pages/game/resources/player_state.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +126,7 @@ class _InitedStateView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Text(
-                  "Health: ${playerState.health}",
+                  "Health: ${playerState.health.toStringAsFixed(1)}",
                   style: Theme.of(context)
                       .textTheme
                       .headline4!

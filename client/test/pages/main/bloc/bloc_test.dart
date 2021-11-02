@@ -17,7 +17,7 @@ void main() {
   group('MainPageBloc', () {
     final geolocator = MockGeolocatorPlatform();
     // Stub a mock methods before interacting.
-    when(geolocator.requestPermission())
+    when(geolocator.checkPermission())
         .thenAnswer((_) async => LocationPermission.always);
     when(geolocator.getLastKnownPosition()).thenAnswer((_) async => Position(
           longitude: 10,
@@ -49,14 +49,14 @@ void main() {
         ]));
 
     blocTest<MainPageBloc, MainPageState>(
-      'emits [MyState] when MyEvent is added.',
+      'emits [MainPageState] on init.',
       build: () => MainPageBloc(
         geolocator: geolocator,
       ),
       expect: () => <MainPageState>[InitedState(position: LatLng(20, 10))],
     );
     blocTest<MainPageBloc, MainPageState>(
-      'emits [MyState] when MyEvent is added.',
+      'emits [MainPageState] when InitEvent is added.',
       build: () => MainPageBloc(
         geolocator: geolocator,
       ),

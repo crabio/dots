@@ -7,7 +7,6 @@ import (
 )
 
 const (
-	// zoneDamagePeriod = time.Second * 2
 	maxZoneDamage = 5.0
 )
 
