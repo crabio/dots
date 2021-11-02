@@ -47,7 +47,7 @@ test:
 
 build:
 	@echo "Build app binary"
-	go build -o out/server
+	go build -ldflags "-s -w" -o out/server
 
 build_docker:
 	@echo "Build app docker container"
