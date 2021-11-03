@@ -648,14 +648,14 @@ class IsPlayerHunterResponse extends $pb.GeneratedMessage {
   void clearIsHunter() => clearField(1);
 }
 
-class GetSpotStartFlagRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotStartFlagRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+class SubSessionEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubSessionEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
     ..hasRequiredFields = false
   ;
 
-  GetSpotStartFlagRequest._() : super();
-  factory GetSpotStartFlagRequest({
+  SubSessionEventRequest._() : super();
+  factory SubSessionEventRequest({
     $core.String? spotUuid,
   }) {
     final _result = create();
@@ -664,26 +664,26 @@ class GetSpotStartFlagRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetSpotStartFlagRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetSpotStartFlagRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory SubSessionEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubSessionEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagRequest clone() => GetSpotStartFlagRequest()..mergeFromMessage(this);
+  SubSessionEventRequest clone() => SubSessionEventRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagRequest copyWith(void Function(GetSpotStartFlagRequest) updates) => super.copyWith((message) => updates(message as GetSpotStartFlagRequest)) as GetSpotStartFlagRequest; // ignore: deprecated_member_use
+  SubSessionEventRequest copyWith(void Function(SubSessionEventRequest) updates) => super.copyWith((message) => updates(message as SubSessionEventRequest)) as SubSessionEventRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagRequest create() => GetSpotStartFlagRequest._();
-  GetSpotStartFlagRequest createEmptyInstance() => create();
-  static $pb.PbList<GetSpotStartFlagRequest> createRepeated() => $pb.PbList<GetSpotStartFlagRequest>();
+  static SubSessionEventRequest create() => SubSessionEventRequest._();
+  SubSessionEventRequest createEmptyInstance() => create();
+  static $pb.PbList<SubSessionEventRequest> createRepeated() => $pb.PbList<SubSessionEventRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotStartFlagRequest>(create);
-  static GetSpotStartFlagRequest? _defaultInstance;
+  static SubSessionEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubSessionEventRequest>(create);
+  static SubSessionEventRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
@@ -695,51 +695,160 @@ class GetSpotStartFlagRequest extends $pb.GeneratedMessage {
   void clearSpotUuid() => clearField(1);
 }
 
-class GetSpotStartFlagResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotStartFlagResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
-    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isActive')
+enum SubSessionEventResponse_Event {
+  startSessionEvent, 
+  stopSessionEvent, 
+  notSet
+}
+
+class SubSessionEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, SubSessionEventResponse_Event> _SubSessionEventResponse_EventByTag = {
+    1 : SubSessionEventResponse_Event.startSessionEvent,
+    2 : SubSessionEventResponse_Event.stopSessionEvent,
+    0 : SubSessionEventResponse_Event.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubSessionEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..oo(0, [1, 2])
+    ..aOM<StartSessionEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startSessionEvent', subBuilder: StartSessionEvent.create)
+    ..aOM<EndSessionEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopSessionEvent', subBuilder: EndSessionEvent.create)
     ..hasRequiredFields = false
   ;
 
-  GetSpotStartFlagResponse._() : super();
-  factory GetSpotStartFlagResponse({
-    $core.bool? isActive,
+  SubSessionEventResponse._() : super();
+  factory SubSessionEventResponse({
+    StartSessionEvent? startSessionEvent,
+    EndSessionEvent? stopSessionEvent,
   }) {
     final _result = create();
-    if (isActive != null) {
-      _result.isActive = isActive;
+    if (startSessionEvent != null) {
+      _result.startSessionEvent = startSessionEvent;
+    }
+    if (stopSessionEvent != null) {
+      _result.stopSessionEvent = stopSessionEvent;
     }
     return _result;
   }
-  factory GetSpotStartFlagResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetSpotStartFlagResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory SubSessionEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubSessionEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagResponse clone() => GetSpotStartFlagResponse()..mergeFromMessage(this);
+  SubSessionEventResponse clone() => SubSessionEventResponse()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagResponse copyWith(void Function(GetSpotStartFlagResponse) updates) => super.copyWith((message) => updates(message as GetSpotStartFlagResponse)) as GetSpotStartFlagResponse; // ignore: deprecated_member_use
+  SubSessionEventResponse copyWith(void Function(SubSessionEventResponse) updates) => super.copyWith((message) => updates(message as SubSessionEventResponse)) as SubSessionEventResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagResponse create() => GetSpotStartFlagResponse._();
-  GetSpotStartFlagResponse createEmptyInstance() => create();
-  static $pb.PbList<GetSpotStartFlagResponse> createRepeated() => $pb.PbList<GetSpotStartFlagResponse>();
+  static SubSessionEventResponse create() => SubSessionEventResponse._();
+  SubSessionEventResponse createEmptyInstance() => create();
+  static $pb.PbList<SubSessionEventResponse> createRepeated() => $pb.PbList<SubSessionEventResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotStartFlagResponse>(create);
-  static GetSpotStartFlagResponse? _defaultInstance;
+  static SubSessionEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubSessionEventResponse>(create);
+  static SubSessionEventResponse? _defaultInstance;
+
+  SubSessionEventResponse_Event whichEvent() => _SubSessionEventResponse_EventByTag[$_whichOneof(0)]!;
+  void clearEvent() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
-  $core.bool get isActive => $_getBF(0);
+  StartSessionEvent get startSessionEvent => $_getN(0);
   @$pb.TagNumber(1)
-  set isActive($core.bool v) { $_setBool(0, v); }
+  set startSessionEvent(StartSessionEvent v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasIsActive() => $_has(0);
+  $core.bool hasStartSessionEvent() => $_has(0);
   @$pb.TagNumber(1)
-  void clearIsActive() => clearField(1);
+  void clearStartSessionEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartSessionEvent ensureStartSessionEvent() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  EndSessionEvent get stopSessionEvent => $_getN(1);
+  @$pb.TagNumber(2)
+  set stopSessionEvent(EndSessionEvent v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStopSessionEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStopSessionEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  EndSessionEvent ensureStopSessionEvent() => $_ensure(1);
+}
+
+class StartSessionEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartSessionEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  StartSessionEvent._() : super();
+  factory StartSessionEvent() => create();
+  factory StartSessionEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartSessionEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartSessionEvent clone() => StartSessionEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartSessionEvent copyWith(void Function(StartSessionEvent) updates) => super.copyWith((message) => updates(message as StartSessionEvent)) as StartSessionEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static StartSessionEvent create() => StartSessionEvent._();
+  StartSessionEvent createEmptyInstance() => create();
+  static $pb.PbList<StartSessionEvent> createRepeated() => $pb.PbList<StartSessionEvent>();
+  @$core.pragma('dart2js:noInline')
+  static StartSessionEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartSessionEvent>(create);
+  static StartSessionEvent? _defaultInstance;
+}
+
+class EndSessionEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EndSessionEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hunterWins')
+    ..hasRequiredFields = false
+  ;
+
+  EndSessionEvent._() : super();
+  factory EndSessionEvent({
+    $core.bool? hunterWins,
+  }) {
+    final _result = create();
+    if (hunterWins != null) {
+      _result.hunterWins = hunterWins;
+    }
+    return _result;
+  }
+  factory EndSessionEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory EndSessionEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  EndSessionEvent clone() => EndSessionEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  EndSessionEvent copyWith(void Function(EndSessionEvent) updates) => super.copyWith((message) => updates(message as EndSessionEvent)) as EndSessionEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static EndSessionEvent create() => EndSessionEvent._();
+  EndSessionEvent createEmptyInstance() => create();
+  static $pb.PbList<EndSessionEvent> createRepeated() => $pb.PbList<EndSessionEvent>();
+  @$core.pragma('dart2js:noInline')
+  static EndSessionEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EndSessionEvent>(create);
+  static EndSessionEvent? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get hunterWins => $_getBF(0);
+  @$pb.TagNumber(1)
+  set hunterWins($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasHunterWins() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearHunterWins() => clearField(1);
 }
 
 class SendPlayerPositionRequest extends $pb.GeneratedMessage {

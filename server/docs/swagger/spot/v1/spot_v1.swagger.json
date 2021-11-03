@@ -52,6 +52,14 @@
         }
       }
     },
+    "v1EndSessionEvent": {
+      "type": "object",
+      "properties": {
+        "hunterWins": {
+          "type": "boolean"
+        }
+      }
+    },
     "v1GetLastZoneEventResponse": {
       "type": "object",
       "properties": {
@@ -103,14 +111,6 @@
         "zonePeriodInSeconds": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "v1GetSpotStartFlagResponse": {
-      "type": "object",
-      "properties": {
-        "isActive": {
-          "type": "boolean"
         }
       }
     },
@@ -168,6 +168,9 @@
         }
       }
     },
+    "v1StartSessionEvent": {
+      "type": "object"
+    },
     "v1StartSpotResponse": {
       "type": "object"
     },
@@ -183,6 +186,17 @@
         "zoneTickStartTimestamp": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "v1SubSessionEventResponse": {
+      "type": "object",
+      "properties": {
+        "startSessionEvent": {
+          "$ref": "#/definitions/v1StartSessionEvent"
+        },
+        "stopSessionEvent": {
+          "$ref": "#/definitions/v1EndSessionEvent"
         }
       }
     },

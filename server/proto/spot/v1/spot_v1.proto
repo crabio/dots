@@ -19,7 +19,7 @@ service SpotService {
 
   rpc IsPlayerHunter (IsPlayerHunterRequest) returns (IsPlayerHunterResponse) {}
 
-  rpc GetSpotStartFlag (GetSpotStartFlagRequest) returns (stream GetSpotStartFlagResponse) {}
+  rpc SubSessionEvent (SubSessionEventRequest) returns (stream SubSessionEventResponse) {}
 
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
@@ -90,12 +90,21 @@ message IsPlayerHunterResponse {
   bool is_hunter = 1;
 }
 
-message GetSpotStartFlagRequest {
+message SubSessionEventRequest {
   string spot_uuid = 1;
 }
 
-message GetSpotStartFlagResponse {
-  bool is_active =1;
+message SubSessionEventResponse {
+  oneof event {
+    StartSessionEvent start_session_event = 1;
+    EndSessionEvent stop_session_event = 2;
+  }
+}
+
+message StartSessionEvent {}
+
+message EndSessionEvent {
+  bool hunter_wins = 1;
 }
 
 message SendPlayerPositionRequest {

@@ -50,12 +50,12 @@ class SpotServiceClient extends $grpc.Client {
           ($0.IsPlayerHunterRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.IsPlayerHunterResponse.fromBuffer(value));
-  static final _$getSpotStartFlag = $grpc.ClientMethod<
-          $0.GetSpotStartFlagRequest, $0.GetSpotStartFlagResponse>(
-      '/spot.v1.SpotService/GetSpotStartFlag',
-      ($0.GetSpotStartFlagRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) =>
-          $0.GetSpotStartFlagResponse.fromBuffer(value));
+  static final _$subSessionEvent =
+      $grpc.ClientMethod<$0.SubSessionEventRequest, $0.SubSessionEventResponse>(
+          '/spot.v1.SpotService/SubSessionEvent',
+          ($0.SubSessionEventRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.SubSessionEventResponse.fromBuffer(value));
   static final _$sendPlayerPosition = $grpc.ClientMethod<
           $0.SendPlayerPositionRequest, $0.SendPlayerPositionResponse>(
       '/spot.v1.SpotService/SendPlayerPosition',
@@ -123,11 +123,11 @@ class SpotServiceClient extends $grpc.Client {
     return $createUnaryCall(_$isPlayerHunter, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.GetSpotStartFlagResponse> getSpotStartFlag(
-      $0.GetSpotStartFlagRequest request,
+  $grpc.ResponseStream<$0.SubSessionEventResponse> subSessionEvent(
+      $0.SubSessionEventRequest request,
       {$grpc.CallOptions? options}) {
     return $createStreamingCall(
-        _$getSpotStartFlag, $async.Stream.fromIterable([request]),
+        _$subSessionEvent, $async.Stream.fromIterable([request]),
         options: options);
   }
 
@@ -211,15 +211,15 @@ abstract class SpotServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.IsPlayerHunterRequest.fromBuffer(value),
         ($0.IsPlayerHunterResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.GetSpotStartFlagRequest,
-            $0.GetSpotStartFlagResponse>(
-        'GetSpotStartFlag',
-        getSpotStartFlag_Pre,
+    $addMethod($grpc.ServiceMethod<$0.SubSessionEventRequest,
+            $0.SubSessionEventResponse>(
+        'SubSessionEvent',
+        subSessionEvent_Pre,
         false,
         true,
         ($core.List<$core.int> value) =>
-            $0.GetSpotStartFlagRequest.fromBuffer(value),
-        ($0.GetSpotStartFlagResponse value) => value.writeToBuffer()));
+            $0.SubSessionEventRequest.fromBuffer(value),
+        ($0.SubSessionEventResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.SendPlayerPositionRequest,
             $0.SendPlayerPositionResponse>(
         'SendPlayerPosition',
@@ -290,10 +290,10 @@ abstract class SpotServiceBase extends $grpc.Service {
     return isPlayerHunter(call, await request);
   }
 
-  $async.Stream<$0.GetSpotStartFlagResponse> getSpotStartFlag_Pre(
+  $async.Stream<$0.SubSessionEventResponse> subSessionEvent_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$0.GetSpotStartFlagRequest> request) async* {
-    yield* getSpotStartFlag(call, await request);
+      $async.Future<$0.SubSessionEventRequest> request) async* {
+    yield* subSessionEvent(call, await request);
   }
 
   $async.Stream<$0.GetPlayersStatesResponse> getPlayersStates_Pre(
@@ -326,8 +326,8 @@ abstract class SpotServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.StartSpotRequest request);
   $async.Future<$0.IsPlayerHunterResponse> isPlayerHunter(
       $grpc.ServiceCall call, $0.IsPlayerHunterRequest request);
-  $async.Stream<$0.GetSpotStartFlagResponse> getSpotStartFlag(
-      $grpc.ServiceCall call, $0.GetSpotStartFlagRequest request);
+  $async.Stream<$0.SubSessionEventResponse> subSessionEvent(
+      $grpc.ServiceCall call, $0.SubSessionEventRequest request);
   $async.Future<$0.SendPlayerPositionResponse> sendPlayerPosition(
       $grpc.ServiceCall call,
       $async.Stream<$0.SendPlayerPositionRequest> request);

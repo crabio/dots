@@ -130,26 +130,47 @@ const IsPlayerHunterResponse$json = const {
 
 /// Descriptor for `IsPlayerHunterResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List isPlayerHunterResponseDescriptor = $convert.base64Decode('ChZJc1BsYXllckh1bnRlclJlc3BvbnNlEhsKCWlzX2h1bnRlchgBIAEoCFIIaXNIdW50ZXI=');
-@$core.Deprecated('Use getSpotStartFlagRequestDescriptor instead')
-const GetSpotStartFlagRequest$json = const {
-  '1': 'GetSpotStartFlagRequest',
+@$core.Deprecated('Use subSessionEventRequestDescriptor instead')
+const SubSessionEventRequest$json = const {
+  '1': 'SubSessionEventRequest',
   '2': const [
     const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
   ],
 };
 
-/// Descriptor for `GetSpotStartFlagRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSpotStartFlagRequestDescriptor = $convert.base64Decode('ChdHZXRTcG90U3RhcnRGbGFnUmVxdWVzdBIbCglzcG90X3V1aWQYASABKAlSCHNwb3RVdWlk');
-@$core.Deprecated('Use getSpotStartFlagResponseDescriptor instead')
-const GetSpotStartFlagResponse$json = const {
-  '1': 'GetSpotStartFlagResponse',
+/// Descriptor for `SubSessionEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subSessionEventRequestDescriptor = $convert.base64Decode('ChZTdWJTZXNzaW9uRXZlbnRSZXF1ZXN0EhsKCXNwb3RfdXVpZBgBIAEoCVIIc3BvdFV1aWQ=');
+@$core.Deprecated('Use subSessionEventResponseDescriptor instead')
+const SubSessionEventResponse$json = const {
+  '1': 'SubSessionEventResponse',
   '2': const [
-    const {'1': 'is_active', '3': 1, '4': 1, '5': 8, '10': 'isActive'},
+    const {'1': 'start_session_event', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.StartSessionEvent', '9': 0, '10': 'startSessionEvent'},
+    const {'1': 'stop_session_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.EndSessionEvent', '9': 0, '10': 'stopSessionEvent'},
+  ],
+  '8': const [
+    const {'1': 'event'},
   ],
 };
 
-/// Descriptor for `GetSpotStartFlagResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSpotStartFlagResponseDescriptor = $convert.base64Decode('ChhHZXRTcG90U3RhcnRGbGFnUmVzcG9uc2USGwoJaXNfYWN0aXZlGAEgASgIUghpc0FjdGl2ZQ==');
+/// Descriptor for `SubSessionEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subSessionEventResponseDescriptor = $convert.base64Decode('ChdTdWJTZXNzaW9uRXZlbnRSZXNwb25zZRJMChNzdGFydF9zZXNzaW9uX2V2ZW50GAEgASgLMhouc3BvdC52MS5TdGFydFNlc3Npb25FdmVudEgAUhFzdGFydFNlc3Npb25FdmVudBJIChJzdG9wX3Nlc3Npb25fZXZlbnQYAiABKAsyGC5zcG90LnYxLkVuZFNlc3Npb25FdmVudEgAUhBzdG9wU2Vzc2lvbkV2ZW50QgcKBWV2ZW50');
+@$core.Deprecated('Use startSessionEventDescriptor instead')
+const StartSessionEvent$json = const {
+  '1': 'StartSessionEvent',
+};
+
+/// Descriptor for `StartSessionEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List startSessionEventDescriptor = $convert.base64Decode('ChFTdGFydFNlc3Npb25FdmVudA==');
+@$core.Deprecated('Use endSessionEventDescriptor instead')
+const EndSessionEvent$json = const {
+  '1': 'EndSessionEvent',
+  '2': const [
+    const {'1': 'hunter_wins', '3': 1, '4': 1, '5': 8, '10': 'hunterWins'},
+  ],
+};
+
+/// Descriptor for `EndSessionEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List endSessionEventDescriptor = $convert.base64Decode('Cg9FbmRTZXNzaW9uRXZlbnQSHwoLaHVudGVyX3dpbnMYASABKAhSCmh1bnRlcldpbnM=');
 @$core.Deprecated('Use sendPlayerPositionRequestDescriptor instead')
 const SendPlayerPositionRequest$json = const {
   '1': 'SendPlayerPositionRequest',
