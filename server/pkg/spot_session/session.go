@@ -20,7 +20,7 @@ type SpotSession struct {
 
 	ZoneController *zone.Controller
 
-	DamageController *damage.DamageController
+	Controller *damage.Controller
 
 	GameController *game_controller.GameController
 
@@ -35,7 +35,7 @@ func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePerio
 	ss := new(SpotSession)
 	ss.Duration = duration
 	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
-	ss.GameController = game_controller.NewGameController()
+	ss.GameController = game_controller.NewGameController(ss.ZoneController)
 
 	return ss
 }
@@ -47,7 +47,7 @@ func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList []uuid.UUID) erro
 		ss.PlayersStateMap.Store(playerUuid, playerState)
 	}
 
-	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
+	ss.Controller = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
 
 	ss.GameController.Start(hunterUuid)
 
@@ -63,7 +63,7 @@ func (ss *SpotSession) PlayersStateMapStore(key uuid.UUID, value *player_state.P
 	ss.PlayersStateMap.Store(key, value)
 
 	// Send new player position to damage controller
-	ss.DamageController.NewPlayerState(key, value)
+	ss.Controller.NewPlayerState(key, value)
 
 	if err := ss.GameController.Check(ss.Duration, ss.PlayersStateMap); err != nil {
 		return err

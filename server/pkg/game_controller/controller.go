@@ -5,11 +5,16 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/iakrevetkho/archaeopteryx/logger"
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
+	"github.com/iakrevetkho/dots/server/pkg/zone"
+	"github.com/sirupsen/logrus"
 	"github.com/tjgq/broadcast"
 )
 
 type GameController struct {
+	log *logrus.Entry
+
 	// UUID of hunter player
 	HunterUuid *uuid.UUID
 
@@ -19,11 +24,15 @@ type GameController struct {
 	IsActive bool
 
 	EventsBroadcaster *broadcast.Broadcaster
+
+	zoneController *zone.Controller
 }
 
-func NewGameController() *GameController {
+func NewGameController(zoneController *zone.Controller) *GameController {
 	c := new(GameController)
+	c.log = logger.CreateLogger("game-controller")
 	c.EventsBroadcaster = broadcast.New(0)
+	c.zoneController = zoneController
 	return c
 }
 
@@ -67,11 +76,13 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 		// Hunter is dead
 		if len(alivePlayersStates) > 0 {
 			// 1. hunter is death and at least one of victim alive
+			c.log.Debug("Victims wins")
 			c.EventsBroadcaster.Send(EndSessionEvent{
 				Winner: SessionWinner_VictimsWins,
 			})
 		} else {
 			// Hunter and player are dead => draw
+			c.log.Debug("Draw")
 			c.EventsBroadcaster.Send(EndSessionEvent{
 				Winner: SessionWinner_Draw,
 			})
@@ -87,6 +98,7 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 			// Check session time
 			if c.StartTime.Add(sessionDuration).Before(time.Now().UTC()) {
 				// 2. or time if over and at least one of victim alive
+				c.log.Debug("Victims wins")
 				c.EventsBroadcaster.Send(EndSessionEvent{
 					Winner: SessionWinner_VictimsWins,
 				})
@@ -94,6 +106,7 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 			}
 		} else {
 			// Hunter is alive and players are dead
+			c.log.Debug("Hunter win")
 			c.EventsBroadcaster.Send(EndSessionEvent{
 				Winner: SessionWinner_HunterWins,
 			})
@@ -108,6 +121,8 @@ func (c *GameController) stop() {
 	c.IsActive = false
 	c.StartTime = nil
 	c.HunterUuid = nil
+	c.zoneController.Stop()
+
 }
 
 func getAlivePlayers(playersStateMap *player_state.PlayerStateMap, hunterUuid uuid.UUID) []*player_state.PlayerState {

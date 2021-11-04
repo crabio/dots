@@ -15,7 +15,7 @@ import (
 const zoneDamagePeriod = time.Second * 2
 
 // Damage controller performs damage function if player is out of zone
-type DamageController struct {
+type Controller struct {
 	sync.RWMutex
 
 	currentZone *zone.Zone
@@ -26,15 +26,15 @@ type DamageController struct {
 	playerDamageTickerMap *PlayerDamageTickerMap
 }
 
-func NewDamageController(zoneEventBroadcaster *broadcast.Broadcaster, playersStateMap *player_state.PlayerStateMap) *DamageController {
-	c := new(DamageController)
+func NewDamageController(zoneEventBroadcaster *broadcast.Broadcaster, playersStateMap *player_state.PlayerStateMap) *Controller {
+	c := new(Controller)
 	c.zoneEventBroadcaster = zoneEventBroadcaster
 	c.playerDamageTickerMap = NewPlayerDamageTickerMap()
 	c.subOnZoneEvents(playersStateMap)
 	return c
 }
 
-func (c *DamageController) subOnZoneEvents(playersStateMap *player_state.PlayerStateMap) {
+func (c *Controller) subOnZoneEvents(playersStateMap *player_state.PlayerStateMap) {
 	go func() {
 		for zoneEventI := range c.zoneEventBroadcaster.Listen().Ch {
 			c.Lock()
@@ -62,7 +62,7 @@ func (c *DamageController) subOnZoneEvents(playersStateMap *player_state.PlayerS
 }
 
 // Function trigger indicator about new player position for damage conditions check
-func (c *DamageController) NewPlayerState(playerUuid uuid.UUID, playerState *player_state.PlayerState) {
+func (c *Controller) NewPlayerState(playerUuid uuid.UUID, playerState *player_state.PlayerState) {
 	// Check player damage ticker in map
 	damageTicker, ok := c.playerDamageTickerMap.Load(playerUuid)
 

@@ -242,6 +242,19 @@ func (c *Controller) Start() error {
 	return nil
 }
 
+func (c *Controller) Stop() {
+	c.log.Debug("Stop")
+	if c.nextZoneTimer != nil {
+		c.nextZoneTimer.Stop()
+	}
+	if c.nextZoneDelayTimer != nil {
+		c.nextZoneDelayTimer.Stop()
+	}
+	if c.zoneTicker != nil {
+		c.zoneTicker.Stop()
+	}
+}
+
 // Creates new zone inside current zone
 func nextZone(zone *Zone, minZoneRadiusInM float32) *Zone {
 	newR := newRadius(zone.Radius, minZoneRadiusInM)
