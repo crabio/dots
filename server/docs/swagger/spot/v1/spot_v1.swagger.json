@@ -17,6 +17,15 @@
   ],
   "paths": {},
   "definitions": {
+    "StopSessionEventSessionWinner": {
+      "type": "string",
+      "enum": [
+        "HunterWins",
+        "VictimsWins",
+        "Draw"
+      ],
+      "default": "HunterWins"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -49,17 +58,6 @@
       "properties": {
         "spotUuid": {
           "type": "string"
-        }
-      }
-    },
-    "v1EndSessionEvent": {
-      "type": "object",
-      "properties": {
-        "hunterWins": {
-          "type": "boolean"
-        },
-        "draw": {
-          "type": "boolean"
         }
       }
     },
@@ -192,6 +190,14 @@
         }
       }
     },
+    "v1StopSessionEvent": {
+      "type": "object",
+      "properties": {
+        "winner": {
+          "$ref": "#/definitions/StopSessionEventSessionWinner"
+        }
+      }
+    },
     "v1SubSessionEventResponse": {
       "type": "object",
       "properties": {
@@ -199,7 +205,7 @@
           "$ref": "#/definitions/v1StartSessionEvent"
         },
         "stopSessionEvent": {
-          "$ref": "#/definitions/v1EndSessionEvent"
+          "$ref": "#/definitions/v1StopSessionEvent"
         }
       }
     },

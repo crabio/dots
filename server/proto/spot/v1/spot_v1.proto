@@ -98,15 +98,20 @@ message SubSessionEventRequest {
 message SubSessionEventResponse {
   oneof event {
     StartSessionEvent start_session_event = 1;
-    EndSessionEvent stop_session_event = 2;
+    StopSessionEvent stop_session_event = 2;
   }
 }
 
 message StartSessionEvent {}
 
-message EndSessionEvent {
-  bool hunter_wins = 1;
-  bool draw = 2;
+message StopSessionEvent {
+  enum SessionWinner {
+    HunterWins = 0;
+    VictimsWins = 1;
+    Draw = 2;
+  }
+
+  SessionWinner winner = 1;
 }
 
 message SendPlayerPositionRequest {
