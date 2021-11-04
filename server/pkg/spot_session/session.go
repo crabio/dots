@@ -31,23 +31,24 @@ type SpotSession struct {
 	PlayersStateMap *player_state.PlayerStateMap
 }
 
-func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration, playersList []uuid.UUID) *SpotSession {
+func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration) *SpotSession {
 	ss := new(SpotSession)
 	ss.Duration = duration
+	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
+	ss.GameController = game_controller.NewGameController()
+
+	return ss
+}
+
+func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList []uuid.UUID) error {
 	ss.PlayersStateMap = player_state.NewPlayerStateMap()
 	for _, playerUuid := range playersList {
 		playerState := player_state.NewPlayerState()
 		ss.PlayersStateMap.Store(playerUuid, playerState)
 	}
 
-	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
-	ss.GameController = game_controller.NewGameController()
 	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
 
-	return ss
-}
-
-func (ss *SpotSession) Start(hunterUuid uuid.UUID) error {
 	ss.GameController.Start(hunterUuid)
 
 	// Start zone ticker
