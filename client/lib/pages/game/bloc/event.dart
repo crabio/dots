@@ -83,7 +83,7 @@ class ZoneTickEvent extends GamePageEvent {
 }
 
 class SessionStopEvent extends GamePageEvent {
-  final SessionWinnerEnum winner;
+  final GameWinnerEnum winner;
 
   const SessionStopEvent({required this.winner});
 

@@ -50,12 +50,18 @@ class SpotServiceClient extends $grpc.Client {
           ($0.IsPlayerHunterRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.IsPlayerHunterResponse.fromBuffer(value));
-  static final _$subSessionEvent =
-      $grpc.ClientMethod<$0.SubSessionEventRequest, $0.SubSessionEventResponse>(
-          '/spot.v1.SpotService/SubSessionEvent',
-          ($0.SubSessionEventRequest value) => value.writeToBuffer(),
+  static final _$subGameEvent =
+      $grpc.ClientMethod<$0.SubGameEventRequest, $0.SubGameEventResponse>(
+          '/spot.v1.SpotService/SubGameEvent',
+          ($0.SubGameEventRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $0.SubSessionEventResponse.fromBuffer(value));
+              $0.SubGameEventResponse.fromBuffer(value));
+  static final _$getLastGameEvent = $grpc.ClientMethod<
+          $0.GetLastGameEventRequest, $0.GetLastGameEventResponse>(
+      '/spot.v1.SpotService/GetLastGameEvent',
+      ($0.GetLastGameEventRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $0.GetLastGameEventResponse.fromBuffer(value));
   static final _$sendPlayerPosition = $grpc.ClientMethod<
           $0.SendPlayerPositionRequest, $0.SendPlayerPositionResponse>(
       '/spot.v1.SpotService/SendPlayerPosition',
@@ -123,12 +129,18 @@ class SpotServiceClient extends $grpc.Client {
     return $createUnaryCall(_$isPlayerHunter, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.SubSessionEventResponse> subSessionEvent(
-      $0.SubSessionEventRequest request,
+  $grpc.ResponseStream<$0.SubGameEventResponse> subGameEvent(
+      $0.SubGameEventRequest request,
       {$grpc.CallOptions? options}) {
     return $createStreamingCall(
-        _$subSessionEvent, $async.Stream.fromIterable([request]),
+        _$subGameEvent, $async.Stream.fromIterable([request]),
         options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetLastGameEventResponse> getLastGameEvent(
+      $0.GetLastGameEventRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getLastGameEvent, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.SendPlayerPositionResponse> sendPlayerPosition(
@@ -211,15 +223,24 @@ abstract class SpotServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.IsPlayerHunterRequest.fromBuffer(value),
         ($0.IsPlayerHunterResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.SubSessionEventRequest,
-            $0.SubSessionEventResponse>(
-        'SubSessionEvent',
-        subSessionEvent_Pre,
+    $addMethod(
+        $grpc.ServiceMethod<$0.SubGameEventRequest, $0.SubGameEventResponse>(
+            'SubGameEvent',
+            subGameEvent_Pre,
+            false,
+            true,
+            ($core.List<$core.int> value) =>
+                $0.SubGameEventRequest.fromBuffer(value),
+            ($0.SubGameEventResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetLastGameEventRequest,
+            $0.GetLastGameEventResponse>(
+        'GetLastGameEvent',
+        getLastGameEvent_Pre,
         false,
-        true,
+        false,
         ($core.List<$core.int> value) =>
-            $0.SubSessionEventRequest.fromBuffer(value),
-        ($0.SubSessionEventResponse value) => value.writeToBuffer()));
+            $0.GetLastGameEventRequest.fromBuffer(value),
+        ($0.GetLastGameEventResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.SendPlayerPositionRequest,
             $0.SendPlayerPositionResponse>(
         'SendPlayerPosition',
@@ -290,10 +311,16 @@ abstract class SpotServiceBase extends $grpc.Service {
     return isPlayerHunter(call, await request);
   }
 
-  $async.Stream<$0.SubSessionEventResponse> subSessionEvent_Pre(
+  $async.Stream<$0.SubGameEventResponse> subGameEvent_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$0.SubSessionEventRequest> request) async* {
-    yield* subSessionEvent(call, await request);
+      $async.Future<$0.SubGameEventRequest> request) async* {
+    yield* subGameEvent(call, await request);
+  }
+
+  $async.Future<$0.GetLastGameEventResponse> getLastGameEvent_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.GetLastGameEventRequest> request) async {
+    return getLastGameEvent(call, await request);
   }
 
   $async.Stream<$0.GetPlayersStatesResponse> getPlayersStates_Pre(
@@ -326,8 +353,10 @@ abstract class SpotServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.StartSpotRequest request);
   $async.Future<$0.IsPlayerHunterResponse> isPlayerHunter(
       $grpc.ServiceCall call, $0.IsPlayerHunterRequest request);
-  $async.Stream<$0.SubSessionEventResponse> subSessionEvent(
-      $grpc.ServiceCall call, $0.SubSessionEventRequest request);
+  $async.Stream<$0.SubGameEventResponse> subGameEvent(
+      $grpc.ServiceCall call, $0.SubGameEventRequest request);
+  $async.Future<$0.GetLastGameEventResponse> getLastGameEvent(
+      $grpc.ServiceCall call, $0.GetLastGameEventRequest request);
   $async.Future<$0.SendPlayerPositionResponse> sendPlayerPosition(
       $grpc.ServiceCall call,
       $async.Stream<$0.SendPlayerPositionRequest> request);

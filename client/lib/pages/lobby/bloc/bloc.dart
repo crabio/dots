@@ -48,11 +48,11 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
 
     if (!isHost) {
       _logger.fine("Subscribe on spot active state");
-      _subscribeOnSpotSessionEvents().fold(
+      _subscribeOnSpotGameEvents().fold(
         (l) => emit(ErrorState(exception: l)),
         (r) => r.listen((value) async {
           switch (value.whichEvent()) {
-            case proto.SubSessionEventResponse_Event.startSessionEvent:
+            case proto.SubGameEventResponse_Event.startGameEvent:
               _logger.fine("Session is started");
               final isPlayerHunterRet = await _isPlayerHunter();
               isPlayerHunterRet.fold(
@@ -63,7 +63,7 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
               );
               break;
 
-            case proto.SubSessionEventResponse_Event.stopSessionEvent:
+            case proto.SubGameEventResponse_Event.stopGameEvent:
               _logger.fine("Session is stopped");
               break;
 
@@ -85,10 +85,10 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     }
   }
 
-  Either<Exception, ResponseStream<proto.SubSessionEventResponse>>
-      _subscribeOnSpotSessionEvents() {
+  Either<Exception, ResponseStream<proto.SubGameEventResponse>>
+      _subscribeOnSpotGameEvents() {
     try {
-      return Right(client.subSessionEvent(proto.SubSessionEventRequest(
+      return Right(client.subGameEvent(proto.SubGameEventRequest(
         spotUuid: spotUuid,
       )));
     } on Exception catch (ex) {

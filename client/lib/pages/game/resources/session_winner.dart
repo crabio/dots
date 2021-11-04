@@ -1,5 +1,5 @@
 // TODO Move to global resources
-enum SessionWinnerEnum {
+enum GameWinnerEnum {
   hunter,
   victims,
   draw,

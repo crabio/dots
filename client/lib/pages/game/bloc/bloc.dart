@@ -90,20 +90,26 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
           ))),
     );
 
-    _logger.fine("Subscribe on session events");
-    var ex = _subscribeOnSpotSessionEvents();
+    _logger.fine("Get last session event");
+    var ex = await _getLastGameEvent();
     if (ex != null) {
       emit(ErrorState(exception: ex));
     }
 
-    _logger.fine("Subscribe on zone state");
-    ex = _subscribeOnZoneEvents();
+    _logger.fine("Subscribe on session events");
+    ex = _subscribeOnSpotSessionEvents();
     if (ex != null) {
       emit(ErrorState(exception: ex));
     }
 
     _logger.fine("Get last zone event");
     ex = await _getLastZoneEvent();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
+
+    _logger.fine("Subscribe on zone state");
+    ex = _subscribeOnZoneEvents();
     if (ex != null) {
       emit(ErrorState(exception: ex));
     }
@@ -158,44 +164,6 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
       return Right(client.getPlayersStates(request));
     } on Exception catch (ex) {
       return Left(ex);
-    }
-  }
-
-  Exception? _subscribeOnSpotSessionEvents() {
-    try {
-      client
-          .subSessionEvent(proto.SubSessionEventRequest(
-        spotUuid: spotUuid,
-      ))
-          .listen((value) {
-        switch (value.whichEvent()) {
-          case proto.SubSessionEventResponse_Event.startSessionEvent:
-            _logger.fine("Session was started");
-            break;
-          case proto.SubSessionEventResponse_Event.stopSessionEvent:
-            _logger.fine("Session was stopped");
-            switch (value.stopSessionEvent.winner) {
-              case proto.StopSessionEvent_SessionWinner.HunterWins:
-                add(const SessionStopEvent(winner: SessionWinnerEnum.hunter));
-                break;
-
-              case proto.StopSessionEvent_SessionWinner.VictimsWins:
-                add(const SessionStopEvent(winner: SessionWinnerEnum.victims));
-                break;
-
-              case proto.StopSessionEvent_SessionWinner.Draw:
-                add(const SessionStopEvent(winner: SessionWinnerEnum.draw));
-                break;
-
-              default:
-            }
-
-            break;
-          default:
-        }
-      });
-    } on Exception catch (ex) {
-      return ex;
     }
   }
 
@@ -355,6 +323,73 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     }
   }
 
+  Exception? _subscribeOnSpotSessionEvents() {
+    try {
+      client
+          .subGameEvent(proto.SubGameEventRequest(
+        spotUuid: spotUuid,
+      ))
+          .listen((value) {
+        switch (value.whichEvent()) {
+          case proto.SubGameEventResponse_Event.startGameEvent:
+            _logger.fine("Session was started");
+            break;
+          case proto.SubGameEventResponse_Event.stopGameEvent:
+            _logger.fine("Session was stopped");
+            _processStopGameEvent(value.stopGameEvent);
+            break;
+          default:
+            throw Exception("Unimplemented");
+        }
+      });
+    } on Exception catch (ex) {
+      return ex;
+    }
+  }
+
+  Future<Exception?> _getLastGameEvent() async {
+    try {
+      final response = await client.getLastGameEvent(
+        proto.GetLastGameEventRequest(spotUuid: spotUuid),
+      );
+      switch (response.whichEvent()) {
+        case proto.GetLastGameEventResponse_Event.startGameEvent:
+          _logger.fine("Session was started");
+          break;
+        case proto.GetLastGameEventResponse_Event.stopGameEvent:
+          _logger.fine("Session was stopped");
+          _processStopGameEvent(response.stopGameEvent);
+          break;
+        default:
+          throw Exception("Unimplemented");
+      }
+
+      return null;
+    } on Exception catch (ex) {
+      return ex;
+    }
+  }
+
+  void _processStopGameEvent(proto.StopGameEvent event) {
+    _logger.fine("Session was stopped");
+    switch (event.winner) {
+      case proto.StopGameEvent_GameWinner.HunterWins:
+        add(const SessionStopEvent(winner: GameWinnerEnum.hunter));
+        break;
+
+      case proto.StopGameEvent_GameWinner.VictimsWins:
+        add(const SessionStopEvent(winner: GameWinnerEnum.victims));
+        break;
+
+      case proto.StopGameEvent_GameWinner.Draw:
+        add(const SessionStopEvent(winner: GameWinnerEnum.draw));
+        break;
+
+      default:
+        throw Exception("unimplemented");
+    }
+  }
+
   void _onNewPlayersStatesEvent(
     NewPlayersStatesEvent event,
     Emitter<GamePageState> emit,
@@ -429,15 +464,15 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     _logger.fine("Geo position stream stopped");
 
     switch (event.winner) {
-      case SessionWinnerEnum.hunter:
+      case GameWinnerEnum.hunter:
         emit(HunterWinsState());
         break;
 
-      case SessionWinnerEnum.victims:
+      case GameWinnerEnum.victims:
         emit(VictimsWinsState());
         break;
 
-      case SessionWinnerEnum.draw:
+      case GameWinnerEnum.draw:
         emit(DrawState());
         break;
 

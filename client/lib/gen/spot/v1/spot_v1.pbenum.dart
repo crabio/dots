@@ -9,20 +9,20 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class StopSessionEvent_SessionWinner extends $pb.ProtobufEnum {
-  static const StopSessionEvent_SessionWinner HunterWins = StopSessionEvent_SessionWinner._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'HunterWins');
-  static const StopSessionEvent_SessionWinner VictimsWins = StopSessionEvent_SessionWinner._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'VictimsWins');
-  static const StopSessionEvent_SessionWinner Draw = StopSessionEvent_SessionWinner._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'Draw');
+class StopGameEvent_GameWinner extends $pb.ProtobufEnum {
+  static const StopGameEvent_GameWinner HunterWins = StopGameEvent_GameWinner._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'HunterWins');
+  static const StopGameEvent_GameWinner VictimsWins = StopGameEvent_GameWinner._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'VictimsWins');
+  static const StopGameEvent_GameWinner Draw = StopGameEvent_GameWinner._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'Draw');
 
-  static const $core.List<StopSessionEvent_SessionWinner> values = <StopSessionEvent_SessionWinner> [
+  static const $core.List<StopGameEvent_GameWinner> values = <StopGameEvent_GameWinner> [
     HunterWins,
     VictimsWins,
     Draw,
   ];
 
-  static final $core.Map<$core.int, StopSessionEvent_SessionWinner> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static StopSessionEvent_SessionWinner? valueOf($core.int value) => _byValue[value];
+  static final $core.Map<$core.int, StopGameEvent_GameWinner> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static StopGameEvent_GameWinner? valueOf($core.int value) => _byValue[value];
 
-  const StopSessionEvent_SessionWinner._($core.int v, $core.String n) : super(v, n);
+  const StopGameEvent_GameWinner._($core.int v, $core.String n) : super(v, n);
 }
 

@@ -15,28 +15,14 @@ import 'spot_v1.pbenum.dart';
 export 'spot_v1.pbenum.dart';
 
 class CreateSpotRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'CreateSpotRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOM<Position>(1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position',
-        subBuilder: Position.create)
-    ..a<$core.double>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'radiusInM',
-        $pb.PbFieldType.OF)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
+    ..hasRequiredFields = false
+  ;
 
   CreateSpotRequest._() : super();
   factory CreateSpotRequest({
@@ -64,40 +50,31 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory CreateSpotRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory CreateSpotRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory CreateSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   CreateSpotRequest clone() => CreateSpotRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  CreateSpotRequest copyWith(void Function(CreateSpotRequest) updates) =>
-      super.copyWith((message) => updates(message as CreateSpotRequest))
-          as CreateSpotRequest; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateSpotRequest copyWith(void Function(CreateSpotRequest) updates) => super.copyWith((message) => updates(message as CreateSpotRequest)) as CreateSpotRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CreateSpotRequest create() => CreateSpotRequest._();
   CreateSpotRequest createEmptyInstance() => create();
-  static $pb.PbList<CreateSpotRequest> createRepeated() =>
-      $pb.PbList<CreateSpotRequest>();
+  static $pb.PbList<CreateSpotRequest> createRepeated() => $pb.PbList<CreateSpotRequest>();
   @$core.pragma('dart2js:noInline')
-  static CreateSpotRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateSpotRequest>(create);
+  static CreateSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateSpotRequest>(create);
   static CreateSpotRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   Position get position => $_getN(0);
   @$pb.TagNumber(1)
-  set position(Position v) {
-    setField(1, v);
-  }
-
+  set position(Position v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPosition() => $_has(0);
   @$pb.TagNumber(1)
@@ -108,10 +85,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radiusInM($core.double v) {
-    $_setFloat(1, v);
-  }
-
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)
@@ -120,10 +94,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.int get scanPeriodInSeconds => $_getIZ(2);
   @$pb.TagNumber(3)
-  set scanPeriodInSeconds($core.int v) {
-    $_setSignedInt32(2, v);
-  }
-
+  set scanPeriodInSeconds($core.int v) { $_setSignedInt32(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasScanPeriodInSeconds() => $_has(2);
   @$pb.TagNumber(3)
@@ -132,10 +103,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.int get zonePeriodInSeconds => $_getIZ(3);
   @$pb.TagNumber(4)
-  set zonePeriodInSeconds($core.int v) {
-    $_setSignedInt32(3, v);
-  }
-
+  set zonePeriodInSeconds($core.int v) { $_setSignedInt32(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
@@ -144,10 +112,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.int get sessionDurationInSeconds => $_getIZ(4);
   @$pb.TagNumber(5)
-  set sessionDurationInSeconds($core.int v) {
-    $_setSignedInt32(4, v);
-  }
-
+  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
   @$pb.TagNumber(5)
   $core.bool hasSessionDurationInSeconds() => $_has(4);
   @$pb.TagNumber(5)
@@ -155,21 +120,10 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
 }
 
 class CreateSpotResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'CreateSpotResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
 
   CreateSpotResponse._() : super();
   factory CreateSpotResponse({
@@ -181,40 +135,31 @@ class CreateSpotResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory CreateSpotResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory CreateSpotResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory CreateSpotResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateSpotResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   CreateSpotResponse clone() => CreateSpotResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  CreateSpotResponse copyWith(void Function(CreateSpotResponse) updates) =>
-      super.copyWith((message) => updates(message as CreateSpotResponse))
-          as CreateSpotResponse; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateSpotResponse copyWith(void Function(CreateSpotResponse) updates) => super.copyWith((message) => updates(message as CreateSpotResponse)) as CreateSpotResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static CreateSpotResponse create() => CreateSpotResponse._();
   CreateSpotResponse createEmptyInstance() => create();
-  static $pb.PbList<CreateSpotResponse> createRepeated() =>
-      $pb.PbList<CreateSpotResponse>();
+  static $pb.PbList<CreateSpotResponse> createRepeated() => $pb.PbList<CreateSpotResponse>();
   @$core.pragma('dart2js:noInline')
-  static CreateSpotResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateSpotResponse>(create);
+  static CreateSpotResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateSpotResponse>(create);
   static CreateSpotResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -222,21 +167,10 @@ class CreateSpotResponse extends $pb.GeneratedMessage {
 }
 
 class GetSpotRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetSpotRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
 
   GetSpotRequest._() : super();
   factory GetSpotRequest({
@@ -248,40 +182,31 @@ class GetSpotRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetSpotRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetSpotRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory GetSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   GetSpotRequest clone() => GetSpotRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetSpotRequest copyWith(void Function(GetSpotRequest) updates) =>
-      super.copyWith((message) => updates(message as GetSpotRequest))
-          as GetSpotRequest; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotRequest copyWith(void Function(GetSpotRequest) updates) => super.copyWith((message) => updates(message as GetSpotRequest)) as GetSpotRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetSpotRequest create() => GetSpotRequest._();
   GetSpotRequest createEmptyInstance() => create();
-  static $pb.PbList<GetSpotRequest> createRepeated() =>
-      $pb.PbList<GetSpotRequest>();
+  static $pb.PbList<GetSpotRequest> createRepeated() => $pb.PbList<GetSpotRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetSpotRequest>(create);
+  static GetSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotRequest>(create);
   static GetSpotRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -289,27 +214,13 @@ class GetSpotRequest extends $pb.GeneratedMessage {
 }
 
 class GetSpotResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetSpotResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOM<Position>(1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position',
-        subBuilder: Position.create)
-    ..a<$core.double>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'radiusInM',
-        $pb.PbFieldType.OF)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
+    ..hasRequiredFields = false
+  ;
 
   GetSpotResponse._() : super();
   factory GetSpotResponse({
@@ -333,40 +244,31 @@ class GetSpotResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetSpotResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetSpotResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory GetSpotResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   GetSpotResponse clone() => GetSpotResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetSpotResponse copyWith(void Function(GetSpotResponse) updates) =>
-      super.copyWith((message) => updates(message as GetSpotResponse))
-          as GetSpotResponse; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotResponse copyWith(void Function(GetSpotResponse) updates) => super.copyWith((message) => updates(message as GetSpotResponse)) as GetSpotResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetSpotResponse create() => GetSpotResponse._();
   GetSpotResponse createEmptyInstance() => create();
-  static $pb.PbList<GetSpotResponse> createRepeated() =>
-      $pb.PbList<GetSpotResponse>();
+  static $pb.PbList<GetSpotResponse> createRepeated() => $pb.PbList<GetSpotResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetSpotResponse>(create);
+  static GetSpotResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotResponse>(create);
   static GetSpotResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   Position get position => $_getN(0);
   @$pb.TagNumber(1)
-  set position(Position v) {
-    setField(1, v);
-  }
-
+  set position(Position v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPosition() => $_has(0);
   @$pb.TagNumber(1)
@@ -377,10 +279,7 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radiusInM($core.double v) {
-    $_setFloat(1, v);
-  }
-
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)
@@ -389,10 +288,7 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.int get scanPeriodInSeconds => $_getIZ(2);
   @$pb.TagNumber(3)
-  set scanPeriodInSeconds($core.int v) {
-    $_setSignedInt32(2, v);
-  }
-
+  set scanPeriodInSeconds($core.int v) { $_setSignedInt32(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasScanPeriodInSeconds() => $_has(2);
   @$pb.TagNumber(3)
@@ -401,10 +297,7 @@ class GetSpotResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.int get zonePeriodInSeconds => $_getIZ(3);
   @$pb.TagNumber(4)
-  set zonePeriodInSeconds($core.int v) {
-    $_setSignedInt32(3, v);
-  }
-
+  set zonePeriodInSeconds($core.int v) { $_setSignedInt32(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
@@ -412,26 +305,11 @@ class GetSpotResponse extends $pb.GeneratedMessage {
 }
 
 class JoinToSpotRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'JoinToSpotRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'playerUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'JoinToSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..hasRequiredFields = false
+  ;
 
   JoinToSpotRequest._() : super();
   factory JoinToSpotRequest({
@@ -447,40 +325,31 @@ class JoinToSpotRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory JoinToSpotRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory JoinToSpotRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory JoinToSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory JoinToSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   JoinToSpotRequest clone() => JoinToSpotRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  JoinToSpotRequest copyWith(void Function(JoinToSpotRequest) updates) =>
-      super.copyWith((message) => updates(message as JoinToSpotRequest))
-          as JoinToSpotRequest; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  JoinToSpotRequest copyWith(void Function(JoinToSpotRequest) updates) => super.copyWith((message) => updates(message as JoinToSpotRequest)) as JoinToSpotRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static JoinToSpotRequest create() => JoinToSpotRequest._();
   JoinToSpotRequest createEmptyInstance() => create();
-  static $pb.PbList<JoinToSpotRequest> createRepeated() =>
-      $pb.PbList<JoinToSpotRequest>();
+  static $pb.PbList<JoinToSpotRequest> createRepeated() => $pb.PbList<JoinToSpotRequest>();
   @$core.pragma('dart2js:noInline')
-  static JoinToSpotRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<JoinToSpotRequest>(create);
+  static JoinToSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<JoinToSpotRequest>(create);
   static JoinToSpotRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -489,10 +358,7 @@ class JoinToSpotRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get playerUuid => $_getSZ(1);
   @$pb.TagNumber(2)
-  set playerUuid($core.String v) {
-    $_setString(1, v);
-  }
-
+  set playerUuid($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasPlayerUuid() => $_has(1);
   @$pb.TagNumber(2)
@@ -500,63 +366,39 @@ class JoinToSpotRequest extends $pb.GeneratedMessage {
 }
 
 class JoinToSpotResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'JoinToSpotResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'JoinToSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
 
   JoinToSpotResponse._() : super();
   factory JoinToSpotResponse() => create();
-  factory JoinToSpotResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory JoinToSpotResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory JoinToSpotResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory JoinToSpotResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   JoinToSpotResponse clone() => JoinToSpotResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  JoinToSpotResponse copyWith(void Function(JoinToSpotResponse) updates) =>
-      super.copyWith((message) => updates(message as JoinToSpotResponse))
-          as JoinToSpotResponse; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  JoinToSpotResponse copyWith(void Function(JoinToSpotResponse) updates) => super.copyWith((message) => updates(message as JoinToSpotResponse)) as JoinToSpotResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static JoinToSpotResponse create() => JoinToSpotResponse._();
   JoinToSpotResponse createEmptyInstance() => create();
-  static $pb.PbList<JoinToSpotResponse> createRepeated() =>
-      $pb.PbList<JoinToSpotResponse>();
+  static $pb.PbList<JoinToSpotResponse> createRepeated() => $pb.PbList<JoinToSpotResponse>();
   @$core.pragma('dart2js:noInline')
-  static JoinToSpotResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<JoinToSpotResponse>(create);
+  static JoinToSpotResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<JoinToSpotResponse>(create);
   static JoinToSpotResponse? _defaultInstance;
 }
 
 class GetSpotPlayersRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetSpotPlayersRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotPlayersRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
 
   GetSpotPlayersRequest._() : super();
   factory GetSpotPlayersRequest({
@@ -568,42 +410,31 @@ class GetSpotPlayersRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetSpotPlayersRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetSpotPlayersRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  GetSpotPlayersRequest clone() =>
-      GetSpotPlayersRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetSpotPlayersRequest copyWith(
-          void Function(GetSpotPlayersRequest) updates) =>
-      super.copyWith((message) => updates(message as GetSpotPlayersRequest))
-          as GetSpotPlayersRequest; // ignore: deprecated_member_use
+  factory GetSpotPlayersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotPlayersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersRequest clone() => GetSpotPlayersRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersRequest copyWith(void Function(GetSpotPlayersRequest) updates) => super.copyWith((message) => updates(message as GetSpotPlayersRequest)) as GetSpotPlayersRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetSpotPlayersRequest create() => GetSpotPlayersRequest._();
   GetSpotPlayersRequest createEmptyInstance() => create();
-  static $pb.PbList<GetSpotPlayersRequest> createRepeated() =>
-      $pb.PbList<GetSpotPlayersRequest>();
+  static $pb.PbList<GetSpotPlayersRequest> createRepeated() => $pb.PbList<GetSpotPlayersRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotPlayersRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetSpotPlayersRequest>(create);
+  static GetSpotPlayersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotPlayersRequest>(create);
   static GetSpotPlayersRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -611,21 +442,10 @@ class GetSpotPlayersRequest extends $pb.GeneratedMessage {
 }
 
 class GetSpotPlayersResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetSpotPlayersResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..pPS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'playersList')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotPlayersResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..pPS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playersList')
+    ..hasRequiredFields = false
+  ;
 
   GetSpotPlayersResponse._() : super();
   factory GetSpotPlayersResponse({
@@ -637,33 +457,25 @@ class GetSpotPlayersResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetSpotPlayersResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetSpotPlayersResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  GetSpotPlayersResponse clone() =>
-      GetSpotPlayersResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetSpotPlayersResponse copyWith(
-          void Function(GetSpotPlayersResponse) updates) =>
-      super.copyWith((message) => updates(message as GetSpotPlayersResponse))
-          as GetSpotPlayersResponse; // ignore: deprecated_member_use
+  factory GetSpotPlayersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetSpotPlayersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersResponse clone() => GetSpotPlayersResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetSpotPlayersResponse copyWith(void Function(GetSpotPlayersResponse) updates) => super.copyWith((message) => updates(message as GetSpotPlayersResponse)) as GetSpotPlayersResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetSpotPlayersResponse create() => GetSpotPlayersResponse._();
   GetSpotPlayersResponse createEmptyInstance() => create();
-  static $pb.PbList<GetSpotPlayersResponse> createRepeated() =>
-      $pb.PbList<GetSpotPlayersResponse>();
+  static $pb.PbList<GetSpotPlayersResponse> createRepeated() => $pb.PbList<GetSpotPlayersResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotPlayersResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetSpotPlayersResponse>(create);
+  static GetSpotPlayersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotPlayersResponse>(create);
   static GetSpotPlayersResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -671,21 +483,10 @@ class GetSpotPlayersResponse extends $pb.GeneratedMessage {
 }
 
 class StartSpotRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'StartSpotRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
 
   StartSpotRequest._() : super();
   factory StartSpotRequest({
@@ -697,40 +498,31 @@ class StartSpotRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory StartSpotRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory StartSpotRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory StartSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   StartSpotRequest clone() => StartSpotRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  StartSpotRequest copyWith(void Function(StartSpotRequest) updates) =>
-      super.copyWith((message) => updates(message as StartSpotRequest))
-          as StartSpotRequest; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartSpotRequest copyWith(void Function(StartSpotRequest) updates) => super.copyWith((message) => updates(message as StartSpotRequest)) as StartSpotRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static StartSpotRequest create() => StartSpotRequest._();
   StartSpotRequest createEmptyInstance() => create();
-  static $pb.PbList<StartSpotRequest> createRepeated() =>
-      $pb.PbList<StartSpotRequest>();
+  static $pb.PbList<StartSpotRequest> createRepeated() => $pb.PbList<StartSpotRequest>();
   @$core.pragma('dart2js:noInline')
-  static StartSpotRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StartSpotRequest>(create);
+  static StartSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartSpotRequest>(create);
   static StartSpotRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -738,68 +530,40 @@ class StartSpotRequest extends $pb.GeneratedMessage {
 }
 
 class StartSpotResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'StartSpotResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
 
   StartSpotResponse._() : super();
   factory StartSpotResponse() => create();
-  factory StartSpotResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory StartSpotResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory StartSpotResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartSpotResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   StartSpotResponse clone() => StartSpotResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  StartSpotResponse copyWith(void Function(StartSpotResponse) updates) =>
-      super.copyWith((message) => updates(message as StartSpotResponse))
-          as StartSpotResponse; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartSpotResponse copyWith(void Function(StartSpotResponse) updates) => super.copyWith((message) => updates(message as StartSpotResponse)) as StartSpotResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static StartSpotResponse create() => StartSpotResponse._();
   StartSpotResponse createEmptyInstance() => create();
-  static $pb.PbList<StartSpotResponse> createRepeated() =>
-      $pb.PbList<StartSpotResponse>();
+  static $pb.PbList<StartSpotResponse> createRepeated() => $pb.PbList<StartSpotResponse>();
   @$core.pragma('dart2js:noInline')
-  static StartSpotResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StartSpotResponse>(create);
+  static StartSpotResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartSpotResponse>(create);
   static StartSpotResponse? _defaultInstance;
 }
 
 class IsPlayerHunterRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'IsPlayerHunterRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'playerUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IsPlayerHunterRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..hasRequiredFields = false
+  ;
 
   IsPlayerHunterRequest._() : super();
   factory IsPlayerHunterRequest({
@@ -815,42 +579,31 @@ class IsPlayerHunterRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory IsPlayerHunterRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory IsPlayerHunterRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  IsPlayerHunterRequest clone() =>
-      IsPlayerHunterRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  IsPlayerHunterRequest copyWith(
-          void Function(IsPlayerHunterRequest) updates) =>
-      super.copyWith((message) => updates(message as IsPlayerHunterRequest))
-          as IsPlayerHunterRequest; // ignore: deprecated_member_use
+  factory IsPlayerHunterRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory IsPlayerHunterRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterRequest clone() => IsPlayerHunterRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterRequest copyWith(void Function(IsPlayerHunterRequest) updates) => super.copyWith((message) => updates(message as IsPlayerHunterRequest)) as IsPlayerHunterRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static IsPlayerHunterRequest create() => IsPlayerHunterRequest._();
   IsPlayerHunterRequest createEmptyInstance() => create();
-  static $pb.PbList<IsPlayerHunterRequest> createRepeated() =>
-      $pb.PbList<IsPlayerHunterRequest>();
+  static $pb.PbList<IsPlayerHunterRequest> createRepeated() => $pb.PbList<IsPlayerHunterRequest>();
   @$core.pragma('dart2js:noInline')
-  static IsPlayerHunterRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<IsPlayerHunterRequest>(create);
+  static IsPlayerHunterRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IsPlayerHunterRequest>(create);
   static IsPlayerHunterRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -859,10 +612,7 @@ class IsPlayerHunterRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get playerUuid => $_getSZ(1);
   @$pb.TagNumber(2)
-  set playerUuid($core.String v) {
-    $_setString(1, v);
-  }
-
+  set playerUuid($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasPlayerUuid() => $_has(1);
   @$pb.TagNumber(2)
@@ -870,21 +620,10 @@ class IsPlayerHunterRequest extends $pb.GeneratedMessage {
 }
 
 class IsPlayerHunterResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'IsPlayerHunterResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOB(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'isHunter')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IsPlayerHunterResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isHunter')
+    ..hasRequiredFields = false
+  ;
 
   IsPlayerHunterResponse._() : super();
   factory IsPlayerHunterResponse({
@@ -896,67 +635,45 @@ class IsPlayerHunterResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory IsPlayerHunterResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory IsPlayerHunterResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  IsPlayerHunterResponse clone() =>
-      IsPlayerHunterResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  IsPlayerHunterResponse copyWith(
-          void Function(IsPlayerHunterResponse) updates) =>
-      super.copyWith((message) => updates(message as IsPlayerHunterResponse))
-          as IsPlayerHunterResponse; // ignore: deprecated_member_use
+  factory IsPlayerHunterResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory IsPlayerHunterResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterResponse clone() => IsPlayerHunterResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  IsPlayerHunterResponse copyWith(void Function(IsPlayerHunterResponse) updates) => super.copyWith((message) => updates(message as IsPlayerHunterResponse)) as IsPlayerHunterResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static IsPlayerHunterResponse create() => IsPlayerHunterResponse._();
   IsPlayerHunterResponse createEmptyInstance() => create();
-  static $pb.PbList<IsPlayerHunterResponse> createRepeated() =>
-      $pb.PbList<IsPlayerHunterResponse>();
+  static $pb.PbList<IsPlayerHunterResponse> createRepeated() => $pb.PbList<IsPlayerHunterResponse>();
   @$core.pragma('dart2js:noInline')
-  static IsPlayerHunterResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<IsPlayerHunterResponse>(create);
+  static IsPlayerHunterResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IsPlayerHunterResponse>(create);
   static IsPlayerHunterResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.bool get isHunter => $_getBF(0);
   @$pb.TagNumber(1)
-  set isHunter($core.bool v) {
-    $_setBool(0, v);
-  }
-
+  set isHunter($core.bool v) { $_setBool(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasIsHunter() => $_has(0);
   @$pb.TagNumber(1)
   void clearIsHunter() => clearField(1);
 }
 
-class SubSessionEventRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'SubSessionEventRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..hasRequiredFields = false;
+class SubGameEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubGameEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
 
-  SubSessionEventRequest._() : super();
-  factory SubSessionEventRequest({
+  SubGameEventRequest._() : super();
+  factory SubGameEventRequest({
     $core.String? spotUuid,
   }) {
     final _result = create();
@@ -965,224 +682,282 @@ class SubSessionEventRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory SubSessionEventRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory SubSessionEventRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  SubSessionEventRequest clone() =>
-      SubSessionEventRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  SubSessionEventRequest copyWith(
-          void Function(SubSessionEventRequest) updates) =>
-      super.copyWith((message) => updates(message as SubSessionEventRequest))
-          as SubSessionEventRequest; // ignore: deprecated_member_use
+  factory SubGameEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubGameEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SubGameEventRequest clone() => SubGameEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SubGameEventRequest copyWith(void Function(SubGameEventRequest) updates) => super.copyWith((message) => updates(message as SubGameEventRequest)) as SubGameEventRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static SubSessionEventRequest create() => SubSessionEventRequest._();
-  SubSessionEventRequest createEmptyInstance() => create();
-  static $pb.PbList<SubSessionEventRequest> createRepeated() =>
-      $pb.PbList<SubSessionEventRequest>();
+  static SubGameEventRequest create() => SubGameEventRequest._();
+  SubGameEventRequest createEmptyInstance() => create();
+  static $pb.PbList<SubGameEventRequest> createRepeated() => $pb.PbList<SubGameEventRequest>();
   @$core.pragma('dart2js:noInline')
-  static SubSessionEventRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SubSessionEventRequest>(create);
-  static SubSessionEventRequest? _defaultInstance;
+  static SubGameEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubGameEventRequest>(create);
+  static SubGameEventRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
   void clearSpotUuid() => clearField(1);
 }
 
-enum SubSessionEventResponse_Event {
-  startSessionEvent,
-  stopSessionEvent,
+enum SubGameEventResponse_Event {
+  startGameEvent, 
+  stopGameEvent, 
   notSet
 }
 
-class SubSessionEventResponse extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, SubSessionEventResponse_Event>
-      _SubSessionEventResponse_EventByTag = {
-    1: SubSessionEventResponse_Event.startSessionEvent,
-    2: SubSessionEventResponse_Event.stopSessionEvent,
-    0: SubSessionEventResponse_Event.notSet
+class SubGameEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, SubGameEventResponse_Event> _SubGameEventResponse_EventByTag = {
+    1 : SubGameEventResponse_Event.startGameEvent,
+    2 : SubGameEventResponse_Event.stopGameEvent,
+    0 : SubGameEventResponse_Event.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'SubSessionEventResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubGameEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..oo(0, [1, 2])
-    ..aOM<StartGameEvent>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'startSessionEvent',
-        subBuilder: StartGameEvent.create)
-    ..aOM<StopSessionEvent>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopSessionEvent',
-        subBuilder: StopSessionEvent.create)
-    ..hasRequiredFields = false;
+    ..aOM<StartGameEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startGameEvent', subBuilder: StartGameEvent.create)
+    ..aOM<StopGameEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopGameEvent', subBuilder: StopGameEvent.create)
+    ..hasRequiredFields = false
+  ;
 
-  SubSessionEventResponse._() : super();
-  factory SubSessionEventResponse({
-    StartGameEvent? startSessionEvent,
-    StopSessionEvent? stopSessionEvent,
+  SubGameEventResponse._() : super();
+  factory SubGameEventResponse({
+    StartGameEvent? startGameEvent,
+    StopGameEvent? stopGameEvent,
   }) {
     final _result = create();
-    if (startSessionEvent != null) {
-      _result.startSessionEvent = startSessionEvent;
+    if (startGameEvent != null) {
+      _result.startGameEvent = startGameEvent;
     }
-    if (stopSessionEvent != null) {
-      _result.stopSessionEvent = stopSessionEvent;
+    if (stopGameEvent != null) {
+      _result.stopGameEvent = stopGameEvent;
     }
     return _result;
   }
-  factory SubSessionEventResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory SubSessionEventResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  SubSessionEventResponse clone() =>
-      SubSessionEventResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  SubSessionEventResponse copyWith(
-          void Function(SubSessionEventResponse) updates) =>
-      super.copyWith((message) => updates(message as SubSessionEventResponse))
-          as SubSessionEventResponse; // ignore: deprecated_member_use
+  factory SubGameEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubGameEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SubGameEventResponse clone() => SubGameEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SubGameEventResponse copyWith(void Function(SubGameEventResponse) updates) => super.copyWith((message) => updates(message as SubGameEventResponse)) as SubGameEventResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static SubSessionEventResponse create() => SubSessionEventResponse._();
-  SubSessionEventResponse createEmptyInstance() => create();
-  static $pb.PbList<SubSessionEventResponse> createRepeated() =>
-      $pb.PbList<SubSessionEventResponse>();
+  static SubGameEventResponse create() => SubGameEventResponse._();
+  SubGameEventResponse createEmptyInstance() => create();
+  static $pb.PbList<SubGameEventResponse> createRepeated() => $pb.PbList<SubGameEventResponse>();
   @$core.pragma('dart2js:noInline')
-  static SubSessionEventResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SubSessionEventResponse>(create);
-  static SubSessionEventResponse? _defaultInstance;
+  static SubGameEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubGameEventResponse>(create);
+  static SubGameEventResponse? _defaultInstance;
 
-  SubSessionEventResponse_Event whichEvent() =>
-      _SubSessionEventResponse_EventByTag[$_whichOneof(0)]!;
+  SubGameEventResponse_Event whichEvent() => _SubGameEventResponse_EventByTag[$_whichOneof(0)]!;
   void clearEvent() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
-  StartGameEvent get startSessionEvent => $_getN(0);
+  StartGameEvent get startGameEvent => $_getN(0);
   @$pb.TagNumber(1)
-  set startSessionEvent(StartGameEvent v) {
-    setField(1, v);
+  set startGameEvent(StartGameEvent v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStartGameEvent() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStartGameEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartGameEvent ensureStartGameEvent() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  StopGameEvent get stopGameEvent => $_getN(1);
+  @$pb.TagNumber(2)
+  set stopGameEvent(StopGameEvent v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStopGameEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStopGameEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  StopGameEvent ensureStopGameEvent() => $_ensure(1);
+}
+
+class GetLastGameEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastGameEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  GetLastGameEventRequest._() : super();
+  factory GetLastGameEventRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
   }
+  factory GetLastGameEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastGameEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventRequest clone() => GetLastGameEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventRequest copyWith(void Function(GetLastGameEventRequest) updates) => super.copyWith((message) => updates(message as GetLastGameEventRequest)) as GetLastGameEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventRequest create() => GetLastGameEventRequest._();
+  GetLastGameEventRequest createEmptyInstance() => create();
+  static $pb.PbList<GetLastGameEventRequest> createRepeated() => $pb.PbList<GetLastGameEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastGameEventRequest>(create);
+  static GetLastGameEventRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool hasStartSessionEvent() => $_has(0);
+  $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  void clearStartSessionEvent() => clearField(1);
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  StartGameEvent ensureStartSessionEvent() => $_ensure(0);
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
 
-  @$pb.TagNumber(2)
-  StopSessionEvent get stopSessionEvent => $_getN(1);
-  @$pb.TagNumber(2)
-  set stopSessionEvent(StopSessionEvent v) {
-    setField(2, v);
+enum GetLastGameEventResponse_Event {
+  startGameEvent, 
+  stopGameEvent, 
+  notSet
+}
+
+class GetLastGameEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, GetLastGameEventResponse_Event> _GetLastGameEventResponse_EventByTag = {
+    1 : GetLastGameEventResponse_Event.startGameEvent,
+    2 : GetLastGameEventResponse_Event.stopGameEvent,
+    0 : GetLastGameEventResponse_Event.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastGameEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..oo(0, [1, 2])
+    ..aOM<StartGameEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startGameEvent', subBuilder: StartGameEvent.create)
+    ..aOM<StopGameEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopGameEvent', subBuilder: StopGameEvent.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetLastGameEventResponse._() : super();
+  factory GetLastGameEventResponse({
+    StartGameEvent? startGameEvent,
+    StopGameEvent? stopGameEvent,
+  }) {
+    final _result = create();
+    if (startGameEvent != null) {
+      _result.startGameEvent = startGameEvent;
+    }
+    if (stopGameEvent != null) {
+      _result.stopGameEvent = stopGameEvent;
+    }
+    return _result;
   }
+  factory GetLastGameEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastGameEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventResponse clone() => GetLastGameEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventResponse copyWith(void Function(GetLastGameEventResponse) updates) => super.copyWith((message) => updates(message as GetLastGameEventResponse)) as GetLastGameEventResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventResponse create() => GetLastGameEventResponse._();
+  GetLastGameEventResponse createEmptyInstance() => create();
+  static $pb.PbList<GetLastGameEventResponse> createRepeated() => $pb.PbList<GetLastGameEventResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastGameEventResponse>(create);
+  static GetLastGameEventResponse? _defaultInstance;
+
+  GetLastGameEventResponse_Event whichEvent() => _GetLastGameEventResponse_EventByTag[$_whichOneof(0)]!;
+  void clearEvent() => clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  StartGameEvent get startGameEvent => $_getN(0);
+  @$pb.TagNumber(1)
+  set startGameEvent(StartGameEvent v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStartGameEvent() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStartGameEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartGameEvent ensureStartGameEvent() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.bool hasStopSessionEvent() => $_has(1);
+  StopGameEvent get stopGameEvent => $_getN(1);
   @$pb.TagNumber(2)
-  void clearStopSessionEvent() => clearField(2);
+  set stopGameEvent(StopGameEvent v) { setField(2, v); }
   @$pb.TagNumber(2)
-  StopSessionEvent ensureStopSessionEvent() => $_ensure(1);
+  $core.bool hasStopGameEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStopGameEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  StopGameEvent ensureStopGameEvent() => $_ensure(1);
 }
 
 class StartGameEvent extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'StartGameEvent',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartGameEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
 
   StartGameEvent._() : super();
   factory StartGameEvent() => create();
-  factory StartGameEvent.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory StartGameEvent.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory StartGameEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartGameEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   StartGameEvent clone() => StartGameEvent()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  StartGameEvent copyWith(void Function(StartGameEvent) updates) =>
-      super.copyWith((message) => updates(message as StartGameEvent))
-          as StartGameEvent; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartGameEvent copyWith(void Function(StartGameEvent) updates) => super.copyWith((message) => updates(message as StartGameEvent)) as StartGameEvent; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static StartGameEvent create() => StartGameEvent._();
   StartGameEvent createEmptyInstance() => create();
-  static $pb.PbList<StartGameEvent> createRepeated() =>
-      $pb.PbList<StartGameEvent>();
+  static $pb.PbList<StartGameEvent> createRepeated() => $pb.PbList<StartGameEvent>();
   @$core.pragma('dart2js:noInline')
-  static StartGameEvent getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StartGameEvent>(create);
+  static StartGameEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartGameEvent>(create);
   static StartGameEvent? _defaultInstance;
 }
 
-class StopSessionEvent extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'StopSessionEvent',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..e<StopSessionEvent_SessionWinner>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'winner',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: StopSessionEvent_SessionWinner.HunterWins,
-        valueOf: StopSessionEvent_SessionWinner.valueOf,
-        enumValues: StopSessionEvent_SessionWinner.values)
-    ..hasRequiredFields = false;
+class StopGameEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StopGameEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..e<StopGameEvent_GameWinner>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'winner', $pb.PbFieldType.OE, defaultOrMaker: StopGameEvent_GameWinner.HunterWins, valueOf: StopGameEvent_GameWinner.valueOf, enumValues: StopGameEvent_GameWinner.values)
+    ..hasRequiredFields = false
+  ;
 
-  StopSessionEvent._() : super();
-  factory StopSessionEvent({
-    StopSessionEvent_SessionWinner? winner,
+  StopGameEvent._() : super();
+  factory StopGameEvent({
+    StopGameEvent_GameWinner? winner,
   }) {
     final _result = create();
     if (winner != null) {
@@ -1190,40 +965,31 @@ class StopSessionEvent extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory StopSessionEvent.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory StopSessionEvent.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  StopSessionEvent clone() => StopSessionEvent()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  StopSessionEvent copyWith(void Function(StopSessionEvent) updates) =>
-      super.copyWith((message) => updates(message as StopSessionEvent))
-          as StopSessionEvent; // ignore: deprecated_member_use
+  factory StopGameEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StopGameEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StopGameEvent clone() => StopGameEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StopGameEvent copyWith(void Function(StopGameEvent) updates) => super.copyWith((message) => updates(message as StopGameEvent)) as StopGameEvent; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static StopSessionEvent create() => StopSessionEvent._();
-  StopSessionEvent createEmptyInstance() => create();
-  static $pb.PbList<StopSessionEvent> createRepeated() =>
-      $pb.PbList<StopSessionEvent>();
+  static StopGameEvent create() => StopGameEvent._();
+  StopGameEvent createEmptyInstance() => create();
+  static $pb.PbList<StopGameEvent> createRepeated() => $pb.PbList<StopGameEvent>();
   @$core.pragma('dart2js:noInline')
-  static StopSessionEvent getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StopSessionEvent>(create);
-  static StopSessionEvent? _defaultInstance;
+  static StopGameEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StopGameEvent>(create);
+  static StopGameEvent? _defaultInstance;
 
   @$pb.TagNumber(1)
-  StopSessionEvent_SessionWinner get winner => $_getN(0);
+  StopGameEvent_GameWinner get winner => $_getN(0);
   @$pb.TagNumber(1)
-  set winner(StopSessionEvent_SessionWinner v) {
-    setField(1, v);
-  }
-
+  set winner(StopGameEvent_GameWinner v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasWinner() => $_has(0);
   @$pb.TagNumber(1)
@@ -1231,32 +997,12 @@ class StopSessionEvent extends $pb.GeneratedMessage {
 }
 
 class SendPlayerPositionRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'SendPlayerPositionRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'playerUuid')
-    ..aOM<Position>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'position',
-        subBuilder: Position.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SendPlayerPositionRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..aOM<Position>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..hasRequiredFields = false
+  ;
 
   SendPlayerPositionRequest._() : super();
   factory SendPlayerPositionRequest({
@@ -1276,42 +1022,31 @@ class SendPlayerPositionRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory SendPlayerPositionRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory SendPlayerPositionRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  SendPlayerPositionRequest clone() =>
-      SendPlayerPositionRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  SendPlayerPositionRequest copyWith(
-          void Function(SendPlayerPositionRequest) updates) =>
-      super.copyWith((message) => updates(message as SendPlayerPositionRequest))
-          as SendPlayerPositionRequest; // ignore: deprecated_member_use
+  factory SendPlayerPositionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SendPlayerPositionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SendPlayerPositionRequest clone() => SendPlayerPositionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SendPlayerPositionRequest copyWith(void Function(SendPlayerPositionRequest) updates) => super.copyWith((message) => updates(message as SendPlayerPositionRequest)) as SendPlayerPositionRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SendPlayerPositionRequest create() => SendPlayerPositionRequest._();
   SendPlayerPositionRequest createEmptyInstance() => create();
-  static $pb.PbList<SendPlayerPositionRequest> createRepeated() =>
-      $pb.PbList<SendPlayerPositionRequest>();
+  static $pb.PbList<SendPlayerPositionRequest> createRepeated() => $pb.PbList<SendPlayerPositionRequest>();
   @$core.pragma('dart2js:noInline')
-  static SendPlayerPositionRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SendPlayerPositionRequest>(create);
+  static SendPlayerPositionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SendPlayerPositionRequest>(create);
   static SendPlayerPositionRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -1320,10 +1055,7 @@ class SendPlayerPositionRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get playerUuid => $_getSZ(1);
   @$pb.TagNumber(2)
-  set playerUuid($core.String v) {
-    $_setString(1, v);
-  }
-
+  set playerUuid($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasPlayerUuid() => $_has(1);
   @$pb.TagNumber(2)
@@ -1332,10 +1064,7 @@ class SendPlayerPositionRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   Position get position => $_getN(2);
   @$pb.TagNumber(3)
-  set position(Position v) {
-    setField(3, v);
-  }
-
+  set position(Position v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasPosition() => $_has(2);
   @$pb.TagNumber(3)
@@ -1345,71 +1074,40 @@ class SendPlayerPositionRequest extends $pb.GeneratedMessage {
 }
 
 class SendPlayerPositionResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'SendPlayerPositionResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SendPlayerPositionResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
 
   SendPlayerPositionResponse._() : super();
   factory SendPlayerPositionResponse() => create();
-  factory SendPlayerPositionResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory SendPlayerPositionResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  SendPlayerPositionResponse clone() =>
-      SendPlayerPositionResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  SendPlayerPositionResponse copyWith(
-          void Function(SendPlayerPositionResponse) updates) =>
-      super.copyWith(
-              (message) => updates(message as SendPlayerPositionResponse))
-          as SendPlayerPositionResponse; // ignore: deprecated_member_use
+  factory SendPlayerPositionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SendPlayerPositionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SendPlayerPositionResponse clone() => SendPlayerPositionResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SendPlayerPositionResponse copyWith(void Function(SendPlayerPositionResponse) updates) => super.copyWith((message) => updates(message as SendPlayerPositionResponse)) as SendPlayerPositionResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SendPlayerPositionResponse create() => SendPlayerPositionResponse._();
   SendPlayerPositionResponse createEmptyInstance() => create();
-  static $pb.PbList<SendPlayerPositionResponse> createRepeated() =>
-      $pb.PbList<SendPlayerPositionResponse>();
+  static $pb.PbList<SendPlayerPositionResponse> createRepeated() => $pb.PbList<SendPlayerPositionResponse>();
   @$core.pragma('dart2js:noInline')
-  static SendPlayerPositionResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SendPlayerPositionResponse>(create);
+  static SendPlayerPositionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SendPlayerPositionResponse>(create);
   static SendPlayerPositionResponse? _defaultInstance;
 }
 
 class GetPlayersStatesRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetPlayersStatesRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'playerUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersStatesRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..hasRequiredFields = false
+  ;
 
   GetPlayersStatesRequest._() : super();
   factory GetPlayersStatesRequest({
@@ -1425,42 +1123,31 @@ class GetPlayersStatesRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetPlayersStatesRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetPlayersStatesRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  GetPlayersStatesRequest clone() =>
-      GetPlayersStatesRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetPlayersStatesRequest copyWith(
-          void Function(GetPlayersStatesRequest) updates) =>
-      super.copyWith((message) => updates(message as GetPlayersStatesRequest))
-          as GetPlayersStatesRequest; // ignore: deprecated_member_use
+  factory GetPlayersStatesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetPlayersStatesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetPlayersStatesRequest clone() => GetPlayersStatesRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetPlayersStatesRequest copyWith(void Function(GetPlayersStatesRequest) updates) => super.copyWith((message) => updates(message as GetPlayersStatesRequest)) as GetPlayersStatesRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetPlayersStatesRequest create() => GetPlayersStatesRequest._();
   GetPlayersStatesRequest createEmptyInstance() => create();
-  static $pb.PbList<GetPlayersStatesRequest> createRepeated() =>
-      $pb.PbList<GetPlayersStatesRequest>();
+  static $pb.PbList<GetPlayersStatesRequest> createRepeated() => $pb.PbList<GetPlayersStatesRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetPlayersStatesRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetPlayersStatesRequest>(create);
+  static GetPlayersStatesRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPlayersStatesRequest>(create);
   static GetPlayersStatesRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -1469,10 +1156,7 @@ class GetPlayersStatesRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get playerUuid => $_getSZ(1);
   @$pb.TagNumber(2)
-  set playerUuid($core.String v) {
-    $_setString(1, v);
-  }
-
+  set playerUuid($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasPlayerUuid() => $_has(1);
   @$pb.TagNumber(2)
@@ -1480,22 +1164,10 @@ class GetPlayersStatesRequest extends $pb.GeneratedMessage {
 }
 
 class GetPlayersStatesResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetPlayersStatesResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOM<PlayerState>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'playerState',
-        subBuilder: PlayerState.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetPlayersStatesResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<PlayerState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerState', subBuilder: PlayerState.create)
+    ..hasRequiredFields = false
+  ;
 
   GetPlayersStatesResponse._() : super();
   factory GetPlayersStatesResponse({
@@ -1507,42 +1179,31 @@ class GetPlayersStatesResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetPlayersStatesResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetPlayersStatesResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  GetPlayersStatesResponse clone() =>
-      GetPlayersStatesResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetPlayersStatesResponse copyWith(
-          void Function(GetPlayersStatesResponse) updates) =>
-      super.copyWith((message) => updates(message as GetPlayersStatesResponse))
-          as GetPlayersStatesResponse; // ignore: deprecated_member_use
+  factory GetPlayersStatesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetPlayersStatesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetPlayersStatesResponse clone() => GetPlayersStatesResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetPlayersStatesResponse copyWith(void Function(GetPlayersStatesResponse) updates) => super.copyWith((message) => updates(message as GetPlayersStatesResponse)) as GetPlayersStatesResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetPlayersStatesResponse create() => GetPlayersStatesResponse._();
   GetPlayersStatesResponse createEmptyInstance() => create();
-  static $pb.PbList<GetPlayersStatesResponse> createRepeated() =>
-      $pb.PbList<GetPlayersStatesResponse>();
+  static $pb.PbList<GetPlayersStatesResponse> createRepeated() => $pb.PbList<GetPlayersStatesResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetPlayersStatesResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetPlayersStatesResponse>(create);
+  static GetPlayersStatesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPlayersStatesResponse>(create);
   static GetPlayersStatesResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   PlayerState get playerState => $_getN(0);
   @$pb.TagNumber(1)
-  set playerState(PlayerState v) {
-    setField(1, v);
-  }
-
+  set playerState(PlayerState v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPlayerState() => $_has(0);
   @$pb.TagNumber(1)
@@ -1552,21 +1213,10 @@ class GetPlayersStatesResponse extends $pb.GeneratedMessage {
 }
 
 class SubZoneEventRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'SubZoneEventRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubZoneEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
 
   SubZoneEventRequest._() : super();
   factory SubZoneEventRequest({
@@ -1578,40 +1228,31 @@ class SubZoneEventRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory SubZoneEventRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory SubZoneEventRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory SubZoneEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubZoneEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   SubZoneEventRequest clone() => SubZoneEventRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  SubZoneEventRequest copyWith(void Function(SubZoneEventRequest) updates) =>
-      super.copyWith((message) => updates(message as SubZoneEventRequest))
-          as SubZoneEventRequest; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SubZoneEventRequest copyWith(void Function(SubZoneEventRequest) updates) => super.copyWith((message) => updates(message as SubZoneEventRequest)) as SubZoneEventRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SubZoneEventRequest create() => SubZoneEventRequest._();
   SubZoneEventRequest createEmptyInstance() => create();
-  static $pb.PbList<SubZoneEventRequest> createRepeated() =>
-      $pb.PbList<SubZoneEventRequest>();
+  static $pb.PbList<SubZoneEventRequest> createRepeated() => $pb.PbList<SubZoneEventRequest>();
   @$core.pragma('dart2js:noInline')
-  static SubZoneEventRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SubZoneEventRequest>(create);
+  static SubZoneEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubZoneEventRequest>(create);
   static SubZoneEventRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -1619,39 +1260,26 @@ class SubZoneEventRequest extends $pb.GeneratedMessage {
 }
 
 enum SubZoneEventResponse_Event {
-  startNextZoneTimerEvent,
-  startZoneDelayTimerEvent,
-  zoneTickEvent,
+  startNextZoneTimerEvent, 
+  startZoneDelayTimerEvent, 
+  zoneTickEvent, 
   notSet
 }
 
 class SubZoneEventResponse extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, SubZoneEventResponse_Event>
-      _SubZoneEventResponse_EventByTag = {
-    1: SubZoneEventResponse_Event.startNextZoneTimerEvent,
-    2: SubZoneEventResponse_Event.startZoneDelayTimerEvent,
-    3: SubZoneEventResponse_Event.zoneTickEvent,
-    0: SubZoneEventResponse_Event.notSet
+  static const $core.Map<$core.int, SubZoneEventResponse_Event> _SubZoneEventResponse_EventByTag = {
+    1 : SubZoneEventResponse_Event.startNextZoneTimerEvent,
+    2 : SubZoneEventResponse_Event.startZoneDelayTimerEvent,
+    3 : SubZoneEventResponse_Event.zoneTickEvent,
+    0 : SubZoneEventResponse_Event.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'SubZoneEventResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubZoneEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..oo(0, [1, 2, 3])
-    ..aOM<StartNextZoneTimerEvent>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startNextZoneTimerEvent',
-        subBuilder: StartNextZoneTimerEvent.create)
-    ..aOM<StartZoneDelayTimerEvent>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startZoneDelayTimerEvent',
-        subBuilder: StartZoneDelayTimerEvent.create)
-    ..aOM<ZoneTickEvent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickEvent',
-        subBuilder: ZoneTickEvent.create)
-    ..hasRequiredFields = false;
+    ..aOM<StartNextZoneTimerEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startNextZoneTimerEvent', subBuilder: StartNextZoneTimerEvent.create)
+    ..aOM<StartZoneDelayTimerEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startZoneDelayTimerEvent', subBuilder: StartZoneDelayTimerEvent.create)
+    ..aOM<ZoneTickEvent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickEvent', subBuilder: ZoneTickEvent.create)
+    ..hasRequiredFields = false
+  ;
 
   SubZoneEventResponse._() : super();
   factory SubZoneEventResponse({
@@ -1671,45 +1299,34 @@ class SubZoneEventResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory SubZoneEventResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory SubZoneEventResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  SubZoneEventResponse clone() =>
-      SubZoneEventResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  SubZoneEventResponse copyWith(void Function(SubZoneEventResponse) updates) =>
-      super.copyWith((message) => updates(message as SubZoneEventResponse))
-          as SubZoneEventResponse; // ignore: deprecated_member_use
+  factory SubZoneEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubZoneEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SubZoneEventResponse clone() => SubZoneEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SubZoneEventResponse copyWith(void Function(SubZoneEventResponse) updates) => super.copyWith((message) => updates(message as SubZoneEventResponse)) as SubZoneEventResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SubZoneEventResponse create() => SubZoneEventResponse._();
   SubZoneEventResponse createEmptyInstance() => create();
-  static $pb.PbList<SubZoneEventResponse> createRepeated() =>
-      $pb.PbList<SubZoneEventResponse>();
+  static $pb.PbList<SubZoneEventResponse> createRepeated() => $pb.PbList<SubZoneEventResponse>();
   @$core.pragma('dart2js:noInline')
-  static SubZoneEventResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SubZoneEventResponse>(create);
+  static SubZoneEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubZoneEventResponse>(create);
   static SubZoneEventResponse? _defaultInstance;
 
-  SubZoneEventResponse_Event whichEvent() =>
-      _SubZoneEventResponse_EventByTag[$_whichOneof(0)]!;
+  SubZoneEventResponse_Event whichEvent() => _SubZoneEventResponse_EventByTag[$_whichOneof(0)]!;
   void clearEvent() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   StartNextZoneTimerEvent get startNextZoneTimerEvent => $_getN(0);
   @$pb.TagNumber(1)
-  set startNextZoneTimerEvent(StartNextZoneTimerEvent v) {
-    setField(1, v);
-  }
-
+  set startNextZoneTimerEvent(StartNextZoneTimerEvent v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasStartNextZoneTimerEvent() => $_has(0);
   @$pb.TagNumber(1)
@@ -1720,10 +1337,7 @@ class SubZoneEventResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   StartZoneDelayTimerEvent get startZoneDelayTimerEvent => $_getN(1);
   @$pb.TagNumber(2)
-  set startZoneDelayTimerEvent(StartZoneDelayTimerEvent v) {
-    setField(2, v);
-  }
-
+  set startZoneDelayTimerEvent(StartZoneDelayTimerEvent v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasStartZoneDelayTimerEvent() => $_has(1);
   @$pb.TagNumber(2)
@@ -1734,10 +1348,7 @@ class SubZoneEventResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   ZoneTickEvent get zoneTickEvent => $_getN(2);
   @$pb.TagNumber(3)
-  set zoneTickEvent(ZoneTickEvent v) {
-    setField(3, v);
-  }
-
+  set zoneTickEvent(ZoneTickEvent v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasZoneTickEvent() => $_has(2);
   @$pb.TagNumber(3)
@@ -1747,21 +1358,10 @@ class SubZoneEventResponse extends $pb.GeneratedMessage {
 }
 
 class GetLastZoneEventRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetLastZoneEventRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'spotUuid')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastZoneEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
 
   GetLastZoneEventRequest._() : super();
   factory GetLastZoneEventRequest({
@@ -1773,42 +1373,31 @@ class GetLastZoneEventRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetLastZoneEventRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetLastZoneEventRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  GetLastZoneEventRequest clone() =>
-      GetLastZoneEventRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetLastZoneEventRequest copyWith(
-          void Function(GetLastZoneEventRequest) updates) =>
-      super.copyWith((message) => updates(message as GetLastZoneEventRequest))
-          as GetLastZoneEventRequest; // ignore: deprecated_member_use
+  factory GetLastZoneEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastZoneEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventRequest clone() => GetLastZoneEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventRequest copyWith(void Function(GetLastZoneEventRequest) updates) => super.copyWith((message) => updates(message as GetLastZoneEventRequest)) as GetLastZoneEventRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetLastZoneEventRequest create() => GetLastZoneEventRequest._();
   GetLastZoneEventRequest createEmptyInstance() => create();
-  static $pb.PbList<GetLastZoneEventRequest> createRepeated() =>
-      $pb.PbList<GetLastZoneEventRequest>();
+  static $pb.PbList<GetLastZoneEventRequest> createRepeated() => $pb.PbList<GetLastZoneEventRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetLastZoneEventRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventRequest>(create);
+  static GetLastZoneEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventRequest>(create);
   static GetLastZoneEventRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set spotUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set spotUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasSpotUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -1816,39 +1405,26 @@ class GetLastZoneEventRequest extends $pb.GeneratedMessage {
 }
 
 enum GetLastZoneEventResponse_Event {
-  startNextZoneTimerEvent,
-  startZoneDelayTimerEvent,
-  zoneTickEvent,
+  startNextZoneTimerEvent, 
+  startZoneDelayTimerEvent, 
+  zoneTickEvent, 
   notSet
 }
 
 class GetLastZoneEventResponse extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, GetLastZoneEventResponse_Event>
-      _GetLastZoneEventResponse_EventByTag = {
-    1: GetLastZoneEventResponse_Event.startNextZoneTimerEvent,
-    2: GetLastZoneEventResponse_Event.startZoneDelayTimerEvent,
-    3: GetLastZoneEventResponse_Event.zoneTickEvent,
-    0: GetLastZoneEventResponse_Event.notSet
+  static const $core.Map<$core.int, GetLastZoneEventResponse_Event> _GetLastZoneEventResponse_EventByTag = {
+    1 : GetLastZoneEventResponse_Event.startNextZoneTimerEvent,
+    2 : GetLastZoneEventResponse_Event.startZoneDelayTimerEvent,
+    3 : GetLastZoneEventResponse_Event.zoneTickEvent,
+    0 : GetLastZoneEventResponse_Event.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'GetLastZoneEventResponse',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastZoneEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..oo(0, [1, 2, 3])
-    ..aOM<StartNextZoneTimerEvent>(
-        1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startNextZoneTimerEvent',
-        subBuilder: StartNextZoneTimerEvent.create)
-    ..aOM<StartZoneDelayTimerEvent>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startZoneDelayTimerEvent',
-        subBuilder: StartZoneDelayTimerEvent.create)
-    ..aOM<ZoneTickEvent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickEvent',
-        subBuilder: ZoneTickEvent.create)
-    ..hasRequiredFields = false;
+    ..aOM<StartNextZoneTimerEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startNextZoneTimerEvent', subBuilder: StartNextZoneTimerEvent.create)
+    ..aOM<StartZoneDelayTimerEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startZoneDelayTimerEvent', subBuilder: StartZoneDelayTimerEvent.create)
+    ..aOM<ZoneTickEvent>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickEvent', subBuilder: ZoneTickEvent.create)
+    ..hasRequiredFields = false
+  ;
 
   GetLastZoneEventResponse._() : super();
   factory GetLastZoneEventResponse({
@@ -1868,46 +1444,34 @@ class GetLastZoneEventResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetLastZoneEventResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory GetLastZoneEventResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  GetLastZoneEventResponse clone() =>
-      GetLastZoneEventResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  GetLastZoneEventResponse copyWith(
-          void Function(GetLastZoneEventResponse) updates) =>
-      super.copyWith((message) => updates(message as GetLastZoneEventResponse))
-          as GetLastZoneEventResponse; // ignore: deprecated_member_use
+  factory GetLastZoneEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastZoneEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventResponse clone() => GetLastZoneEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastZoneEventResponse copyWith(void Function(GetLastZoneEventResponse) updates) => super.copyWith((message) => updates(message as GetLastZoneEventResponse)) as GetLastZoneEventResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static GetLastZoneEventResponse create() => GetLastZoneEventResponse._();
   GetLastZoneEventResponse createEmptyInstance() => create();
-  static $pb.PbList<GetLastZoneEventResponse> createRepeated() =>
-      $pb.PbList<GetLastZoneEventResponse>();
+  static $pb.PbList<GetLastZoneEventResponse> createRepeated() => $pb.PbList<GetLastZoneEventResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetLastZoneEventResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventResponse>(create);
+  static GetLastZoneEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastZoneEventResponse>(create);
   static GetLastZoneEventResponse? _defaultInstance;
 
-  GetLastZoneEventResponse_Event whichEvent() =>
-      _GetLastZoneEventResponse_EventByTag[$_whichOneof(0)]!;
+  GetLastZoneEventResponse_Event whichEvent() => _GetLastZoneEventResponse_EventByTag[$_whichOneof(0)]!;
   void clearEvent() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   StartNextZoneTimerEvent get startNextZoneTimerEvent => $_getN(0);
   @$pb.TagNumber(1)
-  set startNextZoneTimerEvent(StartNextZoneTimerEvent v) {
-    setField(1, v);
-  }
-
+  set startNextZoneTimerEvent(StartNextZoneTimerEvent v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasStartNextZoneTimerEvent() => $_has(0);
   @$pb.TagNumber(1)
@@ -1918,10 +1482,7 @@ class GetLastZoneEventResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   StartZoneDelayTimerEvent get startZoneDelayTimerEvent => $_getN(1);
   @$pb.TagNumber(2)
-  set startZoneDelayTimerEvent(StartZoneDelayTimerEvent v) {
-    setField(2, v);
-  }
-
+  set startZoneDelayTimerEvent(StartZoneDelayTimerEvent v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasStartZoneDelayTimerEvent() => $_has(1);
   @$pb.TagNumber(2)
@@ -1932,10 +1493,7 @@ class GetLastZoneEventResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   ZoneTickEvent get zoneTickEvent => $_getN(2);
   @$pb.TagNumber(3)
-  set zoneTickEvent(ZoneTickEvent v) {
-    setField(3, v);
-  }
-
+  set zoneTickEvent(ZoneTickEvent v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasZoneTickEvent() => $_has(2);
   @$pb.TagNumber(3)
@@ -1945,27 +1503,11 @@ class GetLastZoneEventResponse extends $pb.GeneratedMessage {
 }
 
 class StartNextZoneTimerEvent extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'StartNextZoneTimerEvent',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOM<ZoneState>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'currentZone',
-        subBuilder: ZoneState.create)
-    ..aInt64(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'nextZoneTimestamp')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartNextZoneTimerEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<ZoneState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentZone', subBuilder: ZoneState.create)
+    ..aInt64(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZoneTimestamp')
+    ..hasRequiredFields = false
+  ;
 
   StartNextZoneTimerEvent._() : super();
   factory StartNextZoneTimerEvent({
@@ -1981,42 +1523,31 @@ class StartNextZoneTimerEvent extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory StartNextZoneTimerEvent.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory StartNextZoneTimerEvent.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  StartNextZoneTimerEvent clone() =>
-      StartNextZoneTimerEvent()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  StartNextZoneTimerEvent copyWith(
-          void Function(StartNextZoneTimerEvent) updates) =>
-      super.copyWith((message) => updates(message as StartNextZoneTimerEvent))
-          as StartNextZoneTimerEvent; // ignore: deprecated_member_use
+  factory StartNextZoneTimerEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartNextZoneTimerEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartNextZoneTimerEvent clone() => StartNextZoneTimerEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartNextZoneTimerEvent copyWith(void Function(StartNextZoneTimerEvent) updates) => super.copyWith((message) => updates(message as StartNextZoneTimerEvent)) as StartNextZoneTimerEvent; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static StartNextZoneTimerEvent create() => StartNextZoneTimerEvent._();
   StartNextZoneTimerEvent createEmptyInstance() => create();
-  static $pb.PbList<StartNextZoneTimerEvent> createRepeated() =>
-      $pb.PbList<StartNextZoneTimerEvent>();
+  static $pb.PbList<StartNextZoneTimerEvent> createRepeated() => $pb.PbList<StartNextZoneTimerEvent>();
   @$core.pragma('dart2js:noInline')
-  static StartNextZoneTimerEvent getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StartNextZoneTimerEvent>(create);
+  static StartNextZoneTimerEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartNextZoneTimerEvent>(create);
   static StartNextZoneTimerEvent? _defaultInstance;
 
   @$pb.TagNumber(1)
   ZoneState get currentZone => $_getN(0);
   @$pb.TagNumber(1)
-  set currentZone(ZoneState v) {
-    setField(1, v);
-  }
-
+  set currentZone(ZoneState v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasCurrentZone() => $_has(0);
   @$pb.TagNumber(1)
@@ -2027,10 +1558,7 @@ class StartNextZoneTimerEvent extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $fixnum.Int64 get nextZoneTimestamp => $_getI64(1);
   @$pb.TagNumber(2)
-  set nextZoneTimestamp($fixnum.Int64 v) {
-    $_setInt64(1, v);
-  }
-
+  set nextZoneTimestamp($fixnum.Int64 v) { $_setInt64(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasNextZoneTimestamp() => $_has(1);
   @$pb.TagNumber(2)
@@ -2038,26 +1566,12 @@ class StartNextZoneTimerEvent extends $pb.GeneratedMessage {
 }
 
 class StartZoneDelayTimerEvent extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'StartZoneDelayTimerEvent',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOM<ZoneState>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'currentZone',
-        subBuilder: ZoneState.create)
-    ..aOM<ZoneState>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZone',
-        subBuilder: ZoneState.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartZoneDelayTimerEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<ZoneState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentZone', subBuilder: ZoneState.create)
+    ..aOM<ZoneState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZone', subBuilder: ZoneState.create)
     ..aInt64(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zoneTickStartTimestamp')
-    ..hasRequiredFields = false;
+    ..hasRequiredFields = false
+  ;
 
   StartZoneDelayTimerEvent._() : super();
   factory StartZoneDelayTimerEvent({
@@ -2077,42 +1591,31 @@ class StartZoneDelayTimerEvent extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory StartZoneDelayTimerEvent.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory StartZoneDelayTimerEvent.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  StartZoneDelayTimerEvent clone() =>
-      StartZoneDelayTimerEvent()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  StartZoneDelayTimerEvent copyWith(
-          void Function(StartZoneDelayTimerEvent) updates) =>
-      super.copyWith((message) => updates(message as StartZoneDelayTimerEvent))
-          as StartZoneDelayTimerEvent; // ignore: deprecated_member_use
+  factory StartZoneDelayTimerEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartZoneDelayTimerEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartZoneDelayTimerEvent clone() => StartZoneDelayTimerEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartZoneDelayTimerEvent copyWith(void Function(StartZoneDelayTimerEvent) updates) => super.copyWith((message) => updates(message as StartZoneDelayTimerEvent)) as StartZoneDelayTimerEvent; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static StartZoneDelayTimerEvent create() => StartZoneDelayTimerEvent._();
   StartZoneDelayTimerEvent createEmptyInstance() => create();
-  static $pb.PbList<StartZoneDelayTimerEvent> createRepeated() =>
-      $pb.PbList<StartZoneDelayTimerEvent>();
+  static $pb.PbList<StartZoneDelayTimerEvent> createRepeated() => $pb.PbList<StartZoneDelayTimerEvent>();
   @$core.pragma('dart2js:noInline')
-  static StartZoneDelayTimerEvent getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StartZoneDelayTimerEvent>(create);
+  static StartZoneDelayTimerEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartZoneDelayTimerEvent>(create);
   static StartZoneDelayTimerEvent? _defaultInstance;
 
   @$pb.TagNumber(1)
   ZoneState get currentZone => $_getN(0);
   @$pb.TagNumber(1)
-  set currentZone(ZoneState v) {
-    setField(1, v);
-  }
-
+  set currentZone(ZoneState v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasCurrentZone() => $_has(0);
   @$pb.TagNumber(1)
@@ -2123,10 +1626,7 @@ class StartZoneDelayTimerEvent extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   ZoneState get nextZone => $_getN(1);
   @$pb.TagNumber(2)
-  set nextZone(ZoneState v) {
-    setField(2, v);
-  }
-
+  set nextZone(ZoneState v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasNextZone() => $_has(1);
   @$pb.TagNumber(2)
@@ -2137,10 +1637,7 @@ class StartZoneDelayTimerEvent extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $fixnum.Int64 get zoneTickStartTimestamp => $_getI64(2);
   @$pb.TagNumber(3)
-  set zoneTickStartTimestamp($fixnum.Int64 v) {
-    $_setInt64(2, v);
-  }
-
+  set zoneTickStartTimestamp($fixnum.Int64 v) { $_setInt64(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasZoneTickStartTimestamp() => $_has(2);
   @$pb.TagNumber(3)
@@ -2148,25 +1645,11 @@ class StartZoneDelayTimerEvent extends $pb.GeneratedMessage {
 }
 
 class ZoneTickEvent extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'ZoneTickEvent',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOM<ZoneState>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'currentZone',
-        subBuilder: ZoneState.create)
-    ..aOM<ZoneState>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZone',
-        subBuilder: ZoneState.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ZoneTickEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<ZoneState>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'currentZone', subBuilder: ZoneState.create)
+    ..aOM<ZoneState>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nextZone', subBuilder: ZoneState.create)
+    ..hasRequiredFields = false
+  ;
 
   ZoneTickEvent._() : super();
   factory ZoneTickEvent({
@@ -2182,40 +1665,31 @@ class ZoneTickEvent extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory ZoneTickEvent.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ZoneTickEvent.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory ZoneTickEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ZoneTickEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   ZoneTickEvent clone() => ZoneTickEvent()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ZoneTickEvent copyWith(void Function(ZoneTickEvent) updates) =>
-      super.copyWith((message) => updates(message as ZoneTickEvent))
-          as ZoneTickEvent; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ZoneTickEvent copyWith(void Function(ZoneTickEvent) updates) => super.copyWith((message) => updates(message as ZoneTickEvent)) as ZoneTickEvent; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static ZoneTickEvent create() => ZoneTickEvent._();
   ZoneTickEvent createEmptyInstance() => create();
-  static $pb.PbList<ZoneTickEvent> createRepeated() =>
-      $pb.PbList<ZoneTickEvent>();
+  static $pb.PbList<ZoneTickEvent> createRepeated() => $pb.PbList<ZoneTickEvent>();
   @$core.pragma('dart2js:noInline')
-  static ZoneTickEvent getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ZoneTickEvent>(create);
+  static ZoneTickEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZoneTickEvent>(create);
   static ZoneTickEvent? _defaultInstance;
 
   @$pb.TagNumber(1)
   ZoneState get currentZone => $_getN(0);
   @$pb.TagNumber(1)
-  set currentZone(ZoneState v) {
-    setField(1, v);
-  }
-
+  set currentZone(ZoneState v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasCurrentZone() => $_has(0);
   @$pb.TagNumber(1)
@@ -2226,10 +1700,7 @@ class ZoneTickEvent extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   ZoneState get nextZone => $_getN(1);
   @$pb.TagNumber(2)
-  set nextZone(ZoneState v) {
-    setField(2, v);
-  }
-
+  set nextZone(ZoneState v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasNextZone() => $_has(1);
   @$pb.TagNumber(2)
@@ -2239,30 +1710,12 @@ class ZoneTickEvent extends $pb.GeneratedMessage {
 }
 
 class PlayerState extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'PlayerState',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'playerUuid')
-    ..aOM<Position>(
-        2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position',
-        subBuilder: Position.create)
-    ..a<$core.double>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'health',
-        $pb.PbFieldType.OF)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'PlayerState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..aOM<Position>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'health', $pb.PbFieldType.OF)
+    ..hasRequiredFields = false
+  ;
 
   PlayerState._() : super();
   factory PlayerState({
@@ -2282,39 +1735,31 @@ class PlayerState extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory PlayerState.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory PlayerState.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory PlayerState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlayerState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   PlayerState clone() => PlayerState()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  PlayerState copyWith(void Function(PlayerState) updates) =>
-      super.copyWith((message) => updates(message as PlayerState))
-          as PlayerState; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PlayerState copyWith(void Function(PlayerState) updates) => super.copyWith((message) => updates(message as PlayerState)) as PlayerState; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static PlayerState create() => PlayerState._();
   PlayerState createEmptyInstance() => create();
   static $pb.PbList<PlayerState> createRepeated() => $pb.PbList<PlayerState>();
   @$core.pragma('dart2js:noInline')
-  static PlayerState getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<PlayerState>(create);
+  static PlayerState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayerState>(create);
   static PlayerState? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get playerUuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set playerUuid($core.String v) {
-    $_setString(0, v);
-  }
-
+  set playerUuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasPlayerUuid() => $_has(0);
   @$pb.TagNumber(1)
@@ -2323,10 +1768,7 @@ class PlayerState extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   Position get position => $_getN(1);
   @$pb.TagNumber(2)
-  set position(Position v) {
-    setField(2, v);
-  }
-
+  set position(Position v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasPosition() => $_has(1);
   @$pb.TagNumber(2)
@@ -2337,10 +1779,7 @@ class PlayerState extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.double get health => $_getN(2);
   @$pb.TagNumber(3)
-  set health($core.double v) {
-    $_setFloat(2, v);
-  }
-
+  set health($core.double v) { $_setFloat(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasHealth() => $_has(2);
   @$pb.TagNumber(3)
@@ -2348,27 +1787,12 @@ class PlayerState extends $pb.GeneratedMessage {
 }
 
 class ZoneState extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i =
-      $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ZoneState',
-          package: const $pb.PackageName(
-              const $core.bool.fromEnvironment('protobuf.omit_message_names')
-                  ? ''
-                  : 'spot.v1'),
-          createEmptyInstance: create)
-        ..aOM<Position>(
-            1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position',
-            subBuilder: Position.create)
-        ..a<$core.double>(
-            2,
-            const $core.bool.fromEnvironment('protobuf.omit_field_names')
-                ? ''
-                : 'radiusInM',
-            $pb.PbFieldType.OF)
-        ..a<$core.double>(
-            3,
-            const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'damage',
-            $pb.PbFieldType.OF)
-        ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ZoneState', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'damage', $pb.PbFieldType.OF)
+    ..hasRequiredFields = false
+  ;
 
   ZoneState._() : super();
   factory ZoneState({
@@ -2388,39 +1812,31 @@ class ZoneState extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory ZoneState.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ZoneState.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory ZoneState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ZoneState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   ZoneState clone() => ZoneState()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ZoneState copyWith(void Function(ZoneState) updates) =>
-      super.copyWith((message) => updates(message as ZoneState))
-          as ZoneState; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ZoneState copyWith(void Function(ZoneState) updates) => super.copyWith((message) => updates(message as ZoneState)) as ZoneState; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static ZoneState create() => ZoneState._();
   ZoneState createEmptyInstance() => create();
   static $pb.PbList<ZoneState> createRepeated() => $pb.PbList<ZoneState>();
   @$core.pragma('dart2js:noInline')
-  static ZoneState getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZoneState>(create);
+  static ZoneState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZoneState>(create);
   static ZoneState? _defaultInstance;
 
   @$pb.TagNumber(1)
   Position get position => $_getN(0);
   @$pb.TagNumber(1)
-  set position(Position v) {
-    setField(1, v);
-  }
-
+  set position(Position v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasPosition() => $_has(0);
   @$pb.TagNumber(1)
@@ -2431,10 +1847,7 @@ class ZoneState extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.double get radiusInM => $_getN(1);
   @$pb.TagNumber(2)
-  set radiusInM($core.double v) {
-    $_setFloat(1, v);
-  }
-
+  set radiusInM($core.double v) { $_setFloat(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasRadiusInM() => $_has(1);
   @$pb.TagNumber(2)
@@ -2443,10 +1856,7 @@ class ZoneState extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.double get damage => $_getN(2);
   @$pb.TagNumber(3)
-  set damage($core.double v) {
-    $_setFloat(2, v);
-  }
-
+  set damage($core.double v) { $_setFloat(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasDamage() => $_has(2);
   @$pb.TagNumber(3)
@@ -2454,28 +1864,11 @@ class ZoneState extends $pb.GeneratedMessage {
 }
 
 class Position extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Position',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'spot.v1'),
-      createEmptyInstance: create)
-    ..a<$core.double>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'longitude',
-        $pb.PbFieldType.OD)
-    ..a<$core.double>(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'latitude',
-        $pb.PbFieldType.OD)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Position', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'longitude', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'latitude', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
 
   Position._() : super();
   factory Position({
@@ -2491,39 +1884,31 @@ class Position extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory Position.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Position.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory Position.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Position.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   Position clone() => Position()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Position copyWith(void Function(Position) updates) =>
-      super.copyWith((message) => updates(message as Position))
-          as Position; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Position copyWith(void Function(Position) updates) => super.copyWith((message) => updates(message as Position)) as Position; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Position create() => Position._();
   Position createEmptyInstance() => create();
   static $pb.PbList<Position> createRepeated() => $pb.PbList<Position>();
   @$core.pragma('dart2js:noInline')
-  static Position getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Position>(create);
+  static Position getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Position>(create);
   static Position? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.double get longitude => $_getN(0);
   @$pb.TagNumber(1)
-  set longitude($core.double v) {
-    $_setDouble(0, v);
-  }
-
+  set longitude($core.double v) { $_setDouble(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasLongitude() => $_has(0);
   @$pb.TagNumber(1)
@@ -2532,12 +1917,10 @@ class Position extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.double get latitude => $_getN(1);
   @$pb.TagNumber(2)
-  set latitude($core.double v) {
-    $_setDouble(1, v);
-  }
-
+  set latitude($core.double v) { $_setDouble(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasLatitude() => $_has(1);
   @$pb.TagNumber(2)
   void clearLatitude() => clearField(2);
 }
+
