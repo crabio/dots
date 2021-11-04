@@ -10,12 +10,17 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'spot_v1.pbenum.dart';
+
+export 'spot_v1.pbenum.dart';
+
 class CreateSpotRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -25,6 +30,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     $core.double? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
+    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
@@ -38,6 +44,9 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
+    }
+    if (sessionDurationInSeconds != null) {
+      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -99,6 +108,15 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
   void clearZonePeriodInSeconds() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get sessionDurationInSeconds => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasSessionDurationInSeconds() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSessionDurationInSeconds() => clearField(5);
 }
 
 class CreateSpotResponse extends $pb.GeneratedMessage {
@@ -710,14 +728,14 @@ class SubSessionEventResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubSessionEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..oo(0, [1, 2])
     ..aOM<StartSessionEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startSessionEvent', subBuilder: StartSessionEvent.create)
-    ..aOM<EndSessionEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopSessionEvent', subBuilder: EndSessionEvent.create)
+    ..aOM<StopSessionEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopSessionEvent', subBuilder: StopSessionEvent.create)
     ..hasRequiredFields = false
   ;
 
   SubSessionEventResponse._() : super();
   factory SubSessionEventResponse({
     StartSessionEvent? startSessionEvent,
-    EndSessionEvent? stopSessionEvent,
+    StopSessionEvent? stopSessionEvent,
   }) {
     final _result = create();
     if (startSessionEvent != null) {
@@ -764,15 +782,15 @@ class SubSessionEventResponse extends $pb.GeneratedMessage {
   StartSessionEvent ensureStartSessionEvent() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  EndSessionEvent get stopSessionEvent => $_getN(1);
+  StopSessionEvent get stopSessionEvent => $_getN(1);
   @$pb.TagNumber(2)
-  set stopSessionEvent(EndSessionEvent v) { setField(2, v); }
+  set stopSessionEvent(StopSessionEvent v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasStopSessionEvent() => $_has(1);
   @$pb.TagNumber(2)
   void clearStopSessionEvent() => clearField(2);
   @$pb.TagNumber(2)
-  EndSessionEvent ensureStopSessionEvent() => $_ensure(1);
+  StopSessionEvent ensureStopSessionEvent() => $_ensure(1);
 }
 
 class StartSessionEvent extends $pb.GeneratedMessage {
@@ -804,51 +822,51 @@ class StartSessionEvent extends $pb.GeneratedMessage {
   static StartSessionEvent? _defaultInstance;
 }
 
-class EndSessionEvent extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'EndSessionEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
-    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hunterWins')
+class StopSessionEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StopSessionEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..e<StopSessionEvent_SessionWinner>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'winner', $pb.PbFieldType.OE, defaultOrMaker: StopSessionEvent_SessionWinner.HunterWins, valueOf: StopSessionEvent_SessionWinner.valueOf, enumValues: StopSessionEvent_SessionWinner.values)
     ..hasRequiredFields = false
   ;
 
-  EndSessionEvent._() : super();
-  factory EndSessionEvent({
-    $core.bool? hunterWins,
+  StopSessionEvent._() : super();
+  factory StopSessionEvent({
+    StopSessionEvent_SessionWinner? winner,
   }) {
     final _result = create();
-    if (hunterWins != null) {
-      _result.hunterWins = hunterWins;
+    if (winner != null) {
+      _result.winner = winner;
     }
     return _result;
   }
-  factory EndSessionEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory EndSessionEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory StopSessionEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StopSessionEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  EndSessionEvent clone() => EndSessionEvent()..mergeFromMessage(this);
+  StopSessionEvent clone() => StopSessionEvent()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  EndSessionEvent copyWith(void Function(EndSessionEvent) updates) => super.copyWith((message) => updates(message as EndSessionEvent)) as EndSessionEvent; // ignore: deprecated_member_use
+  StopSessionEvent copyWith(void Function(StopSessionEvent) updates) => super.copyWith((message) => updates(message as StopSessionEvent)) as StopSessionEvent; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static EndSessionEvent create() => EndSessionEvent._();
-  EndSessionEvent createEmptyInstance() => create();
-  static $pb.PbList<EndSessionEvent> createRepeated() => $pb.PbList<EndSessionEvent>();
+  static StopSessionEvent create() => StopSessionEvent._();
+  StopSessionEvent createEmptyInstance() => create();
+  static $pb.PbList<StopSessionEvent> createRepeated() => $pb.PbList<StopSessionEvent>();
   @$core.pragma('dart2js:noInline')
-  static EndSessionEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EndSessionEvent>(create);
-  static EndSessionEvent? _defaultInstance;
+  static StopSessionEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StopSessionEvent>(create);
+  static StopSessionEvent? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool get hunterWins => $_getBF(0);
+  StopSessionEvent_SessionWinner get winner => $_getN(0);
   @$pb.TagNumber(1)
-  set hunterWins($core.bool v) { $_setBool(0, v); }
+  set winner(StopSessionEvent_SessionWinner v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasHunterWins() => $_has(0);
+  $core.bool hasWinner() => $_has(0);
   @$pb.TagNumber(1)
-  void clearHunterWins() => clearField(1);
+  void clearWinner() => clearField(1);
 }
 
 class SendPlayerPositionRequest extends $pb.GeneratedMessage {

@@ -16,11 +16,12 @@ const CreateSpotRequest$json = const {
     const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
     const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
     const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
+    const {'1': 'session_duration_in_seconds', '3': 5, '4': 1, '5': 5, '10': 'sessionDurationInSeconds'},
   ],
 };
 
 /// Descriptor for `CreateSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEh4KC3JhZGl1c19pbl9tGAIgASgCUglyYWRpdXNJbk0SMwoWc2Nhbl9wZXJpb2RfaW5fc2Vjb25kcxgDIAEoBVITc2NhblBlcmlvZEluU2Vjb25kcxIzChZ6b25lX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhN6b25lUGVyaW9kSW5TZWNvbmRz');
+final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEh4KC3JhZGl1c19pbl9tGAIgASgCUglyYWRpdXNJbk0SMwoWc2Nhbl9wZXJpb2RfaW5fc2Vjb25kcxgDIAEoBVITc2NhblBlcmlvZEluU2Vjb25kcxIzChZ6b25lX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhN6b25lUGVyaW9kSW5TZWNvbmRzEj0KG3Nlc3Npb25fZHVyYXRpb25faW5fc2Vjb25kcxgFIAEoBVIYc2Vzc2lvbkR1cmF0aW9uSW5TZWNvbmRz');
 @$core.Deprecated('Use createSpotResponseDescriptor instead')
 const CreateSpotResponse$json = const {
   '1': 'CreateSpotResponse',
@@ -145,7 +146,7 @@ const SubSessionEventResponse$json = const {
   '1': 'SubSessionEventResponse',
   '2': const [
     const {'1': 'start_session_event', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.StartSessionEvent', '9': 0, '10': 'startSessionEvent'},
-    const {'1': 'stop_session_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.EndSessionEvent', '9': 0, '10': 'stopSessionEvent'},
+    const {'1': 'stop_session_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.StopSessionEvent', '9': 0, '10': 'stopSessionEvent'},
   ],
   '8': const [
     const {'1': 'event'},
@@ -153,7 +154,7 @@ const SubSessionEventResponse$json = const {
 };
 
 /// Descriptor for `SubSessionEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List subSessionEventResponseDescriptor = $convert.base64Decode('ChdTdWJTZXNzaW9uRXZlbnRSZXNwb25zZRJMChNzdGFydF9zZXNzaW9uX2V2ZW50GAEgASgLMhouc3BvdC52MS5TdGFydFNlc3Npb25FdmVudEgAUhFzdGFydFNlc3Npb25FdmVudBJIChJzdG9wX3Nlc3Npb25fZXZlbnQYAiABKAsyGC5zcG90LnYxLkVuZFNlc3Npb25FdmVudEgAUhBzdG9wU2Vzc2lvbkV2ZW50QgcKBWV2ZW50');
+final $typed_data.Uint8List subSessionEventResponseDescriptor = $convert.base64Decode('ChdTdWJTZXNzaW9uRXZlbnRSZXNwb25zZRJMChNzdGFydF9zZXNzaW9uX2V2ZW50GAEgASgLMhouc3BvdC52MS5TdGFydFNlc3Npb25FdmVudEgAUhFzdGFydFNlc3Npb25FdmVudBJJChJzdG9wX3Nlc3Npb25fZXZlbnQYAiABKAsyGS5zcG90LnYxLlN0b3BTZXNzaW9uRXZlbnRIAFIQc3RvcFNlc3Npb25FdmVudEIHCgVldmVudA==');
 @$core.Deprecated('Use startSessionEventDescriptor instead')
 const StartSessionEvent$json = const {
   '1': 'StartSessionEvent',
@@ -161,16 +162,27 @@ const StartSessionEvent$json = const {
 
 /// Descriptor for `StartSessionEvent`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List startSessionEventDescriptor = $convert.base64Decode('ChFTdGFydFNlc3Npb25FdmVudA==');
-@$core.Deprecated('Use endSessionEventDescriptor instead')
-const EndSessionEvent$json = const {
-  '1': 'EndSessionEvent',
+@$core.Deprecated('Use stopSessionEventDescriptor instead')
+const StopSessionEvent$json = const {
+  '1': 'StopSessionEvent',
   '2': const [
-    const {'1': 'hunter_wins', '3': 1, '4': 1, '5': 8, '10': 'hunterWins'},
+    const {'1': 'winner', '3': 1, '4': 1, '5': 14, '6': '.spot.v1.StopSessionEvent.SessionWinner', '10': 'winner'},
+  ],
+  '4': const [StopSessionEvent_SessionWinner$json],
+};
+
+@$core.Deprecated('Use stopSessionEventDescriptor instead')
+const StopSessionEvent_SessionWinner$json = const {
+  '1': 'SessionWinner',
+  '2': const [
+    const {'1': 'HunterWins', '2': 0},
+    const {'1': 'VictimsWins', '2': 1},
+    const {'1': 'Draw', '2': 2},
   ],
 };
 
-/// Descriptor for `EndSessionEvent`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List endSessionEventDescriptor = $convert.base64Decode('Cg9FbmRTZXNzaW9uRXZlbnQSHwoLaHVudGVyX3dpbnMYASABKAhSCmh1bnRlcldpbnM=');
+/// Descriptor for `StopSessionEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stopSessionEventDescriptor = $convert.base64Decode('ChBTdG9wU2Vzc2lvbkV2ZW50Ej8KBndpbm5lchgBIAEoDjInLnNwb3QudjEuU3RvcFNlc3Npb25FdmVudC5TZXNzaW9uV2lubmVyUgZ3aW5uZXIiOgoNU2Vzc2lvbldpbm5lchIOCgpIdW50ZXJXaW5zEAASDwoLVmljdGltc1dpbnMQARIICgREcmF3EAI=');
 @$core.Deprecated('Use sendPlayerPositionRequestDescriptor instead')
 const SendPlayerPositionRequest$json = const {
   '1': 'SendPlayerPositionRequest',
