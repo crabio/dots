@@ -314,10 +314,9 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
           break;
 
         default:
-          throw Exception("Unimplemented");
+          // No last event
+          return null;
       }
-
-      return null;
     } on Exception catch (ex) {
       return ex;
     }
@@ -361,10 +360,9 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
           _processStopGameEvent(response.stopGameEvent);
           break;
         default:
-          throw Exception("Unimplemented");
+          // No last event
+          return null;
       }
-
-      return null;
     } on Exception catch (ex) {
       return ex;
     }

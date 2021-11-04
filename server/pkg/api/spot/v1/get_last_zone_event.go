@@ -36,7 +36,7 @@ func (s *SpotServiceServer) GetLastZoneEvent(ctx context.Context, request *proto
 	}
 
 	if spot.Session.ZoneController.LastZoneEvent == nil {
-		return nil, errors.New("LastZoneEvent is not inited")
+		return &proto.GetLastZoneEventResponse{}, nil
 	}
 
 	logrus.WithField("spot.ZoneController.LastZoneEvent", spot.Session.ZoneController.LastZoneEvent).Debug("spot.ZoneController.LastZoneEvent")

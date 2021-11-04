@@ -34,13 +34,21 @@ func (s *SpotServiceServer) IsPlayerHunter(ctx context.Context, request *proto.I
 		return nil, fmt.Errorf("Spot has no session")
 	}
 
+	if spot.Session.GameController == nil {
+		return nil, fmt.Errorf("GameController is not inited")
+	}
+
+	spot.Session.GameController.Lock()
 	if !spot.Session.GameController.IsActive {
+		spot.Session.GameController.Unlock()
 		return nil, fmt.Errorf("Spot is not active")
 	}
 
 	response := proto.IsPlayerHunterResponse{
 		IsHunter: *spot.Session.GameController.HunterUuid == playerUuid,
 	}
+	spot.Session.GameController.Unlock()
+
 	s.log.WithField("response", response.String()).Debug("Is player hunter response")
 
 	return &response, nil

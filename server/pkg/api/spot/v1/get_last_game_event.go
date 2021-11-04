@@ -33,8 +33,11 @@ func (s *SpotServiceServer) GetLastGameEvent(ctx context.Context, request *proto
 		return nil, errors.New("GameController is not inited")
 	}
 
+	spot.Session.GameController.Lock()
+	defer spot.Session.GameController.Unlock()
 	if spot.Session.GameController.LastGameEvent == nil {
-		return nil, errors.New("LastGameEvent is not inited")
+		spot.Session.GameController.Unlock()
+		return &proto.GetLastGameEventResponse{}, nil
 	}
 
 	logrus.WithField("spot.GameController.LastGameEvent", spot.Session.GameController.LastGameEvent).Debug("spot.GameController.LastGameEvent")

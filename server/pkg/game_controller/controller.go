@@ -2,6 +2,7 @@ package game_controller
 
 import (
 	"errors"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,6 +14,8 @@ import (
 )
 
 type GameController struct {
+	sync.RWMutex
+
 	log *logrus.Entry
 
 	// UUID of hunter player
@@ -39,11 +42,13 @@ func NewGameController(zoneController *zone.Controller) *GameController {
 }
 
 func (c *GameController) Start(hunterUuid uuid.UUID) {
+	c.Lock()
 	c.IsActive = true
 	c.EventsBroadcaster.Send(StartGameEvent{})
 	timeNow := time.Now().UTC()
 	c.StartTime = &timeNow
 	c.HunterUuid = &hunterUuid
+	c.Unlock()
 }
 
 // Function checks current spot session status
@@ -74,6 +79,7 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 	// Check victims states
 	alivePlayersStates := getAlivePlayers(playerStateMap, *c.HunterUuid)
 
+	c.Lock()
 	if hunterState.Health == 0 {
 		// Hunter is dead
 		if len(alivePlayersStates) > 0 {
@@ -82,16 +88,16 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 			event := EndGameEvent{
 				Winner: SessionWinner_VictimsWins,
 			}
-			c.EventsBroadcaster.Send(event)
 			c.LastGameEvent = event
+			c.EventsBroadcaster.Send(event)
 		} else {
 			// Hunter and player are dead => draw
 			c.log.Debug("Draw")
 			event := EndGameEvent{
 				Winner: SessionWinner_Draw,
 			}
-			c.EventsBroadcaster.Send(event)
 			c.LastGameEvent = event
+			c.EventsBroadcaster.Send(event)
 		}
 		c.stop()
 
@@ -108,8 +114,8 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 				event := EndGameEvent{
 					Winner: SessionWinner_VictimsWins,
 				}
-				c.EventsBroadcaster.Send(event)
 				c.LastGameEvent = event
+				c.EventsBroadcaster.Send(event)
 				c.stop()
 			}
 		} else {
@@ -118,11 +124,12 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 			event := EndGameEvent{
 				Winner: SessionWinner_HunterWins,
 			}
-			c.EventsBroadcaster.Send(event)
 			c.LastGameEvent = event
+			c.EventsBroadcaster.Send(event)
 			c.stop()
 		}
 	}
+	c.Unlock()
 
 	return nil
 }

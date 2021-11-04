@@ -31,6 +31,10 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 		return nil, fmt.Errorf("Spot has no session")
 	}
 
+	if spot.Session.GameController == nil {
+		return nil, fmt.Errorf("GameController is not inited")
+	}
+
 	if spot.Session.GameController.IsActive {
 		return nil, fmt.Errorf("Can't start active spot with uuid '%s'", spotUuid)
 	}
