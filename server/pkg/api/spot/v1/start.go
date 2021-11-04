@@ -11,7 +11,6 @@ import (
 
 	// Internal
 
-	spot_session "github.com/iakrevetkho/dots/server/pkg/spot_session"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -36,15 +35,12 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 		return nil, fmt.Errorf("Can't start active spot with uuid '%s'", spotUuid)
 	}
 
-	// Start spot session
-	spot.Session.Start()
-
 	// Choose hunter
 	rand.Seed(time.Now().Unix())
 	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
 
-	// Create spot session
-	spot.Session = spot_session.NewSpotSession(spot.Position, spot.RadiusInM, spot.ZonePeriod, hunterUuid, spot.SessionDuration, spot.PlayersList)
+	// Start spot session
+	spot.Session.Start(hunterUuid)
 
 	// Save spot on server
 	s.SpotsMap.Store(spotUuid, spot)

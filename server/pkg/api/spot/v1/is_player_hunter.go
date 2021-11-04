@@ -39,7 +39,7 @@ func (s *SpotServiceServer) IsPlayerHunter(ctx context.Context, request *proto.I
 	}
 
 	response := proto.IsPlayerHunterResponse{
-		IsHunter: spot.Session.HunterUuid == playerUuid,
+		IsHunter: *spot.Session.GameController.HunterUuid == playerUuid,
 	}
 	s.log.WithField("response", response.String()).Debug("Is player hunter response")
 

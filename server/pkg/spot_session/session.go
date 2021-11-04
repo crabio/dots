@@ -16,9 +16,6 @@ import (
 )
 
 type SpotSession struct {
-	// UUID of hunter player
-	HunterUuid uuid.UUID
-
 	Duration time.Duration
 
 	ZoneController *zone.Controller
@@ -34,7 +31,7 @@ type SpotSession struct {
 	PlayersStateMap *player_state.PlayerStateMap
 }
 
-func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, hunterUuid uuid.UUID, duration time.Duration, playersList []uuid.UUID) *SpotSession {
+func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration, playersList []uuid.UUID) *SpotSession {
 	ss := new(SpotSession)
 	ss.Duration = duration
 	ss.PlayersStateMap = player_state.NewPlayerStateMap()
@@ -45,14 +42,13 @@ func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePerio
 
 	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
 	ss.GameController = game_controller.NewGameController()
-	// TODO Refactor constructor
 	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
 
 	return ss
 }
 
-func (ss *SpotSession) Start() error {
-	ss.GameController.Start()
+func (ss *SpotSession) Start(hunterUuid uuid.UUID) error {
+	ss.GameController.Start(hunterUuid)
 
 	// Start zone ticker
 	if err := ss.ZoneController.Start(); err != nil {
@@ -68,7 +64,7 @@ func (ss *SpotSession) PlayersStateMapStore(key uuid.UUID, value *player_state.P
 	// Send new player position to damage controller
 	ss.DamageController.NewPlayerState(key, value)
 
-	if err := ss.GameController.Check(ss.Duration, ss.HunterUuid, ss.PlayersStateMap); err != nil {
+	if err := ss.GameController.Check(ss.Duration, ss.PlayersStateMap); err != nil {
 		return err
 	}
 

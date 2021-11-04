@@ -35,6 +35,7 @@ func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zo
 	spot.ZonePeriod = zonePeriod
 	spot.SessionDuration = sessionDuration
 	spot.PlayersListBroadcaster = broadcast.New(0)
+	spot.Session = spot_session.NewSpotSession(spot.Position, spot.RadiusInM, spot.ZonePeriod, spot.SessionDuration, spot.PlayersList)
 
 	return spot
 }
