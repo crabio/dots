@@ -81,3 +81,12 @@ class ZoneTickEvent extends GamePageEvent {
         nextZone,
       ];
 }
+
+class SessionStopEvent extends GamePageEvent {
+  final SessionWinnerEnum winner;
+
+  const SessionStopEvent({required this.winner});
+
+  @override
+  List<Object> get props => [winner];
+}

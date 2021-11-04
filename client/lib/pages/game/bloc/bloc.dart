@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_state.dart';
+import '../resources/session_winner.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
@@ -32,6 +33,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
     on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
     on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
+    on<SessionStopEvent>(_onSessionStopEvent);
     on<ZoneTickEvent>(_onZoneTickEvent);
 
     add(InitEvent());
@@ -86,8 +88,14 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
           ))),
     );
 
+    _logger.fine("Subscribe on session events");
+    var ex = _subscribeOnSpotSessionEvents();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
+
     _logger.fine("Subscribe on zone state");
-    var ex = _subscribeOnZoneEvents();
+    ex = _subscribeOnZoneEvents();
     if (ex != null) {
       emit(ErrorState(exception: ex));
     }
@@ -147,6 +155,44 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
       return Right(client.getPlayersStates(request));
     } on Exception catch (ex) {
       return Left(ex);
+    }
+  }
+
+  Exception? _subscribeOnSpotSessionEvents() {
+    try {
+      client
+          .subSessionEvent(proto.SubSessionEventRequest(
+        spotUuid: spotUuid,
+      ))
+          .listen((value) {
+        switch (value.whichEvent()) {
+          case proto.SubSessionEventResponse_Event.startSessionEvent:
+            _logger.fine("Session was started");
+            break;
+          case proto.SubSessionEventResponse_Event.stopSessionEvent:
+            _logger.fine("Session was stopped");
+            switch (value.stopSessionEvent.winner) {
+              case proto.StopSessionEvent_SessionWinner.HunterWins:
+                add(const SessionStopEvent(winner: SessionWinnerEnum.hunter));
+                break;
+
+              case proto.StopSessionEvent_SessionWinner.VictimsWins:
+                add(const SessionStopEvent(winner: SessionWinnerEnum.victims));
+                break;
+
+              case proto.StopSessionEvent_SessionWinner.Draw:
+                add(const SessionStopEvent(winner: SessionWinnerEnum.draw));
+                break;
+
+              default:
+            }
+
+            break;
+          default:
+        }
+      });
+    } on Exception catch (ex) {
+      return ex;
     }
   }
 
@@ -369,6 +415,28 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
       ));
     } else {
       _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onSessionStopEvent(
+    SessionStopEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    switch (event.winner) {
+      case SessionWinnerEnum.hunter:
+        emit(HunterWinsState());
+        break;
+
+      case SessionWinnerEnum.victims:
+        emit(VictimsWinsState());
+        break;
+
+      case SessionWinnerEnum.draw:
+        emit(DrawState());
+        break;
+
+      default:
+        throw Exception("Unimplemented");
     }
   }
 

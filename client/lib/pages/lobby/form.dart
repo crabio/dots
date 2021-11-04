@@ -40,6 +40,7 @@ class LobbyForm extends StatelessWidget {
                 spotUuid: spotUuid,
                 playerUuid: playerUuid,
                 isHunter: state.isHunter,
+                isHost: isHost,
               ));
           return const Center(
             child: CircularProgressIndicator(),

@@ -14,11 +14,13 @@ class GamePage extends StatelessWidget {
   final String spotUuid;
   final String playerUuid;
   final bool isHunter;
+  final bool isHost;
 
   const GamePage({
     required this.spotUuid,
     required this.playerUuid,
     required this.isHunter,
+    required this.isHost,
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +40,7 @@ class GamePage extends StatelessWidget {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           actions: [
+            // TODO Add event to server "Exit from spot"
             IconButton(
               onPressed: () => navPopAndPush(
                 context,
@@ -56,6 +59,8 @@ class GamePage extends StatelessWidget {
         ),
         body: GameForm(
           spotUuid: spotUuid,
+          playerUuid: playerUuid,
+          isHost: isHost,
         ),
       ),
     );
