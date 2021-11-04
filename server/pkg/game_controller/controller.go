@@ -26,6 +26,8 @@ type GameController struct {
 	EventsBroadcaster *broadcast.Broadcaster
 
 	zoneController *zone.Controller
+
+	LastGameEvent interface{}
 }
 
 func NewGameController(zoneController *zone.Controller) *GameController {
@@ -38,7 +40,7 @@ func NewGameController(zoneController *zone.Controller) *GameController {
 
 func (c *GameController) Start(hunterUuid uuid.UUID) {
 	c.IsActive = true
-	c.EventsBroadcaster.Send(StartSessionEvent{})
+	c.EventsBroadcaster.Send(StartGameEvent{})
 	timeNow := time.Now().UTC()
 	c.StartTime = &timeNow
 	c.HunterUuid = &hunterUuid
@@ -77,15 +79,19 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 		if len(alivePlayersStates) > 0 {
 			// 1. hunter is death and at least one of victim alive
 			c.log.Debug("Victims wins")
-			c.EventsBroadcaster.Send(EndSessionEvent{
+			event := EndGameEvent{
 				Winner: SessionWinner_VictimsWins,
-			})
+			}
+			c.EventsBroadcaster.Send(event)
+			c.LastGameEvent = event
 		} else {
 			// Hunter and player are dead => draw
 			c.log.Debug("Draw")
-			c.EventsBroadcaster.Send(EndSessionEvent{
+			event := EndGameEvent{
 				Winner: SessionWinner_Draw,
-			})
+			}
+			c.EventsBroadcaster.Send(event)
+			c.LastGameEvent = event
 		}
 		c.stop()
 
@@ -99,17 +105,21 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 			if c.StartTime.Add(sessionDuration).Before(time.Now().UTC()) {
 				// 2. or time if over and at least one of victim alive
 				c.log.Debug("Victims wins")
-				c.EventsBroadcaster.Send(EndSessionEvent{
+				event := EndGameEvent{
 					Winner: SessionWinner_VictimsWins,
-				})
+				}
+				c.EventsBroadcaster.Send(event)
+				c.LastGameEvent = event
 				c.stop()
 			}
 		} else {
 			// Hunter is alive and players are dead
 			c.log.Debug("Hunter win")
-			c.EventsBroadcaster.Send(EndSessionEvent{
+			event := EndGameEvent{
 				Winner: SessionWinner_HunterWins,
-			})
+			}
+			c.EventsBroadcaster.Send(event)
+			c.LastGameEvent = event
 			c.stop()
 		}
 	}

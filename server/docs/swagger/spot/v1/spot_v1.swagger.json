@@ -17,7 +17,7 @@
   ],
   "paths": {},
   "definitions": {
-    "StopSessionEventSessionWinner": {
+    "StopGameEventGameWinner": {
       "type": "string",
       "enum": [
         "HunterWins",
@@ -58,6 +58,17 @@
       "properties": {
         "spotUuid": {
           "type": "string"
+        }
+      }
+    },
+    "v1GetLastGameEventResponse": {
+      "type": "object",
+      "properties": {
+        "startGameEvent": {
+          "$ref": "#/definitions/v1StartGameEvent"
+        },
+        "stopGameEvent": {
+          "$ref": "#/definitions/v1StopGameEvent"
         }
       }
     },
@@ -157,6 +168,9 @@
     "v1SendPlayerPositionResponse": {
       "type": "object"
     },
+    "v1StartGameEvent": {
+      "type": "object"
+    },
     "v1StartNextZoneTimerEvent": {
       "type": "object",
       "properties": {
@@ -168,9 +182,6 @@
           "format": "int64"
         }
       }
-    },
-    "v1StartSessionEvent": {
-      "type": "object"
     },
     "v1StartSpotResponse": {
       "type": "object"
@@ -190,22 +201,22 @@
         }
       }
     },
-    "v1StopSessionEvent": {
+    "v1StopGameEvent": {
       "type": "object",
       "properties": {
         "winner": {
-          "$ref": "#/definitions/StopSessionEventSessionWinner"
+          "$ref": "#/definitions/StopGameEventGameWinner"
         }
       }
     },
-    "v1SubSessionEventResponse": {
+    "v1SubGameEventResponse": {
       "type": "object",
       "properties": {
-        "startSessionEvent": {
-          "$ref": "#/definitions/v1StartSessionEvent"
+        "startGameEvent": {
+          "$ref": "#/definitions/v1StartGameEvent"
         },
-        "stopSessionEvent": {
-          "$ref": "#/definitions/v1StopSessionEvent"
+        "stopGameEvent": {
+          "$ref": "#/definitions/v1StopGameEvent"
         }
       }
     },

@@ -19,7 +19,9 @@ service SpotService {
 
   rpc IsPlayerHunter (IsPlayerHunterRequest) returns (IsPlayerHunterResponse) {}
 
-  rpc SubSessionEvent (SubSessionEventRequest) returns (stream SubSessionEventResponse) {}
+  rpc SubGameEvent (SubGameEventRequest) returns (stream SubGameEventResponse) {}
+
+  rpc GetLastGameEvent (GetLastGameEventRequest) returns (GetLastGameEventResponse) {}
 
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
@@ -91,27 +93,38 @@ message IsPlayerHunterResponse {
   bool is_hunter = 1;
 }
 
-message SubSessionEventRequest {
+message SubGameEventRequest {
   string spot_uuid = 1;
 }
 
-message SubSessionEventResponse {
+message SubGameEventResponse {
   oneof event {
-    StartSessionEvent start_session_event = 1;
-    StopSessionEvent stop_session_event = 2;
+    StartGameEvent start_game_event = 1;
+    StopGameEvent stop_game_event = 2;
   }
 }
 
-message StartSessionEvent {}
+message GetLastGameEventRequest {
+  string spot_uuid = 1;
+}
 
-message StopSessionEvent {
-  enum SessionWinner {
+message GetLastGameEventResponse {
+  oneof event {
+    StartGameEvent start_game_event = 1;
+    StopGameEvent stop_game_event = 2;
+  }
+}
+
+message StartGameEvent {}
+
+message StopGameEvent {
+  enum GameWinner {
     HunterWins = 0;
     VictimsWins = 1;
     Draw = 2;
   }
 
-  SessionWinner winner = 1;
+  GameWinner winner = 1;
 }
 
 message SendPlayerPositionRequest {

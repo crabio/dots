@@ -29,6 +29,7 @@ var (
 )
 
 type Controller struct {
+	sync.RWMutex
 	log *logrus.Entry
 
 	minZoneRadiusInM           float32
@@ -125,11 +126,12 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 
 		if transitionPercentage >= 1.0 {
 			// Next zone reached
-
+			c.Lock()
 			c.currentZone = c.nextZone
 			c.nextZone = nil
 			c.prevZone = nil
 			c.nextZoneCreationTime = nil
+			c.Unlock()
 
 			// This is last tick
 			return c.currentZone, true, nil
@@ -152,7 +154,9 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 			// Zone radius = Next zone radius + (Prev zone radius - Next zone radius) * transition percentage
 			radius := float64(c.nextZone.Radius) + float64(c.prevZone.Radius-c.nextZone.Radius)*(1-transitionPercentage)
 
+			c.Lock()
 			c.currentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, float32(radius), 10)
+			c.Unlock()
 		}
 	}
 
@@ -177,11 +181,15 @@ func (c *Controller) Start() error {
 				NextZoneTime: timeNow().UTC().Add(c.nextZonePeriod),
 			}
 			c.ZoneEventBroadcaster.Send(startNextZoneTimerEvent)
+			c.Lock()
 			c.LastZoneEvent = startNextZoneTimerEvent
 			timeNowMx.Unlock()
 			c.nextZoneTimer = time.NewTimer(c.nextZonePeriod)
+			c.Unlock()
 			<-c.nextZoneTimer.C
+			c.Lock()
 			c.nextZoneTimer = nil
+			c.Unlock()
 			c.log.Debug("Next zone timer fired")
 
 			// Create next zone
@@ -199,11 +207,15 @@ func (c *Controller) Start() error {
 				ZoneTickStartTime: nextZoneCreationTime,
 			}
 			c.ZoneEventBroadcaster.Send(startZoneDelayTimerEvent)
+			c.Lock()
 			c.LastZoneEvent = startZoneDelayTimerEvent
 			timeNowMx.Unlock()
 			c.nextZoneDelayTimer = time.NewTimer(c.nextZoneDelay)
+			c.Unlock()
 			<-c.nextZoneDelayTimer.C
+			c.Lock()
 			c.nextZoneDelayTimer = nil
+			c.Unlock()
 			c.log.Debug("Next zone delay timer fired")
 
 			c.zoneTicker = time.NewTicker(zoneTickPeriod)
@@ -221,7 +233,9 @@ func (c *Controller) Start() error {
 				if lastTick {
 					c.log.Debug("Last tick. Stop zone ticker")
 					c.zoneTicker.Stop()
+					c.Lock()
 					c.zoneTicker = nil
+					c.Unlock()
 					// Go away from ticker loop
 					break tickerLoop
 				} else {
@@ -232,7 +246,9 @@ func (c *Controller) Start() error {
 						LastTick:    lastTick,
 					}
 					c.ZoneEventBroadcaster.Send(zoneTickEvent)
+					c.Lock()
 					c.LastZoneEvent = zoneTickEvent
+					c.Unlock()
 				}
 			}
 		}
@@ -244,6 +260,7 @@ func (c *Controller) Start() error {
 
 func (c *Controller) Stop() {
 	c.log.Debug("Stop")
+	c.Lock()
 	if c.nextZoneTimer != nil {
 		c.nextZoneTimer.Stop()
 	}
@@ -253,6 +270,7 @@ func (c *Controller) Stop() {
 	if c.zoneTicker != nil {
 		c.zoneTicker.Stop()
 	}
+	c.Unlock()
 }
 
 // Creates new zone inside current zone

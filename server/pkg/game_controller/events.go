@@ -1,16 +1,16 @@
 package game_controller
 
-type StartSessionEvent struct {
+type StartGameEvent struct {
 }
 
-type EndSessionEvent struct {
-	Winner SessionWinner
+type EndGameEvent struct {
+	Winner GameWinner
 }
 
-type SessionWinner int64
+type GameWinner int64
 
 const (
-	SessionWinner_HunterWins  SessionWinner = 0
-	SessionWinner_VictimsWins               = 1
-	SessionWinner_Draw                      = 2
+	SessionWinner_HunterWins  GameWinner = 0
+	SessionWinner_VictimsWins            = 1
+	SessionWinner_Draw                   = 2
 )

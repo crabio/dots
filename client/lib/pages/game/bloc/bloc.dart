@@ -23,6 +23,8 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
 
   final _logger = Logger("SpotPageBloc");
 
+  late ResponseFuture<proto.SendPlayerPositionResponse> _geoPositionStream;
+
   GamePageBloc({
     required this.client,
     required this.geolocator,
@@ -122,7 +124,8 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     );
 
     try {
-      client.sendPlayerPosition(_createPlayerPositionStream(positionStream));
+      _geoPositionStream = client
+          .sendPlayerPosition(_createPlayerPositionStream(positionStream));
     } on Exception catch (ex) {
       return Left(ex);
     }
@@ -422,6 +425,9 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     SessionStopEvent event,
     Emitter<GamePageState> emit,
   ) async {
+    await _geoPositionStream.cancel();
+    _logger.fine("Geo position stream stopped");
+
     switch (event.winner) {
       case SessionWinnerEnum.hunter:
         emit(HunterWinsState());
