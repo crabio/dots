@@ -1,7 +1,6 @@
 import 'package:dots_client/pages/game/resources/player_state.dart';
-import 'package:dots_client/pages/game/resources/session_winner.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
-import 'package:dots_client/pages/lobby/form.dart';
+import 'package:dots_client/pages/lobby/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,7 @@ class GameForm extends StatelessWidget {
             const Duration(seconds: 10),
             () => navPopAndPush(
               context,
-              LobbyForm(
+              LobbyPage(
                 spotUuid: spotUuid,
                 playerUuid: playerUuid,
                 isHost: isHost,
@@ -58,7 +57,7 @@ class GameForm extends StatelessWidget {
             const Duration(seconds: 10),
             () => navPopAndPush(
               context,
-              LobbyForm(
+              LobbyPage(
                 spotUuid: spotUuid,
                 playerUuid: playerUuid,
                 isHost: isHost,
@@ -73,7 +72,7 @@ class GameForm extends StatelessWidget {
             const Duration(seconds: 10),
             () => navPopAndPush(
               context,
-              LobbyForm(
+              LobbyPage(
                 spotUuid: spotUuid,
                 playerUuid: playerUuid,
                 isHost: isHost,

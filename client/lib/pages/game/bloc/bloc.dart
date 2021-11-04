@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_state.dart';
@@ -24,6 +26,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   final _logger = Logger("SpotPageBloc");
 
   late ResponseFuture<proto.SendPlayerPositionResponse> _geoPositionStream;
+  late StreamSubscription<proto.GetPlayersStatesResponse> _playersStatesStream;
 
   GamePageBloc({
     required this.client,
@@ -78,20 +81,13 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     );
 
     _logger.fine("Subscribe on players states");
-    _subscribeOnPlayersStates().fold(
-      (l) => emit(ErrorState(exception: l)),
-      (r) => r.listen((value) => add(NewPlayersStatesEvent(
-            playerUuid: value.playerState.playerUuid,
-            playerPosition: LatLng(
-              value.playerState.position.latitude,
-              value.playerState.position.longitude,
-            ),
-            playerHealth: value.playerState.health,
-          ))),
-    );
+    var ex = _subscribeOnPlayersStates();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
 
     _logger.fine("Get last session event");
-    var ex = await _getLastGameEvent();
+    ex = await _getLastGameEvent();
     if (ex != null) {
       emit(ErrorState(exception: ex));
     }
@@ -153,17 +149,26 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     }
   }
 
-  Either<Exception, ResponseStream<proto.GetPlayersStatesResponse>>
-      _subscribeOnPlayersStates() {
+  Exception? _subscribeOnPlayersStates() {
     try {
       final request = proto.GetPlayersStatesRequest(
         spotUuid: spotUuid,
         playerUuid: playerUuid,
       );
-
-      return Right(client.getPlayersStates(request));
+      _playersStatesStream = client.getPlayersStates(request).listen(
+            (value) => add(
+              NewPlayersStatesEvent(
+                playerUuid: value.playerState.playerUuid,
+                playerPosition: LatLng(
+                  value.playerState.position.latitude,
+                  value.playerState.position.longitude,
+                ),
+                playerHealth: value.playerState.health,
+              ),
+            ),
+          );
     } on Exception catch (ex) {
-      return Left(ex);
+      return ex;
     }
   }
 
@@ -460,6 +465,8 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   ) async {
     await _geoPositionStream.cancel();
     _logger.fine("Geo position stream stopped");
+    await _playersStatesStream.cancel();
+    _logger.fine("Players state stream stopped");
 
     switch (event.winner) {
       case GameWinnerEnum.hunter:
