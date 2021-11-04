@@ -2,6 +2,8 @@ package spot_session
 
 import (
 	// External
+	"time"
+
 	"github.com/google/uuid"
 
 	// Internal
@@ -12,6 +14,9 @@ type SpotSession struct {
 	// UUID of hunter player
 	HunterUuid uuid.UUID
 
+	Duration  time.Duration
+	StartTime *time.Time
+
 	// Map with players posiiton
 	//
 	// key - player uuid
@@ -19,14 +24,18 @@ type SpotSession struct {
 	PlayersStateMap *player_state.PlayerStateMap
 }
 
-func NewSpotSession(hunterUuid uuid.UUID, playersList []uuid.UUID) *SpotSession {
-	session := new(SpotSession)
-
-	session.PlayersStateMap = player_state.NewPlayerStateMap()
+func NewSpotSession(hunterUuid uuid.UUID, duration time.Duration, playersList []uuid.UUID) *SpotSession {
+	ss := new(SpotSession)
+	ss.Duration = duration
+	ss.PlayersStateMap = player_state.NewPlayerStateMap()
 	for _, playerUuid := range playersList {
 		playerState := player_state.NewPlayerState()
-		session.PlayersStateMap.Store(playerUuid, playerState)
+		ss.PlayersStateMap.Store(playerUuid, playerState)
 	}
+	return ss
+}
 
-	return session
+func (ss *SpotSession) Start() {
+	time := time.Now().UTC()
+	ss.StartTime = &time
 }

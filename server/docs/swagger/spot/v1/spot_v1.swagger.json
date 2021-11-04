@@ -57,6 +57,9 @@
       "properties": {
         "hunterWins": {
           "type": "boolean"
+        },
+        "draw": {
+          "type": "boolean"
         }
       }
     },

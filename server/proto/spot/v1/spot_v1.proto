@@ -40,6 +40,7 @@ message CreateSpotRequest {
   float radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
+  int32 session_duration_in_seconds = 5;
 }
 
 message CreateSpotResponse {
@@ -105,6 +106,7 @@ message StartSessionEvent {}
 
 message EndSessionEvent {
   bool hunter_wins = 1;
+  bool draw = 2;
 }
 
 message SendPlayerPositionRequest {

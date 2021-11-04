@@ -28,19 +28,19 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if spot.IsActive {
+	if spot.GameController.IsActive {
 		return nil, fmt.Errorf("Can't start active spot with uuid '%s'", spotUuid)
 	}
 
-	// Make spot active
-	spot.IsActive = true
+	// Start spot game session
+	spot.GameController.Start()
 
 	// Choose hunter
 	rand.Seed(time.Now().Unix())
 	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
 
 	// Create spot session
-	spot.Session = spot_session.NewSpotSession(hunterUuid, spot.PlayersList)
+	spot.Session = spot_session.NewSpotSession(hunterUuid, spot.SessionDuration, spot.PlayersList)
 
 	// Create damage controller
 	spot.DamageController = damage.NewDamageController(spot.ZoneController.ZoneEventBroadcaster, spot.Session)
