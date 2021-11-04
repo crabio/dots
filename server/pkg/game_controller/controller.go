@@ -6,13 +6,15 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
-	"github.com/iakrevetkho/dots/server/pkg/spot_session"
 	"github.com/tjgq/broadcast"
 )
 
 type GameController struct {
+	StartTime *time.Time
+
 	// Flag indicies that game is active
-	IsActive          bool
+	IsActive bool
+
 	EventsBroadcaster *broadcast.Broadcaster
 }
 
@@ -25,6 +27,8 @@ func NewGameController() *GameController {
 func (c *GameController) Start() {
 	c.IsActive = true
 	c.EventsBroadcaster.Send(StartSessionEvent{})
+	timeNow := time.Now().UTC()
+	c.StartTime = &timeNow
 }
 
 // Function checks current spot session status
@@ -34,19 +38,22 @@ func (c *GameController) Start() {
 // Victims win if
 // 1. hunter is death and at least one of victim alive
 // 2. or time if over and at least one of victim alive
-func (c *GameController) Check(spotSession *spot_session.SpotSession) error {
-	// Check that session is started
-	if spotSession.StartTime == nil {
-		return errors.New("Session is not started yet")
+func (c *GameController) Check(sessionDuration time.Duration, hunterUuid uuid.UUID, playerStateMap *player_state.PlayerStateMap) error {
+	if !c.IsActive {
+		return errors.New("Game session is not active")
 	}
 
-	hunterState, ok := spotSession.PlayersStateMap.Load(spotSession.HunterUuid)
+	if c.StartTime == nil {
+		return errors.New("Start time is not set yer")
+	}
+
+	hunterState, ok := playerStateMap.Load(hunterUuid)
 	if !ok {
 		return errors.New("Couldn't load hunter player state from PlayersStateMap")
 	}
 
 	// Check victims states
-	alivePlayersStates := getAlivePlayers(spotSession.PlayersStateMap, spotSession.HunterUuid)
+	alivePlayersStates := getAlivePlayers(playerStateMap, hunterUuid)
 
 	if hunterState.Health == 0 {
 		// Hunter is dead
@@ -61,7 +68,7 @@ func (c *GameController) Check(spotSession *spot_session.SpotSession) error {
 				Winner: SessionWinner_Draw,
 			})
 		}
-		c.IsActive = false
+		c.stop()
 
 	} else {
 		// Hunter is alive
@@ -70,23 +77,28 @@ func (c *GameController) Check(spotSession *spot_session.SpotSession) error {
 			// 1. hunter is death and at least one of victim alive
 
 			// Check session time
-			if spotSession.StartTime.Add(spotSession.Duration).Before(time.Now().UTC()) {
+			if c.StartTime.Add(sessionDuration).Before(time.Now().UTC()) {
 				// 2. or time if over and at least one of victim alive
 				c.EventsBroadcaster.Send(EndSessionEvent{
 					Winner: SessionWinner_VictimsWins,
 				})
-				c.IsActive = false
+				c.stop()
 			}
 		} else {
 			// Hunter is alive and players are dead
 			c.EventsBroadcaster.Send(EndSessionEvent{
 				Winner: SessionWinner_HunterWins,
 			})
-			c.IsActive = false
+			c.stop()
 		}
 	}
 
 	return nil
+}
+
+func (c *GameController) stop() {
+	c.IsActive = false
+	c.StartTime = nil
 }
 
 func getAlivePlayers(playersStateMap *player_state.PlayerStateMap, hunterUuid uuid.UUID) []*player_state.PlayerState {

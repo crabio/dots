@@ -23,11 +23,15 @@ func (s *SpotServiceServer) SubSessionEvent(request *proto.SubSessionEventReques
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if spot.GameController == nil {
+	if spot.Session == nil {
+		return fmt.Errorf("Spot has no active session")
+	}
+
+	if spot.Session.GameController == nil {
 		return errors.New("GameController in spot is not inited")
 	}
 
-	for gameSessionEventI := range spot.GameController.EventsBroadcaster.Listen().Ch {
+	for gameSessionEventI := range spot.Session.GameController.EventsBroadcaster.Listen().Ch {
 		switch event := gameSessionEventI.(type) {
 		case game_controller.StartSessionEvent:
 			response := &proto.SubSessionEventResponse{

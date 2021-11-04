@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/golang/geo/s2"
-	"github.com/google/uuid"
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -39,7 +38,7 @@ func TestNextZone(t *testing.T) {
 	// Test max random
 	randFloat = func() float64 { return 1 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
+	c := NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, float32(200), c.currentZone.Radius)
@@ -63,7 +62,7 @@ func TestTickZone(t *testing.T) {
 	// Test max random
 	randFloat = func() float64 { return 0.5 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
+	c := NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, float32(200), c.currentZone.Radius)
@@ -149,7 +148,7 @@ func TestStartTickZone(t *testing.T) {
 	randFloat = func() float64 { return 0.5 }
 	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Nanosecond*1, time.Nanosecond*1, 10.0)
+	c := NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Nanosecond*1, time.Nanosecond*1, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, float32(200), c.currentZone.Radius)

@@ -6,10 +6,7 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
-	"github.com/iakrevetkho/dots/server/pkg/damage"
-	"github.com/iakrevetkho/dots/server/pkg/game_controller"
 	"github.com/iakrevetkho/dots/server/pkg/spot_session"
-	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/tjgq/broadcast"
 )
 
@@ -27,15 +24,6 @@ type Spot struct {
 	PlayersListBroadcaster *broadcast.Broadcaster
 
 	Session *spot_session.SpotSession
-
-	ZoneController *zone.Controller
-
-	DamageController *damage.DamageController
-
-	GameController *game_controller.GameController
-
-	// Channel for sending start/stop flags
-	IsActiveBroadcaster *broadcast.Broadcaster
 }
 
 func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zonePeriod time.Duration, sessionDuration time.Duration) *Spot {
@@ -47,9 +35,6 @@ func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zo
 	spot.ZonePeriod = zonePeriod
 	spot.SessionDuration = sessionDuration
 	spot.PlayersListBroadcaster = broadcast.New(0)
-	spot.IsActiveBroadcaster = broadcast.New(0)
-	spot.ZoneController = zone.NewController(spot.Id, position, radiusInM, 10, zonePeriod, 15*time.Second, 20.0)
-	spot.GameController = game_controller.NewGameController()
 
 	return spot
 }

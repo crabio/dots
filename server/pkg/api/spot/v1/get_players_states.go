@@ -40,7 +40,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 	}
 
 	// Update player state
-	spot.Session.PlayersStateMap.Store(playerUuid, playerState)
+	spot.Session.PlayersStateMapStore(playerUuid, playerState)
 	s.SpotsMap.Store(spotUuid, spot)
 
 	for playerStateI := range playerState.Broadcaster.Listen().Ch {

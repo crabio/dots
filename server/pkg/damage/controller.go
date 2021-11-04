@@ -6,7 +6,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
-	"github.com/iakrevetkho/dots/server/pkg/spot_session"
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
 	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/sirupsen/logrus"
@@ -24,22 +23,18 @@ type DamageController struct {
 	// Channel for receiving zone event (one of NextZone, NextZoneTick, ZoneTickEnd)
 	zoneEventBroadcaster *broadcast.Broadcaster
 
-	// Spot session is required for checking all current players location on new zone
-	spotSession *spot_session.SpotSession
-
 	playerDamageTickerMap *PlayerDamageTickerMap
 }
 
-func NewDamageController(zoneEventBroadcaster *broadcast.Broadcaster, spotSession *spot_session.SpotSession) *DamageController {
+func NewDamageController(zoneEventBroadcaster *broadcast.Broadcaster, playersStateMap *player_state.PlayerStateMap) *DamageController {
 	c := new(DamageController)
 	c.zoneEventBroadcaster = zoneEventBroadcaster
-	c.spotSession = spotSession
 	c.playerDamageTickerMap = NewPlayerDamageTickerMap()
-	c.subOnZoneEvents()
+	c.subOnZoneEvents(playersStateMap)
 	return c
 }
 
-func (c *DamageController) subOnZoneEvents() {
+func (c *DamageController) subOnZoneEvents(playersStateMap *player_state.PlayerStateMap) {
 	go func() {
 		for zoneEventI := range c.zoneEventBroadcaster.Listen().Ch {
 			c.Lock()
@@ -59,7 +54,7 @@ func (c *DamageController) subOnZoneEvents() {
 			c.Unlock()
 
 			// On new zone event controller should check all users in new zone
-			c.spotSession.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
+			playersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
 				c.NewPlayerState(k, v)
 			})
 		}

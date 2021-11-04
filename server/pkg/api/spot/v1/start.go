@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
-	"github.com/iakrevetkho/dots/server/pkg/damage"
+
 	spot_session "github.com/iakrevetkho/dots/server/pkg/spot_session"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
@@ -28,33 +28,26 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if spot.GameController.IsActive {
+	if spot.Session == nil {
+		return nil, fmt.Errorf("Spot has no session")
+	}
+
+	if spot.Session.GameController.IsActive {
 		return nil, fmt.Errorf("Can't start active spot with uuid '%s'", spotUuid)
 	}
 
-	// Start spot game session
-	spot.GameController.Start()
+	// Start spot session
+	spot.Session.Start()
 
 	// Choose hunter
 	rand.Seed(time.Now().Unix())
 	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
 
 	// Create spot session
-	spot.Session = spot_session.NewSpotSession(hunterUuid, spot.SessionDuration, spot.PlayersList)
-
-	// Create damage controller
-	spot.DamageController = damage.NewDamageController(spot.ZoneController.ZoneEventBroadcaster, spot.Session)
+	spot.Session = spot_session.NewSpotSession(spot.Position, spot.RadiusInM, spot.ZonePeriod, hunterUuid, spot.SessionDuration, spot.PlayersList)
 
 	// Save spot on server
 	s.SpotsMap.Store(spotUuid, spot)
-
-	// Broadcast start flag
-	spot.IsActiveBroadcaster.Send(true)
-
-	// Start zone ticker
-	if err := spot.ZoneController.Start(); err != nil {
-		return nil, err
-	}
 
 	response := proto.StartSpotResponse{}
 

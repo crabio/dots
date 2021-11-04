@@ -53,9 +53,9 @@ type Controller struct {
 	LastZoneEvent        interface{}
 }
 
-func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float32, minZoneRadiusInM float32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
+func NewController(spotPosition s2.LatLng, spotRadiusInM float32, minZoneRadiusInM float32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
 	c := new(Controller)
-	c.log = logger.CreateLogger("zone-controller-" + spotId.String())
+	c.log = logger.CreateLogger("zone-controller-" + uuid.NewString())
 	c.minZoneRadiusInM = minZoneRadiusInM
 	c.zoneSpeedInMetersPerSecond = zoneSpeedInKmPerH * 1000 / 3600
 	c.currentZone = NewZone(spotPosition, spotRadiusInM, minZoneRadiusInM)

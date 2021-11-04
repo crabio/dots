@@ -27,11 +27,15 @@ func (s *SpotServiceServer) SubZoneEvent(request *proto.SubZoneEventRequest, str
 		return fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if spot.ZoneController == nil {
+	if spot.Session == nil {
+		return fmt.Errorf("Spot has no active session")
+	}
+
+	if spot.Session.ZoneController == nil {
 		return errors.New("ZoneController in spot is not inited")
 	}
 
-	for zoneEventI := range spot.ZoneController.ZoneEventBroadcaster.Listen().Ch {
+	for zoneEventI := range spot.Session.ZoneController.ZoneEventBroadcaster.Listen().Ch {
 		switch event := zoneEventI.(type) {
 		case zone.StartNextZoneTimerEvent:
 			response := &proto.SubZoneEventResponse{
