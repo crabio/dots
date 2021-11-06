@@ -13,6 +13,13 @@ import (
 	"github.com/tjgq/broadcast"
 )
 
+// Functions as variable required for unit tests
+var (
+	timeNow = time.Now
+	// This mutex is required to prevent race in unit tests
+	timeNowMx = sync.RWMutex{}
+)
+
 type GameController struct {
 	sync.RWMutex
 
@@ -46,7 +53,7 @@ func (c *GameController) Start(hunterUuid uuid.UUID) {
 	c.IsActive = true
 	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
 	c.EventsBroadcaster.Send(StartGameEvent{})
-	timeNow := time.Now().UTC()
+	timeNow := timeNow().UTC()
 	c.StartTime = &timeNow
 	c.HunterUuid = &hunterUuid
 	c.Unlock()
