@@ -10,7 +10,6 @@ import (
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
 	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/sirupsen/logrus"
-	"github.com/tjgq/broadcast"
 )
 
 // Functions as variable required for unit tests
@@ -33,8 +32,6 @@ type GameController struct {
 	// Flag indicies that game is active
 	IsActive bool
 
-	EventsBroadcaster *broadcast.Broadcaster
-
 	zoneController *zone.Controller
 
 	LastGameEvent interface{}
@@ -43,7 +40,6 @@ type GameController struct {
 func NewGameController(zoneController *zone.Controller) *GameController {
 	c := new(GameController)
 	c.log = logger.CreateLogger("game-controller")
-	c.EventsBroadcaster = broadcast.New(0)
 	c.zoneController = zoneController
 	return c
 }
@@ -52,7 +48,6 @@ func (c *GameController) Start(hunterUuid uuid.UUID) {
 	c.Lock()
 	c.IsActive = true
 	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
-	c.EventsBroadcaster.Send(StartGameEvent{})
 	timeNow := timeNow().UTC()
 	c.StartTime = &timeNow
 	c.HunterUuid = &hunterUuid
@@ -66,29 +61,32 @@ func (c *GameController) Start(hunterUuid uuid.UUID) {
 // Victims win if
 // 1. hunter is death and at least one of victim alive
 // 2. or time if over and at least one of victim alive
-func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *player_state.PlayerStateMap) error {
+//
+// Method will return result of check in the interface{} which can be mapped to event typ by type
+func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *player_state.PlayerStateMap) (interface{}, error) {
 	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
 	if !c.IsActive {
-		return errors.New("Game session is not active")
+		return nil, errors.New("Game session is not active")
 	}
 
 	if c.StartTime == nil {
-		return errors.New("Start time is not set yer")
+		return nil, errors.New("Start time is not set yer")
 	}
 
 	if c.HunterUuid == nil {
-		return errors.New("HunterUuid is not inited yet")
+		return nil, errors.New("HunterUuid is not inited yet")
 	}
 
 	hunterState, ok := playerStateMap.Load(*c.HunterUuid)
 	if !ok {
-		return errors.New("Couldn't load hunter player state from PlayersStateMap")
+		return nil, errors.New("Couldn't load hunter player state from PlayersStateMap")
 	}
 
 	// Check victims states
 	alivePlayersStates := getAlivePlayers(playerStateMap, *c.HunterUuid)
 
 	c.Lock()
+	defer c.Unlock()
 	if hunterState.Health == 0 {
 		// Hunter is dead
 		if len(alivePlayersStates) > 0 {
@@ -98,7 +96,8 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 				Winner: SessionWinner_VictimsWins,
 			}
 			c.LastGameEvent = event
-			c.EventsBroadcaster.Send(event)
+			c.stop()
+			return event, nil
 		} else {
 			// Hunter and player are dead => draw
 			c.log.Debug("Draw")
@@ -106,9 +105,9 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 				Winner: SessionWinner_Draw,
 			}
 			c.LastGameEvent = event
-			c.EventsBroadcaster.Send(event)
+			c.stop()
+			return event, nil
 		}
-		c.stop()
 
 	} else {
 		// Hunter is alive
@@ -124,8 +123,8 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 					Winner: SessionWinner_VictimsWins,
 				}
 				c.LastGameEvent = event
-				c.EventsBroadcaster.Send(event)
 				c.stop()
+				return event, nil
 			}
 		} else {
 			// Hunter is alive and players are dead
@@ -134,13 +133,12 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 				Winner: SessionWinner_HunterWins,
 			}
 			c.LastGameEvent = event
-			c.EventsBroadcaster.Send(event)
 			c.stop()
+			return event, nil
 		}
 	}
-	c.Unlock()
 
-	return nil
+	return nil, nil
 }
 
 func (c *GameController) stop() {

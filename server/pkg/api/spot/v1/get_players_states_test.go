@@ -1,7 +1,6 @@
 package api_spot_v1_test
 
 import (
-	// External
 	"context"
 	"sync"
 	"testing"
@@ -9,15 +8,13 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
+	"github.com/iakrevetkho/dots/server/pkg/player_state"
+	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/tjgq/broadcast"
 	"google.golang.org/grpc"
-
-	// Internal
-	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
-	"github.com/iakrevetkho/dots/server/pkg/player_state"
-	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
 type MockGetPlayerPositionServer struct {
