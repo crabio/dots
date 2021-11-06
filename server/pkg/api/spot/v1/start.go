@@ -44,7 +44,9 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
 
 	// Start spot session
-	spot.Session.Start(hunterUuid, spot.PlayersList)
+	if err := spot.Session.Start(hunterUuid, spot.PlayersList); err != nil {
+		return nil, err
+	}
 
 	// Save spot on server
 	s.SpotsMap.Store(spotUuid, spot)

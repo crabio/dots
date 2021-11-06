@@ -119,9 +119,10 @@ message StartGameEvent {}
 
 message StopGameEvent {
   enum GameWinner {
-    HunterWins = 0;
-    VictimsWins = 1;
-    Draw = 2;
+    GAME_WINNER_UNSPECIFIED = 0;
+    GAME_WINNER_HUNTER = 1;
+    GAME_WINNER_VICTIMS = 2;
+    GAME_WINNER_DRAW = 3;
   }
 
   GameWinner winner = 1;

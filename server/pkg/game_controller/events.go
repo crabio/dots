@@ -11,6 +11,6 @@ type GameWinner int64
 
 const (
 	SessionWinner_HunterWins  GameWinner = 0
-	SessionWinner_VictimsWins            = 1
-	SessionWinner_Draw                   = 2
+	SessionWinner_VictimsWins GameWinner = 1
+	SessionWinner_Draw        GameWinner = 2
 )

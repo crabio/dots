@@ -44,6 +44,7 @@ func NewGameController(zoneController *zone.Controller) *GameController {
 func (c *GameController) Start(hunterUuid uuid.UUID) {
 	c.Lock()
 	c.IsActive = true
+	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
 	c.EventsBroadcaster.Send(StartGameEvent{})
 	timeNow := time.Now().UTC()
 	c.StartTime = &timeNow
@@ -59,6 +60,7 @@ func (c *GameController) Start(hunterUuid uuid.UUID) {
 // 1. hunter is death and at least one of victim alive
 // 2. or time if over and at least one of victim alive
 func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *player_state.PlayerStateMap) error {
+	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
 	if !c.IsActive {
 		return errors.New("Game session is not active")
 	}

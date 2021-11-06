@@ -9,6 +9,7 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/tjgq/broadcast"
 	"google.golang.org/grpc"
@@ -42,6 +43,8 @@ func (s *MockGetPlayerPositionServer) Send(response *proto.GetPlayersStatesRespo
 }
 
 func TestGetPlayerPosition(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
+
 	s := api_spot_v1.New(10 * time.Millisecond)
 
 	// Create spot first
@@ -87,21 +90,21 @@ func TestGetPlayerPosition(t *testing.T) {
 	// Add positions
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
-	spot.Session.PlayersStateMapStore(playerUuid, &player_state.PlayerState{
+	assert.NoError(t, spot.Session.PlayersStateMapStore(playerUuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(10, 20),
 		Broadcaster: broadcast.New(0),
 		Health:      88,
-	})
-	spot.Session.PlayersStateMapStore(player2Uuid, &player_state.PlayerState{
+	}))
+	assert.NoError(t, spot.Session.PlayersStateMapStore(player2Uuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(60, 70),
 		Broadcaster: broadcast.New(0),
 		Health:      33,
-	})
-	spot.Session.PlayersStateMapStore(player3Uuid, &player_state.PlayerState{
+	}))
+	assert.NoError(t, spot.Session.PlayersStateMapStore(player3Uuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(80, 90),
 		Broadcaster: broadcast.New(0),
 		Health:      15,
-	})
+	}))
 	s.SpotsMap.Store(spotUuid, spot)
 
 	// Create stream for getting position

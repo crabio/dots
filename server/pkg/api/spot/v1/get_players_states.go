@@ -40,7 +40,9 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 	}
 
 	// Update player state
-	spot.Session.PlayersStateMapStore(playerUuid, playerState)
+	if err := spot.Session.PlayersStateMapStore(playerUuid, playerState); err != nil {
+		return err
+	}
 	s.SpotsMap.Store(spotUuid, spot)
 
 	for playerStateI := range playerState.Broadcaster.Listen().Ch {
