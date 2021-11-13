@@ -45,15 +45,14 @@ func TestGameControllerCheckNoVictims(t *testing.T) {
 	mock.TimeNowMx.Lock()
 	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
 	mock.TimeNowMx.Unlock()
-	player1Uuid := uuid.New()
-	hunterUuid := player1Uuid
+	hunterUuid := uuid.New()
 
 	gc := NewGameController(time.Second * 10)
 
 	gc.Start(hunterUuid)
 
 	playerStateMap := player_state.NewPlayerStateMap()
-	playerStateMap.Store(player1Uuid, &player_state.PlayerState{
+	playerStateMap.Store(hunterUuid, &player_state.PlayerState{
 		Position: s2.LatLng{
 			Lat: 0,
 			Lng: 0,
@@ -87,6 +86,44 @@ func TestGameControllerCheckNoHunters(t *testing.T) {
 	assert.Error(t, err)
 }
 
+func TestGameControllerNoEvent(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
+
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+	player1Uuid := uuid.New()
+	hunterUuid := uuid.New()
+
+	gc := NewGameController(time.Second * 10)
+
+	gc.Start(hunterUuid)
+
+	playerStateMap := player_state.NewPlayerStateMap()
+	playerStateMap.Store(player1Uuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0.1,
+			Lng: 0.1,
+		},
+		Health:      100,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
+	playerStateMap.Store(hunterUuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0.1,
+			Lng: 0.1,
+		},
+		Health:      100,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
+
+	event, err := gc.Check(playerStateMap)
+	assert.NoError(t, err)
+	assert.Nil(t, event)
+}
+
 func TestGameControllerCheckTimeOut(t *testing.T) {
 	logrus.SetLevel(logrus.DebugLevel)
 
@@ -95,7 +132,7 @@ func TestGameControllerCheckTimeOut(t *testing.T) {
 	mock.TimeNowMx.Unlock()
 	player1Uuid := uuid.New()
 	player2Uuid := uuid.New()
-	hunterUuid := player1Uuid
+	hunterUuid := uuid.New()
 
 	gc := NewGameController(time.Second * 10)
 
@@ -120,6 +157,15 @@ func TestGameControllerCheckTimeOut(t *testing.T) {
 		IsCaught:    false,
 		Broadcaster: broadcast.New(0),
 	})
+	playerStateMap.Store(hunterUuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0.1,
+			Lng: 0.1,
+		},
+		Health:      100,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
 
 	mock.TimeNowMx.Lock()
 	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 11, 0, time.UTC) }
@@ -129,4 +175,133 @@ func TestGameControllerCheckTimeOut(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, event)
 	assert.Equal(t, EndGameEvent{Winner: SessionWinner_VictimsWins}, *event)
+}
+
+func TestGameControllerVictimsCaughtOrDead(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
+
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+	player1Uuid := uuid.New()
+	hunterUuid := uuid.New()
+
+	gc := NewGameController(time.Second * 10)
+
+	gc.Start(hunterUuid)
+
+	playerStateMap := player_state.NewPlayerStateMap()
+	playerStateMap.Store(hunterUuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0,
+			Lng: 0,
+		},
+		Health:      100,
+		IsCaught:    true,
+		Broadcaster: broadcast.New(0),
+	})
+	playerStateMap.Store(player1Uuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0.1,
+			Lng: 0.1,
+		},
+		Health:      0,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
+
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 11, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+
+	event, err := gc.Check(playerStateMap)
+	assert.NoError(t, err)
+	assert.NotNil(t, event)
+	assert.Equal(t, EndGameEvent{Winner: SessionWinner_HunterWins}, *event)
+}
+
+func TestGameControllerHunterDead(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
+
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+	player1Uuid := uuid.New()
+	hunterUuid := uuid.New()
+
+	gc := NewGameController(time.Second * 10)
+
+	gc.Start(hunterUuid)
+
+	playerStateMap := player_state.NewPlayerStateMap()
+	playerStateMap.Store(player1Uuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0,
+			Lng: 0,
+		},
+		Health:      100,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
+	playerStateMap.Store(hunterUuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0.1,
+			Lng: 0.1,
+		},
+		Health:      0,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
+
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 11, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+
+	event, err := gc.Check(playerStateMap)
+	assert.NoError(t, err)
+	assert.NotNil(t, event)
+	assert.Equal(t, EndGameEvent{Winner: SessionWinner_VictimsWins}, *event)
+}
+
+func TestGameControllerAllDead(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
+
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+	player1Uuid := uuid.New()
+	hunterUuid := uuid.New()
+
+	gc := NewGameController(time.Second * 10)
+
+	gc.Start(hunterUuid)
+
+	playerStateMap := player_state.NewPlayerStateMap()
+	playerStateMap.Store(player1Uuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0,
+			Lng: 0,
+		},
+		Health:      0,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
+	playerStateMap.Store(hunterUuid, &player_state.PlayerState{
+		Position: s2.LatLng{
+			Lat: 0.1,
+			Lng: 0.1,
+		},
+		Health:      0,
+		IsCaught:    false,
+		Broadcaster: broadcast.New(0),
+	})
+
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 11, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+
+	event, err := gc.Check(playerStateMap)
+	assert.NoError(t, err)
+	assert.NotNil(t, event)
+	assert.Equal(t, EndGameEvent{Winner: SessionWinner_Draw}, *event)
 }
