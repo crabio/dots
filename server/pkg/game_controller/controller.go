@@ -8,14 +8,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/archaeopteryx/logger"
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
 	"github.com/sirupsen/logrus"
-)
-
-// Functions as variable required for unit tests
-var (
-	timeNow = time.Now
-	// This mutex is required to prevent race in unit tests
-	timeNowMx = sync.RWMutex{}
 )
 
 type GameController struct {
@@ -26,15 +20,18 @@ type GameController struct {
 	// UUID of hunter player
 	HunterUuid *uuid.UUID
 
+	sessionDuration time.Duration
+
 	StartTime *time.Time
 
 	// Flag indicies that game is active
 	IsActive bool
 }
 
-func NewGameController() *GameController {
+func NewGameController(sessionDuration time.Duration) *GameController {
 	c := new(GameController)
 	c.log = logger.CreateLogger("game-controller")
+	c.sessionDuration = sessionDuration
 	return c
 }
 
@@ -42,7 +39,9 @@ func (c *GameController) Start(hunterUuid uuid.UUID) {
 	c.Lock()
 	c.IsActive = true
 	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
-	timeNow := timeNow().UTC()
+	mock.TimeNowMx.Lock()
+	timeNow := mock.TimeNow().UTC()
+	mock.TimeNowMx.Unlock()
 	c.StartTime = &timeNow
 	c.HunterUuid = &hunterUuid
 	c.Unlock()
@@ -55,7 +54,7 @@ func (c *GameController) Start(hunterUuid uuid.UUID) {
 // Victims win if
 // 1. hunter is death and at least one of victim alive
 // 2. or time if over and at least one of victim alive
-func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *player_state.PlayerStateMap) (*EndGameEvent, error) {
+func (c *GameController) Check(playerStateMap *player_state.PlayerStateMap) (*EndGameEvent, error) {
 	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
 	if !c.IsActive {
 		return nil, errors.New("Game session is not active")
@@ -82,8 +81,8 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 	if hunterState.Health == 0 {
 		// Hunter is dead
 		if len(alivePlayersStates) > 0 {
-			// 1. hunter is death and at least one of victim alive
-			c.log.Debug("Victims wins")
+			// 1. hunter is dead and at least one of victim alive
+			c.log.Debug("Hunter is dead. Victims wins")
 			event := EndGameEvent{
 				Winner: SessionWinner_VictimsWins,
 			}
@@ -101,14 +100,16 @@ func (c *GameController) Check(sessionDuration time.Duration, playerStateMap *pl
 
 	} else {
 		// Hunter is alive
-
 		if len(alivePlayersStates) > 0 {
 			// 1. hunter is death and at least one of victim alive
 
 			// Check session time
-			if c.StartTime.Add(sessionDuration).Before(time.Now().UTC()) {
+			mock.TimeNowMx.Lock()
+			isBefore := c.StartTime.Add(c.sessionDuration).Before(mock.TimeNow().UTC())
+			mock.TimeNowMx.Unlock()
+			if isBefore {
 				// 2. or time if over and at least one of victim alive
-				c.log.Debug("Victims wins")
+				c.log.Debug("Time is over. Victims wins")
 				event := EndGameEvent{
 					Winner: SessionWinner_VictimsWins,
 				}

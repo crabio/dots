@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -40,6 +41,9 @@ func (s *MockGetPlayerPositionServer) Send(response *proto.GetPlayersStatesRespo
 }
 
 func TestGetPlayerPosition(t *testing.T) {
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
 	logrus.SetLevel(logrus.DebugLevel)
 
 	s := api_spot_v1.New(10 * time.Millisecond)

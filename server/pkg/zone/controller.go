@@ -3,7 +3,6 @@ package zone
 import (
 	"errors"
 	"math"
-	"math/rand"
 	"sync"
 	"time"
 
@@ -12,20 +11,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/archaeopteryx/logger"
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
 	"github.com/sirupsen/logrus"
 	"github.com/tjgq/broadcast"
 )
 
 const (
 	zoneTickPeriod = time.Millisecond * 100
-)
-
-// Functions as variable required for unit tests
-var (
-	randFloat = rand.Float64
-	timeNow   = time.Now
-	// This mutex is required to prevent race in unit tests
-	timeNowMx = sync.RWMutex{}
 )
 
 type Controller struct {
@@ -175,15 +167,15 @@ func (c *Controller) Start() error {
 	go func() {
 		// While current zone radius is bigger that 0
 		for c.currentZone.Radius > 0 {
-			timeNowMx.Lock()
+			mock.TimeNowMx.Lock()
 			startNextZoneTimerEvent := StartNextZoneTimerEvent{
 				CurrentZone:  c.currentZone,
-				NextZoneTime: timeNow().UTC().Add(c.nextZonePeriod),
+				NextZoneTime: mock.TimeNow().UTC().Add(c.nextZonePeriod),
 			}
 			c.ZoneEventBroadcaster.Send(startNextZoneTimerEvent)
 			c.Lock()
 			c.LastZoneEvent = startNextZoneTimerEvent
-			timeNowMx.Unlock()
+			mock.TimeNowMx.Unlock()
 			c.nextZoneTimer = time.NewTimer(c.nextZonePeriod)
 			c.Unlock()
 			<-c.nextZoneTimer.C
@@ -193,14 +185,14 @@ func (c *Controller) Start() error {
 			c.log.Debug("Next zone timer fired")
 
 			// Create next zone
-			timeNowMx.Lock()
+			mock.TimeNowMx.Lock()
 			// Add delay to current time, because zone will tick after delay
-			nextZoneCreationTime := timeNow().UTC().Add(c.nextZoneDelay)
+			nextZoneCreationTime := mock.TimeNow().UTC().Add(c.nextZoneDelay)
 			c.Next(nextZoneCreationTime)
-			timeNowMx.Unlock()
+			mock.TimeNowMx.Unlock()
 
 			// Send next zone event to players
-			timeNowMx.Lock()
+			mock.TimeNowMx.Lock()
 			startZoneDelayTimerEvent := StartZoneDelayTimerEvent{
 				CurrentZone:       c.currentZone,
 				NextZone:          c.nextZone,
@@ -209,7 +201,7 @@ func (c *Controller) Start() error {
 			c.ZoneEventBroadcaster.Send(startZoneDelayTimerEvent)
 			c.Lock()
 			c.LastZoneEvent = startZoneDelayTimerEvent
-			timeNowMx.Unlock()
+			mock.TimeNowMx.Unlock()
 			c.nextZoneDelayTimer = time.NewTimer(c.nextZoneDelay)
 			c.Unlock()
 			<-c.nextZoneDelayTimer.C
@@ -222,9 +214,9 @@ func (c *Controller) Start() error {
 
 		tickerLoop:
 			for range c.zoneTicker.C {
-				timeNowMx.Lock()
-				curZone, lastTick, err := c.Tick(timeNow().UTC())
-				timeNowMx.Unlock()
+				mock.TimeNowMx.Lock()
+				curZone, lastTick, err := c.Tick(mock.TimeNow().UTC())
+				mock.TimeNowMx.Unlock()
 				if err != nil {
 					c.log.Error("Couldn't Tick next zone. " + err.Error())
 				}
@@ -279,7 +271,7 @@ func nextZone(zone *Zone, minZoneRadiusInM float32) *Zone {
 
 	// Calc radius of random area
 	r := randomR(zone.Radius, newR)
-	theta := randFloat() * 2 * math.Pi
+	theta := mock.RandFloat() * 2 * math.Pi
 
 	lat := zone.Position.Lat + geo.MToAngle(r*math.Cos(theta))
 	lng := zone.Position.Lng + geo.MToAngle(r*math.Sin(theta))
@@ -289,7 +281,7 @@ func nextZone(zone *Zone, minZoneRadiusInM float32) *Zone {
 
 // Creeate random radius as circle position for new zone
 func randomR(curZoneR float32, newZoneR float32) float64 {
-	return float64(curZoneR-newZoneR) * math.Sqrt(randFloat())
+	return float64(curZoneR-newZoneR) * math.Sqrt(mock.RandFloat())
 }
 
 func newRadius(radius float32, minZoneRadiusInM float32) float32 {

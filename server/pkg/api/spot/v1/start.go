@@ -5,12 +5,12 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
-	"time"
 
 	"github.com/google/uuid"
 
 	// Internal
 
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -40,7 +40,9 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 	}
 
 	// Choose hunter
-	rand.Seed(time.Now().Unix())
+	mock.TimeNowMx.Lock()
+	rand.Seed(mock.TimeNow().Unix())
+	mock.TimeNowMx.Unlock()
 	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
 
 	// Start spot session

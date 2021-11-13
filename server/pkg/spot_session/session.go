@@ -16,8 +16,6 @@ import (
 type SpotSession struct {
 	sync.RWMutex
 
-	Duration time.Duration
-
 	ZoneController *zone.Controller
 
 	Controller *damage.Controller
@@ -36,9 +34,8 @@ type SpotSession struct {
 
 func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration) *SpotSession {
 	ss := new(SpotSession)
-	ss.Duration = duration
 	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
-	ss.GameController = game_controller.NewGameController()
+	ss.GameController = game_controller.NewGameController(duration)
 	ss.GameEventBroadcaster = broadcast.New(0)
 
 	return ss
@@ -73,7 +70,7 @@ func (ss *SpotSession) NewPlayersState(key uuid.UUID, value *player_state.Player
 	// Send new player position to damage controller
 	ss.Controller.NewPlayerState(key, value)
 
-	event, err := ss.GameController.Check(ss.Duration, ss.PlayersStateMap)
+	event, err := ss.GameController.Check(ss.PlayersStateMap)
 	if err != nil {
 		return err
 	}
