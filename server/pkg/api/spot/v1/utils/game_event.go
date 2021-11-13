@@ -9,13 +9,13 @@ import (
 func MapStopGameEventWinner(in game_controller.GameWinner) proto.StopGameEvent_GameWinner {
 	switch in {
 	case game_controller.SessionWinner_HunterWins:
-		return proto.StopGameEvent_HunterWins
+		return proto.StopGameEvent_GAME_WINNER_HUNTER
 
 	case game_controller.SessionWinner_VictimsWins:
-		return proto.StopGameEvent_VictimsWins
+		return proto.StopGameEvent_GAME_WINNER_VICTIMS
 
 	case game_controller.SessionWinner_Draw:
-		return proto.StopGameEvent_Draw
+		return proto.StopGameEvent_GAME_WINNER_DRAW
 
 	default:
 		logrus.Fatalf("Unimplemented: %v", in)

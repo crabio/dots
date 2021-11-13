@@ -376,15 +376,15 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   void _processStopGameEvent(proto.StopGameEvent event) {
     _logger.fine("Session was stopped");
     switch (event.winner) {
-      case proto.StopGameEvent_GameWinner.HunterWins:
+      case proto.StopGameEvent_GameWinner.GAME_WINNER_HUNTER:
         add(const SessionStopEvent(winner: GameWinnerEnum.hunter));
         break;
 
-      case proto.StopGameEvent_GameWinner.VictimsWins:
+      case proto.StopGameEvent_GameWinner.GAME_WINNER_VICTIMS:
         add(const SessionStopEvent(winner: GameWinnerEnum.victims));
         break;
 
-      case proto.StopGameEvent_GameWinner.Draw:
+      case proto.StopGameEvent_GameWinner.GAME_WINNER_DRAW:
         add(const SessionStopEvent(winner: GameWinnerEnum.draw));
         break;
 
