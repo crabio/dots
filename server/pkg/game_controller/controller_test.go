@@ -9,7 +9,6 @@ import (
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
-	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/tjgq/broadcast"
@@ -24,8 +23,7 @@ func TestGameControllerStart(t *testing.T) {
 	timeNowMx.Unlock()
 	hunterUuid := uuid.New()
 
-	zc := zone.NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
-	gc := NewGameController(zc)
+	gc := NewGameController()
 
 	assert.False(t, gc.IsActive)
 	assert.Nil(t, gc.StartTime)
@@ -49,8 +47,7 @@ func TestGameControllerCheckNoVictims(t *testing.T) {
 	player1Uuid := uuid.New()
 	hunterUuid := player1Uuid
 
-	zc := zone.NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
-	gc := NewGameController(zc)
+	gc := NewGameController()
 
 	gc.Start(hunterUuid)
 
@@ -69,7 +66,7 @@ func TestGameControllerCheckNoVictims(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, event)
 	assert.IsType(t, EndGameEvent{}, event)
-	assert.Equal(t, SessionWinner_HunterWins, event.(EndGameEvent).Winner)
+	assert.Equal(t, EndGameEvent{Winner: SessionWinner_HunterWins}, event)
 }
 
 func TestGameControllerCheckNoHunters(t *testing.T) {
@@ -80,8 +77,7 @@ func TestGameControllerCheckNoHunters(t *testing.T) {
 	timeNowMx.Unlock()
 	hunterUuid := uuid.New()
 
-	zc := zone.NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
-	gc := NewGameController(zc)
+	gc := NewGameController()
 
 	gc.Start(hunterUuid)
 
@@ -101,8 +97,7 @@ func TestGameControllerCheck(t *testing.T) {
 	player2Uuid := uuid.New()
 	hunterUuid := player1Uuid
 
-	zc := zone.NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
-	gc := NewGameController(zc)
+	gc := NewGameController()
 
 	gc.Start(hunterUuid)
 
@@ -129,6 +124,5 @@ func TestGameControllerCheck(t *testing.T) {
 	event, err := gc.Check(time.Second*10, playerStateMap)
 	assert.NoError(t, err)
 	assert.NotNil(t, event)
-	assert.IsType(t, EndGameEvent{}, event)
-	assert.Equal(t, SessionWinner_VictimsWins, event.(EndGameEvent).Winner)
+	assert.Equal(t, EndGameEvent{Winner: SessionWinner_VictimsWins}, event)
 }

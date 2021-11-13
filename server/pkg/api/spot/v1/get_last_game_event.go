@@ -9,7 +9,6 @@ import (
 	api_spot_v1_utils "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/utils"
 	"github.com/iakrevetkho/dots/server/pkg/game_controller"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
-	"github.com/sirupsen/logrus"
 )
 
 func (s *SpotServiceServer) GetLastGameEvent(ctx context.Context, request *proto.GetLastGameEventRequest) (*proto.GetLastGameEventResponse, error) {
@@ -33,16 +32,13 @@ func (s *SpotServiceServer) GetLastGameEvent(ctx context.Context, request *proto
 		return nil, errors.New("GameController is not inited")
 	}
 
-	spot.Session.GameController.Lock()
-	defer spot.Session.GameController.Unlock()
-	if spot.Session.GameController.LastGameEvent == nil {
-		spot.Session.GameController.Unlock()
+	spot.Session.Lock()
+	defer spot.Session.Unlock()
+	if spot.Session.LastGameEvent == nil {
 		return &proto.GetLastGameEventResponse{}, nil
 	}
 
-	logrus.WithField("spot.GameController.LastGameEvent", spot.Session.GameController.LastGameEvent).Debug("spot.GameController.LastGameEvent")
-
-	switch spot.Session.GameController.LastGameEvent.(type) {
+	switch spot.Session.LastGameEvent.(type) {
 	case game_controller.StartGameEvent:
 		response := &proto.GetLastGameEventResponse{
 			Event: &proto.GetLastGameEventResponse_StartGameEvent{
@@ -53,7 +49,7 @@ func (s *SpotServiceServer) GetLastGameEvent(ctx context.Context, request *proto
 		return response, nil
 
 	case game_controller.EndGameEvent:
-		event := spot.Session.GameController.LastGameEvent.(game_controller.EndGameEvent)
+		event := spot.Session.LastGameEvent.(game_controller.EndGameEvent)
 		response := &proto.GetLastGameEventResponse{
 			Event: &proto.GetLastGameEventResponse_StopGameEvent{
 				StopGameEvent: &proto.StopGameEvent{

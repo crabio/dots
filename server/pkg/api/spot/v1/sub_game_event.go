@@ -32,7 +32,7 @@ func (s *SpotServiceServer) SubGameEvent(request *proto.SubGameEventRequest, str
 		return errors.New("GameController in spot is not inited")
 	}
 
-	for gameEventI := range spot.Session.GameController.EventsBroadcaster.Listen().Ch {
+	for gameEventI := range spot.Session.GameEventBroadcaster.Listen().Ch {
 		switch event := gameEventI.(type) {
 		case game_controller.StartGameEvent:
 			response := &proto.SubGameEventResponse{
