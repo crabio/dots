@@ -3,7 +3,6 @@ package zone
 import (
 	"errors"
 	"math"
-	"math/rand"
 	"sync"
 	"time"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/archaeopteryx/logger"
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
 	"github.com/sirupsen/logrus"
 	"github.com/tjgq/broadcast"
 )
@@ -20,15 +20,8 @@ const (
 	zoneTickPeriod = time.Millisecond * 100
 )
 
-// Functions as variable required for unit tests
-var (
-	randFloat = rand.Float64
-	timeNow   = time.Now
-	// This mutex is required to prevent race in unit tests
-	timeNowMx = sync.RWMutex{}
-)
-
 type Controller struct {
+	sync.RWMutex
 	log *logrus.Entry
 
 	minZoneRadiusInM           float32
@@ -53,9 +46,9 @@ type Controller struct {
 	LastZoneEvent        interface{}
 }
 
-func NewController(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float32, minZoneRadiusInM float32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
+func NewController(spotPosition s2.LatLng, spotRadiusInM float32, minZoneRadiusInM float32, nextZonePeriod time.Duration, nextZoneDelay time.Duration, zoneSpeedInKmPerH float64) *Controller {
 	c := new(Controller)
-	c.log = logger.CreateLogger("zone-controller-" + spotId.String())
+	c.log = logger.CreateLogger("zone-controller-" + uuid.NewString())
 	c.minZoneRadiusInM = minZoneRadiusInM
 	c.zoneSpeedInMetersPerSecond = zoneSpeedInKmPerH * 1000 / 3600
 	c.currentZone = NewZone(spotPosition, spotRadiusInM, minZoneRadiusInM)
@@ -125,11 +118,12 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 
 		if transitionPercentage >= 1.0 {
 			// Next zone reached
-
+			c.Lock()
 			c.currentZone = c.nextZone
 			c.nextZone = nil
 			c.prevZone = nil
 			c.nextZoneCreationTime = nil
+			c.Unlock()
 
 			// This is last tick
 			return c.currentZone, true, nil
@@ -152,7 +146,9 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 			// Zone radius = Next zone radius + (Prev zone radius - Next zone radius) * transition percentage
 			radius := float64(c.nextZone.Radius) + float64(c.prevZone.Radius-c.nextZone.Radius)*(1-transitionPercentage)
 
+			c.Lock()
 			c.currentZone = NewZone(s2.LatLng{Lat: lat, Lng: lng}, float32(radius), 10)
+			c.Unlock()
 		}
 	}
 
@@ -171,48 +167,56 @@ func (c *Controller) Start() error {
 	go func() {
 		// While current zone radius is bigger that 0
 		for c.currentZone.Radius > 0 {
-			timeNowMx.Lock()
+			mock.TimeNowMx.Lock()
 			startNextZoneTimerEvent := StartNextZoneTimerEvent{
 				CurrentZone:  c.currentZone,
-				NextZoneTime: timeNow().UTC().Add(c.nextZonePeriod),
+				NextZoneTime: mock.TimeNow().UTC().Add(c.nextZonePeriod),
 			}
 			c.ZoneEventBroadcaster.Send(startNextZoneTimerEvent)
+			c.Lock()
 			c.LastZoneEvent = startNextZoneTimerEvent
-			timeNowMx.Unlock()
+			mock.TimeNowMx.Unlock()
 			c.nextZoneTimer = time.NewTimer(c.nextZonePeriod)
+			c.Unlock()
 			<-c.nextZoneTimer.C
+			c.Lock()
 			c.nextZoneTimer = nil
+			c.Unlock()
 			c.log.Debug("Next zone timer fired")
 
 			// Create next zone
-			timeNowMx.Lock()
+			mock.TimeNowMx.Lock()
 			// Add delay to current time, because zone will tick after delay
-			nextZoneCreationTime := timeNow().UTC().Add(c.nextZoneDelay)
+			nextZoneCreationTime := mock.TimeNow().UTC().Add(c.nextZoneDelay)
 			c.Next(nextZoneCreationTime)
-			timeNowMx.Unlock()
+			mock.TimeNowMx.Unlock()
 
 			// Send next zone event to players
-			timeNowMx.Lock()
+			mock.TimeNowMx.Lock()
 			startZoneDelayTimerEvent := StartZoneDelayTimerEvent{
 				CurrentZone:       c.currentZone,
 				NextZone:          c.nextZone,
 				ZoneTickStartTime: nextZoneCreationTime,
 			}
 			c.ZoneEventBroadcaster.Send(startZoneDelayTimerEvent)
+			c.Lock()
 			c.LastZoneEvent = startZoneDelayTimerEvent
-			timeNowMx.Unlock()
+			mock.TimeNowMx.Unlock()
 			c.nextZoneDelayTimer = time.NewTimer(c.nextZoneDelay)
+			c.Unlock()
 			<-c.nextZoneDelayTimer.C
+			c.Lock()
 			c.nextZoneDelayTimer = nil
+			c.Unlock()
 			c.log.Debug("Next zone delay timer fired")
 
 			c.zoneTicker = time.NewTicker(zoneTickPeriod)
 
 		tickerLoop:
 			for range c.zoneTicker.C {
-				timeNowMx.Lock()
-				curZone, lastTick, err := c.Tick(timeNow().UTC())
-				timeNowMx.Unlock()
+				mock.TimeNowMx.Lock()
+				curZone, lastTick, err := c.Tick(mock.TimeNow().UTC())
+				mock.TimeNowMx.Unlock()
 				if err != nil {
 					c.log.Error("Couldn't Tick next zone. " + err.Error())
 				}
@@ -221,7 +225,9 @@ func (c *Controller) Start() error {
 				if lastTick {
 					c.log.Debug("Last tick. Stop zone ticker")
 					c.zoneTicker.Stop()
+					c.Lock()
 					c.zoneTicker = nil
+					c.Unlock()
 					// Go away from ticker loop
 					break tickerLoop
 				} else {
@@ -232,7 +238,9 @@ func (c *Controller) Start() error {
 						LastTick:    lastTick,
 					}
 					c.ZoneEventBroadcaster.Send(zoneTickEvent)
+					c.Lock()
 					c.LastZoneEvent = zoneTickEvent
+					c.Unlock()
 				}
 			}
 		}
@@ -242,13 +250,28 @@ func (c *Controller) Start() error {
 	return nil
 }
 
+func (c *Controller) Stop() {
+	c.log.Debug("Stop")
+	c.Lock()
+	if c.nextZoneTimer != nil {
+		c.nextZoneTimer.Stop()
+	}
+	if c.nextZoneDelayTimer != nil {
+		c.nextZoneDelayTimer.Stop()
+	}
+	if c.zoneTicker != nil {
+		c.zoneTicker.Stop()
+	}
+	c.Unlock()
+}
+
 // Creates new zone inside current zone
 func nextZone(zone *Zone, minZoneRadiusInM float32) *Zone {
 	newR := newRadius(zone.Radius, minZoneRadiusInM)
 
 	// Calc radius of random area
 	r := randomR(zone.Radius, newR)
-	theta := randFloat() * 2 * math.Pi
+	theta := mock.RandFloat() * 2 * math.Pi
 
 	lat := zone.Position.Lat + geo.MToAngle(r*math.Cos(theta))
 	lng := zone.Position.Lng + geo.MToAngle(r*math.Sin(theta))
@@ -258,7 +281,7 @@ func nextZone(zone *Zone, minZoneRadiusInM float32) *Zone {
 
 // Creeate random radius as circle position for new zone
 func randomR(curZoneR float32, newZoneR float32) float64 {
-	return float64(curZoneR-newZoneR) * math.Sqrt(randFloat())
+	return float64(curZoneR-newZoneR) * math.Sqrt(mock.RandFloat())
 }
 
 func newRadius(radius float32, minZoneRadiusInM float32) float32 {

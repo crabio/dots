@@ -54,7 +54,9 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			playerState.Position = s2.LatLngFromDegrees(request.Position.Latitude, request.Position.Longitude)
 
 			// Update player state
-			spot.Session.PlayersStateMap.Store(playerUuid, playerState)
+			if err := spot.Session.NewPlayersState(playerUuid, playerState); err != nil {
+				return err
+			}
 
 			// Send player state to subscriptions which requires it
 			// TODO Add checks for distance, scanning and etc
@@ -63,9 +65,6 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 				Position:   playerState.Position,
 				Health:     playerState.Health,
 			})
-
-			// Send new player position to damage controller
-			spot.DamageController.NewPlayerState(playerUuid, playerState)
 		}
 		s.SpotsMap.Store(spotUuid, spot)
 

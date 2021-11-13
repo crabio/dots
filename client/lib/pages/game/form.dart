@@ -1,5 +1,7 @@
 import 'package:dots_client/pages/game/resources/player_state.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
+import 'package:dots_client/pages/lobby/page.dart';
+import 'package:dots_client/utils/nav.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,9 +10,13 @@ import 'bloc/bloc.dart';
 
 class GameForm extends StatelessWidget {
   final String spotUuid;
+  final String playerUuid;
+  final bool isHost;
 
   const GameForm({
     required this.spotUuid,
+    required this.playerUuid,
+    required this.isHost,
     Key? key,
   }) : super(key: key);
 
@@ -30,6 +36,51 @@ class GameForm extends StatelessWidget {
             nextZone: state.nextZone,
             nextZoneTime: state.nextZoneTime,
             zoneTickStartTimestamp: state.zoneTickStartTimestamp,
+          );
+        } else if (state is HunterWinsState) {
+          Future.delayed(
+            const Duration(seconds: 10),
+            () => navPopAndPush(
+              context,
+              LobbyPage(
+                spotUuid: spotUuid,
+                playerUuid: playerUuid,
+                isHost: isHost,
+              ),
+            ),
+          );
+          return const Center(
+            child: Text("Hunter wins!"),
+          );
+        } else if (state is VictimsWinsState) {
+          Future.delayed(
+            const Duration(seconds: 10),
+            () => navPopAndPush(
+              context,
+              LobbyPage(
+                spotUuid: spotUuid,
+                playerUuid: playerUuid,
+                isHost: isHost,
+              ),
+            ),
+          );
+          return const Center(
+            child: Text("Victoms wins!"),
+          );
+        } else if (state is DrawState) {
+          Future.delayed(
+            const Duration(seconds: 10),
+            () => navPopAndPush(
+              context,
+              LobbyPage(
+                spotUuid: spotUuid,
+                playerUuid: playerUuid,
+                isHost: isHost,
+              ),
+            ),
+          );
+          return const Center(
+            child: Text("Looks like it is draw!"),
           );
         }
 

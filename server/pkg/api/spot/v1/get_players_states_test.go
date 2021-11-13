@@ -1,7 +1,6 @@
 package api_spot_v1_test
 
 import (
-	// External
 	"context"
 	"sync"
 	"testing"
@@ -9,14 +8,14 @@ import (
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
+	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
+	"github.com/iakrevetkho/dots/server/pkg/player_state"
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
+	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/tjgq/broadcast"
 	"google.golang.org/grpc"
-
-	// Internal
-	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
-	"github.com/iakrevetkho/dots/server/pkg/player_state"
-	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
 type MockGetPlayerPositionServer struct {
@@ -42,6 +41,11 @@ func (s *MockGetPlayerPositionServer) Send(response *proto.GetPlayersStatesRespo
 }
 
 func TestGetPlayerPosition(t *testing.T) {
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+	logrus.SetLevel(logrus.DebugLevel)
+
 	s := api_spot_v1.New(10 * time.Millisecond)
 
 	// Create spot first
@@ -87,21 +91,21 @@ func TestGetPlayerPosition(t *testing.T) {
 	// Add positions
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
-	spot.Session.PlayersStateMap.Store(playerUuid, &player_state.PlayerState{
+	assert.NoError(t, spot.Session.NewPlayersState(playerUuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(10, 20),
 		Broadcaster: broadcast.New(0),
 		Health:      88,
-	})
-	spot.Session.PlayersStateMap.Store(player2Uuid, &player_state.PlayerState{
+	}))
+	assert.NoError(t, spot.Session.NewPlayersState(player2Uuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(60, 70),
 		Broadcaster: broadcast.New(0),
 		Health:      33,
-	})
-	spot.Session.PlayersStateMap.Store(player3Uuid, &player_state.PlayerState{
+	}))
+	assert.NoError(t, spot.Session.NewPlayersState(player3Uuid, &player_state.PlayerState{
 		Position:    s2.LatLngFromDegrees(80, 90),
 		Broadcaster: broadcast.New(0),
 		Health:      15,
-	})
+	}))
 	s.SpotsMap.Store(spotUuid, spot)
 
 	// Create stream for getting position

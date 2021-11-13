@@ -19,7 +19,9 @@ service SpotService {
 
   rpc IsPlayerHunter (IsPlayerHunterRequest) returns (IsPlayerHunterResponse) {}
 
-  rpc GetSpotStartFlag (GetSpotStartFlagRequest) returns (stream GetSpotStartFlagResponse) {}
+  rpc SubGameEvent (SubGameEventRequest) returns (stream SubGameEventResponse) {}
+
+  rpc GetLastGameEvent (GetLastGameEventRequest) returns (GetLastGameEventResponse) {}
 
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
@@ -40,6 +42,7 @@ message CreateSpotRequest {
   float radius_in_m = 2;
   int32 scan_period_in_seconds = 3;
   int32 zone_period_in_seconds = 4;
+  int32 session_duration_in_seconds = 5;
 }
 
 message CreateSpotResponse {
@@ -90,12 +93,39 @@ message IsPlayerHunterResponse {
   bool is_hunter = 1;
 }
 
-message GetSpotStartFlagRequest {
+message SubGameEventRequest {
   string spot_uuid = 1;
 }
 
-message GetSpotStartFlagResponse {
-  bool is_active =1;
+message SubGameEventResponse {
+  oneof event {
+    StartGameEvent start_game_event = 1;
+    StopGameEvent stop_game_event = 2;
+  }
+}
+
+message GetLastGameEventRequest {
+  string spot_uuid = 1;
+}
+
+message GetLastGameEventResponse {
+  oneof event {
+    StartGameEvent start_game_event = 1;
+    StopGameEvent stop_game_event = 2;
+  }
+}
+
+message StartGameEvent {}
+
+message StopGameEvent {
+  enum GameWinner {
+    GAME_WINNER_UNSPECIFIED = 0;
+    GAME_WINNER_HUNTER = 1;
+    GAME_WINNER_VICTIMS = 2;
+    GAME_WINNER_DRAW = 3;
+  }
+
+  GameWinner winner = 1;
 }
 
 message SendPlayerPositionRequest {

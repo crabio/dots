@@ -17,6 +17,16 @@
   ],
   "paths": {},
   "definitions": {
+    "StopGameEventGameWinner": {
+      "type": "string",
+      "enum": [
+        "GAME_WINNER_UNSPECIFIED",
+        "GAME_WINNER_HUNTER",
+        "GAME_WINNER_VICTIMS",
+        "GAME_WINNER_DRAW"
+      ],
+      "default": "GAME_WINNER_UNSPECIFIED"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -49,6 +59,17 @@
       "properties": {
         "spotUuid": {
           "type": "string"
+        }
+      }
+    },
+    "v1GetLastGameEventResponse": {
+      "type": "object",
+      "properties": {
+        "startGameEvent": {
+          "$ref": "#/definitions/v1StartGameEvent"
+        },
+        "stopGameEvent": {
+          "$ref": "#/definitions/v1StopGameEvent"
         }
       }
     },
@@ -106,14 +127,6 @@
         }
       }
     },
-    "v1GetSpotStartFlagResponse": {
-      "type": "object",
-      "properties": {
-        "isActive": {
-          "type": "boolean"
-        }
-      }
-    },
     "v1IsPlayerHunterResponse": {
       "type": "object",
       "properties": {
@@ -156,6 +169,9 @@
     "v1SendPlayerPositionResponse": {
       "type": "object"
     },
+    "v1StartGameEvent": {
+      "type": "object"
+    },
     "v1StartNextZoneTimerEvent": {
       "type": "object",
       "properties": {
@@ -183,6 +199,25 @@
         "zoneTickStartTimestamp": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "v1StopGameEvent": {
+      "type": "object",
+      "properties": {
+        "winner": {
+          "$ref": "#/definitions/StopGameEventGameWinner"
+        }
+      }
+    },
+    "v1SubGameEventResponse": {
+      "type": "object",
+      "properties": {
+        "startGameEvent": {
+          "$ref": "#/definitions/v1StartGameEvent"
+        },
+        "stopGameEvent": {
+          "$ref": "#/definitions/v1StopGameEvent"
         }
       }
     },

@@ -10,12 +10,17 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'spot_v1.pbenum.dart';
+
+export 'spot_v1.pbenum.dart';
+
 class CreateSpotRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOM<Position>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'position', subBuilder: Position.create)
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'radiusInM', $pb.PbFieldType.OF)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'scanPeriodInSeconds', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'zonePeriodInSeconds', $pb.PbFieldType.O3)
+    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionDurationInSeconds', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -25,6 +30,7 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     $core.double? radiusInM,
     $core.int? scanPeriodInSeconds,
     $core.int? zonePeriodInSeconds,
+    $core.int? sessionDurationInSeconds,
   }) {
     final _result = create();
     if (position != null) {
@@ -38,6 +44,9 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
     }
     if (zonePeriodInSeconds != null) {
       _result.zonePeriodInSeconds = zonePeriodInSeconds;
+    }
+    if (sessionDurationInSeconds != null) {
+      _result.sessionDurationInSeconds = sessionDurationInSeconds;
     }
     return _result;
   }
@@ -99,6 +108,15 @@ class CreateSpotRequest extends $pb.GeneratedMessage {
   $core.bool hasZonePeriodInSeconds() => $_has(3);
   @$pb.TagNumber(4)
   void clearZonePeriodInSeconds() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get sessionDurationInSeconds => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set sessionDurationInSeconds($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasSessionDurationInSeconds() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSessionDurationInSeconds() => clearField(5);
 }
 
 class CreateSpotResponse extends $pb.GeneratedMessage {
@@ -648,14 +666,14 @@ class IsPlayerHunterResponse extends $pb.GeneratedMessage {
   void clearIsHunter() => clearField(1);
 }
 
-class GetSpotStartFlagRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotStartFlagRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+class SubGameEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubGameEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
     ..hasRequiredFields = false
   ;
 
-  GetSpotStartFlagRequest._() : super();
-  factory GetSpotStartFlagRequest({
+  SubGameEventRequest._() : super();
+  factory SubGameEventRequest({
     $core.String? spotUuid,
   }) {
     final _result = create();
@@ -664,26 +682,26 @@ class GetSpotStartFlagRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory GetSpotStartFlagRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetSpotStartFlagRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory SubGameEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubGameEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagRequest clone() => GetSpotStartFlagRequest()..mergeFromMessage(this);
+  SubGameEventRequest clone() => SubGameEventRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagRequest copyWith(void Function(GetSpotStartFlagRequest) updates) => super.copyWith((message) => updates(message as GetSpotStartFlagRequest)) as GetSpotStartFlagRequest; // ignore: deprecated_member_use
+  SubGameEventRequest copyWith(void Function(SubGameEventRequest) updates) => super.copyWith((message) => updates(message as SubGameEventRequest)) as SubGameEventRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagRequest create() => GetSpotStartFlagRequest._();
-  GetSpotStartFlagRequest createEmptyInstance() => create();
-  static $pb.PbList<GetSpotStartFlagRequest> createRepeated() => $pb.PbList<GetSpotStartFlagRequest>();
+  static SubGameEventRequest create() => SubGameEventRequest._();
+  SubGameEventRequest createEmptyInstance() => create();
+  static $pb.PbList<SubGameEventRequest> createRepeated() => $pb.PbList<SubGameEventRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotStartFlagRequest>(create);
-  static GetSpotStartFlagRequest? _defaultInstance;
+  static SubGameEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubGameEventRequest>(create);
+  static SubGameEventRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get spotUuid => $_getSZ(0);
@@ -695,51 +713,287 @@ class GetSpotStartFlagRequest extends $pb.GeneratedMessage {
   void clearSpotUuid() => clearField(1);
 }
 
-class GetSpotStartFlagResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotStartFlagResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
-    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isActive')
+enum SubGameEventResponse_Event {
+  startGameEvent, 
+  stopGameEvent, 
+  notSet
+}
+
+class SubGameEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, SubGameEventResponse_Event> _SubGameEventResponse_EventByTag = {
+    1 : SubGameEventResponse_Event.startGameEvent,
+    2 : SubGameEventResponse_Event.stopGameEvent,
+    0 : SubGameEventResponse_Event.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SubGameEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..oo(0, [1, 2])
+    ..aOM<StartGameEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startGameEvent', subBuilder: StartGameEvent.create)
+    ..aOM<StopGameEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopGameEvent', subBuilder: StopGameEvent.create)
     ..hasRequiredFields = false
   ;
 
-  GetSpotStartFlagResponse._() : super();
-  factory GetSpotStartFlagResponse({
-    $core.bool? isActive,
+  SubGameEventResponse._() : super();
+  factory SubGameEventResponse({
+    StartGameEvent? startGameEvent,
+    StopGameEvent? stopGameEvent,
   }) {
     final _result = create();
-    if (isActive != null) {
-      _result.isActive = isActive;
+    if (startGameEvent != null) {
+      _result.startGameEvent = startGameEvent;
+    }
+    if (stopGameEvent != null) {
+      _result.stopGameEvent = stopGameEvent;
     }
     return _result;
   }
-  factory GetSpotStartFlagResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GetSpotStartFlagResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory SubGameEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SubGameEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagResponse clone() => GetSpotStartFlagResponse()..mergeFromMessage(this);
+  SubGameEventResponse clone() => SubGameEventResponse()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  GetSpotStartFlagResponse copyWith(void Function(GetSpotStartFlagResponse) updates) => super.copyWith((message) => updates(message as GetSpotStartFlagResponse)) as GetSpotStartFlagResponse; // ignore: deprecated_member_use
+  SubGameEventResponse copyWith(void Function(SubGameEventResponse) updates) => super.copyWith((message) => updates(message as SubGameEventResponse)) as SubGameEventResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagResponse create() => GetSpotStartFlagResponse._();
-  GetSpotStartFlagResponse createEmptyInstance() => create();
-  static $pb.PbList<GetSpotStartFlagResponse> createRepeated() => $pb.PbList<GetSpotStartFlagResponse>();
+  static SubGameEventResponse create() => SubGameEventResponse._();
+  SubGameEventResponse createEmptyInstance() => create();
+  static $pb.PbList<SubGameEventResponse> createRepeated() => $pb.PbList<SubGameEventResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetSpotStartFlagResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetSpotStartFlagResponse>(create);
-  static GetSpotStartFlagResponse? _defaultInstance;
+  static SubGameEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubGameEventResponse>(create);
+  static SubGameEventResponse? _defaultInstance;
+
+  SubGameEventResponse_Event whichEvent() => _SubGameEventResponse_EventByTag[$_whichOneof(0)]!;
+  void clearEvent() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
-  $core.bool get isActive => $_getBF(0);
+  StartGameEvent get startGameEvent => $_getN(0);
   @$pb.TagNumber(1)
-  set isActive($core.bool v) { $_setBool(0, v); }
+  set startGameEvent(StartGameEvent v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasIsActive() => $_has(0);
+  $core.bool hasStartGameEvent() => $_has(0);
   @$pb.TagNumber(1)
-  void clearIsActive() => clearField(1);
+  void clearStartGameEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartGameEvent ensureStartGameEvent() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  StopGameEvent get stopGameEvent => $_getN(1);
+  @$pb.TagNumber(2)
+  set stopGameEvent(StopGameEvent v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStopGameEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStopGameEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  StopGameEvent ensureStopGameEvent() => $_ensure(1);
+}
+
+class GetLastGameEventRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastGameEventRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..hasRequiredFields = false
+  ;
+
+  GetLastGameEventRequest._() : super();
+  factory GetLastGameEventRequest({
+    $core.String? spotUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    return _result;
+  }
+  factory GetLastGameEventRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastGameEventRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventRequest clone() => GetLastGameEventRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventRequest copyWith(void Function(GetLastGameEventRequest) updates) => super.copyWith((message) => updates(message as GetLastGameEventRequest)) as GetLastGameEventRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventRequest create() => GetLastGameEventRequest._();
+  GetLastGameEventRequest createEmptyInstance() => create();
+  static $pb.PbList<GetLastGameEventRequest> createRepeated() => $pb.PbList<GetLastGameEventRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastGameEventRequest>(create);
+  static GetLastGameEventRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+}
+
+enum GetLastGameEventResponse_Event {
+  startGameEvent, 
+  stopGameEvent, 
+  notSet
+}
+
+class GetLastGameEventResponse extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, GetLastGameEventResponse_Event> _GetLastGameEventResponse_EventByTag = {
+    1 : GetLastGameEventResponse_Event.startGameEvent,
+    2 : GetLastGameEventResponse_Event.stopGameEvent,
+    0 : GetLastGameEventResponse_Event.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetLastGameEventResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..oo(0, [1, 2])
+    ..aOM<StartGameEvent>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'startGameEvent', subBuilder: StartGameEvent.create)
+    ..aOM<StopGameEvent>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stopGameEvent', subBuilder: StopGameEvent.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetLastGameEventResponse._() : super();
+  factory GetLastGameEventResponse({
+    StartGameEvent? startGameEvent,
+    StopGameEvent? stopGameEvent,
+  }) {
+    final _result = create();
+    if (startGameEvent != null) {
+      _result.startGameEvent = startGameEvent;
+    }
+    if (stopGameEvent != null) {
+      _result.stopGameEvent = stopGameEvent;
+    }
+    return _result;
+  }
+  factory GetLastGameEventResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLastGameEventResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventResponse clone() => GetLastGameEventResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLastGameEventResponse copyWith(void Function(GetLastGameEventResponse) updates) => super.copyWith((message) => updates(message as GetLastGameEventResponse)) as GetLastGameEventResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventResponse create() => GetLastGameEventResponse._();
+  GetLastGameEventResponse createEmptyInstance() => create();
+  static $pb.PbList<GetLastGameEventResponse> createRepeated() => $pb.PbList<GetLastGameEventResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetLastGameEventResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLastGameEventResponse>(create);
+  static GetLastGameEventResponse? _defaultInstance;
+
+  GetLastGameEventResponse_Event whichEvent() => _GetLastGameEventResponse_EventByTag[$_whichOneof(0)]!;
+  void clearEvent() => clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  StartGameEvent get startGameEvent => $_getN(0);
+  @$pb.TagNumber(1)
+  set startGameEvent(StartGameEvent v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStartGameEvent() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStartGameEvent() => clearField(1);
+  @$pb.TagNumber(1)
+  StartGameEvent ensureStartGameEvent() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  StopGameEvent get stopGameEvent => $_getN(1);
+  @$pb.TagNumber(2)
+  set stopGameEvent(StopGameEvent v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStopGameEvent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStopGameEvent() => clearField(2);
+  @$pb.TagNumber(2)
+  StopGameEvent ensureStopGameEvent() => $_ensure(1);
+}
+
+class StartGameEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StartGameEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  StartGameEvent._() : super();
+  factory StartGameEvent() => create();
+  factory StartGameEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StartGameEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StartGameEvent clone() => StartGameEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StartGameEvent copyWith(void Function(StartGameEvent) updates) => super.copyWith((message) => updates(message as StartGameEvent)) as StartGameEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static StartGameEvent create() => StartGameEvent._();
+  StartGameEvent createEmptyInstance() => create();
+  static $pb.PbList<StartGameEvent> createRepeated() => $pb.PbList<StartGameEvent>();
+  @$core.pragma('dart2js:noInline')
+  static StartGameEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StartGameEvent>(create);
+  static StartGameEvent? _defaultInstance;
+}
+
+class StopGameEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StopGameEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..e<StopGameEvent_GameWinner>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'winner', $pb.PbFieldType.OE, defaultOrMaker: StopGameEvent_GameWinner.GAME_WINNER_UNSPECIFIED, valueOf: StopGameEvent_GameWinner.valueOf, enumValues: StopGameEvent_GameWinner.values)
+    ..hasRequiredFields = false
+  ;
+
+  StopGameEvent._() : super();
+  factory StopGameEvent({
+    StopGameEvent_GameWinner? winner,
+  }) {
+    final _result = create();
+    if (winner != null) {
+      _result.winner = winner;
+    }
+    return _result;
+  }
+  factory StopGameEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StopGameEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StopGameEvent clone() => StopGameEvent()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StopGameEvent copyWith(void Function(StopGameEvent) updates) => super.copyWith((message) => updates(message as StopGameEvent)) as StopGameEvent; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static StopGameEvent create() => StopGameEvent._();
+  StopGameEvent createEmptyInstance() => create();
+  static $pb.PbList<StopGameEvent> createRepeated() => $pb.PbList<StopGameEvent>();
+  @$core.pragma('dart2js:noInline')
+  static StopGameEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StopGameEvent>(create);
+  static StopGameEvent? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  StopGameEvent_GameWinner get winner => $_getN(0);
+  @$pb.TagNumber(1)
+  set winner(StopGameEvent_GameWinner v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasWinner() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearWinner() => clearField(1);
 }
 
 class SendPlayerPositionRequest extends $pb.GeneratedMessage {

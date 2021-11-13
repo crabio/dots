@@ -48,18 +48,26 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
 
     if (!isHost) {
       _logger.fine("Subscribe on spot active state");
-      _subscribeOnSpotStartFlag().fold(
+      _subscribeOnSpotGameEvents().fold(
         (l) => emit(ErrorState(exception: l)),
         (r) => r.listen((value) async {
-          if (value.isActive) {
-            final isPlayerHunterRet = await _isPlayerHunter();
-            isPlayerHunterRet.fold(
+          switch (value.whichEvent()) {
+            case proto.SubGameEventResponse_Event.startGameEvent:
+              _logger.fine("Session is started");
+              final isPlayerHunterRet = await _isPlayerHunter();
+              isPlayerHunterRet.fold(
                 (l) => emit(ErrorState(exception: l)),
                 (isHunter) => emit(
-                      GoToGameState(isHunter: isHunter),
-                    ));
-          } else {
-            throw Exception("Unimplemented");
+                  GoToGameState(isHunter: isHunter),
+                ),
+              );
+              break;
+
+            case proto.SubGameEventResponse_Event.stopGameEvent:
+              _logger.fine("Session is stopped");
+              break;
+
+            default:
           }
         }),
       );
@@ -77,10 +85,10 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     }
   }
 
-  Either<Exception, ResponseStream<proto.GetSpotStartFlagResponse>>
-      _subscribeOnSpotStartFlag() {
+  Either<Exception, ResponseStream<proto.SubGameEventResponse>>
+      _subscribeOnSpotGameEvents() {
     try {
-      return Right(client.getSpotStartFlag(proto.GetSpotStartFlagRequest(
+      return Right(client.subGameEvent(proto.SubGameEventRequest(
         spotUuid: spotUuid,
       )));
     } on Exception catch (ex) {

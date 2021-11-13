@@ -16,11 +16,12 @@ const CreateSpotRequest$json = const {
     const {'1': 'radius_in_m', '3': 2, '4': 1, '5': 2, '10': 'radiusInM'},
     const {'1': 'scan_period_in_seconds', '3': 3, '4': 1, '5': 5, '10': 'scanPeriodInSeconds'},
     const {'1': 'zone_period_in_seconds', '3': 4, '4': 1, '5': 5, '10': 'zonePeriodInSeconds'},
+    const {'1': 'session_duration_in_seconds', '3': 5, '4': 1, '5': 5, '10': 'sessionDurationInSeconds'},
   ],
 };
 
 /// Descriptor for `CreateSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEh4KC3JhZGl1c19pbl9tGAIgASgCUglyYWRpdXNJbk0SMwoWc2Nhbl9wZXJpb2RfaW5fc2Vjb25kcxgDIAEoBVITc2NhblBlcmlvZEluU2Vjb25kcxIzChZ6b25lX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhN6b25lUGVyaW9kSW5TZWNvbmRz');
+final $typed_data.Uint8List createSpotRequestDescriptor = $convert.base64Decode('ChFDcmVhdGVTcG90UmVxdWVzdBItCghwb3NpdGlvbhgBIAEoCzIRLnNwb3QudjEuUG9zaXRpb25SCHBvc2l0aW9uEh4KC3JhZGl1c19pbl9tGAIgASgCUglyYWRpdXNJbk0SMwoWc2Nhbl9wZXJpb2RfaW5fc2Vjb25kcxgDIAEoBVITc2NhblBlcmlvZEluU2Vjb25kcxIzChZ6b25lX3BlcmlvZF9pbl9zZWNvbmRzGAQgASgFUhN6b25lUGVyaW9kSW5TZWNvbmRzEj0KG3Nlc3Npb25fZHVyYXRpb25faW5fc2Vjb25kcxgFIAEoBVIYc2Vzc2lvbkR1cmF0aW9uSW5TZWNvbmRz');
 @$core.Deprecated('Use createSpotResponseDescriptor instead')
 const CreateSpotResponse$json = const {
   '1': 'CreateSpotResponse',
@@ -130,26 +131,83 @@ const IsPlayerHunterResponse$json = const {
 
 /// Descriptor for `IsPlayerHunterResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List isPlayerHunterResponseDescriptor = $convert.base64Decode('ChZJc1BsYXllckh1bnRlclJlc3BvbnNlEhsKCWlzX2h1bnRlchgBIAEoCFIIaXNIdW50ZXI=');
-@$core.Deprecated('Use getSpotStartFlagRequestDescriptor instead')
-const GetSpotStartFlagRequest$json = const {
-  '1': 'GetSpotStartFlagRequest',
+@$core.Deprecated('Use subGameEventRequestDescriptor instead')
+const SubGameEventRequest$json = const {
+  '1': 'SubGameEventRequest',
   '2': const [
     const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
   ],
 };
 
-/// Descriptor for `GetSpotStartFlagRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSpotStartFlagRequestDescriptor = $convert.base64Decode('ChdHZXRTcG90U3RhcnRGbGFnUmVxdWVzdBIbCglzcG90X3V1aWQYASABKAlSCHNwb3RVdWlk');
-@$core.Deprecated('Use getSpotStartFlagResponseDescriptor instead')
-const GetSpotStartFlagResponse$json = const {
-  '1': 'GetSpotStartFlagResponse',
+/// Descriptor for `SubGameEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subGameEventRequestDescriptor = $convert.base64Decode('ChNTdWJHYW1lRXZlbnRSZXF1ZXN0EhsKCXNwb3RfdXVpZBgBIAEoCVIIc3BvdFV1aWQ=');
+@$core.Deprecated('Use subGameEventResponseDescriptor instead')
+const SubGameEventResponse$json = const {
+  '1': 'SubGameEventResponse',
   '2': const [
-    const {'1': 'is_active', '3': 1, '4': 1, '5': 8, '10': 'isActive'},
+    const {'1': 'start_game_event', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.StartGameEvent', '9': 0, '10': 'startGameEvent'},
+    const {'1': 'stop_game_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.StopGameEvent', '9': 0, '10': 'stopGameEvent'},
+  ],
+  '8': const [
+    const {'1': 'event'},
   ],
 };
 
-/// Descriptor for `GetSpotStartFlagResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getSpotStartFlagResponseDescriptor = $convert.base64Decode('ChhHZXRTcG90U3RhcnRGbGFnUmVzcG9uc2USGwoJaXNfYWN0aXZlGAEgASgIUghpc0FjdGl2ZQ==');
+/// Descriptor for `SubGameEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subGameEventResponseDescriptor = $convert.base64Decode('ChRTdWJHYW1lRXZlbnRSZXNwb25zZRJDChBzdGFydF9nYW1lX2V2ZW50GAEgASgLMhcuc3BvdC52MS5TdGFydEdhbWVFdmVudEgAUg5zdGFydEdhbWVFdmVudBJACg9zdG9wX2dhbWVfZXZlbnQYAiABKAsyFi5zcG90LnYxLlN0b3BHYW1lRXZlbnRIAFINc3RvcEdhbWVFdmVudEIHCgVldmVudA==');
+@$core.Deprecated('Use getLastGameEventRequestDescriptor instead')
+const GetLastGameEventRequest$json = const {
+  '1': 'GetLastGameEventRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+  ],
+};
+
+/// Descriptor for `GetLastGameEventRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLastGameEventRequestDescriptor = $convert.base64Decode('ChdHZXRMYXN0R2FtZUV2ZW50UmVxdWVzdBIbCglzcG90X3V1aWQYASABKAlSCHNwb3RVdWlk');
+@$core.Deprecated('Use getLastGameEventResponseDescriptor instead')
+const GetLastGameEventResponse$json = const {
+  '1': 'GetLastGameEventResponse',
+  '2': const [
+    const {'1': 'start_game_event', '3': 1, '4': 1, '5': 11, '6': '.spot.v1.StartGameEvent', '9': 0, '10': 'startGameEvent'},
+    const {'1': 'stop_game_event', '3': 2, '4': 1, '5': 11, '6': '.spot.v1.StopGameEvent', '9': 0, '10': 'stopGameEvent'},
+  ],
+  '8': const [
+    const {'1': 'event'},
+  ],
+};
+
+/// Descriptor for `GetLastGameEventResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLastGameEventResponseDescriptor = $convert.base64Decode('ChhHZXRMYXN0R2FtZUV2ZW50UmVzcG9uc2USQwoQc3RhcnRfZ2FtZV9ldmVudBgBIAEoCzIXLnNwb3QudjEuU3RhcnRHYW1lRXZlbnRIAFIOc3RhcnRHYW1lRXZlbnQSQAoPc3RvcF9nYW1lX2V2ZW50GAIgASgLMhYuc3BvdC52MS5TdG9wR2FtZUV2ZW50SABSDXN0b3BHYW1lRXZlbnRCBwoFZXZlbnQ=');
+@$core.Deprecated('Use startGameEventDescriptor instead')
+const StartGameEvent$json = const {
+  '1': 'StartGameEvent',
+};
+
+/// Descriptor for `StartGameEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List startGameEventDescriptor = $convert.base64Decode('Cg5TdGFydEdhbWVFdmVudA==');
+@$core.Deprecated('Use stopGameEventDescriptor instead')
+const StopGameEvent$json = const {
+  '1': 'StopGameEvent',
+  '2': const [
+    const {'1': 'winner', '3': 1, '4': 1, '5': 14, '6': '.spot.v1.StopGameEvent.GameWinner', '10': 'winner'},
+  ],
+  '4': const [StopGameEvent_GameWinner$json],
+};
+
+@$core.Deprecated('Use stopGameEventDescriptor instead')
+const StopGameEvent_GameWinner$json = const {
+  '1': 'GameWinner',
+  '2': const [
+    const {'1': 'GAME_WINNER_UNSPECIFIED', '2': 0},
+    const {'1': 'GAME_WINNER_HUNTER', '2': 1},
+    const {'1': 'GAME_WINNER_VICTIMS', '2': 2},
+    const {'1': 'GAME_WINNER_DRAW', '2': 3},
+  ],
+};
+
+/// Descriptor for `StopGameEvent`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stopGameEventDescriptor = $convert.base64Decode('Cg1TdG9wR2FtZUV2ZW50EjkKBndpbm5lchgBIAEoDjIhLnNwb3QudjEuU3RvcEdhbWVFdmVudC5HYW1lV2lubmVyUgZ3aW5uZXIicAoKR2FtZVdpbm5lchIbChdHQU1FX1dJTk5FUl9VTlNQRUNJRklFRBAAEhYKEkdBTUVfV0lOTkVSX0hVTlRFUhABEhcKE0dBTUVfV0lOTkVSX1ZJQ1RJTVMQAhIUChBHQU1FX1dJTk5FUl9EUkFXEAM=');
 @$core.Deprecated('Use sendPlayerPositionRequestDescriptor instead')
 const SendPlayerPositionRequest$json = const {
   '1': 'SendPlayerPositionRequest',

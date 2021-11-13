@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/golang/geo/s2"
-	"github.com/google/uuid"
 	"github.com/iakrevetkho/dots/server/pkg/utils/geo"
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	// Internal
@@ -25,28 +25,28 @@ func TestNewRadius(t *testing.T) {
 
 func TestRandomR(t *testing.T) {
 	// Test min random
-	randFloat = func() float64 { return 0 }
+	mock.RandFloat = func() float64 { return 0 }
 	r := randomR(200, 100)
 	assert.Equal(t, float64(0), r)
 
 	// Test max random
-	randFloat = func() float64 { return 1 }
+	mock.RandFloat = func() float64 { return 1 }
 	r = randomR(200, 100)
 	assert.Equal(t, float64(100), r)
 }
 
 func TestNextZone(t *testing.T) {
 	// Test max random
-	randFloat = func() float64 { return 1 }
+	mock.RandFloat = func() float64 { return 1 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
+	c := NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, float32(200), c.currentZone.Radius)
 	assert.Equal(t, float32(0.25), c.currentZone.Damage)
 	assert.Nil(t, c.nextZone)
 
-	c.Next(time.Now())
+	c.Next(time.Date(2001, 1, 1, 0, 0, 0, 0, time.UTC))
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, float32(200), c.currentZone.Radius)
@@ -61,9 +61,9 @@ func TestNextZone(t *testing.T) {
 
 func TestTickZone(t *testing.T) {
 	// Test max random
-	randFloat = func() float64 { return 0.5 }
+	mock.RandFloat = func() float64 { return 0.5 }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
+	c := NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Second*30, time.Second*10, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, float32(200), c.currentZone.Radius)
@@ -146,10 +146,10 @@ func TestStartTickZone(t *testing.T) {
 	logrus.SetLevel(logrus.DebugLevel)
 
 	// Test max random
-	randFloat = func() float64 { return 0.5 }
-	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.RandFloat = func() float64 { return 0.5 }
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
 
-	c := NewController(uuid.New(), s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Nanosecond*1, time.Nanosecond*1, 10.0)
+	c := NewController(s2.LatLng{Lat: 0, Lng: 0}, 200, 10, time.Nanosecond*1, time.Nanosecond*1, 10.0)
 
 	assert.Equal(t, s2.LatLng{Lat: 0, Lng: 0}, c.currentZone.Position)
 	assert.Equal(t, float32(200), c.currentZone.Radius)
@@ -178,9 +178,9 @@ func TestStartTickZone(t *testing.T) {
 	assert.Equal(t, time.Date(2000, 1, 1, 0, 0, 0, 1, time.UTC), event.(StartZoneDelayTimerEvent).ZoneTickStartTime)
 
 	// Tick after 1 second
-	timeNowMx.Lock()
-	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 1, 0, time.UTC) }
-	timeNowMx.Unlock()
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 1, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
 	event = <-zoneEventCh
 	assert.IsType(t, ZoneTickEvent{}, event)
 	curZone = event.(ZoneTickEvent).CurrentZone
@@ -190,9 +190,9 @@ func TestStartTickZone(t *testing.T) {
 	assert.Equal(t, float32(69.56008), float32(geo.AngleToM(nextZone.Position.Distance(curZone.Position))))
 
 	// Tick after 10 seconds
-	timeNowMx.Lock()
-	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 10, 0, time.UTC) }
-	timeNowMx.Unlock()
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 10, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
 	event = <-zoneEventCh
 	assert.IsType(t, ZoneTickEvent{}, event)
 	curZone = event.(ZoneTickEvent).CurrentZone
@@ -202,9 +202,9 @@ func TestStartTickZone(t *testing.T) {
 	assert.Equal(t, float32(59.204746), float32(geo.AngleToM(nextZone.Position.Distance(curZone.Position))))
 
 	// Tick after 30 seconds
-	timeNowMx.Lock()
-	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 30, 0, time.UTC) }
-	timeNowMx.Unlock()
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 30, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
 	event = <-zoneEventCh
 	assert.IsType(t, ZoneTickEvent{}, event)
 	curZone = event.(ZoneTickEvent).CurrentZone
@@ -214,9 +214,9 @@ func TestStartTickZone(t *testing.T) {
 	assert.Equal(t, float32(36.192883), float32(geo.AngleToM(nextZone.Position.Distance(curZone.Position))))
 
 	// Tick after 1 min
-	timeNowMx.Lock()
-	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 1, 0, 0, time.UTC) }
-	timeNowMx.Unlock()
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 1, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
 	event = <-zoneEventCh
 	assert.IsType(t, ZoneTickEvent{}, event)
 	curZone = event.(ZoneTickEvent).CurrentZone
@@ -226,9 +226,9 @@ func TestStartTickZone(t *testing.T) {
 	assert.Equal(t, float32(1.6750844), float32(geo.AngleToM(nextZone.Position.Distance(curZone.Position))))
 
 	// Tick after 1 min 10 seconds
-	timeNowMx.Lock()
-	timeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 1, 30, 0, time.UTC) }
-	timeNowMx.Unlock()
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 1, 30, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
 	event = <-zoneEventCh
 	assert.IsType(t, StartNextZoneTimerEvent{}, event)
 	assert.Equal(t, s2.LatLng{Lat: -1.1098817631530128e-05, Lng: 1.359213148677356e-21}, event.(StartNextZoneTimerEvent).CurrentZone.Position)

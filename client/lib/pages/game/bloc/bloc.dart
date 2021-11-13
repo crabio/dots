@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dots_client/pages/game/resources/player_state.dart';
+import '../resources/session_winner.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
@@ -22,6 +25,9 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
 
   final _logger = Logger("SpotPageBloc");
 
+  late ResponseFuture<proto.SendPlayerPositionResponse> _geoPositionStream;
+  late StreamSubscription<proto.GetPlayersStatesResponse> _playersStatesStream;
+
   GamePageBloc({
     required this.client,
     required this.geolocator,
@@ -32,6 +38,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
     on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
     on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
+    on<SessionStopEvent>(_onSessionStopEvent);
     on<ZoneTickEvent>(_onZoneTickEvent);
 
     add(InitEvent());
@@ -74,26 +81,31 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     );
 
     _logger.fine("Subscribe on players states");
-    _subscribeOnPlayersStates().fold(
-      (l) => emit(ErrorState(exception: l)),
-      (r) => r.listen((value) => add(NewPlayersStatesEvent(
-            playerUuid: value.playerState.playerUuid,
-            playerPosition: LatLng(
-              value.playerState.position.latitude,
-              value.playerState.position.longitude,
-            ),
-            playerHealth: value.playerState.health,
-          ))),
-    );
+    var ex = _subscribeOnPlayersStates();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
 
-    _logger.fine("Subscribe on zone state");
-    var ex = _subscribeOnZoneEvents();
+    _logger.fine("Get last session event");
+    ex = await _getLastGameEvent();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
+
+    _logger.fine("Subscribe on session events");
+    ex = _subscribeOnSpotSessionEvents();
     if (ex != null) {
       emit(ErrorState(exception: ex));
     }
 
     _logger.fine("Get last zone event");
     ex = await _getLastZoneEvent();
+    if (ex != null) {
+      emit(ErrorState(exception: ex));
+    }
+
+    _logger.fine("Subscribe on zone state");
+    ex = _subscribeOnZoneEvents();
     if (ex != null) {
       emit(ErrorState(exception: ex));
     }
@@ -114,7 +126,8 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     );
 
     try {
-      client.sendPlayerPosition(_createPlayerPositionStream(positionStream));
+      _geoPositionStream = client
+          .sendPlayerPosition(_createPlayerPositionStream(positionStream));
     } on Exception catch (ex) {
       return Left(ex);
     }
@@ -136,17 +149,26 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     }
   }
 
-  Either<Exception, ResponseStream<proto.GetPlayersStatesResponse>>
-      _subscribeOnPlayersStates() {
+  Exception? _subscribeOnPlayersStates() {
     try {
       final request = proto.GetPlayersStatesRequest(
         spotUuid: spotUuid,
         playerUuid: playerUuid,
       );
-
-      return Right(client.getPlayersStates(request));
+      _playersStatesStream = client.getPlayersStates(request).listen(
+            (value) => add(
+              NewPlayersStatesEvent(
+                playerUuid: value.playerState.playerUuid,
+                playerPosition: LatLng(
+                  value.playerState.position.latitude,
+                  value.playerState.position.longitude,
+                ),
+                playerHealth: value.playerState.health,
+              ),
+            ),
+          );
     } on Exception catch (ex) {
-      return Left(ex);
+      return ex;
     }
   }
 
@@ -297,12 +319,77 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
           break;
 
         default:
-          throw Exception("Unimplemented");
+          // No last event
+          return null;
       }
-
-      return null;
     } on Exception catch (ex) {
       return ex;
+    }
+  }
+
+  Exception? _subscribeOnSpotSessionEvents() {
+    try {
+      client
+          .subGameEvent(proto.SubGameEventRequest(
+        spotUuid: spotUuid,
+      ))
+          .listen((value) {
+        switch (value.whichEvent()) {
+          case proto.SubGameEventResponse_Event.startGameEvent:
+            _logger.fine("Session was started");
+            break;
+          case proto.SubGameEventResponse_Event.stopGameEvent:
+            _logger.fine("Session was stopped");
+            _processStopGameEvent(value.stopGameEvent);
+            break;
+          default:
+            throw Exception("Unimplemented");
+        }
+      });
+    } on Exception catch (ex) {
+      return ex;
+    }
+  }
+
+  Future<Exception?> _getLastGameEvent() async {
+    try {
+      final response = await client.getLastGameEvent(
+        proto.GetLastGameEventRequest(spotUuid: spotUuid),
+      );
+      switch (response.whichEvent()) {
+        case proto.GetLastGameEventResponse_Event.startGameEvent:
+          _logger.fine("Session was started");
+          break;
+        case proto.GetLastGameEventResponse_Event.stopGameEvent:
+          _logger.fine("Session was stopped");
+          _processStopGameEvent(response.stopGameEvent);
+          break;
+        default:
+          // No last event
+          return null;
+      }
+    } on Exception catch (ex) {
+      return ex;
+    }
+  }
+
+  void _processStopGameEvent(proto.StopGameEvent event) {
+    _logger.fine("Session was stopped");
+    switch (event.winner) {
+      case proto.StopGameEvent_GameWinner.GAME_WINNER_HUNTER:
+        add(const SessionStopEvent(winner: GameWinnerEnum.hunter));
+        break;
+
+      case proto.StopGameEvent_GameWinner.GAME_WINNER_VICTIMS:
+        add(const SessionStopEvent(winner: GameWinnerEnum.victims));
+        break;
+
+      case proto.StopGameEvent_GameWinner.GAME_WINNER_DRAW:
+        add(const SessionStopEvent(winner: GameWinnerEnum.draw));
+        break;
+
+      default:
+        throw Exception("unimplemented");
     }
   }
 
@@ -369,6 +456,33 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
       ));
     } else {
       _logger.shout("Wrong state $curState for $event");
+    }
+  }
+
+  void _onSessionStopEvent(
+    SessionStopEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    await _geoPositionStream.cancel();
+    _logger.fine("Geo position stream stopped");
+    await _playersStatesStream.cancel();
+    _logger.fine("Players state stream stopped");
+
+    switch (event.winner) {
+      case GameWinnerEnum.hunter:
+        emit(HunterWinsState());
+        break;
+
+      case GameWinnerEnum.victims:
+        emit(VictimsWinsState());
+        break;
+
+      case GameWinnerEnum.draw:
+        emit(DrawState());
+        break;
+
+      default:
+        throw Exception("Unimplemented");
     }
   }
 

@@ -44,6 +44,12 @@ class InitedState extends GamePageState {
       ];
 }
 
+class HunterWinsState extends GamePageState {}
+
+class VictimsWinsState extends GamePageState {}
+
+class DrawState extends GamePageState {}
+
 // State inited with error
 class ErrorState extends GamePageState {
   final Exception exception;

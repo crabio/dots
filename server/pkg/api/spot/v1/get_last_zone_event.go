@@ -27,19 +27,23 @@ func (s *SpotServiceServer) GetLastZoneEvent(ctx context.Context, request *proto
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
-	if spot.ZoneController == nil {
+	if spot.Session == nil {
+		return nil, errors.New("Session is not inited")
+	}
+
+	if spot.Session.ZoneController == nil {
 		return nil, errors.New("ZoneController is not inited")
 	}
 
-	if spot.ZoneController.LastZoneEvent == nil {
-		return nil, errors.New("LastZoneEvent is not inited")
+	if spot.Session.ZoneController.LastZoneEvent == nil {
+		return &proto.GetLastZoneEventResponse{}, nil
 	}
 
-	logrus.WithField("spot.ZoneController.LastZoneEvent", spot.ZoneController.LastZoneEvent).Debug("spot.ZoneController.LastZoneEvent")
+	logrus.WithField("spot.ZoneController.LastZoneEvent", spot.Session.ZoneController.LastZoneEvent).Debug("spot.ZoneController.LastZoneEvent")
 
-	switch spot.ZoneController.LastZoneEvent.(type) {
+	switch spot.Session.ZoneController.LastZoneEvent.(type) {
 	case zone.StartNextZoneTimerEvent:
-		event := spot.ZoneController.LastZoneEvent.(zone.StartNextZoneTimerEvent)
+		event := spot.Session.ZoneController.LastZoneEvent.(zone.StartNextZoneTimerEvent)
 		response := &proto.GetLastZoneEventResponse{
 			Event: &proto.GetLastZoneEventResponse_StartNextZoneTimerEvent{
 				StartNextZoneTimerEvent: &proto.StartNextZoneTimerEvent{
@@ -59,7 +63,7 @@ func (s *SpotServiceServer) GetLastZoneEvent(ctx context.Context, request *proto
 		return response, nil
 
 	case zone.StartZoneDelayTimerEvent:
-		event := spot.ZoneController.LastZoneEvent.(zone.StartZoneDelayTimerEvent)
+		event := spot.Session.ZoneController.LastZoneEvent.(zone.StartZoneDelayTimerEvent)
 		response := &proto.GetLastZoneEventResponse{
 			Event: &proto.GetLastZoneEventResponse_StartZoneDelayTimerEvent{
 				StartZoneDelayTimerEvent: &proto.StartZoneDelayTimerEvent{
@@ -87,7 +91,7 @@ func (s *SpotServiceServer) GetLastZoneEvent(ctx context.Context, request *proto
 		return response, nil
 
 	case zone.ZoneTickEvent:
-		event := spot.ZoneController.LastZoneEvent.(zone.ZoneTickEvent)
+		event := spot.Session.ZoneController.LastZoneEvent.(zone.ZoneTickEvent)
 		response := &proto.GetLastZoneEventResponse{
 			Event: &proto.GetLastZoneEventResponse_ZoneTickEvent{
 				ZoneTickEvent: &proto.ZoneTickEvent{

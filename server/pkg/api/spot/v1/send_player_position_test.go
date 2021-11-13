@@ -10,11 +10,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 
 	// Internal
 	api_spot_v1 "github.com/iakrevetkho/dots/server/pkg/api/spot/v1"
+	"github.com/iakrevetkho/dots/server/pkg/utils/mock"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -53,6 +55,11 @@ func (s *MockSendPlayerPositionServer) SendAndClose(*proto.SendPlayerPositionRes
 }
 
 func TestSendPlayerPosition(t *testing.T) {
+	mock.TimeNowMx.Lock()
+	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
+	mock.TimeNowMx.Unlock()
+	logrus.SetLevel(logrus.DebugLevel)
+
 	s := api_spot_v1.New(100 * time.Millisecond)
 
 	// Create spot first
@@ -68,12 +75,20 @@ func TestSendPlayerPosition(t *testing.T) {
 	assert.NoError(t, err)
 
 	spotUuid := uuid.MustParse(createSpotRet.SpotUuid)
-	playerUuid := uuid.New()
+	player1Uuid := uuid.New()
+	player2Uuid := uuid.New()
 
-	// Join to spot
+	// Join hunter to spot
 	_, err = s.JoinToSpot(context.Background(), &proto.JoinToSpotRequest{
 		SpotUuid:   spotUuid.String(),
-		PlayerUuid: playerUuid.String(),
+		PlayerUuid: player1Uuid.String(),
+	})
+	assert.NoError(t, err)
+	// Join victim to spot
+	// NOTE. We should have at least hunter and victim for the game
+	_, err = s.JoinToSpot(context.Background(), &proto.JoinToSpotRequest{
+		SpotUuid:   spotUuid.String(),
+		PlayerUuid: player2Uuid.String(),
 	})
 	assert.NoError(t, err)
 
@@ -86,7 +101,7 @@ func TestSendPlayerPosition(t *testing.T) {
 	// Create stream for sending position
 	mockServer := MockSendPlayerPositionServer{
 		SpotUuid:   spotUuid,
-		PlayerUuid: playerUuid,
+		PlayerUuid: player1Uuid,
 		MsgCount:   5,
 	}
 
@@ -98,7 +113,7 @@ func TestSendPlayerPosition(t *testing.T) {
 	spot, ok := s.SpotsMap.Load(spotUuid)
 	assert.True(t, ok)
 
-	playerState, ok := spot.Session.PlayersStateMap.Load(playerUuid)
+	playerState, ok := spot.Session.PlayersStateMap.Load(player1Uuid)
 	assert.True(t, ok)
 
 	assert.Equal(t, float64(10), playerState.Position.Lat.Degrees())
