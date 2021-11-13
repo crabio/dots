@@ -20,11 +20,12 @@
     "StopGameEventGameWinner": {
       "type": "string",
       "enum": [
-        "HunterWins",
-        "VictimsWins",
-        "Draw"
+        "GAME_WINNER_UNSPECIFIED",
+        "GAME_WINNER_HUNTER",
+        "GAME_WINNER_VICTIMS",
+        "GAME_WINNER_DRAW"
       ],
-      "default": "HunterWins"
+      "default": "GAME_WINNER_UNSPECIFIED"
     },
     "protobufAny": {
       "type": "object",

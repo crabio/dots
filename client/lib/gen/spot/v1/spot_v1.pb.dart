@@ -951,7 +951,7 @@ class StartGameEvent extends $pb.GeneratedMessage {
 
 class StopGameEvent extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StopGameEvent', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
-    ..e<StopGameEvent_GameWinner>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'winner', $pb.PbFieldType.OE, defaultOrMaker: StopGameEvent_GameWinner.HunterWins, valueOf: StopGameEvent_GameWinner.valueOf, enumValues: StopGameEvent_GameWinner.values)
+    ..e<StopGameEvent_GameWinner>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'winner', $pb.PbFieldType.OE, defaultOrMaker: StopGameEvent_GameWinner.GAME_WINNER_UNSPECIFIED, valueOf: StopGameEvent_GameWinner.valueOf, enumValues: StopGameEvent_GameWinner.values)
     ..hasRequiredFields = false
   ;
 

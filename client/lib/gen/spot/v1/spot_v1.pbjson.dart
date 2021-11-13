@@ -199,14 +199,15 @@ const StopGameEvent$json = const {
 const StopGameEvent_GameWinner$json = const {
   '1': 'GameWinner',
   '2': const [
-    const {'1': 'HunterWins', '2': 0},
-    const {'1': 'VictimsWins', '2': 1},
-    const {'1': 'Draw', '2': 2},
+    const {'1': 'GAME_WINNER_UNSPECIFIED', '2': 0},
+    const {'1': 'GAME_WINNER_HUNTER', '2': 1},
+    const {'1': 'GAME_WINNER_VICTIMS', '2': 2},
+    const {'1': 'GAME_WINNER_DRAW', '2': 3},
   ],
 };
 
 /// Descriptor for `StopGameEvent`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List stopGameEventDescriptor = $convert.base64Decode('Cg1TdG9wR2FtZUV2ZW50EjkKBndpbm5lchgBIAEoDjIhLnNwb3QudjEuU3RvcEdhbWVFdmVudC5HYW1lV2lubmVyUgZ3aW5uZXIiNwoKR2FtZVdpbm5lchIOCgpIdW50ZXJXaW5zEAASDwoLVmljdGltc1dpbnMQARIICgREcmF3EAI=');
+final $typed_data.Uint8List stopGameEventDescriptor = $convert.base64Decode('Cg1TdG9wR2FtZUV2ZW50EjkKBndpbm5lchgBIAEoDjIhLnNwb3QudjEuU3RvcEdhbWVFdmVudC5HYW1lV2lubmVyUgZ3aW5uZXIicAoKR2FtZVdpbm5lchIbChdHQU1FX1dJTk5FUl9VTlNQRUNJRklFRBAAEhYKEkdBTUVfV0lOTkVSX0hVTlRFUhABEhcKE0dBTUVfV0lOTkVSX1ZJQ1RJTVMQAhIUChBHQU1FX1dJTk5FUl9EUkFXEAM=');
 @$core.Deprecated('Use sendPlayerPositionRequestDescriptor instead')
 const SendPlayerPositionRequest$json = const {
   '1': 'SendPlayerPositionRequest',

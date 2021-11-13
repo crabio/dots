@@ -10,14 +10,16 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class StopGameEvent_GameWinner extends $pb.ProtobufEnum {
-  static const StopGameEvent_GameWinner HunterWins = StopGameEvent_GameWinner._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'HunterWins');
-  static const StopGameEvent_GameWinner VictimsWins = StopGameEvent_GameWinner._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'VictimsWins');
-  static const StopGameEvent_GameWinner Draw = StopGameEvent_GameWinner._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'Draw');
+  static const StopGameEvent_GameWinner GAME_WINNER_UNSPECIFIED = StopGameEvent_GameWinner._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'GAME_WINNER_UNSPECIFIED');
+  static const StopGameEvent_GameWinner GAME_WINNER_HUNTER = StopGameEvent_GameWinner._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'GAME_WINNER_HUNTER');
+  static const StopGameEvent_GameWinner GAME_WINNER_VICTIMS = StopGameEvent_GameWinner._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'GAME_WINNER_VICTIMS');
+  static const StopGameEvent_GameWinner GAME_WINNER_DRAW = StopGameEvent_GameWinner._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'GAME_WINNER_DRAW');
 
   static const $core.List<StopGameEvent_GameWinner> values = <StopGameEvent_GameWinner> [
-    HunterWins,
-    VictimsWins,
-    Draw,
+    GAME_WINNER_UNSPECIFIED,
+    GAME_WINNER_HUNTER,
+    GAME_WINNER_VICTIMS,
+    GAME_WINNER_DRAW,
   ];
 
   static final $core.Map<$core.int, StopGameEvent_GameWinner> _byValue = $pb.ProtobufEnum.initByValue(values);
