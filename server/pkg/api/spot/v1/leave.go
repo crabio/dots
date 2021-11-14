@@ -52,6 +52,12 @@ func (s *SpotServiceServer) LeaveSpot(ctx context.Context, request *proto.LeaveS
 	// Send updated players list
 	spot.PlayersListBroadcaster.Send(spot.PlayersList)
 
+	// Check spot players list
+	if spot.PlayersList.Len() == 0 {
+		// Drop spot session if we have no players
+		spot.Session = nil
+	}
+
 	// Save spot
 	s.SpotsMap.Store(spotUuid, spot)
 

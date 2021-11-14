@@ -53,6 +53,11 @@ func TestLeaveSpot(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
+	// Check that we have active spot session
+	spot, ok := s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+	assert.NotNil(t, spot.Session)
+
 	// Leave players from spot
 	_, err = s.LeaveSpot(context.Background(), &proto.LeaveSpotRequest{
 		SpotUuid:   spotUuid.String(),
@@ -64,6 +69,11 @@ func TestLeaveSpot(t *testing.T) {
 		PlayerUuid: player2Uuid.String(),
 	})
 	assert.NoError(t, err)
+
+	// Check that we have no active spot session
+	spot, ok = s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+	assert.Nil(t, spot.Session)
 
 	// Try to Leave players from spot again
 	_, err = s.LeaveSpot(context.Background(), &proto.LeaveSpotRequest{

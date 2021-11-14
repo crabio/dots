@@ -40,9 +40,10 @@ func TestJoinSpot(t *testing.T) {
 	spotUuid := uuid.MustParse(createSpotRet.SpotUuid)
 	playerUuid := uuid.New()
 
-	// Test that we have no active spot session
-	_, err = s.StartSpot(context.Background(), &proto.StartSpotRequest{SpotUuid: spotUuid.String()})
-	assert.Error(t, err)
+	// Check that we have no active spot session
+	spot, ok := s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+	assert.Nil(t, spot.Session)
 
 	// Join player to spot
 	_, err = s.JoinToSpot(context.Background(), &proto.JoinToSpotRequest{
@@ -51,7 +52,8 @@ func TestJoinSpot(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	// Test that we have active spot session
-	_, err = s.StartSpot(context.Background(), &proto.StartSpotRequest{SpotUuid: spotUuid.String()})
-	assert.NoError(t, err)
+	// Check that we have active spot session
+	spot, ok = s.SpotsMap.Load(spotUuid)
+	assert.True(t, ok)
+	assert.NotNil(t, spot.Session)
 }
