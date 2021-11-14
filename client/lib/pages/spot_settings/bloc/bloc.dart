@@ -25,6 +25,7 @@ class SpotSettingsPageBloc
           zoneRadius: 50,
           scanPeriod: const Duration(seconds: 10),
           zonePeriod: const Duration(seconds: 30),
+          sessionDuration: const Duration(minutes: 2),
           error: "",
         )) {
     on<NewRadiusEvent>((event, emit) {
@@ -34,16 +35,23 @@ class SpotSettingsPageBloc
         _logger.shout("Not allowed $state for $event");
       }
     });
-    on<NewScanDurationEvent>((event, emit) {
+    on<NewScanPeriodEvent>((event, emit) {
       if (state is InitedState) {
         emit((state as InitedState).copyWith(scanPeriod: event.value));
       } else {
         _logger.shout("Not allowed $state for $event");
       }
     });
-    on<NewZoneDurationEvent>((event, emit) {
+    on<NewZonePeriodEvent>((event, emit) {
       if (state is InitedState) {
         emit((state as InitedState).copyWith(zonePeriod: event.value));
+      } else {
+        _logger.shout("Not allowed $state for $event");
+      }
+    });
+    on<NewSessionDurationEvent>((event, emit) {
+      if (state is InitedState) {
+        emit((state as InitedState).copyWith(sessionDuration: event.value));
       } else {
         _logger.shout("Not allowed $state for $event");
       }
@@ -56,8 +64,9 @@ class SpotSettingsPageBloc
           emit(curState.copyWith(creating: true));
           final request = proto.CreateSpotRequest(
             radiusInM: event.zoneRadius,
-            zonePeriodInSeconds: event.zonePeriod.inSeconds,
             scanPeriodInSeconds: event.scanPeriod.inSeconds,
+            zonePeriodInSeconds: event.zonePeriod.inSeconds,
+            sessionDurationInSeconds: event.sessionDuration.inSeconds,
             position: proto.Position(
               latitude: event.position.latitude,
               longitude: event.position.longitude,

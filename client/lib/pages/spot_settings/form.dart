@@ -35,6 +35,7 @@ class SpotSettingsForm extends StatelessWidget {
             zoneRadius: curState.zoneRadius,
             scanPeriod: curState.scanPeriod,
             zonePeriod: curState.zonePeriod,
+            sessionDuration: curState.sessionDuration,
             creatingSpot: curState.creating,
             error: curState.error,
           );
@@ -60,10 +61,11 @@ class _SpotSettingsForm extends StatelessWidget {
   final MapController mapController;
   final LatLng position;
 
-  /// Spot radius in meters
+  /// Zone radius in meters
   final double zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
+  final Duration sessionDuration;
 
   /// Error on creating new spot on server
   final String error;
@@ -76,6 +78,7 @@ class _SpotSettingsForm extends StatelessWidget {
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
+    required this.sessionDuration,
     required this.error,
     this.creatingSpot = false,
     Key? key,
@@ -150,27 +153,37 @@ class _SpotSettingsForm extends StatelessWidget {
                   .read<SpotSettingsPageBloc>()
                   .add(NewRadiusEvent(value: value.toDouble())),
             ),
-            const Text("Scan time in seconds"),
+            const Text("Scan period in seconds"),
             NumberPicker(
               axis: Axis.horizontal,
-              step: 10,
-              minValue: 0,
-              maxValue: 1000,
+              step: 5,
+              minValue: 5,
+              maxValue: 120,
               value: scanPeriod.inSeconds,
               onChanged: (value) => context
                   .read<SpotSettingsPageBloc>()
-                  .add(NewScanDurationEvent(value: Duration(seconds: value))),
+                  .add(NewScanPeriodEvent(value: Duration(seconds: value))),
             ),
-            const Text("Zone time in seconds"),
+            const Text("Zone period in seconds"),
             NumberPicker(
               axis: Axis.horizontal,
-              step: 10,
-              minValue: 0,
-              maxValue: 1000,
+              step: 5,
+              minValue: 5,
+              maxValue: 120,
               value: zonePeriod.inSeconds,
               onChanged: (value) => context
                   .read<SpotSettingsPageBloc>()
-                  .add(NewZoneDurationEvent(value: Duration(seconds: value))),
+                  .add(NewZonePeriodEvent(value: Duration(seconds: value))),
+            ),
+            const Text("Session duration in seconds"),
+            NumberPicker(
+              axis: Axis.horizontal,
+              step: 10,
+              minValue: 30,
+              maxValue: 1800,
+              value: sessionDuration.inSeconds,
+              onChanged: (value) => context.read<SpotSettingsPageBloc>().add(
+                  NewSessionDurationEvent(value: Duration(seconds: value))),
             ),
             creatingSpot
                 ? const CircularProgressIndicator()
@@ -184,6 +197,7 @@ class _SpotSettingsForm extends StatelessWidget {
                           zoneRadius: zoneRadius,
                           scanPeriod: scanPeriod,
                           zonePeriod: zonePeriod,
+                          sessionDuration: sessionDuration,
                         )),
                   ),
           ],
