@@ -39,14 +39,12 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		s.log.Debug("Spot session created")
 	}
 
-	if spot.Session.GameController == nil {
-		return nil, fmt.Errorf("GameController is not inited")
-	}
-
-	spot.Session.GameController.Lock()
-	defer spot.Session.GameController.Unlock()
-	if spot.Session.GameController.IsActive {
-		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
+	if spot.Session.GameController != nil {
+		spot.Session.GameController.Lock()
+		defer spot.Session.GameController.Unlock()
+		if spot.Session.GameController.IsActive {
+			return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
+		}
 	}
 
 	// Append new player
