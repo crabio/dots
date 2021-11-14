@@ -42,6 +42,9 @@ func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePerio
 }
 
 func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList []uuid.UUID) error {
+	ss.Lock()
+	defer ss.Unlock()
+
 	ss.PlayersStateMap = player_state.NewPlayerStateMap()
 	for _, playerUuid := range playersList {
 		playerState := player_state.NewPlayerState()
@@ -65,6 +68,9 @@ func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList []uuid.UUID) erro
 }
 
 func (ss *SpotSession) NewPlayersState(key uuid.UUID, value *player_state.PlayerState) error {
+	ss.Lock()
+	defer ss.Unlock()
+
 	ss.PlayersStateMap.Store(key, value)
 
 	// Send new player position to damage controller
