@@ -394,6 +394,96 @@ class JoinToSpotResponse extends $pb.GeneratedMessage {
   static JoinToSpotResponse? _defaultInstance;
 }
 
+class LeaveSpotRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LeaveSpotRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'playerUuid')
+    ..hasRequiredFields = false
+  ;
+
+  LeaveSpotRequest._() : super();
+  factory LeaveSpotRequest({
+    $core.String? spotUuid,
+    $core.String? playerUuid,
+  }) {
+    final _result = create();
+    if (spotUuid != null) {
+      _result.spotUuid = spotUuid;
+    }
+    if (playerUuid != null) {
+      _result.playerUuid = playerUuid;
+    }
+    return _result;
+  }
+  factory LeaveSpotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LeaveSpotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LeaveSpotRequest clone() => LeaveSpotRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LeaveSpotRequest copyWith(void Function(LeaveSpotRequest) updates) => super.copyWith((message) => updates(message as LeaveSpotRequest)) as LeaveSpotRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LeaveSpotRequest create() => LeaveSpotRequest._();
+  LeaveSpotRequest createEmptyInstance() => create();
+  static $pb.PbList<LeaveSpotRequest> createRepeated() => $pb.PbList<LeaveSpotRequest>();
+  @$core.pragma('dart2js:noInline')
+  static LeaveSpotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LeaveSpotRequest>(create);
+  static LeaveSpotRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get spotUuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set spotUuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpotUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpotUuid() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get playerUuid => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set playerUuid($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPlayerUuid() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPlayerUuid() => clearField(2);
+}
+
+class LeaveSpotResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'LeaveSpotResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  LeaveSpotResponse._() : super();
+  factory LeaveSpotResponse() => create();
+  factory LeaveSpotResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LeaveSpotResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  LeaveSpotResponse clone() => LeaveSpotResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  LeaveSpotResponse copyWith(void Function(LeaveSpotResponse) updates) => super.copyWith((message) => updates(message as LeaveSpotResponse)) as LeaveSpotResponse; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LeaveSpotResponse create() => LeaveSpotResponse._();
+  LeaveSpotResponse createEmptyInstance() => create();
+  static $pb.PbList<LeaveSpotResponse> createRepeated() => $pb.PbList<LeaveSpotResponse>();
+  @$core.pragma('dart2js:noInline')
+  static LeaveSpotResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LeaveSpotResponse>(create);
+  static LeaveSpotResponse? _defaultInstance;
+}
+
 class GetSpotPlayersRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetSpotPlayersRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'spot.v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'spotUuid')

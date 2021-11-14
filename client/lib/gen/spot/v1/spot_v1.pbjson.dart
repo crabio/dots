@@ -73,6 +73,24 @@ const JoinToSpotResponse$json = const {
 
 /// Descriptor for `JoinToSpotResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List joinToSpotResponseDescriptor = $convert.base64Decode('ChJKb2luVG9TcG90UmVzcG9uc2U=');
+@$core.Deprecated('Use leaveSpotRequestDescriptor instead')
+const LeaveSpotRequest$json = const {
+  '1': 'LeaveSpotRequest',
+  '2': const [
+    const {'1': 'spot_uuid', '3': 1, '4': 1, '5': 9, '10': 'spotUuid'},
+    const {'1': 'player_uuid', '3': 2, '4': 1, '5': 9, '10': 'playerUuid'},
+  ],
+};
+
+/// Descriptor for `LeaveSpotRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List leaveSpotRequestDescriptor = $convert.base64Decode('ChBMZWF2ZVNwb3RSZXF1ZXN0EhsKCXNwb3RfdXVpZBgBIAEoCVIIc3BvdFV1aWQSHwoLcGxheWVyX3V1aWQYAiABKAlSCnBsYXllclV1aWQ=');
+@$core.Deprecated('Use leaveSpotResponseDescriptor instead')
+const LeaveSpotResponse$json = const {
+  '1': 'LeaveSpotResponse',
+};
+
+/// Descriptor for `LeaveSpotResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List leaveSpotResponseDescriptor = $convert.base64Decode('ChFMZWF2ZVNwb3RSZXNwb25zZQ==');
 @$core.Deprecated('Use getSpotPlayersRequestDescriptor instead')
 const GetSpotPlayersRequest$json = const {
   '1': 'GetSpotPlayersRequest',
