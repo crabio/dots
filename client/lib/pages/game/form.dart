@@ -1,6 +1,7 @@
 import 'package:dots_client/pages/game/resources/player_state.dart';
 import 'package:dots_client/pages/game/resources/zone_state.dart';
 import 'package:dots_client/pages/lobby/page.dart';
+import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +77,12 @@ class GameForm extends StatelessWidget {
             ),
           );
           return const _EndGameView(msg: "Looks like it is draw!");
+        } else if (state is LeavingSpotState) {
+          Future.delayed(
+            Duration.zero,
+            () => navPopAndPush(context, MainPage()),
+          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         return Text("Unkown state: $state");

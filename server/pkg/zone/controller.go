@@ -54,7 +54,6 @@ func NewController(spotPosition s2.LatLng, spotRadiusInM float32, minZoneRadiusI
 	c.currentZone = NewZone(spotPosition, spotRadiusInM, minZoneRadiusInM)
 	c.nextZonePeriod = nextZonePeriod
 	c.nextZoneDelay = nextZoneDelay
-	c.ZoneEventBroadcaster = broadcast.New(0)
 
 	return c
 }
@@ -160,6 +159,10 @@ func (c *Controller) Tick(now time.Time) (*Zone, bool, error) {
 // Timer for new zone -> Timer for next zone delay -> Tick zone till next zone reached -> Restart next zone timer
 // Workflow will work till zero zone reached
 func (c *Controller) Start() error {
+	c.Lock()
+	c.ZoneEventBroadcaster = broadcast.New(0)
+	c.Unlock()
+
 	if c.nextZoneTimer != nil {
 		return errors.New("nextZoneTimer is already inited")
 	}

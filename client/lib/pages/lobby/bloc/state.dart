@@ -30,6 +30,11 @@ class GoToGameState extends LobbyPageState {
   List<Object?> get props => [isHunter];
 }
 
+/// State will be emitted when LeaveSpotEvent raised and is was succeded
+class LeavingSpotState extends LobbyPageState {
+  const LeavingSpotState();
+}
+
 // State inited with error
 class ErrorState extends LobbyPageState {
   final Exception exception;

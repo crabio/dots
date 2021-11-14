@@ -9,7 +9,9 @@ class LobbyPageEvent extends Equatable {
 }
 
 /// Event for initing all required components
-class InitEvent extends LobbyPageEvent {}
+class InitEvent extends LobbyPageEvent {
+  const InitEvent();
+}
 
 class NewSpotPlayersListEvent extends LobbyPageEvent {
   final List<String> playersList;
@@ -20,4 +22,10 @@ class NewSpotPlayersListEvent extends LobbyPageEvent {
   List<Object> get props => [playersList];
 }
 
-class StartGameEvent extends LobbyPageEvent {}
+class StartGameEvent extends LobbyPageEvent {
+  const StartGameEvent();
+}
+
+class LeaveSpotEvent extends LobbyPageEvent {
+  const LeaveSpotEvent();
+}

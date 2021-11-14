@@ -1,10 +1,8 @@
-// External
 import 'package:dots_client/pages/game/page.dart';
+import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// Internal
 import 'bloc/bloc.dart';
 
 class LobbyForm extends StatelessWidget {
@@ -47,6 +45,12 @@ class LobbyForm extends StatelessWidget {
           );
         } else if (state is ErrorState) {
           return Text("Init error: ${state.exception.toString()}");
+        } else if (state is LeavingSpotState) {
+          Future.delayed(
+            Duration.zero,
+            () => navPopAndPush(context, MainPage()),
+          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         return Text("Unkown state: $state");
@@ -69,7 +73,6 @@ class _InitedStateView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-// TODO Add leave button
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -98,8 +101,9 @@ class _InitedStateView extends StatelessWidget {
                   child: ElevatedButton(
                     key: const Key("btn_start"),
                     child: const Text("Start"),
-                    onPressed: () =>
-                        context.read<LobbyPageBloc>().add(StartGameEvent()),
+                    onPressed: () => context
+                        .read<LobbyPageBloc>()
+                        .add(const StartGameEvent()),
                   ),
                 )
               : Container(),

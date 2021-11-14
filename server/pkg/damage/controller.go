@@ -86,6 +86,11 @@ func (c *Controller) NewPlayerState(playerUuid uuid.UUID, playerState *player_st
 						}
 						c.Unlock()
 
+						// Check that player state broadcaster is exists
+						if playerState.Broadcaster == nil {
+							break
+						}
+
 						playerState.Broadcaster.Send(player_state.PlayerPublicState{
 							PlayerUuid: playerUuid,
 							Position:   playerState.Position,

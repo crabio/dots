@@ -33,15 +33,16 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     required this.geolocator,
     required this.spotUuid,
     required this.playerUuid,
-  }) : super(GamePageInitial()) {
+  }) : super(const GamePageInitial()) {
     on<InitEvent>(_onInitEvent);
     on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
     on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
     on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
     on<SessionStopEvent>(_onSessionStopEvent);
     on<ZoneTickEvent>(_onZoneTickEvent);
+    on<LeaveSpotEvent>(_onLeaveSpotEvent);
 
-    add(InitEvent());
+    add(const InitEvent());
   }
 
   void _onInitEvent(InitEvent event, Emitter<GamePageState> emit) async {
@@ -481,15 +482,15 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
 
     switch (event.winner) {
       case GameWinnerEnum.hunter:
-        emit(HunterWinsState());
+        emit(const HunterWinsState());
         break;
 
       case GameWinnerEnum.victims:
-        emit(VictimsWinsState());
+        emit(const VictimsWinsState());
         break;
 
       case GameWinnerEnum.draw:
-        emit(DrawState());
+        emit(const DrawState());
         break;
 
       default:
@@ -514,5 +515,27 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     } else {
       _logger.shout("Wrong state $curState for $event");
     }
+  }
+
+  Future<void> _onLeaveSpotEvent(
+    LeaveSpotEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    await client
+        .leaveSpot(proto.LeaveSpotRequest(
+      spotUuid: spotUuid,
+      playerUuid: playerUuid,
+    ))
+        .then(
+      (response) => emit(const LeavingSpotState()),
+      onError: (error) async {
+        emit(ErrorState(exception: error));
+        // Go to main page after time
+        await Future.delayed(
+          const Duration(seconds: 10),
+          () => emit(const LeavingSpotState()),
+        );
+      },
+    );
   }
 }

@@ -2,6 +2,7 @@ package api_spot_v1
 
 import (
 	// External
+	"errors"
 	"fmt"
 	"io"
 
@@ -56,6 +57,10 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 			// Update player state
 			if err := spot.Session.NewPlayersState(playerUuid, playerState); err != nil {
 				return err
+			}
+
+			if playerState.Broadcaster == nil {
+				return errors.New("Player state broadcast was closed")
 			}
 
 			// Send player state to subscriptions which requires it

@@ -1,6 +1,7 @@
 package spot_session
 
 import (
+	"errors"
 	"sync"
 	"time"
 
@@ -14,6 +15,12 @@ import (
 	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/sirupsen/logrus"
 	"github.com/tjgq/broadcast"
+)
+
+const (
+	minZoneRadiusInM  = float32(10)
+	nextZoneDelay     = 15 * time.Second
+	zoneSpeedInKmPerH = float64(20)
 )
 
 type SpotSession struct {
@@ -40,7 +47,8 @@ type SpotSession struct {
 func NewSpotSession(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration) *SpotSession {
 	ss := new(SpotSession)
 	ss.log = logger.CreateLogger("spot-session-" + spotId.String())
-	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
+
+	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, minZoneRadiusInM, nextZonePeriod, nextZoneDelay, zoneSpeedInKmPerH)
 	ss.GameController = game_controller.NewGameController(duration)
 	ss.GameEventBroadcaster = broadcast.New(0)
 
@@ -57,18 +65,20 @@ func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList *player_list.Play
 		ss.PlayersStateMap.Store(playerUuid, playerState)
 	})
 
-	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
-
-	// Start game
-	ss.GameController.Start(hunterUuid)
-
-	// Send and save StartGameEvent
-	ss.sendStartGameEvent()
-
 	// Start zone ticker
 	if err := ss.ZoneController.Start(); err != nil {
 		return err
 	}
+
+	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
+
+	// Send and save StartGameEvent
+	if err := ss.sendStartGameEvent(); err != nil {
+		return err
+	}
+
+	// Start game
+	ss.GameController.Start(hunterUuid)
 
 	return nil
 }
@@ -77,12 +87,14 @@ func (ss *SpotSession) Close() {
 	// Close game events stream
 	ss.log.Debug("Close GameEventBroadcaster")
 	ss.GameEventBroadcaster.Close()
+	ss.GameEventBroadcaster = nil
 	ss.log.Debug("Closed GameEventBroadcaster")
 
 	// Close player states streams
 	ss.log.Debug("Close PlayersStates Broadcasters")
 	ss.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
 		v.Broadcaster.Close()
+		v.Broadcaster = nil
 	})
 	ss.log.Debug("Closed PlayersStates Broadcasters")
 }
@@ -103,7 +115,9 @@ func (ss *SpotSession) NewPlayersState(key uuid.UUID, value *player_state.Player
 
 	// Check that we have event
 	if event != nil {
-		ss.sendEndGameEvent(event)
+		if err := ss.sendEndGameEvent(event); err != nil {
+			return err
+		}
 
 		// Stop zone controller
 		ss.ZoneController.Stop()
@@ -112,22 +126,34 @@ func (ss *SpotSession) NewPlayersState(key uuid.UUID, value *player_state.Player
 	return nil
 }
 
-func (ss *SpotSession) sendStartGameEvent() {
+func (ss *SpotSession) sendStartGameEvent() error {
 	ss.log.Debug("sendStartGameEvent")
 	event := game_controller.StartGameEvent{}
 	ss.LastGameEvent = event
 
+	if ss.GameEventBroadcaster == nil {
+		return errors.New("GameEventBroadcaster was closed")
+	}
+
 	// Broadcast event
 	ss.GameEventBroadcaster.Send(event)
+
+	return nil
 }
 
-func (ss *SpotSession) sendEndGameEvent(event *game_controller.EndGameEvent) {
+func (ss *SpotSession) sendEndGameEvent(event *game_controller.EndGameEvent) error {
 	ss.log.Debug("sendEndGameEvent")
 	ss.LastGameEvent = *event
+
+	if ss.GameEventBroadcaster == nil {
+		return errors.New("GameEventBroadcaster was closed")
+	}
 
 	// Broadcast event
 	ss.GameEventBroadcaster.Send(event)
 
 	// Close spot session
 	ss.Close()
+
+	return nil
 }
