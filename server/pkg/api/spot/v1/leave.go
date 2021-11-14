@@ -31,7 +31,7 @@ func (s *SpotServiceServer) LeaveSpot(ctx context.Context, request *proto.LeaveS
 	}
 
 	if !spot.PlayersList.Exists(playerUuid) {
-		return nil, fmt.Errorf("Player with uuid '%s' asn't found in spot with uuid '%s'", playerUuid, spotUuid)
+		return nil, fmt.Errorf("Player with uuid '%s' wasn't found in spot with uuid '%s'", playerUuid, spotUuid)
 	}
 
 	if spot.Session == nil {

@@ -17,10 +17,21 @@ import (
 	"github.com/tjgq/broadcast"
 )
 
+const (
+	minZoneRadiusInM  = float32(10)
+	nextZoneDelay     = 15 * time.Second
+	zoneSpeedInKmPerH = float64(20)
+)
+
 type SpotSession struct {
 	sync.RWMutex
 
 	log *logrus.Entry
+
+	spotPosition   s2.LatLng
+	spotRadiusInM  float32
+	nextZonePeriod time.Duration
+	duration       time.Duration
 
 	ZoneController *zone.Controller
 
@@ -41,6 +52,7 @@ type SpotSession struct {
 func NewSpotSession(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration) *SpotSession {
 	ss := new(SpotSession)
 	ss.log = logger.CreateLogger("spot-session-" + spotId.String())
+
 	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
 	ss.GameController = game_controller.NewGameController(duration)
 	ss.GameEventBroadcaster = broadcast.New(0)
@@ -58,18 +70,18 @@ func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList *player_list.Play
 		ss.PlayersStateMap.Store(playerUuid, playerState)
 	})
 
-	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
-
-	// Start game
-	ss.GameController.Start(hunterUuid)
-
-	// Send and save StartGameEvent
-	ss.sendStartGameEvent()
-
 	// Start zone ticker
 	if err := ss.ZoneController.Start(); err != nil {
 		return err
 	}
+
+	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
+
+	// Send and save StartGameEvent
+	ss.sendStartGameEvent()
+
+	// Start game
+	ss.GameController.Start(hunterUuid)
 
 	return nil
 }
