@@ -1,6 +1,7 @@
 package spot_session
 
 import (
+	"errors"
 	"sync"
 	"time"
 
@@ -77,6 +78,7 @@ func (ss *SpotSession) Close() {
 	// Close game events stream
 	ss.log.Debug("Close GameEventBroadcaster")
 	ss.GameEventBroadcaster.Close()
+	ss.GameEventBroadcaster = nil
 	ss.log.Debug("Closed GameEventBroadcaster")
 
 	// Close player states streams
@@ -113,22 +115,34 @@ func (ss *SpotSession) NewPlayersState(key uuid.UUID, value *player_state.Player
 	return nil
 }
 
-func (ss *SpotSession) sendStartGameEvent() {
+func (ss *SpotSession) sendStartGameEvent() error {
 	ss.log.Debug("sendStartGameEvent")
 	event := game_controller.StartGameEvent{}
 	ss.LastGameEvent = event
 
+	if ss.GameEventBroadcaster == nil {
+		return errors.New("GameEventBroadcaster was closed")
+	}
+
 	// Broadcast event
 	ss.GameEventBroadcaster.Send(event)
+
+	return nil
 }
 
-func (ss *SpotSession) sendEndGameEvent(event *game_controller.EndGameEvent) {
+func (ss *SpotSession) sendEndGameEvent(event *game_controller.EndGameEvent) error {
 	ss.log.Debug("sendEndGameEvent")
 	ss.LastGameEvent = *event
+
+	if ss.GameEventBroadcaster == nil {
+		return errors.New("GameEventBroadcaster was closed")
+	}
 
 	// Broadcast event
 	ss.GameEventBroadcaster.Send(event)
 
 	// Close spot session
 	ss.Close()
+
+	return nil
 }
