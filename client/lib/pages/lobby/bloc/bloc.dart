@@ -56,19 +56,22 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
 
     if (!isHost) {
       _logger.fine("Subscribe on spot active state");
-      _subscribeOnSpotGameEvents().fold(
-        (l) => emit(ErrorState(exception: l)),
-        (r) => r.listen((value) async {
+      client.subGameEvent(proto.SubGameEventRequest(spotUuid: spotUuid)).listen(
+        (value) async {
           switch (value.whichEvent()) {
             case proto.SubGameEventResponse_Event.startGameEvent:
               _logger.fine("Session is started");
-              final isPlayerHunterRet = await _isPlayerHunter();
-              isPlayerHunterRet.fold(
-                (l) => emit(ErrorState(exception: l)),
-                (isHunter) => emit(
-                  GoToGameState(isHunter: isHunter),
-                ),
-              );
+
+              await client
+                  .isPlayerHunter(proto.IsPlayerHunterRequest(
+                    spotUuid: spotUuid,
+                    playerUuid: playerUuid,
+                  ))
+                  .then(
+                    (response) =>
+                        emit(GoToGameState(isHunter: response.isHunter)),
+                    onError: (error) => emit(ErrorState(exception: error)),
+                  );
               break;
 
             case proto.SubGameEventResponse_Event.stopGameEvent:
@@ -77,19 +80,9 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
 
             default:
           }
-        }),
+        },
+        onError: (error) => emit(ErrorState(exception: error)),
       );
-    }
-  }
-
-  Either<Exception, ResponseStream<proto.SubGameEventResponse>>
-      _subscribeOnSpotGameEvents() {
-    try {
-      return Right(client.subGameEvent(proto.SubGameEventRequest(
-        spotUuid: spotUuid,
-      )));
-    } on Exception catch (ex) {
-      return Left(ex);
     }
   }
 
@@ -106,32 +99,22 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
   ) async {
     final curState = state;
     if (curState is InitedState) {
-      try {
-        await client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid));
-        final isPlayerHunterRet = await _isPlayerHunter();
-        isPlayerHunterRet.fold(
-            (l) => emit(ErrorState(exception: l)),
-            (isHunter) => emit(
-                  GoToGameState(isHunter: isHunter),
-                ));
-      } on Exception catch (ex) {
-        emit(ErrorState(exception: ex));
-      }
+      await client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid)).then(
+            (response) => null,
+            onError: (error) => emit(ErrorState(exception: error)),
+          );
+
+      await client
+          .isPlayerHunter(proto.IsPlayerHunterRequest(
+            spotUuid: spotUuid,
+            playerUuid: playerUuid,
+          ))
+          .then(
+            (response) => emit(GoToGameState(isHunter: response.isHunter)),
+            onError: (error) => emit(ErrorState(exception: error)),
+          );
     } else {
       _logger.shout("Wrong state $curState for $event");
-    }
-  }
-
-  Future<Either<Exception, bool>> _isPlayerHunter() async {
-    try {
-      final isPlayerHunterRet =
-          await client.isPlayerHunter(proto.IsPlayerHunterRequest(
-        spotUuid: spotUuid,
-        playerUuid: playerUuid,
-      ));
-      return Right(isPlayerHunterRet.isHunter);
-    } on Exception catch (ex) {
-      return Left(ex);
     }
   }
 
