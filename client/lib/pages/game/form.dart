@@ -49,9 +49,7 @@ class GameForm extends StatelessWidget {
               ),
             ),
           );
-          return const Center(
-            child: Text("Hunter wins!"),
-          );
+          return const _EndGameView(msg: "Hunter wins!");
         } else if (state is VictimsWinsState) {
           Future.delayed(
             const Duration(seconds: 10),
@@ -64,9 +62,7 @@ class GameForm extends StatelessWidget {
               ),
             ),
           );
-          return const Center(
-            child: Text("Victoms wins!"),
-          );
+          return const _EndGameView(msg: "Victoms wins!");
         } else if (state is DrawState) {
           Future.delayed(
             const Duration(seconds: 10),
@@ -79,9 +75,7 @@ class GameForm extends StatelessWidget {
               ),
             ),
           );
-          return const Center(
-            child: Text("Looks like it is draw!"),
-          );
+          return const _EndGameView(msg: "Looks like it is draw!");
         }
 
         return Text("Unkown state: $state");
@@ -228,5 +222,25 @@ class _InitedStateView extends StatelessWidget {
     } else {
       return Colors.black;
     }
+  }
+}
+
+class _EndGameView extends StatelessWidget {
+  final String msg;
+
+  const _EndGameView({required this.msg, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(msg),
+          const Text("Will be redirected in 10 seconds."),
+          const CircularProgressIndicator(),
+        ],
+      ),
+    );
   }
 }
