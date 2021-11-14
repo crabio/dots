@@ -36,9 +36,9 @@ type SpotSession struct {
 	PlayersStateMap *player_state.PlayerStateMap
 }
 
-func NewSpotSession(spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration) *SpotSession {
+func NewSpotSession(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM float32, nextZonePeriod time.Duration, duration time.Duration) *SpotSession {
 	ss := new(SpotSession)
-	ss.log = logger.CreateLogger("zone-controller-" + uuid.NewString())
+	ss.log = logger.CreateLogger("spot-session-" + spotId.String())
 	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
 	ss.GameController = game_controller.NewGameController(duration)
 	ss.GameEventBroadcaster = broadcast.New(0)
@@ -70,6 +70,20 @@ func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList []uuid.UUID) erro
 	}
 
 	return nil
+}
+
+func (ss *SpotSession) Close() {
+	// Close game events stream
+	ss.log.Debug("Close GameEventBroadcaster")
+	ss.GameEventBroadcaster.Close()
+	ss.log.Debug("Closed GameEventBroadcaster")
+
+	// Close player states streams
+	ss.log.Debug("Close PlayersStates Broadcasters")
+	ss.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
+		v.Broadcaster.Close()
+	})
+	ss.log.Debug("Closed PlayersStates Broadcasters")
 }
 
 func (ss *SpotSession) NewPlayersState(key uuid.UUID, value *player_state.PlayerState) error {
@@ -112,4 +126,7 @@ func (ss *SpotSession) sendEndGameEvent(event *game_controller.EndGameEvent) {
 
 	// Broadcast event
 	ss.GameEventBroadcaster.Send(event)
+
+	// Close spot session
+	ss.Close()
 }

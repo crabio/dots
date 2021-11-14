@@ -256,14 +256,21 @@ func (c *Controller) Stop() {
 	if c.nextZoneTimer != nil {
 		c.nextZoneTimer.Stop()
 		c.nextZoneTimer = nil
+		c.log.Debug("nextZoneTimer stopped")
 	}
 	if c.nextZoneDelayTimer != nil {
 		c.nextZoneDelayTimer.Stop()
 		c.nextZoneDelayTimer = nil
+		c.log.Debug("nextZoneDelayTimer stopped")
 	}
 	if c.zoneTicker != nil {
 		c.zoneTicker.Stop()
 		c.zoneTicker = nil
+		c.log.Debug("zoneTicker stopped")
+	}
+	if c.ZoneEventBroadcaster != nil {
+		c.ZoneEventBroadcaster.Close()
+		c.log.Debug("ZoneEventBroadcaster closed")
 	}
 	c.Unlock()
 	c.log.Debug("Stopped")
