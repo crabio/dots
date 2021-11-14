@@ -128,6 +128,10 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     try {
       _geoPositionStream = client
           .sendPlayerPosition(_createPlayerPositionStream(positionStream));
+      _geoPositionStream.onError((error, stackTrace) {
+        _logger.shout("sendPlayerPosition error: $error");
+        return proto.SendPlayerPositionResponse();
+      });
     } on Exception catch (ex) {
       return Left(ex);
     }
@@ -166,6 +170,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
                 playerHealth: value.playerState.health,
               ),
             ),
+            onError: (error) => _logger.shout("getPlayersStates error: $error"),
           );
     } on Exception catch (ex) {
       return ex;
@@ -176,74 +181,77 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     try {
       final request = proto.SubZoneEventRequest(spotUuid: spotUuid);
 
-      client.subZoneEvent(request).listen((value) {
-        switch (value.whichEvent()) {
-          case proto.SubZoneEventResponse_Event.startNextZoneTimerEvent:
-            final event = value.startNextZoneTimerEvent;
-            add(StartNextZoneTimerEvent(
-              currentZone: ZoneState(
-                position: LatLng(
-                  event.currentZone.position.latitude,
-                  event.currentZone.position.longitude,
+      client.subZoneEvent(request).listen(
+        (value) {
+          switch (value.whichEvent()) {
+            case proto.SubZoneEventResponse_Event.startNextZoneTimerEvent:
+              final event = value.startNextZoneTimerEvent;
+              add(StartNextZoneTimerEvent(
+                currentZone: ZoneState(
+                  position: LatLng(
+                    event.currentZone.position.latitude,
+                    event.currentZone.position.longitude,
+                  ),
+                  radiusInM: event.currentZone.radiusInM,
+                  damage: event.currentZone.damage,
                 ),
-                radiusInM: event.currentZone.radiusInM,
-                damage: event.currentZone.damage,
-              ),
-              nextZoneTime: DateTime.fromMillisecondsSinceEpoch(
-                  event.nextZoneTimestamp.toInt() * 1000),
-            ));
-            break;
+                nextZoneTime: DateTime.fromMillisecondsSinceEpoch(
+                    event.nextZoneTimestamp.toInt() * 1000),
+              ));
+              break;
 
-          case proto.SubZoneEventResponse_Event.startZoneDelayTimerEvent:
-            final event = value.startZoneDelayTimerEvent;
-            add(StartZoneDelayTimerEvent(
-              currentZone: ZoneState(
-                position: LatLng(
-                  event.currentZone.position.latitude,
-                  event.currentZone.position.longitude,
+            case proto.SubZoneEventResponse_Event.startZoneDelayTimerEvent:
+              final event = value.startZoneDelayTimerEvent;
+              add(StartZoneDelayTimerEvent(
+                currentZone: ZoneState(
+                  position: LatLng(
+                    event.currentZone.position.latitude,
+                    event.currentZone.position.longitude,
+                  ),
+                  radiusInM: event.currentZone.radiusInM,
+                  damage: event.currentZone.damage,
                 ),
-                radiusInM: event.currentZone.radiusInM,
-                damage: event.currentZone.damage,
-              ),
-              nextZone: ZoneState(
-                position: LatLng(
-                  event.nextZone.position.latitude,
-                  event.nextZone.position.longitude,
+                nextZone: ZoneState(
+                  position: LatLng(
+                    event.nextZone.position.latitude,
+                    event.nextZone.position.longitude,
+                  ),
+                  radiusInM: event.nextZone.radiusInM,
+                  damage: event.nextZone.damage,
                 ),
-                radiusInM: event.nextZone.radiusInM,
-                damage: event.nextZone.damage,
-              ),
-              zoneTickStartTimestamp: DateTime.fromMillisecondsSinceEpoch(
-                  event.zoneTickStartTimestamp.toInt() * 1000),
-            ));
-            break;
+                zoneTickStartTimestamp: DateTime.fromMillisecondsSinceEpoch(
+                    event.zoneTickStartTimestamp.toInt() * 1000),
+              ));
+              break;
 
-          case proto.SubZoneEventResponse_Event.zoneTickEvent:
-            final event = value.zoneTickEvent;
-            add(ZoneTickEvent(
-              currentZone: ZoneState(
-                position: LatLng(
-                  event.currentZone.position.latitude,
-                  event.currentZone.position.longitude,
+            case proto.SubZoneEventResponse_Event.zoneTickEvent:
+              final event = value.zoneTickEvent;
+              add(ZoneTickEvent(
+                currentZone: ZoneState(
+                  position: LatLng(
+                    event.currentZone.position.latitude,
+                    event.currentZone.position.longitude,
+                  ),
+                  radiusInM: event.currentZone.radiusInM,
+                  damage: event.currentZone.damage,
                 ),
-                radiusInM: event.currentZone.radiusInM,
-                damage: event.currentZone.damage,
-              ),
-              nextZone: ZoneState(
-                position: LatLng(
-                  event.nextZone.position.latitude,
-                  event.nextZone.position.longitude,
+                nextZone: ZoneState(
+                  position: LatLng(
+                    event.nextZone.position.latitude,
+                    event.nextZone.position.longitude,
+                  ),
+                  radiusInM: event.nextZone.radiusInM,
+                  damage: event.nextZone.damage,
                 ),
-                radiusInM: event.nextZone.radiusInM,
-                damage: event.nextZone.damage,
-              ),
-            ));
-            break;
+              ));
+              break;
 
-          default:
-            throw Exception("Unimplemented");
-        }
-      });
+            default:
+              throw Exception("Unimplemented");
+          }
+        },
+        onError: (error) => _logger.shout("subZoneEvent error: $error"),
+      );
       return null;
     } on Exception catch (ex) {
       return ex;
@@ -333,19 +341,22 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
           .subGameEvent(proto.SubGameEventRequest(
         spotUuid: spotUuid,
       ))
-          .listen((value) {
-        switch (value.whichEvent()) {
-          case proto.SubGameEventResponse_Event.startGameEvent:
-            _logger.fine("Session was started");
-            break;
-          case proto.SubGameEventResponse_Event.stopGameEvent:
-            _logger.fine("Session was stopped");
-            _processStopGameEvent(value.stopGameEvent);
-            break;
-          default:
-            throw Exception("Unimplemented");
-        }
-      });
+          .listen(
+        (value) {
+          switch (value.whichEvent()) {
+            case proto.SubGameEventResponse_Event.startGameEvent:
+              _logger.fine("Session was started");
+              break;
+            case proto.SubGameEventResponse_Event.stopGameEvent:
+              _logger.fine("Session was stopped");
+              _processStopGameEvent(value.stopGameEvent);
+              break;
+            default:
+              throw Exception("Unimplemented");
+          }
+        },
+        onError: (error) => _logger.shout("subGameEvent error: $error"),
+      );
     } on Exception catch (ex) {
       return ex;
     }
