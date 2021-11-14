@@ -148,10 +148,10 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     ))
         .then(
       (response) => emit(const LeavingSpotState()),
-      onError: (error) {
+      onError: (error) async {
         emit(ErrorState(exception: error));
         // Go to main page after time
-        Future.delayed(
+        await Future.delayed(
           const Duration(seconds: 10),
           () => emit(const LeavingSpotState()),
         );
