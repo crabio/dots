@@ -40,14 +40,13 @@ class GamePage extends StatelessWidget {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           actions: [
-            // TODO Add event to server "Exit from spot"
-            IconButton(
-              onPressed: () => navPopAndPush(
-                context,
-                MainPage(),
-              ),
-              icon: const Icon(Icons.close),
-            ),
+            BlocBuilder<GamePageBloc, GamePageState>(builder: (context, state) {
+              return IconButton(
+                onPressed: () =>
+                    context.read<GamePageBloc>().add(LeaveSpotEvent()),
+                icon: const Icon(Icons.close),
+              );
+            }),
             IconButton(
               onPressed: () => navPush(
                 context,

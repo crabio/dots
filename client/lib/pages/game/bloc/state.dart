@@ -50,6 +50,9 @@ class VictimsWinsState extends GamePageState {}
 
 class DrawState extends GamePageState {}
 
+/// State will be emitted when LeaveSpotEvent raised and is was succeded
+class LeavingSpotState extends GamePageState {}
+
 // State inited with error
 class ErrorState extends GamePageState {
   final Exception exception;

@@ -42,6 +42,7 @@ class LobbyPage extends StatelessWidget {
           ),
           actions: [
             IconButton(
+              // TODO Leave spot
               onPressed: () => navPopAndPush(
                 context,
                 MainPage(),

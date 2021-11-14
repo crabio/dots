@@ -40,6 +40,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     on<StartZoneDelayTimerEvent>(_onStartZoneDelayTimerEvent);
     on<SessionStopEvent>(_onSessionStopEvent);
     on<ZoneTickEvent>(_onZoneTickEvent);
+    on<LeaveSpotEvent>(_onLeaveSpotEvent);
 
     add(InitEvent());
   }
@@ -514,5 +515,20 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     } else {
       _logger.shout("Wrong state $curState for $event");
     }
+  }
+
+  Future<void> _onLeaveSpotEvent(
+    LeaveSpotEvent event,
+    Emitter<GamePageState> emit,
+  ) async {
+    await client
+        .leaveSpot(proto.LeaveSpotRequest(
+          spotUuid: spotUuid,
+          playerUuid: playerUuid,
+        ))
+        .then(
+          (response) => emit(LeavingSpotState()),
+          onError: (error) => emit(ErrorState(exception: error)),
+        );
   }
 }

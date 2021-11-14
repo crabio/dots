@@ -90,3 +90,5 @@ class SessionStopEvent extends GamePageEvent {
   @override
   List<Object> get props => [winner];
 }
+
+class LeaveSpotEvent extends GamePageEvent {}
