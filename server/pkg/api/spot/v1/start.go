@@ -43,7 +43,7 @@ func (s *SpotServiceServer) StartSpot(ctx context.Context, request *proto.StartS
 	mock.TimeNowMx.Lock()
 	rand.Seed(mock.TimeNow().Unix())
 	mock.TimeNowMx.Unlock()
-	hunterUuid := spot.PlayersList[rand.Intn(len(spot.PlayersList))]
+	hunterUuid := spot.PlayersList.AsSlice()[rand.Intn(spot.PlayersList.Len())]
 
 	// Start spot session
 	if err := spot.Session.Start(hunterUuid, spot.PlayersList); err != nil {

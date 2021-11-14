@@ -138,6 +138,9 @@
     "v1JoinToSpotResponse": {
       "type": "object"
     },
+    "v1LeaveSpotResponse": {
+      "type": "object"
+    },
     "v1PlayerState": {
       "type": "object",
       "properties": {
