@@ -8,7 +8,6 @@ import (
 	api_spot_v1_utils "github.com/iakrevetkho/dots/server/pkg/api/spot/v1/utils"
 	"github.com/iakrevetkho/dots/server/pkg/game_controller"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
-	"github.com/sirupsen/logrus"
 )
 
 func (s *SpotServiceServer) SubGameEvent(request *proto.SubGameEventRequest, stream proto.SpotService_SubGameEventServer) error {
@@ -60,8 +59,7 @@ func (s *SpotServiceServer) SubGameEvent(request *proto.SubGameEventRequest, str
 			}
 
 		default:
-			logrus.Fatalf("Unimplemented: %v", event)
-
+			return errors.New("Unimplemented GameEvent")
 		}
 	}
 	return nil

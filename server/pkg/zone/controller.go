@@ -255,14 +255,18 @@ func (c *Controller) Stop() {
 	c.Lock()
 	if c.nextZoneTimer != nil {
 		c.nextZoneTimer.Stop()
+		c.nextZoneTimer = nil
 	}
 	if c.nextZoneDelayTimer != nil {
 		c.nextZoneDelayTimer.Stop()
+		c.nextZoneDelayTimer = nil
 	}
 	if c.zoneTicker != nil {
 		c.zoneTicker.Stop()
+		c.zoneTicker = nil
 	}
 	c.Unlock()
+	c.log.Debug("Stopped")
 }
 
 // Creates new zone inside current zone
