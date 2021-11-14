@@ -22,7 +22,7 @@ func NewPlayerList() *PlayerList {
 func (l *PlayerList) AsSlice() []uuid.UUID {
 	keys := []uuid.UUID{}
 	l.RLock()
-	for k, _ := range l.internal {
+	for k := range l.internal {
 		keys = append(keys, k)
 	}
 	l.RUnlock()
@@ -51,7 +51,7 @@ func (l *PlayerList) Delete(key uuid.UUID) {
 
 func (l *PlayerList) Range(f func(k uuid.UUID)) {
 	l.Lock()
-	for k, _ := range l.internal {
+	for k := range l.internal {
 		f(k)
 	}
 	l.Unlock()
