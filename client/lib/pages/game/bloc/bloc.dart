@@ -527,7 +527,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
           playerUuid: playerUuid,
         ))
         .then(
-          (response) => emit(LeavingSpotState()),
+          (response) => emit(const LeavingSpotState()),
           onError: (error) => emit(ErrorState(exception: error)),
         );
   }

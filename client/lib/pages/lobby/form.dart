@@ -1,10 +1,8 @@
-// External
 import 'package:dots_client/pages/game/page.dart';
+import 'package:dots_client/pages/main/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// Internal
 import 'bloc/bloc.dart';
 
 class LobbyForm extends StatelessWidget {
@@ -23,6 +21,7 @@ class LobbyForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyPageBloc, LobbyPageState>(
       builder: (context, state) {
+        print("New state: $state");
         if (state is InitingState) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -47,6 +46,12 @@ class LobbyForm extends StatelessWidget {
           );
         } else if (state is ErrorState) {
           return Text("Init error: ${state.exception.toString()}");
+        } else if (state is LeavingSpotState) {
+          Future.delayed(
+            Duration.zero,
+            () => navPopAndPush(context, MainPage()),
+          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         return Text("Unkown state: $state");

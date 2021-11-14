@@ -9,7 +9,9 @@ abstract class GamePageEvent extends Equatable {
 }
 
 /// Event for initing all required components
-class InitEvent extends GamePageEvent {}
+class InitEvent extends GamePageEvent {
+  const InitEvent();
+}
 
 /// New players states event
 class NewPlayersStatesEvent extends GamePageEvent {
@@ -91,4 +93,6 @@ class SessionStopEvent extends GamePageEvent {
   List<Object> get props => [winner];
 }
 
-class LeaveSpotEvent extends GamePageEvent {}
+class LeaveSpotEvent extends GamePageEvent {
+  const LeaveSpotEvent();
+}

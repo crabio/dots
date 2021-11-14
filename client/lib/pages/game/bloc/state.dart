@@ -8,7 +8,9 @@ abstract class GamePageState extends Equatable {
   List<Object?> get props => [];
 }
 
-class GamePageInitial extends GamePageState {}
+class GamePageInitial extends GamePageState {
+  const GamePageInitial();
+}
 
 // State when game is running
 @CopyWith()
@@ -44,14 +46,22 @@ class InitedState extends GamePageState {
       ];
 }
 
-class HunterWinsState extends GamePageState {}
+class HunterWinsState extends GamePageState {
+  const HunterWinsState();
+}
 
-class VictimsWinsState extends GamePageState {}
+class VictimsWinsState extends GamePageState {
+  const VictimsWinsState();
+}
 
-class DrawState extends GamePageState {}
+class DrawState extends GamePageState {
+  const DrawState();
+}
 
 /// State will be emitted when LeaveSpotEvent raised and is was succeded
-class LeavingSpotState extends GamePageState {}
+class LeavingSpotState extends GamePageState {
+  const LeavingSpotState();
+}
 
 // State inited with error
 class ErrorState extends GamePageState {

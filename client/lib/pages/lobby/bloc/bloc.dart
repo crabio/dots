@@ -19,6 +19,8 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
   final String playerUuid;
   final bool isHost;
 
+  late ResponseStream<proto.GetSpotPlayersResponse> _playersListSub;
+
   final _logger = Logger("LobbyPageBloc");
 
   LobbyPageBloc({
@@ -31,19 +33,25 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     on<InitEvent>(_onInitEvent);
     on<NewSpotPlayersListEvent>(_onNewSpotPlayersListEvent);
     on<StartGameEvent>(_onStartGameEvent);
+    on<LeaveSpotEvent>(_onLeaveSpotEvent);
 
-    add(InitEvent());
+    add(const InitEvent());
   }
 
   void _onInitEvent(InitEvent event, Emitter<LobbyPageState> emit) async {
     _logger.fine("Get spot data");
 
     _logger.fine("Subscribe on players list");
-    _subscribeOnSpotPlayers().fold(
-      (l) => emit(ErrorState(exception: l)),
-      (r) => r.listen((value) {
-        add(NewSpotPlayersListEvent(playersList: value.playersList));
-      }),
+    _playersListSub =
+        client.getSpotPlayers(proto.GetSpotPlayersRequest(spotUuid: spotUuid));
+    _playersListSub.listen(
+      (value) => add(NewSpotPlayersListEvent(playersList: value.playersList)),
+      onError: (error, stackTrace) {
+        final grpcError = cast<GrpcError>(error);
+        if (grpcError.code != StatusCode.cancelled) {
+          emit(ErrorState(exception: error));
+        }
+      },
     );
 
     if (!isHost) {
@@ -71,17 +79,6 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
           }
         }),
       );
-    }
-  }
-
-  Either<Exception, ResponseStream<proto.GetSpotPlayersResponse>>
-      _subscribeOnSpotPlayers() {
-    try {
-      final request = proto.GetSpotPlayersRequest(spotUuid: spotUuid);
-
-      return Right(client.getSpotPlayers(request));
-    } on Exception catch (ex) {
-      return Left(ex);
     }
   }
 
@@ -136,5 +133,22 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     } on Exception catch (ex) {
       return Left(ex);
     }
+  }
+
+  Future<void> _onLeaveSpotEvent(
+    LeaveSpotEvent event,
+    Emitter<LobbyPageState> emit,
+  ) async {
+    // Cancel player list subscription to prevent states overriding
+    _playersListSub.cancel();
+    await client
+        .leaveSpot(proto.LeaveSpotRequest(
+          spotUuid: spotUuid,
+          playerUuid: playerUuid,
+        ))
+        .then(
+          (response) => emit(const LeavingSpotState()),
+          onError: (error) => emit(ErrorState(exception: error)),
+        );
   }
 }

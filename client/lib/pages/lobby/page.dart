@@ -41,14 +41,14 @@ class LobbyPage extends StatelessWidget {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           actions: [
-            IconButton(
-              // TODO Leave spot
-              onPressed: () => navPopAndPush(
-                context,
-                MainPage(),
-              ),
-              icon: const Icon(Icons.close),
-            ),
+            BlocBuilder<LobbyPageBloc, LobbyPageState>(
+                builder: (context, state) {
+              return IconButton(
+                onPressed: () =>
+                    context.read<LobbyPageBloc>().add(const LeaveSpotEvent()),
+                icon: const Icon(Icons.close),
+              );
+            }),
             IconButton(
               onPressed: () => navPush(
                 context,

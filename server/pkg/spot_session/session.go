@@ -83,6 +83,7 @@ func (ss *SpotSession) Close() {
 	ss.log.Debug("Close PlayersStates Broadcasters")
 	ss.PlayersStateMap.Range(func(k uuid.UUID, v *player_state.PlayerState) {
 		v.Broadcaster.Close()
+		v.Broadcaster = nil
 	})
 	ss.log.Debug("Closed PlayersStates Broadcasters")
 }
