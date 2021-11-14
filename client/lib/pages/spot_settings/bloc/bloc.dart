@@ -51,7 +51,7 @@ class SpotSettingsPageBloc
     });
     on<NewSessionDurationEvent>((event, emit) {
       if (state is InitedState) {
-        emit((state as InitedState).copyWith(sessionDuration: event.value));
+        emit((state as InitedState).copyWith(zonePeriod: event.value));
       } else {
         _logger.shout("Not allowed $state for $event");
       }
@@ -64,33 +64,37 @@ class SpotSettingsPageBloc
           emit(curState.copyWith(creating: true));
           final request = proto.CreateSpotRequest(
             radiusInM: event.zoneRadius,
-            scanPeriodInSeconds: event.scanPeriod.inSeconds,
             zonePeriodInSeconds: event.zonePeriod.inSeconds,
-            sessionDurationInSeconds: event.sessionDuration.inSeconds,
+            scanPeriodInSeconds: event.scanPeriod.inSeconds,
             position: proto.Position(
               latitude: event.position.latitude,
               longitude: event.position.longitude,
             ),
           );
-          try {
-            final response = await client.createSpot(request);
+          final response = await client.createSpot(request);
 
-            // Join to spot
-            client.joinToSpot(proto.JoinToSpotRequest(
-              spotUuid: response.spotUuid,
-              playerUuid: playerUuid,
-            ));
-            emit(NewSpotCreatedState(
-              spotUuid: response.spotUuid,
-              position: LatLng(
-                event.position.latitude,
-                event.position.longitude,
-              ),
-            ));
-          } on Exception catch (ex) {
-            emit(curState.copyWith(creating: false, error: ex.toString()));
-          }
-        } else {}
+          // Join to spot
+          await client
+              .joinToSpot(proto.JoinToSpotRequest(
+                spotUuid: response.spotUuid,
+                playerUuid: playerUuid,
+              ))
+              .then(
+                (jtsResponse) => emit(NewSpotCreatedState(
+                  spotUuid: response.spotUuid,
+                  position: LatLng(
+                    event.position.latitude,
+                    event.position.longitude,
+                  ),
+                )),
+                onError: (error) => emit(curState.copyWith(
+                  creating: false,
+                  error: error.toString(),
+                )),
+              );
+        } else {
+          _logger.shout("Not allowed $state for $event");
+        }
       },
     );
   }

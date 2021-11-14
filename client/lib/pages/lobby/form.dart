@@ -21,7 +21,6 @@ class LobbyForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LobbyPageBloc, LobbyPageState>(
       builder: (context, state) {
-        print("New state: $state");
         if (state is InitingState) {
           return const Center(
             child: CircularProgressIndicator(),
