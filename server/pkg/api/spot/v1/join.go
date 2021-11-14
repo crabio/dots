@@ -9,6 +9,7 @@ import (
 
 	// Internal
 
+	"github.com/iakrevetkho/dots/server/pkg/spot_session"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -31,17 +32,19 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 	}
 
 	if spot.Session == nil {
-		return nil, fmt.Errorf("Spot has no session")
+		// Create session
+		spot.Lock()
+		spot.Session = spot_session.NewSpotSession(spot.Id, spot.Position, spot.RadiusInM, spot.ZonePeriod, spot.SessionDuration)
+		spot.Unlock()
+		s.log.Debug("Spot session created")
 	}
 
-	if spot.Session.GameController == nil {
-		return nil, fmt.Errorf("GameController is not inited")
-	}
-
-	spot.Session.GameController.Lock()
-	defer spot.Session.GameController.Unlock()
-	if spot.Session.GameController.IsActive {
-		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
+	if spot.Session.GameController != nil {
+		spot.Session.GameController.Lock()
+		defer spot.Session.GameController.Unlock()
+		if spot.Session.GameController.IsActive {
+			return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
+		}
 	}
 
 	// Append new player

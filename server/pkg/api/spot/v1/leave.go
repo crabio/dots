@@ -38,14 +38,12 @@ func (s *SpotServiceServer) LeaveSpot(ctx context.Context, request *proto.LeaveS
 		return nil, fmt.Errorf("Spot has no session")
 	}
 
-	if spot.Session.GameController == nil {
-		return nil, fmt.Errorf("GameController is not inited")
-	}
-
-	spot.Session.GameController.Lock()
-	defer spot.Session.GameController.Unlock()
-	if spot.Session.GameController.IsActive {
-		return nil, fmt.Errorf("Can't leave from active spot with uuid '%s'", spotUuid)
+	if spot.Session.GameController != nil {
+		spot.Session.GameController.Lock()
+		defer spot.Session.GameController.Unlock()
+		if spot.Session.GameController.IsActive {
+			return nil, fmt.Errorf("Can't leave from active spot with uuid '%s'", spotUuid)
+		}
 	}
 
 	// Remove player
@@ -53,6 +51,12 @@ func (s *SpotServiceServer) LeaveSpot(ctx context.Context, request *proto.LeaveS
 
 	// Send updated players list
 	spot.PlayersListBroadcaster.Send(spot.PlayersList)
+
+	// Check spot players list
+	if spot.PlayersList.Len() == 0 {
+		// Drop spot session if we have no players
+		spot.Session = nil
+	}
 
 	// Save spot
 	s.SpotsMap.Store(spotUuid, spot)

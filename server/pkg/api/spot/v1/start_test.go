@@ -17,7 +17,7 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
-func TestLeaveSpot(t *testing.T) {
+func TestStartSpot(t *testing.T) {
 	mock.TimeNowMx.Lock()
 	mock.TimeNow = func() time.Time { return time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC) }
 	mock.TimeNowMx.Unlock()
@@ -53,37 +53,7 @@ func TestLeaveSpot(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	// Check that we have active spot session
-	spot, ok := s.SpotsMap.Load(spotUuid)
-	assert.True(t, ok)
-	assert.NotNil(t, spot.Session)
-
-	// Leave players from spot
-	_, err = s.LeaveSpot(context.Background(), &proto.LeaveSpotRequest{
-		SpotUuid:   spotUuid.String(),
-		PlayerUuid: player1Uuid.String(),
-	})
+	response, err := s.StartSpot(context.Background(), &proto.StartSpotRequest{SpotUuid: spotUuid.String()})
 	assert.NoError(t, err)
-	_, err = s.LeaveSpot(context.Background(), &proto.LeaveSpotRequest{
-		SpotUuid:   spotUuid.String(),
-		PlayerUuid: player2Uuid.String(),
-	})
-	assert.NoError(t, err)
-
-	// Check that we have no active spot session
-	spot, ok = s.SpotsMap.Load(spotUuid)
-	assert.True(t, ok)
-	assert.Nil(t, spot.Session)
-
-	// Try to Leave players from spot again
-	_, err = s.LeaveSpot(context.Background(), &proto.LeaveSpotRequest{
-		SpotUuid:   spotUuid.String(),
-		PlayerUuid: player1Uuid.String(),
-	})
-	assert.Error(t, err)
-	_, err = s.LeaveSpot(context.Background(), &proto.LeaveSpotRequest{
-		SpotUuid:   spotUuid.String(),
-		PlayerUuid: player2Uuid.String(),
-	})
-	assert.Error(t, err)
+	assert.NotNil(t, response)
 }
