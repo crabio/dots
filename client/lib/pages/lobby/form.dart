@@ -73,7 +73,6 @@ class _InitedStateView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-// TODO Add leave button
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -102,8 +101,9 @@ class _InitedStateView extends StatelessWidget {
                   child: ElevatedButton(
                     key: const Key("btn_start"),
                     child: const Text("Start"),
-                    onPressed: () =>
-                        context.read<LobbyPageBloc>().add(StartGameEvent()),
+                    onPressed: () => context
+                        .read<LobbyPageBloc>()
+                        .add(const StartGameEvent()),
                   ),
                 )
               : Container(),

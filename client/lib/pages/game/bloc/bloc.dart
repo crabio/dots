@@ -33,7 +33,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     required this.geolocator,
     required this.spotUuid,
     required this.playerUuid,
-  }) : super(GamePageInitial()) {
+  }) : super(const GamePageInitial()) {
     on<InitEvent>(_onInitEvent);
     on<NewPlayersStatesEvent>(_onNewPlayersStatesEvent);
     on<StartNextZoneTimerEvent>(_onStartNextZoneTimerEvent);
@@ -42,7 +42,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     on<ZoneTickEvent>(_onZoneTickEvent);
     on<LeaveSpotEvent>(_onLeaveSpotEvent);
 
-    add(InitEvent());
+    add(const InitEvent());
   }
 
   void _onInitEvent(InitEvent event, Emitter<GamePageState> emit) async {
@@ -482,15 +482,15 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
 
     switch (event.winner) {
       case GameWinnerEnum.hunter:
-        emit(HunterWinsState());
+        emit(const HunterWinsState());
         break;
 
       case GameWinnerEnum.victims:
-        emit(VictimsWinsState());
+        emit(const VictimsWinsState());
         break;
 
       case GameWinnerEnum.draw:
-        emit(DrawState());
+        emit(const DrawState());
         break;
 
       default:

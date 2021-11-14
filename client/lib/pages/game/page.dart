@@ -1,10 +1,6 @@
-// External
 import 'package:dots_client/api/connector.dart';
-import 'package:dots_client/pages/main/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// Internal
 import 'package:dots_client/pages/settings/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'form.dart';
@@ -43,7 +39,7 @@ class GamePage extends StatelessWidget {
             BlocBuilder<GamePageBloc, GamePageState>(builder: (context, state) {
               return IconButton(
                 onPressed: () =>
-                    context.read<GamePageBloc>().add(LeaveSpotEvent()),
+                    context.read<GamePageBloc>().add(const LeaveSpotEvent()),
                 icon: const Icon(Icons.close),
               );
             }),
