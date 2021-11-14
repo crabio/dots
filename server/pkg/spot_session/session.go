@@ -28,11 +28,6 @@ type SpotSession struct {
 
 	log *logrus.Entry
 
-	spotPosition   s2.LatLng
-	spotRadiusInM  float32
-	nextZonePeriod time.Duration
-	duration       time.Duration
-
 	ZoneController *zone.Controller
 
 	DamageController *damage.Controller
@@ -53,7 +48,7 @@ func NewSpotSession(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM floa
 	ss := new(SpotSession)
 	ss.log = logger.CreateLogger("spot-session-" + spotId.String())
 
-	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, 10, nextZonePeriod, 15*time.Second, 20.0)
+	ss.ZoneController = zone.NewController(spotPosition, spotRadiusInM, minZoneRadiusInM, nextZonePeriod, nextZoneDelay, zoneSpeedInKmPerH)
 	ss.GameController = game_controller.NewGameController(duration)
 	ss.GameEventBroadcaster = broadcast.New(0)
 
@@ -78,7 +73,9 @@ func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList *player_list.Play
 	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
 
 	// Send and save StartGameEvent
-	ss.sendStartGameEvent()
+	if err := ss.sendStartGameEvent(); err != nil {
+		return err
+	}
 
 	// Start game
 	ss.GameController.Start(hunterUuid)
@@ -118,7 +115,9 @@ func (ss *SpotSession) NewPlayersState(key uuid.UUID, value *player_state.Player
 
 	// Check that we have event
 	if event != nil {
-		ss.sendEndGameEvent(event)
+		if err := ss.sendEndGameEvent(event); err != nil {
+			return err
+		}
 
 		// Stop zone controller
 		ss.ZoneController.Stop()
