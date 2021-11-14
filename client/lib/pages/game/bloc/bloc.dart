@@ -523,12 +523,19 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   ) async {
     await client
         .leaveSpot(proto.LeaveSpotRequest(
-          spotUuid: spotUuid,
-          playerUuid: playerUuid,
-        ))
+      spotUuid: spotUuid,
+      playerUuid: playerUuid,
+    ))
         .then(
-          (response) => emit(const LeavingSpotState()),
-          onError: (error) => emit(ErrorState(exception: error)),
+      (response) => emit(const LeavingSpotState()),
+      onError: (error) {
+        emit(ErrorState(exception: error));
+        // Go to main page after time
+        Future.delayed(
+          const Duration(seconds: 10),
+          () => emit(const LeavingSpotState()),
         );
+      },
+    );
   }
 }

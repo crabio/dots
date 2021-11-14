@@ -3,6 +3,7 @@ package api_spot_v1
 import (
 	// External
 
+	"errors"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -44,6 +45,11 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return err
 	}
 	s.SpotsMap.Store(spotUuid, spot)
+
+	// Check that broadcaster is exists
+	if playerState.Broadcaster == nil {
+		return errors.New("Player states broadcaster was closed")
+	}
 
 	for playerStateI := range playerState.Broadcaster.Listen().Ch {
 		playerState := playerStateI.(player_state.PlayerPublicState)
