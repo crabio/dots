@@ -24,6 +24,7 @@ type SpotServiceServer struct {
 	//
 	// key - spot UUID
 	// value - spot session data
+	// TODO Delete spot when all players leave spot
 	SpotsMap *spot.SpotMap
 }
 
