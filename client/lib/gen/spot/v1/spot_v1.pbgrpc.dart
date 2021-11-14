@@ -32,6 +32,12 @@ class SpotServiceClient extends $grpc.Client {
           ($0.JoinToSpotRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.JoinToSpotResponse.fromBuffer(value));
+  static final _$leaveSpot =
+      $grpc.ClientMethod<$0.LeaveSpotRequest, $0.LeaveSpotResponse>(
+          '/spot.v1.SpotService/LeaveSpot',
+          ($0.LeaveSpotRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.LeaveSpotResponse.fromBuffer(value));
   static final _$getSpotPlayers =
       $grpc.ClientMethod<$0.GetSpotPlayersRequest, $0.GetSpotPlayersResponse>(
           '/spot.v1.SpotService/GetSpotPlayers',
@@ -107,6 +113,12 @@ class SpotServiceClient extends $grpc.Client {
       $0.JoinToSpotRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$joinToSpot, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.LeaveSpotResponse> leaveSpot(
+      $0.LeaveSpotRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$leaveSpot, request, options: options);
   }
 
   $grpc.ResponseStream<$0.GetSpotPlayersResponse> getSpotPlayers(
@@ -198,6 +210,13 @@ abstract class SpotServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.JoinToSpotRequest.fromBuffer(value),
         ($0.JoinToSpotResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.LeaveSpotRequest, $0.LeaveSpotResponse>(
+        'LeaveSpot',
+        leaveSpot_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.LeaveSpotRequest.fromBuffer(value),
+        ($0.LeaveSpotResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.GetSpotPlayersRequest,
             $0.GetSpotPlayersResponse>(
         'GetSpotPlayers',
@@ -294,6 +313,11 @@ abstract class SpotServiceBase extends $grpc.Service {
     return joinToSpot(call, await request);
   }
 
+  $async.Future<$0.LeaveSpotResponse> leaveSpot_Pre($grpc.ServiceCall call,
+      $async.Future<$0.LeaveSpotRequest> request) async {
+    return leaveSpot(call, await request);
+  }
+
   $async.Stream<$0.GetSpotPlayersResponse> getSpotPlayers_Pre(
       $grpc.ServiceCall call,
       $async.Future<$0.GetSpotPlayersRequest> request) async* {
@@ -347,6 +371,8 @@ abstract class SpotServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.GetSpotRequest request);
   $async.Future<$0.JoinToSpotResponse> joinToSpot(
       $grpc.ServiceCall call, $0.JoinToSpotRequest request);
+  $async.Future<$0.LeaveSpotResponse> leaveSpot(
+      $grpc.ServiceCall call, $0.LeaveSpotRequest request);
   $async.Stream<$0.GetSpotPlayersResponse> getSpotPlayers(
       $grpc.ServiceCall call, $0.GetSpotPlayersRequest request);
   $async.Future<$0.StartSpotResponse> startSpot(

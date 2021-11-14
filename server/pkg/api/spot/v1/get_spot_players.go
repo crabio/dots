@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 
 	// Internal
+	"github.com/iakrevetkho/dots/server/pkg/player_list"
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
@@ -29,18 +30,18 @@ func (s *SpotServiceServer) GetSpotPlayers(request *proto.GetSpotPlayersRequest,
 	}
 
 	for playersListI := range spot.PlayersListBroadcaster.Listen().Ch {
-		if err := s.sendSpotPlayersList(playersListI.([]uuid.UUID), stream); err != nil {
+		if err := s.sendSpotPlayersList(playersListI.(*player_list.PlayerList), stream); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (s *SpotServiceServer) sendSpotPlayersList(playersList []uuid.UUID, stream proto.SpotService_GetSpotPlayersServer) error {
+func (s *SpotServiceServer) sendSpotPlayersList(playersList *player_list.PlayerList, stream proto.SpotService_GetSpotPlayersServer) error {
 	response := &proto.GetSpotPlayersResponse{}
-	for _, playerUuid := range playersList {
+	playersList.Range(func(playerUuid uuid.UUID) {
 		response.PlayersList = append(response.PlayersList, playerUuid.String())
-	}
+	})
 
 	s.log.WithField("response", response.String()).Debug("Get spot players list response")
 	if err := stream.Send(response); err != nil {

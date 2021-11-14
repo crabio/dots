@@ -12,8 +12,8 @@ import (
 	proto "github.com/iakrevetkho/dots/server/proto/gen/spot/v1"
 )
 
-func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinToSpotRequest) (*proto.JoinToSpotResponse, error) {
-	s.log.WithField("request", request.String()).Debug("Join to spot request")
+func (s *SpotServiceServer) LeaveSpot(ctx context.Context, request *proto.LeaveSpotRequest) (*proto.LeaveSpotResponse, error) {
+	s.log.WithField("request", request.String()).Debug("Leave spot request")
 
 	spotUuid, err := uuid.Parse(request.SpotUuid)
 	if err != nil {
@@ -30,6 +30,10 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 		return nil, fmt.Errorf("Spot with uuid '%s' couldn't be found", spotUuid)
 	}
 
+	if !spot.PlayersList.Exists(playerUuid) {
+		return nil, fmt.Errorf("Player with uuid '%s' asn't found in spot with uuid '%s'", playerUuid, spotUuid)
+	}
+
 	if spot.Session == nil {
 		return nil, fmt.Errorf("Spot has no session")
 	}
@@ -41,11 +45,11 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 	spot.Session.GameController.Lock()
 	defer spot.Session.GameController.Unlock()
 	if spot.Session.GameController.IsActive {
-		return nil, fmt.Errorf("Can't join to active spot with uuid '%s'", spotUuid)
+		return nil, fmt.Errorf("Can't leave from active spot with uuid '%s'", spotUuid)
 	}
 
-	// Append new player
-	spot.PlayersList.Store(playerUuid)
+	// Remove player
+	spot.PlayersList.Delete(playerUuid)
 
 	// Send updated players list
 	spot.PlayersListBroadcaster.Send(spot.PlayersList)
@@ -53,7 +57,7 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 	// Save spot
 	s.SpotsMap.Store(spotUuid, spot)
 
-	response := proto.JoinToSpotResponse{}
+	response := proto.LeaveSpotResponse{}
 
 	return &response, nil
 }

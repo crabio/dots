@@ -7,12 +7,15 @@ import (
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
 	"github.com/iakrevetkho/archaeopteryx/logger"
+	"github.com/iakrevetkho/dots/server/pkg/player_list"
 	"github.com/iakrevetkho/dots/server/pkg/spot_session"
 	"github.com/sirupsen/logrus"
 	"github.com/tjgq/broadcast"
 )
 
 type Spot struct {
+	sync.RWMutex
+
 	Id uuid.UUID
 
 	log *logrus.Entry
@@ -23,7 +26,8 @@ type Spot struct {
 	ZonePeriod      time.Duration
 	SessionDuration time.Duration
 
-	PlayersList []uuid.UUID
+	// Map with players in spot
+	PlayersList *player_list.PlayerList
 	// Channel for sending players list on update
 	PlayersListBroadcaster *broadcast.Broadcaster
 
@@ -39,6 +43,7 @@ func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zo
 	spot.ScanPeriod = scanPeriod
 	spot.ZonePeriod = zonePeriod
 	spot.SessionDuration = sessionDuration
+	spot.PlayersList = player_list.NewPlayerList()
 	spot.PlayersListBroadcaster = broadcast.New(0)
 	spot.Session = spot_session.NewSpotSession(spot.Id, spot.Position, spot.RadiusInM, spot.ZonePeriod, spot.SessionDuration)
 
@@ -47,12 +52,12 @@ func NewSpot(position s2.LatLng, radiusInM float32, scanPeriod time.Duration, zo
 
 type SpotMap struct {
 	sync.RWMutex
-	internal map[uuid.UUID]Spot
+	internal map[uuid.UUID]*Spot
 }
 
 func NewSpotMap() *SpotMap {
 	return &SpotMap{
-		internal: make(map[uuid.UUID]Spot),
+		internal: make(map[uuid.UUID]*Spot),
 	}
 }
 
@@ -62,7 +67,7 @@ func (s *Spot) Close() {
 	s.PlayersListBroadcaster.Close()
 }
 
-func (m *SpotMap) Load(key uuid.UUID) (value Spot, ok bool) {
+func (m *SpotMap) Load(key uuid.UUID) (value *Spot, ok bool) {
 	m.RLock()
 	result, ok := m.internal[key]
 	m.RUnlock()
@@ -75,7 +80,7 @@ func (m *SpotMap) Delete(key uuid.UUID) {
 	m.Unlock()
 }
 
-func (m *SpotMap) Store(key uuid.UUID, value Spot) {
+func (m *SpotMap) Store(key uuid.UUID, value *Spot) {
 	m.Lock()
 	m.internal[key] = value
 	m.Unlock()

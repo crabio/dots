@@ -10,6 +10,8 @@ service SpotService {
   rpc GetSpot (GetSpotRequest) returns (GetSpotResponse) {}
   
   rpc JoinToSpot (JoinToSpotRequest) returns (JoinToSpotResponse) {}
+  
+  rpc LeaveSpot (LeaveSpotRequest) returns (LeaveSpotResponse) {}
 
   // GetSpotPlayers returns stream of players in spot
   // If new player will be connected to spot, it will be sent
@@ -66,6 +68,14 @@ message JoinToSpotRequest {
 }
 
 message JoinToSpotResponse {
+}
+
+message LeaveSpotRequest {
+  string spot_uuid = 1;
+  string player_uuid = 2;
+}
+
+message LeaveSpotResponse {
 }
 
 message GetSpotPlayersRequest {

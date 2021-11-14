@@ -9,6 +9,7 @@ import (
 	"github.com/iakrevetkho/archaeopteryx/logger"
 	"github.com/iakrevetkho/dots/server/pkg/damage"
 	"github.com/iakrevetkho/dots/server/pkg/game_controller"
+	"github.com/iakrevetkho/dots/server/pkg/player_list"
 	"github.com/iakrevetkho/dots/server/pkg/player_state"
 	"github.com/iakrevetkho/dots/server/pkg/zone"
 	"github.com/sirupsen/logrus"
@@ -46,15 +47,15 @@ func NewSpotSession(spotId uuid.UUID, spotPosition s2.LatLng, spotRadiusInM floa
 	return ss
 }
 
-func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList []uuid.UUID) error {
+func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList *player_list.PlayerList) error {
 	ss.Lock()
 	defer ss.Unlock()
 
 	ss.PlayersStateMap = player_state.NewPlayerStateMap()
-	for _, playerUuid := range playersList {
+	playersList.Range(func(playerUuid uuid.UUID) {
 		playerState := player_state.NewPlayerState()
 		ss.PlayersStateMap.Store(playerUuid, playerState)
-	}
+	})
 
 	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
 
