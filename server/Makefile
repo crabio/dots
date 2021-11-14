@@ -6,6 +6,11 @@ help:
 	@echo " generate - generate proto files"
 	@echo " lint - run linter"
 	@echo " test - run unit tests"
+	@echo " build - build app binary"
+	@echo " build_docker - build docker image"
+	@echo " run_docker - run app in docker container"
+	@echo " build_and_run_docker - build docker image and run app in docker container"
+	@echo " run - run app"
 
 install:
 	@echo "Install Buf generators"
