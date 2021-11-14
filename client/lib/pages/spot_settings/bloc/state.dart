@@ -21,6 +21,7 @@ class InitedState extends SpotSettingsPageState {
   final double zoneRadius;
   final Duration scanPeriod;
   final Duration zonePeriod;
+  final Duration sessionDuration;
   final bool creating;
   final String error;
 
@@ -29,6 +30,7 @@ class InitedState extends SpotSettingsPageState {
     required this.zoneRadius,
     required this.scanPeriod,
     required this.zonePeriod,
+    required this.sessionDuration,
     this.creating = false,
     required this.error,
   });
@@ -39,6 +41,7 @@ class InitedState extends SpotSettingsPageState {
         zoneRadius,
         scanPeriod,
         zonePeriod,
+        sessionDuration,
         creating,
         error,
       ];
