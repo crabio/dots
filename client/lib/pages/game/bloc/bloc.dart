@@ -67,14 +67,8 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     _logger.fine("Subscribe on players states");
     await _subOnPlayersStates(emit);
 
-    _logger.fine("Get last session event");
-    await _getLastSessionEvent(emit);
-
     _logger.fine("Subscribe on session events");
     _subOnSessionEvents(emit);
-
-    _logger.fine("Get last zone event");
-    await _getLastZoneEvent(emit);
 
     _logger.fine("Subscribe on zone state");
     _subscribeOnZoneEvents(emit);
@@ -131,28 +125,6 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
         );
   }
 
-  Future<void> _getLastSessionEvent(Emitter<GamePageState> emit) async {
-    await client
-        .getLastGameEvent(proto.GetLastGameEventRequest(spotUuid: spotUuid))
-        .then(
-      (response) {
-        switch (response.whichEvent()) {
-          case proto.GetLastGameEventResponse_Event.startGameEvent:
-            _logger.fine("Session was started");
-            break;
-          case proto.GetLastGameEventResponse_Event.stopGameEvent:
-            _logger.fine("Session was stopped");
-            _processStopGameEvent(response.stopGameEvent);
-            break;
-          default:
-            // No last event
-            return null;
-        }
-      },
-      onError: (error) => emit(ErrorState(exception: error)),
-    );
-  }
-
   void _processStopGameEvent(proto.StopGameEvent event) {
     _logger.fine("Session was stopped");
     switch (event.winner) {
@@ -186,83 +158,6 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
             break;
           default:
             throw Exception("Unimplemented");
-        }
-      },
-      onError: (error) => emit(ErrorState(exception: error)),
-    );
-  }
-
-  Future<void> _getLastZoneEvent(Emitter<GamePageState> emit) async {
-    await client
-        .getLastZoneEvent(proto.GetLastZoneEventRequest(spotUuid: spotUuid))
-        .then(
-      (response) {
-        switch (response.whichEvent()) {
-          case proto.GetLastZoneEventResponse_Event.startNextZoneTimerEvent:
-            final event = response.startNextZoneTimerEvent;
-            add(StartNextZoneTimerEvent(
-              currentZone: ZoneState(
-                position: LatLng(
-                  event.currentZone.position.latitude,
-                  event.currentZone.position.longitude,
-                ),
-                radiusInM: event.currentZone.radiusInM,
-                damage: event.currentZone.damage,
-              ),
-              nextZoneTime: DateTime.fromMillisecondsSinceEpoch(
-                  event.nextZoneTimestamp.toInt() * 1000),
-            ));
-            break;
-
-          case proto.GetLastZoneEventResponse_Event.startZoneDelayTimerEvent:
-            final event = response.startZoneDelayTimerEvent;
-            add(StartZoneDelayTimerEvent(
-              currentZone: ZoneState(
-                position: LatLng(
-                  event.currentZone.position.latitude,
-                  event.currentZone.position.longitude,
-                ),
-                radiusInM: event.currentZone.radiusInM,
-                damage: event.currentZone.damage,
-              ),
-              nextZone: ZoneState(
-                position: LatLng(
-                  event.nextZone.position.latitude,
-                  event.nextZone.position.longitude,
-                ),
-                radiusInM: event.nextZone.radiusInM,
-                damage: event.nextZone.damage,
-              ),
-              zoneTickStartTimestamp: DateTime.fromMillisecondsSinceEpoch(
-                  event.zoneTickStartTimestamp.toInt() * 1000),
-            ));
-            break;
-
-          case proto.GetLastZoneEventResponse_Event.zoneTickEvent:
-            final event = response.zoneTickEvent;
-            add(ZoneTickEvent(
-              currentZone: ZoneState(
-                position: LatLng(
-                  event.currentZone.position.latitude,
-                  event.currentZone.position.longitude,
-                ),
-                radiusInM: event.currentZone.radiusInM,
-                damage: event.currentZone.damage,
-              ),
-              nextZone: ZoneState(
-                position: LatLng(
-                  event.nextZone.position.latitude,
-                  event.nextZone.position.longitude,
-                ),
-                radiusInM: event.nextZone.radiusInM,
-                damage: event.nextZone.damage,
-              ),
-            ));
-            break;
-
-          default:
-            // No last event
-            return null;
         }
       },
       onError: (error) => emit(ErrorState(exception: error)),
