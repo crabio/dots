@@ -35,85 +35,99 @@ func (s *SpotServiceServer) SubZoneEvent(request *proto.SubZoneEventRequest, str
 		return errors.New("ZoneController in spot is not inited")
 	}
 
+	// Send last zone event
+	if spot.Session.ZoneController.LastZoneEvent != nil {
+		if err := s.processSubZoneEvent(spot.Session.ZoneController.LastZoneEvent, stream); err != nil {
+			return err
+		}
+	}
+
+	// Sub on zone events stream
 	for zoneEventI := range spot.Session.ZoneController.ZoneEventBroadcaster.Listen().Ch {
-		switch event := zoneEventI.(type) {
-		case zone.StartNextZoneTimerEvent:
-			response := &proto.SubZoneEventResponse{
-				Event: &proto.SubZoneEventResponse_StartNextZoneTimerEvent{
-					StartNextZoneTimerEvent: &proto.StartNextZoneTimerEvent{
-						CurrentZone: &proto.ZoneState{
-							Position: &proto.Position{
-								Latitude:  event.CurrentZone.Position.Lat.Degrees(),
-								Longitude: event.CurrentZone.Position.Lng.Degrees(),
-							},
-							RadiusInM: event.CurrentZone.Radius,
-							Damage:    event.CurrentZone.Damage,
-						},
-						NextZoneTimestamp: event.NextZoneTime.Unix(),
-					},
-				},
-			}
-			s.log.WithField("response", response.String()).Debug("Start next zone timer event")
-			if err := stream.Send(response); err != nil {
-				return err
-			}
+		if err := s.processSubZoneEvent(zoneEventI, stream); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
-		case zone.StartZoneDelayTimerEvent:
-			response := &proto.SubZoneEventResponse{
-				Event: &proto.SubZoneEventResponse_StartZoneDelayTimerEvent{
-					StartZoneDelayTimerEvent: &proto.StartZoneDelayTimerEvent{
-						CurrentZone: &proto.ZoneState{
-							Position: &proto.Position{
-								Latitude:  event.CurrentZone.Position.Lat.Degrees(),
-								Longitude: event.CurrentZone.Position.Lng.Degrees(),
-							},
-							RadiusInM: event.CurrentZone.Radius,
-							Damage:    event.CurrentZone.Damage,
+func (s *SpotServiceServer) processSubZoneEvent(zoneEventI interface{}, stream proto.SpotService_SubZoneEventServer) error {
+	switch event := zoneEventI.(type) {
+	case zone.StartNextZoneTimerEvent:
+		response := &proto.SubZoneEventResponse{
+			Event: &proto.SubZoneEventResponse_StartNextZoneTimerEvent{
+				StartNextZoneTimerEvent: &proto.StartNextZoneTimerEvent{
+					CurrentZone: &proto.ZoneState{
+						Position: &proto.Position{
+							Latitude:  event.CurrentZone.Position.Lat.Degrees(),
+							Longitude: event.CurrentZone.Position.Lng.Degrees(),
 						},
-						NextZone: &proto.ZoneState{
-							Position: &proto.Position{
-								Latitude:  event.NextZone.Position.Lat.Degrees(),
-								Longitude: event.NextZone.Position.Lng.Degrees(),
-							},
-							RadiusInM: event.NextZone.Radius,
-							Damage:    event.NextZone.Damage,
-						},
-						ZoneTickStartTimestamp: event.ZoneTickStartTime.Unix(),
+						RadiusInM: event.CurrentZone.Radius,
+						Damage:    event.CurrentZone.Damage,
 					},
+					NextZoneTimestamp: event.NextZoneTime.Unix(),
 				},
-			}
-			s.log.WithField("response", response.String()).Debug("Start zone delay timer event")
-			if err := stream.Send(response); err != nil {
-				return err
-			}
+			},
+		}
+		s.log.WithField("response", response.String()).Debug("Start next zone timer event")
+		if err := stream.Send(response); err != nil {
+			return err
+		}
 
-		case zone.ZoneTickEvent:
-			response := &proto.SubZoneEventResponse{
-				Event: &proto.SubZoneEventResponse_ZoneTickEvent{
-					ZoneTickEvent: &proto.ZoneTickEvent{
-						CurrentZone: &proto.ZoneState{
-							Position: &proto.Position{
-								Latitude:  event.CurrentZone.Position.Lat.Degrees(),
-								Longitude: event.CurrentZone.Position.Lng.Degrees(),
-							},
-							RadiusInM: event.CurrentZone.Radius,
-							Damage:    event.CurrentZone.Damage,
+	case zone.StartZoneDelayTimerEvent:
+		response := &proto.SubZoneEventResponse{
+			Event: &proto.SubZoneEventResponse_StartZoneDelayTimerEvent{
+				StartZoneDelayTimerEvent: &proto.StartZoneDelayTimerEvent{
+					CurrentZone: &proto.ZoneState{
+						Position: &proto.Position{
+							Latitude:  event.CurrentZone.Position.Lat.Degrees(),
+							Longitude: event.CurrentZone.Position.Lng.Degrees(),
 						},
-						NextZone: &proto.ZoneState{
-							Position: &proto.Position{
-								Latitude:  event.NextZone.Position.Lat.Degrees(),
-								Longitude: event.NextZone.Position.Lng.Degrees(),
-							},
-							RadiusInM: event.NextZone.Radius,
-							Damage:    event.NextZone.Damage,
+						RadiusInM: event.CurrentZone.Radius,
+						Damage:    event.CurrentZone.Damage,
+					},
+					NextZone: &proto.ZoneState{
+						Position: &proto.Position{
+							Latitude:  event.NextZone.Position.Lat.Degrees(),
+							Longitude: event.NextZone.Position.Lng.Degrees(),
 						},
+						RadiusInM: event.NextZone.Radius,
+						Damage:    event.NextZone.Damage,
+					},
+					ZoneTickStartTimestamp: event.ZoneTickStartTime.Unix(),
+				},
+			},
+		}
+		if err := stream.Send(response); err != nil {
+			return err
+		}
+
+	case zone.ZoneTickEvent:
+		response := &proto.SubZoneEventResponse{
+			Event: &proto.SubZoneEventResponse_ZoneTickEvent{
+				ZoneTickEvent: &proto.ZoneTickEvent{
+					CurrentZone: &proto.ZoneState{
+						Position: &proto.Position{
+							Latitude:  event.CurrentZone.Position.Lat.Degrees(),
+							Longitude: event.CurrentZone.Position.Lng.Degrees(),
+						},
+						RadiusInM: event.CurrentZone.Radius,
+						Damage:    event.CurrentZone.Damage,
+					},
+					NextZone: &proto.ZoneState{
+						Position: &proto.Position{
+							Latitude:  event.NextZone.Position.Lat.Degrees(),
+							Longitude: event.NextZone.Position.Lng.Degrees(),
+						},
+						RadiusInM: event.NextZone.Radius,
+						Damage:    event.NextZone.Damage,
 					},
 				},
-			}
-			s.log.WithField("response", response.String()).Debug("Zone tick event")
-			if err := stream.Send(response); err != nil {
-				return err
-			}
+			},
+		}
+		s.log.WithField("response", response.String()).Debug("Zone tick event")
+		if err := stream.Send(response); err != nil {
+			return err
 		}
 	}
 	return nil

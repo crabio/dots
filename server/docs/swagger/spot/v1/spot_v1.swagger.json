@@ -62,31 +62,6 @@
         }
       }
     },
-    "v1GetLastGameEventResponse": {
-      "type": "object",
-      "properties": {
-        "startGameEvent": {
-          "$ref": "#/definitions/v1StartGameEvent"
-        },
-        "stopGameEvent": {
-          "$ref": "#/definitions/v1StopGameEvent"
-        }
-      }
-    },
-    "v1GetLastZoneEventResponse": {
-      "type": "object",
-      "properties": {
-        "startNextZoneTimerEvent": {
-          "$ref": "#/definitions/v1StartNextZoneTimerEvent"
-        },
-        "startZoneDelayTimerEvent": {
-          "$ref": "#/definitions/v1StartZoneDelayTimerEvent"
-        },
-        "zoneTickEvent": {
-          "$ref": "#/definitions/v1ZoneTickEvent"
-        }
-      }
-    },
     "v1GetPlayersStatesResponse": {
       "type": "object",
       "properties": {

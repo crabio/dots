@@ -35,36 +35,51 @@ func (s *SpotServiceServer) SubGameEvent(request *proto.SubGameEventRequest, str
 		return errors.New("GameEventBroadcaster was closed")
 	}
 
-	for gameEventI := range spot.Session.GameEventBroadcaster.Listen().Ch {
-		switch event := gameEventI.(type) {
-		case game_controller.StartGameEvent:
-			response := &proto.SubGameEventResponse{
-				Event: &proto.SubGameEventResponse_StartGameEvent{
-					StartGameEvent: &proto.StartGameEvent{},
-				},
-			}
-			s.log.WithField("response", response.String()).Debug("Start game session event")
-			if err := stream.Send(response); err != nil {
-				return err
-			}
-
-		case game_controller.EndGameEvent:
-			response := &proto.SubGameEventResponse{
-				Event: &proto.SubGameEventResponse_StopGameEvent{
-					StopGameEvent: &proto.StopGameEvent{
-						Winner: api_spot_v1_utils.MapStopGameEventWinner(event.Winner),
-					},
-				},
-			}
-
-			s.log.WithField("response", response.String()).Debug("Stop game session event")
-			if err := stream.Send(response); err != nil {
-				return err
-			}
-
-		default:
-			return errors.New("Unimplemented GameEvent")
+	// Send last game event
+	if spot.Session.LastGameEvent != nil {
+		if err := s.processSubGameEvent(spot.Session.LastGameEvent, stream); err != nil {
+			return err
 		}
+	}
+
+	// Sub on game events stream
+	for gameEventI := range spot.Session.GameEventBroadcaster.Listen().Ch {
+		if err := s.processSubGameEvent(gameEventI, stream); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *SpotServiceServer) processSubGameEvent(gameEventI interface{}, stream proto.SpotService_SubGameEventServer) error {
+	switch event := gameEventI.(type) {
+	case game_controller.StartGameEvent:
+		response := &proto.SubGameEventResponse{
+			Event: &proto.SubGameEventResponse_StartGameEvent{
+				StartGameEvent: &proto.StartGameEvent{},
+			},
+		}
+		s.log.WithField("response", response.String()).Debug("Start game session event")
+		if err := stream.Send(response); err != nil {
+			return err
+		}
+
+	case game_controller.EndGameEvent:
+		response := &proto.SubGameEventResponse{
+			Event: &proto.SubGameEventResponse_StopGameEvent{
+				StopGameEvent: &proto.StopGameEvent{
+					Winner: api_spot_v1_utils.MapStopGameEventWinner(event.Winner),
+				},
+			},
+		}
+
+		s.log.WithField("response", response.String()).Debug("Stop game session event")
+		if err := stream.Send(response); err != nil {
+			return err
+		}
+
+	default:
+		return errors.New("Unimplemented GameEvent")
 	}
 	return nil
 }
