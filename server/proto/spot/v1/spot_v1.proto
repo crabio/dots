@@ -23,8 +23,6 @@ service SpotService {
 
   rpc SubGameEvent (SubGameEventRequest) returns (stream SubGameEventResponse) {}
 
-  rpc GetLastGameEvent (GetLastGameEventRequest) returns (GetLastGameEventResponse) {}
-
   rpc SendPlayerPosition (stream SendPlayerPositionRequest) returns (SendPlayerPositionResponse) {}
   
   // GetPlayersStates returns stream of all players data (this player and others)
@@ -33,8 +31,6 @@ service SpotService {
 
   // SubZoneEvent returns stream of zones events
   rpc SubZoneEvent (SubZoneEventRequest) returns (stream SubZoneEventResponse) {}
-  
-  rpc GetLastZoneEvent (GetLastZoneEventRequest) returns (GetLastZoneEventResponse) {}
 }
 
 // RPC structures
@@ -114,17 +110,6 @@ message SubGameEventResponse {
   }
 }
 
-message GetLastGameEventRequest {
-  string spot_uuid = 1;
-}
-
-message GetLastGameEventResponse {
-  oneof event {
-    StartGameEvent start_game_event = 1;
-    StopGameEvent stop_game_event = 2;
-  }
-}
-
 message StartGameEvent {}
 
 message StopGameEvent {
@@ -160,18 +145,6 @@ message SubZoneEventRequest {
 }
 
 message SubZoneEventResponse {
-  oneof event {
-    StartNextZoneTimerEvent start_next_zone_timer_event = 1;
-    StartZoneDelayTimerEvent start_zone_delay_timer_event = 2;
-    ZoneTickEvent zone_tick_event = 3;
-  }
-}
-
-message GetLastZoneEventRequest {
-  string spot_uuid = 1;
-}
-
-message GetLastZoneEventResponse {
   oneof event {
     StartNextZoneTimerEvent start_next_zone_timer_event = 1;
     StartZoneDelayTimerEvent start_zone_delay_timer_event = 2;

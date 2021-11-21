@@ -28,14 +28,12 @@ type SpotServiceClient interface {
 	StartSpot(ctx context.Context, in *StartSpotRequest, opts ...grpc.CallOption) (*StartSpotResponse, error)
 	IsPlayerHunter(ctx context.Context, in *IsPlayerHunterRequest, opts ...grpc.CallOption) (*IsPlayerHunterResponse, error)
 	SubGameEvent(ctx context.Context, in *SubGameEventRequest, opts ...grpc.CallOption) (SpotService_SubGameEventClient, error)
-	GetLastGameEvent(ctx context.Context, in *GetLastGameEventRequest, opts ...grpc.CallOption) (*GetLastGameEventResponse, error)
 	SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error)
 	// GetPlayersStates returns stream of all players data (this player and others)
 	// Data will be received on each new position or health status
 	GetPlayersStates(ctx context.Context, in *GetPlayersStatesRequest, opts ...grpc.CallOption) (SpotService_GetPlayersStatesClient, error)
 	// SubZoneEvent returns stream of zones events
 	SubZoneEvent(ctx context.Context, in *SubZoneEventRequest, opts ...grpc.CallOption) (SpotService_SubZoneEventClient, error)
-	GetLastZoneEvent(ctx context.Context, in *GetLastZoneEventRequest, opts ...grpc.CallOption) (*GetLastZoneEventResponse, error)
 }
 
 type spotServiceClient struct {
@@ -164,15 +162,6 @@ func (x *spotServiceSubGameEventClient) Recv() (*SubGameEventResponse, error) {
 	return m, nil
 }
 
-func (c *spotServiceClient) GetLastGameEvent(ctx context.Context, in *GetLastGameEventRequest, opts ...grpc.CallOption) (*GetLastGameEventResponse, error) {
-	out := new(GetLastGameEventResponse)
-	err := c.cc.Invoke(ctx, "/spot.v1.SpotService/GetLastGameEvent", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *spotServiceClient) SendPlayerPosition(ctx context.Context, opts ...grpc.CallOption) (SpotService_SendPlayerPositionClient, error) {
 	stream, err := c.cc.NewStream(ctx, &SpotService_ServiceDesc.Streams[2], "/spot.v1.SpotService/SendPlayerPosition", opts...)
 	if err != nil {
@@ -271,15 +260,6 @@ func (x *spotServiceSubZoneEventClient) Recv() (*SubZoneEventResponse, error) {
 	return m, nil
 }
 
-func (c *spotServiceClient) GetLastZoneEvent(ctx context.Context, in *GetLastZoneEventRequest, opts ...grpc.CallOption) (*GetLastZoneEventResponse, error) {
-	out := new(GetLastZoneEventResponse)
-	err := c.cc.Invoke(ctx, "/spot.v1.SpotService/GetLastZoneEvent", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // SpotServiceServer is the server API for SpotService service.
 // All implementations must embed UnimplementedSpotServiceServer
 // for forward compatibility
@@ -294,14 +274,12 @@ type SpotServiceServer interface {
 	StartSpot(context.Context, *StartSpotRequest) (*StartSpotResponse, error)
 	IsPlayerHunter(context.Context, *IsPlayerHunterRequest) (*IsPlayerHunterResponse, error)
 	SubGameEvent(*SubGameEventRequest, SpotService_SubGameEventServer) error
-	GetLastGameEvent(context.Context, *GetLastGameEventRequest) (*GetLastGameEventResponse, error)
 	SendPlayerPosition(SpotService_SendPlayerPositionServer) error
 	// GetPlayersStates returns stream of all players data (this player and others)
 	// Data will be received on each new position or health status
 	GetPlayersStates(*GetPlayersStatesRequest, SpotService_GetPlayersStatesServer) error
 	// SubZoneEvent returns stream of zones events
 	SubZoneEvent(*SubZoneEventRequest, SpotService_SubZoneEventServer) error
-	GetLastZoneEvent(context.Context, *GetLastZoneEventRequest) (*GetLastZoneEventResponse, error)
 	mustEmbedUnimplementedSpotServiceServer()
 }
 
@@ -333,9 +311,6 @@ func (UnimplementedSpotServiceServer) IsPlayerHunter(context.Context, *IsPlayerH
 func (UnimplementedSpotServiceServer) SubGameEvent(*SubGameEventRequest, SpotService_SubGameEventServer) error {
 	return status.Errorf(codes.Unimplemented, "method SubGameEvent not implemented")
 }
-func (UnimplementedSpotServiceServer) GetLastGameEvent(context.Context, *GetLastGameEventRequest) (*GetLastGameEventResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLastGameEvent not implemented")
-}
 func (UnimplementedSpotServiceServer) SendPlayerPosition(SpotService_SendPlayerPositionServer) error {
 	return status.Errorf(codes.Unimplemented, "method SendPlayerPosition not implemented")
 }
@@ -344,9 +319,6 @@ func (UnimplementedSpotServiceServer) GetPlayersStates(*GetPlayersStatesRequest,
 }
 func (UnimplementedSpotServiceServer) SubZoneEvent(*SubZoneEventRequest, SpotService_SubZoneEventServer) error {
 	return status.Errorf(codes.Unimplemented, "method SubZoneEvent not implemented")
-}
-func (UnimplementedSpotServiceServer) GetLastZoneEvent(context.Context, *GetLastZoneEventRequest) (*GetLastZoneEventResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLastZoneEvent not implemented")
 }
 func (UnimplementedSpotServiceServer) mustEmbedUnimplementedSpotServiceServer() {}
 
@@ -511,24 +483,6 @@ func (x *spotServiceSubGameEventServer) Send(m *SubGameEventResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _SpotService_GetLastGameEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLastGameEventRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SpotServiceServer).GetLastGameEvent(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/spot.v1.SpotService/GetLastGameEvent",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SpotServiceServer).GetLastGameEvent(ctx, req.(*GetLastGameEventRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _SpotService_SendPlayerPosition_Handler(srv interface{}, stream grpc.ServerStream) error {
 	return srv.(SpotServiceServer).SendPlayerPosition(&spotServiceSendPlayerPositionServer{stream})
 }
@@ -597,24 +551,6 @@ func (x *spotServiceSubZoneEventServer) Send(m *SubZoneEventResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _SpotService_GetLastZoneEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLastZoneEventRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SpotServiceServer).GetLastZoneEvent(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/spot.v1.SpotService/GetLastZoneEvent",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SpotServiceServer).GetLastZoneEvent(ctx, req.(*GetLastZoneEventRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // SpotService_ServiceDesc is the grpc.ServiceDesc for SpotService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -645,14 +581,6 @@ var SpotService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IsPlayerHunter",
 			Handler:    _SpotService_IsPlayerHunter_Handler,
-		},
-		{
-			MethodName: "GetLastGameEvent",
-			Handler:    _SpotService_GetLastGameEvent_Handler,
-		},
-		{
-			MethodName: "GetLastZoneEvent",
-			Handler:    _SpotService_GetLastZoneEvent_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
