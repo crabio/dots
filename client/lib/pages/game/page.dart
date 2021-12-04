@@ -36,13 +36,15 @@ class GamePage extends StatelessWidget {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           actions: [
-            BlocBuilder<GamePageBloc, GamePageState>(builder: (context, state) {
-              return IconButton(
-                onPressed: () =>
-                    context.read<GamePageBloc>().add(const LeaveSpotEvent()),
-                icon: const Icon(Icons.close),
-              );
-            }),
+            BlocBuilder<GamePageBloc, GamePageState>(
+                builder: (context, state) => state is InitedState
+                    ? Container()
+                    : IconButton(
+                        onPressed: () => context
+                            .read<GamePageBloc>()
+                            .add(const LeaveSpotEvent()),
+                        icon: const Icon(Icons.close),
+                      )),
             IconButton(
               onPressed: () => navPush(
                 context,
