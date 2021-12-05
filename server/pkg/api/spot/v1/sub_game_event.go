@@ -31,15 +31,15 @@ func (s *SpotServiceServer) SubGameEvent(request *proto.SubGameEventRequest, str
 		return errors.New("GameController in spot is not inited")
 	}
 
-	if spot.Session.GameEventBroadcaster == nil {
-		return errors.New("GameEventBroadcaster was closed")
-	}
-
 	// Send last game event
 	if spot.Session.LastGameEvent != nil {
 		if err := s.processSubGameEvent(spot.Session.LastGameEvent, stream); err != nil {
 			return err
 		}
+	}
+
+	if spot.Session.GameEventBroadcaster == nil {
+		return errors.New("GameEventBroadcaster was closed")
 	}
 
 	// Sub on game events stream

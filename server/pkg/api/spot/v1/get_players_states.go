@@ -40,6 +40,7 @@ func (s *SpotServiceServer) GetPlayersStates(request *proto.GetPlayersStatesRequ
 		return fmt.Errorf("Player with uuid '%s' couldn't be found in spot '%s'", playerUuid, spotUuid)
 	}
 
+	// TODO Think about delete
 	// Update player state
 	if err := spot.Session.NewPlayersState(playerUuid, playerState); err != nil {
 		return err

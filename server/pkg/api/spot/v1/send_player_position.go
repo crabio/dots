@@ -26,7 +26,7 @@ func (s *SpotServiceServer) SendPlayerPosition(stream proto.SpotService_SendPlay
 		if err != nil {
 			return err
 		}
-		s.log.WithField("request", request.String()).Trace("Open send user position stream")
+		s.log.WithField("request", request.String()).Debug("Received new player's position")
 
 		spotUuid, err := uuid.Parse(request.SpotUuid)
 		if err != nil {

@@ -24,6 +24,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   final _logger = Logger("SpotPageBloc");
 
   late StreamController<Position> _geoPositionStream;
+  late StreamSubscription<Position> _geoPositionStreamSub;
   late StreamSubscription<proto.GetPlayersStatesResponse> _playersStatesStream;
 
   GamePageBloc({
@@ -75,18 +76,18 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   }
 
   Future<void> _subOnGeoPosition(Emitter<GamePageState> emit) async {
-    _geoPositionStream = StreamController<Position>(
-        onListen: () => geolocator
-            .getPositionStream(desiredAccuracy: LocationAccuracy.high)
-            .listen((event) => event));
+    _geoPositionStream = StreamController<Position>();
+    _geoPositionStreamSub = geolocator
+        .getPositionStream(desiredAccuracy: LocationAccuracy.high)
+        .listen((position) => _geoPositionStream.add(position));
 
     await client
-        .sendPlayerPosition(_createPlayerPositionStream(
-          _geoPositionStream.stream,
-        ))
+        .sendPlayerPosition(
+            _createPlayerPositionStream(_geoPositionStream.stream))
         .then(
           (response) => null,
-          onError: (error) => emit(ErrorState(exception: error)),
+          onError: (error) =>
+              _logger.shout("send player position error: $error"),
         );
   }
 
@@ -121,7 +122,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
               playerHealth: value.playerState.health,
             ),
           ),
-          onError: (error) => emit(ErrorState(exception: error)),
+          onError: (error) => _logger.shout("get player status error: $error"),
         );
   }
 
@@ -160,7 +161,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
             throw Exception("Unimplemented");
         }
       },
-      onError: (error) => emit(ErrorState(exception: error)),
+      onError: (error) => _logger.shout("get game event error: $error"),
     );
   }
 
@@ -241,7 +242,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   void _onNewPlayersStatesEvent(
     NewPlayersStatesEvent event,
     Emitter<GamePageState> emit,
-  ) async {
+  ) {
     final curState = state;
     if (curState is InitedState) {
       if (event.playerUuid == playerUuid) {
@@ -308,6 +309,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     SessionStopEvent event,
     Emitter<GamePageState> emit,
   ) async {
+    await _geoPositionStreamSub.cancel();
     await _geoPositionStream.close();
     _logger.fine("Geo position stream stopped");
     await _playersStatesStream.cancel();
