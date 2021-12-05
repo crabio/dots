@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
 part 'events.dart';
@@ -10,8 +9,6 @@ part 'bloc.g.dart';
 class JoinSpotPageBloc extends Bloc<JoinSpotPageEvent, JoinSpotPageState> {
   final proto.SpotServiceClient client;
   final String playerUuid;
-
-  final _logger = Logger("JoinSpotPageBloc");
 
   JoinSpotPageBloc({
     required this.client,
