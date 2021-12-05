@@ -1,4 +1,5 @@
 // External
+import 'package:dots_client/pages/join/page.dart';
 import 'package:dots_client/pages/spot_settings/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,17 @@ class MainForm extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: ElevatedButton(
+                        key: const Key("btn_join_spot"),
+                        child: const Text("Join spot"),
+                        onPressed: () => navPopAndPush(
+                          context,
+                          JoinSpotPage(playerUuid: playerUuid),
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 40),
                       child: ElevatedButton(
