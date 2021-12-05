@@ -83,10 +83,22 @@ class _LobbyPageView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const TabBar(
+          TabBar(
             tabs: [
-              Icon(Icons.list),
-              Icon(Icons.qr_code),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.list,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.qr_code,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
             ],
           ),
           Expanded(
@@ -184,7 +196,11 @@ class _QrCodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Container());
-    return Center(child: QrImage(data: qrCodeData));
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: QrImage(data: qrCodeData),
+      ),
+    );
   }
 }
