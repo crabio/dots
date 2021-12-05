@@ -39,9 +39,8 @@ func (s *SpotServiceServer) IsPlayerHunter(ctx context.Context, request *proto.I
 	}
 
 	spot.Session.GameController.Lock()
-	if !spot.Session.GameController.IsActive {
-		spot.Session.GameController.Unlock()
-		return nil, fmt.Errorf("Spot is not active")
+	if spot.Session.GameController.HunterUuid == nil {
+		return nil, fmt.Errorf("Hunter wasn't choosen")
 	}
 
 	response := proto.IsPlayerHunterResponse{

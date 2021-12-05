@@ -32,19 +32,20 @@ func NewGameController(sessionDuration time.Duration) *GameController {
 	c := new(GameController)
 	c.log = logger.CreateLogger("game-controller")
 	c.sessionDuration = sessionDuration
+	c.IsActive = false
 	return c
 }
 
 func (c *GameController) Start(hunterUuid uuid.UUID) {
 	c.Lock()
+	defer c.Unlock()
+
 	c.IsActive = true
-	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
 	mock.TimeNowMx.Lock()
 	timeNow := mock.TimeNow().UTC()
 	mock.TimeNowMx.Unlock()
 	c.StartTime = &timeNow
 	c.HunterUuid = &hunterUuid
-	c.Unlock()
 }
 
 // Function checks current spot session status
@@ -55,9 +56,8 @@ func (c *GameController) Start(hunterUuid uuid.UUID) {
 // 1. hunter is death and at least one of victim alive
 // 2. or time if over and at least one of victim alive
 func (c *GameController) Check(playerStateMap *player_state.PlayerStateMap) (*EndGameEvent, error) {
-	c.log.Debugf("GameController(%v) acive:%v", c, c.IsActive)
 	if !c.IsActive {
-		return nil, errors.New("Game session is not active")
+		return nil, errors.New("GameController is not active")
 	}
 
 	if c.StartTime == nil {
