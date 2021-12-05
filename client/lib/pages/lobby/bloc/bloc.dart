@@ -38,7 +38,10 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     add(const InitEvent());
   }
 
-  void _onInitEvent(InitEvent event, Emitter<LobbyPageState> emit) async {
+  Future<void> _onInitEvent(
+    InitEvent event,
+    Emitter<LobbyPageState> emit,
+  ) async {
     _logger.fine("Get spot data");
 
     _logger.fine("Subscribe on players list");
@@ -60,8 +63,7 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
         (value) async {
           switch (value.whichEvent()) {
             case proto.SubGameEventResponse_Event.startGameEvent:
-              _logger.fine("Session is started");
-
+              _logger.fine("Session was started");
               await client
                   .isPlayerHunter(proto.IsPlayerHunterRequest(
                     spotUuid: spotUuid,
@@ -86,14 +88,14 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     }
   }
 
-  void _onNewSpotPlayersListEvent(
+  Future<void> _onNewSpotPlayersListEvent(
     NewSpotPlayersListEvent event,
     Emitter<LobbyPageState> emit,
   ) async {
     emit(InitedState(playersList: event.playersList));
   }
 
-  void _onStartGameEvent(
+  Future<void> _onStartGameEvent(
     StartGameEvent event,
     Emitter<LobbyPageState> emit,
   ) async {

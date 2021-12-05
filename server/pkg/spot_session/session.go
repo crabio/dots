@@ -72,13 +72,13 @@ func (ss *SpotSession) Start(hunterUuid uuid.UUID, playersList *player_list.Play
 
 	ss.DamageController = damage.NewDamageController(ss.ZoneController.ZoneEventBroadcaster, ss.PlayersStateMap)
 
+	// Start game
+	ss.GameController.Start(hunterUuid)
+
 	// Send and save StartGameEvent
 	if err := ss.sendStartGameEvent(); err != nil {
 		return err
 	}
-
-	// Start game
-	ss.GameController.Start(hunterUuid)
 
 	return nil
 }
