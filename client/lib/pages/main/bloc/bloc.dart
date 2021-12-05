@@ -1,4 +1,6 @@
 // External
+import 'dart:async';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -10,6 +12,7 @@ import 'state.dart';
 
 class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   final GeolocatorPlatform geolocator;
+  late StreamSubscription<Position>? _geoPositionSub;
 
   final _logger = Logger("MainPageBloc");
 
@@ -20,6 +23,15 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     on<NewGeoPositionEvent>(_onNewGeoPositionEvent);
 
     add(InitEvent());
+  }
+
+  @override
+  Future<void> close() {
+    if (_geoPositionSub != null) {
+      _geoPositionSub!.cancel();
+    }
+
+    return super.close();
   }
 
   void _onInitEvent(
@@ -47,7 +59,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     }
 
     _logger.fine("Subscribe on location");
-    geolocator
+    _geoPositionSub = geolocator
         .getPositionStream(
           locationSettings: const LocationSettings(
             accuracy: LocationAccuracy.high,

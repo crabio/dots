@@ -89,15 +89,17 @@ class _LobbyPageView extends StatelessWidget {
               Icon(Icons.qr_code),
             ],
           ),
-          TabBarView(children: [
-            _PlayersListView(
-              spotUuid: spotUuid,
-              isHost: isHost,
-              playersList: playersList,
-              exception: exception,
-            ),
-            _QrCodeView(qrCodeData: qrCodeData),
-          ])
+          Expanded(
+            child: TabBarView(children: [
+              _PlayersListView(
+                spotUuid: spotUuid,
+                isHost: isHost,
+                playersList: playersList,
+                exception: exception,
+              ),
+              _QrCodeView(qrCodeData: qrCodeData),
+            ]),
+          ),
         ],
       ),
     );
@@ -182,6 +184,7 @@ class _QrCodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Center(child: Container());
     return Center(child: QrImage(data: qrCodeData));
   }
 }
