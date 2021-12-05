@@ -30,11 +30,10 @@ void main() {
           speedAccuracy: 0.1,
         ));
     when(geolocator.getPositionStream(
-      desiredAccuracy: LocationAccuracy.high,
-      distanceFilter: 0,
-      forceAndroidLocationManager: false,
-      timeInterval: 0,
-      timeLimit: null,
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 0,
+      ),
     )).thenAnswer((_) => Stream.fromIterable([
           Position(
             longitude: 10,

@@ -17,12 +17,14 @@ void main() async {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
-  Bloc.observer = BlocObserverLogMiddleware();
 
   final appSettingsController = AppSettingsController();
   await appSettingsController.init();
 
-  runApp(App(appSettingsController: appSettingsController));
+  BlocOverrides.runZoned(
+    () => runApp(App(appSettingsController: appSettingsController)),
+    blocObserver: BlocObserverLogMiddleware(),
+  );
 }
 
 class App extends StatelessWidget {

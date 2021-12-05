@@ -1,4 +1,3 @@
-// Internal
 part of 'bloc.dart';
 
 abstract class LobbyPageState extends Equatable {
@@ -8,17 +7,24 @@ abstract class LobbyPageState extends Equatable {
   List<Object?> get props => [];
 }
 
-// Initial page state
-class InitingState extends LobbyPageState {}
-
-// Inited state
-class InitedState extends LobbyPageState {
+@CopyWith()
+class LobbyPageInitial extends LobbyPageState {
+  final bool gettingPlayersList;
   final List<String> playersList;
+  final String qrCodeData;
 
-  const InitedState({required this.playersList});
+  const LobbyPageInitial({
+    required this.gettingPlayersList,
+    required this.playersList,
+    required this.qrCodeData,
+  });
 
   @override
-  List<Object?> get props => [playersList];
+  List<Object?> get props => [
+        gettingPlayersList,
+        playersList,
+        qrCodeData,
+      ];
 }
 
 class GoToGameState extends LobbyPageState {

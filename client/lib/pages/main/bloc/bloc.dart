@@ -49,7 +49,9 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     _logger.fine("Subscribe on location");
     geolocator
         .getPositionStream(
-          desiredAccuracy: LocationAccuracy.high,
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+          ),
         )
         .listen((position) => add(NewGeoPositionEvent(
                 position: LatLng(

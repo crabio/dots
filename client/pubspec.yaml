@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  uuid: ^3.0.5
   logging: ^1.0.2
   flutter_bloc: ^8.0.0
   equatable: ^2.0.3
@@ -42,6 +43,7 @@ dependencies:
   dartz: ^0.10.1
   duration: ^3.0.8
   qr_code_scanner: ^0.6.1
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_test:

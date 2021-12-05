@@ -78,7 +78,11 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   Future<void> _subOnGeoPosition(Emitter<GamePageState> emit) async {
     _geoPositionStream = StreamController<Position>();
     _geoPositionStreamSub = geolocator
-        .getPositionStream(desiredAccuracy: LocationAccuracy.high)
+        .getPositionStream(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+          ),
+        )
         .listen((position) => _geoPositionStream.add(position));
 
     await client
