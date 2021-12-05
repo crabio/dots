@@ -16,6 +16,24 @@ class NewSpotUuidEvent extends JoinSpotPageEvent {
   List<Object> get props => [spotUuid];
 }
 
+class QrCodeScannerInitedEvent extends JoinSpotPageEvent {
+  final QRViewController controller;
+
+  const QrCodeScannerInitedEvent({required this.controller});
+
+  @override
+  List<Object> get props => [controller];
+}
+
+class NewQrCodeScannerEvent extends JoinSpotPageEvent {
+  final Barcode barcode;
+
+  const NewQrCodeScannerEvent({required this.barcode});
+
+  @override
+  List<Object> get props => [barcode];
+}
+
 class JoinSpotEvent extends JoinSpotPageEvent {
   final String spotUuid;
 
