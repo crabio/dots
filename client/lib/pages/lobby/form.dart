@@ -81,7 +81,7 @@ class _InitedStateView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: Text("Lobby $spotUuid"),
+            child: SelectableText("Lobby $spotUuid"),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
