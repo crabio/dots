@@ -24,6 +24,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
   final _logger = Logger("SpotPageBloc");
 
   late StreamController<Position> _geoPositionStream;
+  late StreamSubscription<Position> _geoPositionStreamSub;
   late StreamSubscription<proto.GetPlayersStatesResponse> _playersStatesStream;
 
   GamePageBloc({
@@ -76,7 +77,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
 
   Future<void> _subOnGeoPosition(Emitter<GamePageState> emit) async {
     _geoPositionStream = StreamController<Position>();
-    geolocator
+    _geoPositionStreamSub = geolocator
         .getPositionStream(desiredAccuracy: LocationAccuracy.high)
         .listen((position) => _geoPositionStream.add(position));
 
@@ -308,6 +309,7 @@ class GamePageBloc extends Bloc<GamePageEvent, GamePageState> {
     SessionStopEvent event,
     Emitter<GamePageState> emit,
   ) async {
+    await _geoPositionStreamSub.cancel();
     await _geoPositionStream.close();
     _logger.fine("Geo position stream stopped");
     await _playersStatesStream.cancel();
