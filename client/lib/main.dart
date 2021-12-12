@@ -7,12 +7,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:logging/logging.dart' as log;
 import 'package:dots_client/utils/bloc_middleware.dart';
 import 'package:dots_client/pages/main/page.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  log.Logger.root.level = log.Level.FINE;
+  log.Logger.root.level = log.Level.FINER;
   log.Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');
@@ -20,6 +21,12 @@ void main() async {
 
   final appSettingsController = AppSettingsController();
   await appSettingsController.init();
+
+  // Request permissions
+  if (await Permission.camera.request().isDenied) {
+    // TODO Add instruction
+    throw Exception("Camera permission is not granded");
+  }
 
   BlocOverrides.runZoned(
     () => runApp(App(appSettingsController: appSettingsController)),

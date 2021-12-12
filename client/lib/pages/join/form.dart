@@ -56,21 +56,35 @@ class _InitialView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const TabBar(
+          TabBar(
             tabs: [
-              Icon(Icons.text_fields),
-              Icon(Icons.qr_code),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.text_fields,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.qr_code,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
             ],
           ),
-          TabBarView(children: [
-            _TextInputView(
-              spotUuid: spotUuid,
-              error: error,
+          Expanded(
+            child: TabBarView(
+              children: [
+                _TextInputView(
+                  spotUuid: spotUuid,
+                  error: error,
+                ),
+                _QrCodeScannerView(error: error),
+              ],
             ),
-            _QrCodeView(
-              error: error,
-            ),
-          ])
+          ),
         ],
       ),
     );
@@ -125,35 +139,60 @@ class _TextInputView extends StatelessWidget {
   }
 }
 
-class _QrCodeView extends StatelessWidget {
+class _QrCodeScannerView extends StatefulWidget {
   final String error;
 
-  const _QrCodeView({
-    required this.error,
-    Key? key,
-  }) : super(key: key);
+  const _QrCodeScannerView({required this.error, Key? key}) : super(key: key);
+
+  @override
+  __QrCodeScannerViewState createState() => __QrCodeScannerViewState();
+}
+
+class __QrCodeScannerViewState extends State<_QrCodeScannerView> {
+  // TODO Init controller once on page open and after this just get controller
+  late QRViewController controller;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        error.isNotEmpty
-            ? Text(
-                error,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(color: Theme.of(context).colorScheme.error),
-              )
-            : Container(),
-        QRView(
-          key: const Key("qr_code_scanner"),
-          onQRViewCreated: (controller) => context
-              .read<JoinSpotPageBloc>()
-              .add(QrCodeScannerInitedEvent(controller: controller)),
-        )
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: (widget.error.isNotEmpty)
+                ? Text(
+                    widget.error,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(color: Theme.of(context).colorScheme.error),
+                  )
+                : const Text('Scan a spot code'),
+          ),
+        ),
+        Expanded(
+          flex: 9,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: QRView(
+              key: GlobalKey(debugLabel: 'qr_code_scanner'),
+              onQRViewCreated: (controller) {
+                controller = controller;
+                context
+                    .read<JoinSpotPageBloc>()
+                    .add(QrCodeScannerInitedEvent(controller: controller));
+              },
+            ),
+          ),
+        ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
