@@ -20,6 +20,7 @@ class JoinSpotPageBloc extends Bloc<JoinSpotPageEvent, JoinSpotPageState> {
   }) : super(const JoinSpotPageInitial(spotUuid: "", error: "")) {
     on<NewSpotUuidEvent>((event, emit) =>
         emit(JoinSpotPageInitial(spotUuid: event.spotUuid, error: "")));
+    // Add cancel subscription
     on<QrCodeScannerInitedEvent>((event, emit) => event
         .controller.scannedDataStream
         .listen((barcode) => add(NewQrCodeScannerEvent(barcode: barcode))));
