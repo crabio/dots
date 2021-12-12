@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
@@ -54,7 +56,7 @@ class JoinSpotPageBloc extends Bloc<JoinSpotPageEvent, JoinSpotPageState> {
         emit(curState.copyWith(error: "Bar code has no data"));
       } else {
         final qrCodeData = qr_code_proto.SpotQrCode.fromBuffer(
-            event.barcode.rawBytes!.toList());
+            utf8.encode(event.barcode.code!));
         add(JoinSpotEvent(spotUuid: qrCodeData.spotUuid));
       }
     }
