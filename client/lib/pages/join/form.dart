@@ -2,13 +2,16 @@ import 'package:dots_client/pages/lobby/page.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'bloc/bloc.dart';
 
 class JoinSpotForm extends StatelessWidget {
   final String playerUuid;
 
-  const JoinSpotForm({
+  final _logger = Logger("JoinSpotForm");
+
+  JoinSpotForm({
     required this.playerUuid,
     Key? key,
   }) : super(key: key);
@@ -17,8 +20,13 @@ class JoinSpotForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<JoinSpotPageBloc, JoinSpotPageState>(
       builder: (context, state) {
+        _logger.fine("state $state");
         if (state is JoinSpotPageInitial) {
-          return _InitialView(spotUuid: state.spotUuid, error: state.error);
+          return _InitialView(
+            spotUuid: state.spotUuid,
+            error: state.error,
+            success: state.success,
+          );
         } else if (state is JoinedSpotState) {
           Future.delayed(
             Duration.zero,
@@ -42,10 +50,12 @@ class JoinSpotForm extends StatelessWidget {
 class _InitialView extends StatelessWidget {
   final String spotUuid;
   final String error;
+  final bool success;
 
   const _InitialView({
     required this.spotUuid,
     required this.error,
+    required this.success,
     Key? key,
   }) : super(key: key);
 
@@ -81,7 +91,10 @@ class _InitialView extends StatelessWidget {
                   spotUuid: spotUuid,
                   error: error,
                 ),
-                _QrCodeScannerView(error: error),
+                _QrCodeScannerView(
+                  error: error,
+                  success: success,
+                ),
               ],
             ),
           ),
@@ -141,8 +154,13 @@ class _TextInputView extends StatelessWidget {
 
 class _QrCodeScannerView extends StatefulWidget {
   final String error;
+  final bool success;
 
-  const _QrCodeScannerView({required this.error, Key? key}) : super(key: key);
+  const _QrCodeScannerView({
+    required this.error,
+    required this.success,
+    Key? key,
+  }) : super(key: key);
 
   @override
   __QrCodeScannerViewState createState() => __QrCodeScannerViewState();
@@ -183,6 +201,11 @@ class __QrCodeScannerViewState extends State<_QrCodeScannerView> {
                     .read<JoinSpotPageBloc>()
                     .add(QrCodeScannerInitedEvent(controller: controller));
               },
+              overlay: QrScannerOverlayShape(
+                  borderColor: widget.success ? Colors.green : Colors.red,
+                  borderRadius: 10,
+                  borderLength: 30,
+                  borderWidth: 10),
             ),
           ),
         ),

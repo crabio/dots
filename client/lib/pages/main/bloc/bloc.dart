@@ -38,13 +38,6 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     InitEvent event,
     Emitter<MainPageState> emit,
   ) async {
-    _logger.fine("Check geolocation permission");
-    LocationPermission permission = await geolocator.checkPermission();
-    if (permission != LocationPermission.always &&
-        permission != LocationPermission.whileInUse) {
-      emit(LocationsPermissionIsNotAllowedState());
-    }
-
     _logger.fine("Get last known position");
     final position = await geolocator.getLastKnownPosition();
     if (position != null) {

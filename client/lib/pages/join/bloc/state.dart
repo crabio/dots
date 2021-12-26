@@ -11,16 +11,20 @@ abstract class JoinSpotPageState extends Equatable {
 class JoinSpotPageInitial extends JoinSpotPageState {
   final String spotUuid;
   final String error;
+  // Flag indicies that QR code scaned successfully
+  final bool success;
 
   const JoinSpotPageInitial({
     required this.spotUuid,
     required this.error,
+    required this.success,
   });
 
   @override
   List<Object?> get props => [
         spotUuid,
         error,
+        success,
       ];
 }
 

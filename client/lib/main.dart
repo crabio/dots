@@ -13,7 +13,7 @@ import 'theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  log.Logger.root.level = log.Level.FINE;
+  log.Logger.root.level = log.Level.FINER;
   log.Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');
@@ -26,6 +26,10 @@ void main() async {
   if (await Permission.camera.request().isDenied) {
     // TODO Add instruction
     throw Exception("Camera permission is not granded");
+  }
+  if (await Permission.location.request().isDenied) {
+    // TODO Add instruction
+    throw Exception("Location permission is not granded");
   }
 
   BlocOverrides.runZoned(
