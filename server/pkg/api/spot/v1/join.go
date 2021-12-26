@@ -49,14 +49,21 @@ func (s *SpotServiceServer) JoinToSpot(ctx context.Context, request *proto.JoinT
 
 	// Append new player
 	spot.PlayersList.Store(playerUuid)
+	s.log.Debug("Player added")
 
-	// Send updated players list
-	spot.PlayersListBroadcaster.Send(spot.PlayersList)
+	// Send updated players list if we have other players,
+	// who listens list of players
+	if spot.PlayersList.Len() > 0 {
+		spot.PlayersListBroadcaster.Send(spot.PlayersList)
+		s.log.Debug("updated players list sent")
+	}
 
 	// Save spot
 	s.SpotsMap.Store(spotUuid, spot)
+	s.log.Debug("spot saved")
 
 	response := proto.JoinToSpotResponse{}
+	s.log.Debug("response")
 
 	return &response, nil
 }
