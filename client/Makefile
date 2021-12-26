@@ -1,6 +1,6 @@
 install:
 	@echo "Activate protobuf plugin"
-	dart pub global activate protoc_plugin
+	dart pub global activate protoc_plugin 20.0.0
 
 generate:
 	@echo "Update Dart packages"
