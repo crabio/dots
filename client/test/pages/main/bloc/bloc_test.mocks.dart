@@ -2,10 +2,11 @@
 // in dots_client/test/pages/main/bloc/bloc_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:geolocator_platform_interface/geolocator_platform_interface.dart'
-    as _i2;
+    as _i3;
+import 'package:geolocator_platform_interface/src/models/models.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,79 +24,79 @@ class _FakePosition_0 extends _i1.Fake implements _i2.Position {}
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGeolocatorPlatform extends _i1.Mock
-    implements _i2.GeolocatorPlatform {
+    implements _i3.GeolocatorPlatform {
   MockGeolocatorPlatform() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i2.LocationPermission> checkPermission() =>
+  _i4.Future<_i3.LocationPermission> checkPermission() =>
       (super.noSuchMethod(Invocation.method(#checkPermission, []),
-              returnValue: Future<_i2.LocationPermission>.value(
-                  _i2.LocationPermission.denied))
-          as _i3.Future<_i2.LocationPermission>);
+              returnValue: Future<_i3.LocationPermission>.value(
+                  _i3.LocationPermission.denied))
+          as _i4.Future<_i3.LocationPermission>);
   @override
-  _i3.Future<_i2.LocationPermission> requestPermission() =>
+  _i4.Future<_i3.LocationPermission> requestPermission() =>
       (super.noSuchMethod(Invocation.method(#requestPermission, []),
-              returnValue: Future<_i2.LocationPermission>.value(
-                  _i2.LocationPermission.denied))
-          as _i3.Future<_i2.LocationPermission>);
+              returnValue: Future<_i3.LocationPermission>.value(
+                  _i3.LocationPermission.denied))
+          as _i4.Future<_i3.LocationPermission>);
   @override
-  _i3.Future<bool> isLocationServiceEnabled() =>
+  _i4.Future<bool> isLocationServiceEnabled() =>
       (super.noSuchMethod(Invocation.method(#isLocationServiceEnabled, []),
-          returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
   @override
-  _i3.Future<_i2.Position?> getLastKnownPosition(
+  _i4.Future<_i2.Position?> getLastKnownPosition(
           {bool? forceAndroidLocationManager = false}) =>
       (super.noSuchMethod(
               Invocation.method(#getLastKnownPosition, [],
                   {#forceAndroidLocationManager: forceAndroidLocationManager}),
               returnValue: Future<_i2.Position?>.value())
-          as _i3.Future<_i2.Position?>);
+          as _i4.Future<_i2.Position?>);
   @override
-  _i3.Future<_i2.Position> getCurrentPosition(
+  _i4.Future<_i2.Position> getCurrentPosition(
           {_i2.LocationSettings? locationSettings}) =>
       (super.noSuchMethod(
               Invocation.method(#getCurrentPosition, [],
                   {#locationSettings: locationSettings}),
               returnValue: Future<_i2.Position>.value(_FakePosition_0()))
-          as _i3.Future<_i2.Position>);
+          as _i4.Future<_i2.Position>);
   @override
-  _i3.Stream<_i2.ServiceStatus> getServiceStatusStream() =>
+  _i4.Stream<_i3.ServiceStatus> getServiceStatusStream() =>
       (super.noSuchMethod(Invocation.method(#getServiceStatusStream, []),
-              returnValue: Stream<_i2.ServiceStatus>.empty())
-          as _i3.Stream<_i2.ServiceStatus>);
+              returnValue: Stream<_i3.ServiceStatus>.empty())
+          as _i4.Stream<_i3.ServiceStatus>);
   @override
-  _i3.Stream<_i2.Position> getPositionStream(
+  _i4.Stream<_i2.Position> getPositionStream(
           {_i2.LocationSettings? locationSettings}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getPositionStream, [], {#locationSettings: locationSettings}),
           returnValue:
-              Stream<_i2.Position>.empty()) as _i3.Stream<_i2.Position>);
+              Stream<_i2.Position>.empty()) as _i4.Stream<_i2.Position>);
   @override
-  _i3.Future<_i2.LocationAccuracyStatus> requestTemporaryFullAccuracy(
+  _i4.Future<_i3.LocationAccuracyStatus> requestTemporaryFullAccuracy(
           {String? purposeKey}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #requestTemporaryFullAccuracy, [], {#purposeKey: purposeKey}),
-              returnValue: Future<_i2.LocationAccuracyStatus>.value(
-                  _i2.LocationAccuracyStatus.reduced))
-          as _i3.Future<_i2.LocationAccuracyStatus>);
+              returnValue: Future<_i3.LocationAccuracyStatus>.value(
+                  _i3.LocationAccuracyStatus.reduced))
+          as _i4.Future<_i3.LocationAccuracyStatus>);
   @override
-  _i3.Future<_i2.LocationAccuracyStatus> getLocationAccuracy() =>
+  _i4.Future<_i3.LocationAccuracyStatus> getLocationAccuracy() =>
       (super.noSuchMethod(Invocation.method(#getLocationAccuracy, []),
-              returnValue: Future<_i2.LocationAccuracyStatus>.value(
-                  _i2.LocationAccuracyStatus.reduced))
-          as _i3.Future<_i2.LocationAccuracyStatus>);
+              returnValue: Future<_i3.LocationAccuracyStatus>.value(
+                  _i3.LocationAccuracyStatus.reduced))
+          as _i4.Future<_i3.LocationAccuracyStatus>);
   @override
-  _i3.Future<bool> openAppSettings() =>
+  _i4.Future<bool> openAppSettings() =>
       (super.noSuchMethod(Invocation.method(#openAppSettings, []),
-          returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
   @override
-  _i3.Future<bool> openLocationSettings() =>
+  _i4.Future<bool> openLocationSettings() =>
       (super.noSuchMethod(Invocation.method(#openLocationSettings, []),
-          returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
   @override
   double distanceBetween(double? startLatitude, double? startLongitude,
           double? endLatitude, double? endLongitude) =>
