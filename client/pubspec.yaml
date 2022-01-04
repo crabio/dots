@@ -29,7 +29,7 @@ dependencies:
   flutter_bloc: ^8.0.0
   equatable: ^2.0.3
   bloc_test: ^9.0.1
-  settings_ui: ^1.0.0
+  flutter_settings_ui: ^2.0.1
   json_serializable: ^6.1.1
   copy_with_extension_gen: ^2.0.3
   shared_preferences: ^2.0.9

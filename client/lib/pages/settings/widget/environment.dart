@@ -1,9 +1,6 @@
-// External
 import 'package:flutter/material.dart';
-import 'package:settings_ui/settings_ui.dart';
-
-// Internal
 import 'package:dots_client/settings/settings.dart';
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 
 class EnvironmentPage extends StatelessWidget {
   const EnvironmentPage({Key? key}) : super(key: key);
