@@ -28,7 +28,7 @@ jobs:
       - name: Regenerate files
         run: make generate
       - name: Check for a diff
-        run: git diff lib --exit-code
+        run: git diff --exit-code lib
 
   test:
     name: Test
