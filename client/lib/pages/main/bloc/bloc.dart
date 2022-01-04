@@ -12,7 +12,7 @@ import 'state.dart';
 
 class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   final GeolocatorPlatform geolocator;
-  late StreamSubscription<Position>? _geoPositionSub;
+  StreamSubscription<Position>? _geoPositionSub;
 
   final _logger = Logger("MainPageBloc");
 
