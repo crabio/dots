@@ -1,14 +1,11 @@
 package player_list_test
 
 import (
-	// External
-
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/iakrevetkho/dots/server/pkg/player_list"
+	"github.com/iakrevetkho/dots/server/internal/domain/player_list"
 	"github.com/stretchr/testify/assert"
-	// Internal
 )
 
 func TestPlayerList(t *testing.T) {

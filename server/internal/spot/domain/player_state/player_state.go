@@ -1,12 +1,8 @@
 package player_state
 
 import (
-	// External
-
 	"github.com/golang/geo/s2"
-	"github.com/google/uuid"
 	"github.com/tjgq/broadcast"
-	// Internal
 )
 
 type PlayerState struct {
@@ -27,10 +23,4 @@ func NewPlayerState() *PlayerState {
 	ps.Broadcaster = broadcast.New(0)
 
 	return ps
-}
-
-type PlayerPublicState struct {
-	PlayerUuid uuid.UUID
-	Position   s2.LatLng
-	Health     float32
 }

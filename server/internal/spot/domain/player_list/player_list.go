@@ -1,11 +1,9 @@
 package player_list
 
 import (
-	// External
 	"sync"
 
 	"github.com/google/uuid"
-	// Internal
 )
 
 type PlayerList struct {

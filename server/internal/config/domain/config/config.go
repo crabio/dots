@@ -1,7 +1,6 @@
 package config
 
 import (
-	// External
 	"time"
 
 	archaeopteryx_config "github.com/iakrevetkho/archaeopteryx/config"

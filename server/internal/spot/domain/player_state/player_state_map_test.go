@@ -1,15 +1,12 @@
 package player_state_test
 
 import (
-	// External
-
 	"testing"
 
 	"github.com/golang/geo/s2"
 	"github.com/google/uuid"
-	"github.com/iakrevetkho/dots/server/pkg/player_state"
+	"github.com/iakrevetkho/dots/server/internal/domain/player_state"
 	"github.com/stretchr/testify/assert"
-	// Internal
 )
 
 func TestPlayerStateMap(t *testing.T) {

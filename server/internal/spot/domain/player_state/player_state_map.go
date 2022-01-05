@@ -1,11 +1,9 @@
 package player_state
 
 import (
-	// External
 	"sync"
 
 	"github.com/google/uuid"
-	// Internal
 )
 
 type PlayerStateMap struct {
