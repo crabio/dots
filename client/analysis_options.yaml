@@ -2,5 +2,9 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - lib/gen/*
+    - /**/*.pb.dart
+    - /**/*.pbenum.dart
+    - /**/*.pbgrpc.dart
+    - /**/*.pbjson.dart
+    - /**/*.pbserver.dart
     - /**/*.mocks.dart

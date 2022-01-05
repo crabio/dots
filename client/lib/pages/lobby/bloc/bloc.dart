@@ -1,16 +1,15 @@
-// External
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:grpc/grpc.dart';
 import 'package:logging/logging.dart';
-
-// Internal
 import 'package:dots_client/gen/spot/v1/spot_v1.pbgrpc.dart' as proto;
-
+import 'package:dots_client/data/gen/spot_qr_code.pb.dart' as qr_code_proto;
 part 'events.dart';
 part 'state.dart';
+part 'bloc.g.dart';
 
 class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
   final proto.SpotServiceClient client;
@@ -29,7 +28,11 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     required this.spotUuid,
     required this.playerUuid,
     required this.isHost,
-  }) : super(InitingState()) {
+  }) : super(LobbyPageInitial(
+          gettingPlayersList: true,
+          playersList: const [],
+          qrCodeData: _generateQrCodeString(spotUuid),
+        )) {
     on<InitEvent>(_onInitEvent);
     on<NewSpotPlayersListEvent>(_onNewSpotPlayersListEvent);
     on<StartGameEvent>(_onStartGameEvent);
@@ -92,32 +95,30 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
     NewSpotPlayersListEvent event,
     Emitter<LobbyPageState> emit,
   ) async {
-    emit(InitedState(playersList: event.playersList));
+    final curState = state;
+    if (curState is LobbyPageInitial) {
+      emit(curState.copyWith(playersList: event.playersList));
+    }
   }
 
   Future<void> _onStartGameEvent(
     StartGameEvent event,
     Emitter<LobbyPageState> emit,
   ) async {
-    final curState = state;
-    if (curState is InitedState) {
-      await client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid)).then(
-            (response) => null,
-            onError: (error) => emit(ErrorState(exception: error)),
-          );
+    await client.startSpot(proto.StartSpotRequest(spotUuid: spotUuid)).then(
+          (response) => null,
+          onError: (error) => emit(ErrorState(exception: error)),
+        );
 
-      await client
-          .isPlayerHunter(proto.IsPlayerHunterRequest(
-            spotUuid: spotUuid,
-            playerUuid: playerUuid,
-          ))
-          .then(
-            (response) => emit(GoToGameState(isHunter: response.isHunter)),
-            onError: (error) => emit(ErrorState(exception: error)),
-          );
-    } else {
-      _logger.shout("Wrong state $curState for $event");
-    }
+    await client
+        .isPlayerHunter(proto.IsPlayerHunterRequest(
+          spotUuid: spotUuid,
+          playerUuid: playerUuid,
+        ))
+        .then(
+          (response) => emit(GoToGameState(isHunter: response.isHunter)),
+          onError: (error) => emit(ErrorState(exception: error)),
+        );
   }
 
   Future<void> _onLeaveSpotEvent(
@@ -142,5 +143,10 @@ class LobbyPageBloc extends Bloc<LobbyPageEvent, LobbyPageState> {
         );
       },
     );
+  }
+
+  static String _generateQrCodeString(String spotUuid) {
+    return String.fromCharCodes(
+        qr_code_proto.SpotQrCode(spotUuid: spotUuid).writeToBuffer());
   }
 }

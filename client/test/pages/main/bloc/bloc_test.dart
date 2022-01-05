@@ -1,8 +1,5 @@
-// External
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-// Internal
 import 'package:dots_client/pages/main/bloc/events.dart';
 import 'package:dots_client/pages/main/bloc/bloc.dart';
 import 'package:dots_client/pages/main/bloc/state.dart';
@@ -30,11 +27,10 @@ void main() {
           speedAccuracy: 0.1,
         ));
     when(geolocator.getPositionStream(
-      desiredAccuracy: LocationAccuracy.high,
-      distanceFilter: 0,
-      forceAndroidLocationManager: false,
-      timeInterval: 0,
-      timeLimit: null,
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 0,
+      ),
     )).thenAnswer((_) => Stream.fromIterable([
           Position(
             longitude: 10,
@@ -70,6 +66,7 @@ void main() {
       ),
       act: (bloc) => bloc.add(NewGeoPositionEvent(position: LatLng(60, 10))),
       expect: () => <MainPageState>[
+        InitedState(position: LatLng(20, 10)),
         InitedState(position: LatLng(60, 10)),
         InitedState(position: LatLng(20, 10)),
       ],

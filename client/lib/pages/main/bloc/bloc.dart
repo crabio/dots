@@ -1,4 +1,6 @@
 // External
+import 'dart:async';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -10,6 +12,7 @@ import 'state.dart';
 
 class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   final GeolocatorPlatform geolocator;
+  StreamSubscription<Position>? _geoPositionSub;
 
   final _logger = Logger("MainPageBloc");
 
@@ -22,17 +25,19 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     add(InitEvent());
   }
 
+  @override
+  Future<void> close() {
+    if (_geoPositionSub != null) {
+      _geoPositionSub!.cancel();
+    }
+
+    return super.close();
+  }
+
   void _onInitEvent(
     InitEvent event,
     Emitter<MainPageState> emit,
   ) async {
-    _logger.fine("Check geolocation permission");
-    LocationPermission permission = await geolocator.checkPermission();
-    if (permission != LocationPermission.always &&
-        permission != LocationPermission.whileInUse) {
-      emit(LocationsPermissionIsNotAllowedState());
-    }
-
     _logger.fine("Get last known position");
     final position = await geolocator.getLastKnownPosition();
     if (position != null) {
@@ -47,9 +52,11 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     }
 
     _logger.fine("Subscribe on location");
-    geolocator
+    _geoPositionSub = geolocator
         .getPositionStream(
-          desiredAccuracy: LocationAccuracy.high,
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+          ),
         )
         .listen((position) => add(NewGeoPositionEvent(
                 position: LatLng(

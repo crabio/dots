@@ -1,11 +1,8 @@
-// External
 import 'package:dots_client/pages/settings/widget/environment.dart';
 import 'package:dots_client/utils/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:settings_ui/settings_ui.dart';
-
-// Internal
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'bloc/events.dart';
 import 'bloc/bloc.dart';
 import 'bloc/state.dart';
@@ -70,21 +67,21 @@ class SettingsForm extends StatelessWidget {
               ),
               SettingsSection(
                 title: 'Misc',
-                tiles: const [
+                tiles: [
                   SettingsTile(
                     title: 'Terms of Service',
-                    leading: Icon(Icons.description),
-                    trailing: SizedBox(),
+                    leading: const Icon(Icons.description),
+                    trailing: const SizedBox(),
                   ),
                   SettingsTile(
                     title: 'Changelog',
-                    leading: Icon(Icons.list),
-                    trailing: SizedBox(),
+                    leading: const Icon(Icons.list),
+                    trailing: const SizedBox(),
                   ),
                   SettingsTile(
                     title: 'Open source licenses',
-                    leading: Icon(Icons.collections_bookmark),
-                    trailing: SizedBox(),
+                    leading: const Icon(Icons.collections_bookmark),
+                    trailing: const SizedBox(),
                   ),
                 ],
               ),

@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package spot_qr_code;
+
+message SpotQrCode {
+  string spot_uuid = 1;
+}

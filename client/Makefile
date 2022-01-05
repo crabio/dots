@@ -1,6 +1,6 @@
 install:
 	@echo "Activate protobuf plugin"
-	dart pub global activate protoc_plugin
+	dart pub global activate protoc_plugin 20.0.0
 
 generate:
 	@echo "Update Dart packages"
@@ -11,6 +11,7 @@ generate:
 	flutter pub run build_runner build --delete-conflicting-outputs
 	@echo "Generate protobuf files"
 	protoc --dart_out=grpc:lib/gen -I ../server/proto/ $$(find ../server/proto -iname "*.proto")
+	protoc --dart_out=lib/data/gen -I lib/data/ $$(find lib/data/ -iname "*.proto")
 
 lint:
 	@echo "Run linter"

@@ -19,7 +19,7 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "2.2.3"
+          flutter-version: "2.8.1"
       - uses: arduino/setup-protoc@v1
         with:
           version: "3.x"
@@ -28,7 +28,7 @@ jobs:
       - name: Regenerate files
         run: make generate
       - name: Check for a diff
-        run: git diff --exit-code
+        run: git diff --exit-code lib
 
   test:
     name: Test
@@ -41,7 +41,7 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "2.2.3"
+          flutter-version: "2.8.1"
       - name: Test
         run: make unit-test
       - name: Upload coverage to Codecov
@@ -64,6 +64,6 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "2.2.3"
+          flutter-version: "2.8.1"
       - name: Lint
         run: make lint
